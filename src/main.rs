@@ -118,7 +118,7 @@ fn missing_token(error: String) -> content::Json<String> {
     content::Json(response.to_string())
 }
 
-embed_migrations!("./migrations/2020-03-15-164327_create_tables");
+embed_migrations!();
 fn main() {
     dotenv().ok();
     embedded_migrations::run_with_output(&db::connect().get().unwrap(), &mut stdout());
