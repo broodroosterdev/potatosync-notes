@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS accounts
     email      text not null,
     username   text not null,
     password   text not null,
-    image_url  text not null
+    image_url  text not null,
+    password_identifier text not null
 );
 
 CREATE TABLE IF NOT EXISTS notes

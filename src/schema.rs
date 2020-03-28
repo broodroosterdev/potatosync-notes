@@ -8,6 +8,7 @@ table! {
         username -> Text,
         password -> Text,
         image_url -> Text,
+        password_identifier -> Text,
     }
 }
 

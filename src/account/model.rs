@@ -10,11 +10,11 @@ use serde_derive::*;
 
 use crate::account::controller::*;
 use crate::account::token::Token;
-use crate::response::StatusResponse;
+use crate::status_response::StatusResponse;
 use crate::schema::accounts;
 
 #[table_name = "accounts"]
-#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone)]
+#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone, JsonSchema)]
 pub struct Account {
     pub(crate) id: i32,
     created_at: String,
@@ -24,6 +24,7 @@ pub struct Account {
     username: String,
     pub(crate) password: String,
     image_url: String,
+    pub(crate) password_identifier: String
 }
 
 #[table_name = "accounts"]
@@ -36,16 +37,32 @@ pub struct NewDBAccount {
     pub(crate) username: String,
     pub(crate) password: String,
     pub(crate) image_url: String,
+    pub(crate) password_identifier: String
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, JsonSchema)]
 pub struct LoginCredentials {
     pub(crate) email: Option<String>,
     pub(crate) username: Option<String>,
     pub(crate) password: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, JsonSchema)]
+pub struct Password {
+    pub(crate) password: String
+}
+
+#[derive(Serialize, Deserialize, Clone, JsonSchema)]
+pub struct Username {
+    pub(crate) username: String
+}
+
+#[derive(Serialize, Deserialize, Clone, JsonSchema)]
+pub struct Image {
+    pub(crate) image: String
+}
+
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub struct NewAccount {
     pub(crate) email: String,
     pub(crate) username: String,
@@ -54,32 +71,53 @@ pub struct NewAccount {
 
 impl NewAccount {
     pub(crate) fn is_valid(&self, connection: &PgConnection) -> StatusResponse {
-        if !self.email.contains("@") {
-            return StatusResponse::new("MalformedEmailError".parse().unwrap(), false);
-        }
 
-        if self.username.chars().count() <= 4 || self.username.chars().count() > 60 {
-            return StatusResponse::new("UsernameOutOfBoundsError".parse().unwrap(), false);
+        let email_valid = validate_email(self.email.clone(), connection);
+        if email_valid.is_err() {
+            return email_valid.err().unwrap();
         }
-
-        if self.password.chars().count() < 8 || self.password.chars().count() > 60 {
-            return StatusResponse::new("PassOutOfBoundsError".parse().unwrap(), false);
+        let username_valid = validate_username(self.username.clone(), connection);
+        if username_valid.is_err() {
+            return username_valid.err().unwrap();
         }
-        let email_exists = select(exists(accounts::dsl::accounts.filter(accounts::email.eq(self.email.clone())))).get_result(connection);
-        if email_exists.ok().unwrap() {
-            return StatusResponse::new("EmailAlreadyExistsError".parse().unwrap(), false);
+        let password_valid = validate_password(self.password.clone());
+        if password_valid.is_err() {
+            return password_valid.err().unwrap();
         }
-
-        let username_exists = select(exists(accounts::dsl::accounts.filter(accounts::username.eq(self.username.clone())))).get_result(connection);
-        if username_exists.ok().unwrap() {
-            return StatusResponse::new("UsernameAlreadyExistsError".parse().unwrap(), false);
-        }
-
         return StatusResponse::new("ValidationSuccess".parse().unwrap(), true);
     }
 }
 
-#[derive(Serialize, Deserialize)]
+pub fn validate_email(email: String, connection: &PgConnection) -> Result<(), StatusResponse> {
+    if !validator::validate_email(email.clone()) {
+        return Err(StatusResponse::new("MalformedEmailError".parse().unwrap(), false));
+    }
+    let email_exists = select(exists(accounts::dsl::accounts.filter(accounts::email.eq(email.clone())))).get_result(connection);
+    if email_exists.ok().unwrap() {
+        return Err(StatusResponse::new("EmailAlreadyExistsError".parse().unwrap(), false));
+    }
+    Ok(())
+}
+
+pub fn validate_username(username: String, connection: &PgConnection) -> Result<(), StatusResponse>{
+    if username.chars().count() <= 4 || username.chars().count() > 60 {
+        return Err(StatusResponse::new("UsernameOutOfBoundsError".parse().unwrap(), false));
+    }
+    let username_exists = select(exists(accounts::dsl::accounts.filter(accounts::username.eq(username.clone())))).get_result(connection);
+    if username_exists.ok().unwrap() {
+        return Err(StatusResponse::new("UsernameAlreadyExistsError".parse().unwrap(), false));
+    }
+    Ok(())
+}
+
+pub fn validate_password(password: String) -> Result<(), StatusResponse>{
+    if password.chars().count() < 8 || password.chars().count() > 60 {
+        return Err(StatusResponse::new("PassOutOfBoundsError".parse().unwrap(), false));
+    }
+    Ok(())
+}
+
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub struct TokenResponse {
     pub(crate) message: String,
     pub(crate) status: bool,
@@ -96,15 +134,22 @@ impl TokenResponse {
     }
 }
 
+impl ToString for TokenResponse {
+    fn to_string(&self) -> String {
+        serde_json::to_string(self).unwrap()
+    }
+}
 
-#[derive(Serialize, Deserialize)]
+
+
+
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub struct TokenAccount {
     created_at: String,
     updated_at: Option<String>,
     deleted_at: Option<String>,
     email: String,
     username: String,
-    password: String,
     image_url: String,
     refresh_token: String,
     access_token: String,
@@ -118,11 +163,34 @@ impl TokenAccount {
             deleted_at: account.deleted_at,
             email: account.email,
             username: account.username,
-            password: "".parse().unwrap(),//Keep the password empty to avoid accidentally returning it to the client
             image_url: account.image_url,
             refresh_token,
             access_token,
         }
+    }
+}
+
+#[derive(Serialize, Deserialize, JsonSchema)]
+pub struct InfoResponse {
+    pub(crate) message: String,
+    pub(crate) status: bool,
+    pub(crate) account: Account,
+}
+
+impl InfoResponse {
+    pub(crate) fn new(mut account: Account) -> Self {
+        account.password = "".parse().unwrap();
+        InfoResponse{
+            message: "UserFound".parse().unwrap(),
+            status: true,
+            account
+        }
+    }
+}
+
+impl ToString for InfoResponse {
+    fn to_string(&self) -> String {
+        serde_json::to_string(self).unwrap()
     }
 }
 

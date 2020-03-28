@@ -2,11 +2,11 @@ use chrono::{FixedOffset, Local};
 use diesel::prelude::*;
 use serde_derive::*;
 
-use crate::response::StatusResponse;
+use crate::status_response::StatusResponse;
 use crate::schema::notes;
 
 #[table_name = "notes"]
-#[derive(Queryable, Serialize, Deserialize, Insertable, AsChangeset)]
+#[derive(Queryable, Serialize, Deserialize, Insertable, AsChangeset, JsonSchema)]
 #[primary_key(note_id, account_id)]
 // {"note_id": 1, "title": "Test", "content": "Test", "is_starred": false, "date": "2020-03-19T14:21:06.275Z", "color": 0, "image_url":null, "is_list": false, "list_parse_string":null, "reminders":null, "hide_content": false, "pin":null, "password":null, "is_deleted": false, "is_archived": false}
 pub struct Note {
@@ -29,7 +29,7 @@ pub struct Note {
 }
 
 #[table_name = "notes"]
-#[derive(Queryable, Serialize, Deserialize, Insertable)]
+#[derive(Queryable, Serialize, Deserialize, Insertable, JsonSchema)]
 pub struct NewNote {
     pub account_id: i32,
     pub title: String,
@@ -49,7 +49,7 @@ pub struct NewNote {
 }
 
 #[table_name = "notes"]
-#[derive(Queryable, Serialize, Deserialize, Insertable, Debug)]
+#[derive(Queryable, Serialize, Deserialize, Insertable, Debug, JsonSchema)]
 pub struct SavingNote {
     pub note_id: i32,
     pub title: String,
@@ -91,14 +91,16 @@ impl SavingNote {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub struct NoteId {
     pub(crate) note_id: i32,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct Notes {
-    pub(crate) notes: Vec<Note>,
+#[derive(Serialize, Deserialize, JsonSchema)]
+pub struct NoteResponse {
+    pub(crate) message: String,
+    pub(crate) status: bool,
+    pub(crate) notes: Option<Vec<Note>>
 }
 
 

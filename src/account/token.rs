@@ -17,13 +17,14 @@ use serde_json::Value;
 use crate::db;
 use crate::schema::tokens;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub struct Token {
     pub(crate) sub: String,
+    pub(crate) pwId: String,
     exp: i64,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub struct TokenJson {
     token: Token
 }
@@ -52,26 +53,28 @@ impl<'a, 'r> FromRequest<'a, 'r> for Token {
     fn from_request(request: &'a Request<'r>) -> request::Outcome<Self, Self::Error> {
         let keys: Vec<_> = request.headers().get("Authorization").collect();
         if keys.len() != 1 {
-            return Outcome::Failure((Status::Forbidden, "Missing auth token".parse().unwrap()));
+            return Outcome::Failure((Status::Unauthorized, "Missing auth token".parse().unwrap()));
         }
-        return match read_token(keys[0]) {
+        return match read_token(keys[0].replace("Bearer ", "").as_ref()) {
             Ok(claim) => Outcome::Success(claim),
-            Err(err) => Outcome::Failure((Status::Forbidden, err))
+            Err(err) => Outcome::Failure((Status::Unauthorized, err))
         };
     }
 }
 
 impl Token {
-    pub(crate) fn create_access_token(account_id: i32) -> String {
+    pub(crate) fn create_access_token(account_id: i32, password_identifier: String) -> String {
         let access_token_secret = env::var("ACCESS_TOKEN_SECRET").expect("Could not find ACCESS_TOKEN_SECRET in .env");
         let algo = jsonwebtokens::Algorithm::new_hmac(AlgorithmID::HS256, access_token_secret).unwrap();
+        
         let header = json!({
             "alg": algo.name(),
             "typ": "JWT"
         });
         let user = serde_json::to_value(&Token {
             sub: account_id.to_string(),
-            exp: chrono::Utc::now().checked_add_signed(Duration::minutes(30)).unwrap().timestamp(),
+            pwId: password_identifier,
+            exp: chrono::Utc::now().checked_add_signed(Duration::seconds(30)).unwrap().timestamp(),
         }).unwrap();
         let token = encode(&header, &user, &algo).unwrap();
         token
@@ -79,13 +82,13 @@ impl Token {
 }
 
 #[table_name = "tokens"]
-#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone)]
+#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone, JsonSchema)]
 pub struct RefreshTokenDb {
     account_id: i32,
     token: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub struct RefreshToken {
     pub(crate) sub: String,
 }
@@ -115,24 +118,9 @@ impl RefreshToken {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub struct RefreshTokenJson {
-    pub(crate) token: RefreshToken
-}
-
-impl<'a, 'r> FromRequest<'a, 'r> for RefreshToken {
-    type Error = String;
-
-    fn from_request(request: &'a Request<'r>) -> request::Outcome<Self, Self::Error> {
-        let keys: Vec<_> = request.headers().get("Authorization").collect();
-        if keys.len() != 1 {
-            return Outcome::Failure((Status::Forbidden, "Missing auth token".parse().unwrap()));
-        }
-        return match read_refresh_token(keys[0]) {
-            Ok(claim) => Outcome::Success(claim),
-            Err(err) => Outcome::Failure((Status::Forbidden, err))
-        };
-    }
+    pub(crate) token: String
 }
 
 pub fn read_refresh_token(key: &str) -> Result<RefreshToken, String> {
@@ -154,4 +142,11 @@ pub fn read_refresh_token(key: &str) -> Result<RefreshToken, String> {
         println!("Token Error");
         Err(claims.err().unwrap().to_string())
     };
+}
+
+#[derive(Serialize, Deserialize, JsonSchema)]
+pub struct TokenResponse{
+    message: String,
+    status: bool,
+    token: Option<String>
 }
