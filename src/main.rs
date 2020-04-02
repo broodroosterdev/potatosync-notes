@@ -7,40 +7,44 @@ extern crate diesel_migrations;
 #[macro_use]
 extern crate dotenv;
 #[macro_use]
+extern crate lazy_static;
+extern crate rand;
+#[macro_use]
 extern crate rocket;
+#[macro_use]
+extern crate rocket_okapi;
 #[macro_use]
 extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
 #[macro_use]
-extern crate validator_derive;
+extern crate tera;
 extern crate validator;
 #[macro_use]
-extern crate rocket_okapi;
-extern crate rand;
+extern crate validator_derive;
+
 use std::env;
-use std::io::stdout;
+use std::io::{stdin, stdout};
 
 use diesel::{Connection, PgConnection};
 use diesel_migrations::*;
 use dotenv::dotenv;
 use rocket::{Data, Request, Response};
-use rocket::request::FromRequest;
-use rocket::response::{content, status, self, Responder};
-use rocket_contrib::json::{Json, JsonValue};
-//use token::token;
-use rocket_failure::errors::*;
-use serde_json::Value;
 use rocket::http::ContentType;
-
-use crate::account::controller::{create, login, get_info};
-use crate::account::model::{LoginCredentials, NewAccount, Password, Username};
-use crate::account::token::{RefreshTokenJson, Token, read_refresh_token, TokenResponse};
-use crate::note::controller::*;
-use crate::note::model::{Note, NoteId, SavingNote, NoteResponse};
+use rocket::request::FromRequest;
+use rocket::response::{self, content, Responder, status};
+use rocket_contrib::json::{Json, JsonValue};
+use rocket_failure::errors::*;
 use rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
-use crate::status_response::StatusResponse;
+use serde_json::Value;
+
+use crate::account::controller::{create, get_info, login};
+use crate::account::model::{LoginCredentials, NewAccount, Password, Username};
+use crate::account::token::{read_refresh_token, refresh_token, RefreshTokenJson, Token};
+use crate::note::controller::*;
+use crate::note::model::{Note, NoteId, NoteResponse, SavingNote};
 use crate::status_response::ApiResponse;
+use crate::status_response::StatusResponse;
 
 mod note;
 mod schema;
@@ -77,24 +81,18 @@ fn login_user(json_credentials: Json<LoginCredentials>, connection: db::Connecti
     }
 }
 
-/*#[openapi]
+#[openapi]
 #[post("/api/users/refresh", data = "<json_token>")]
-fn refresh_token(json_token: Json<RefreshTokenJson>, connection: db::Connection) -> Json<TokenResponse> {
-    let refresh_token = read_refresh_token(json_token.token.as_str());
-    return if refresh_token.is_ok() {
-        Json(TokenResponse {
-            message: "RefreshSuccess".parse().unwrap(),
-            status: true,
-            token: Some(Token::create_access_token(refresh_token.unwrap().sub.parse().unwrap()))
-        })
-    } else {
-        Json(TokenResponse {
-            message: refresh_token.err().unwrap(),
-            status: false,
-            token: None
-        })
+fn refresh_user(json_token: Json<RefreshTokenJson>, connection: db::Connection) -> ApiResponse {
+    let token = read_refresh_token(json_token.token.as_str());
+    if token.is_err() {
+        return ApiResponse {
+            json: StatusResponse::new(token.err().unwrap(), false).to_string(),
+            status: Status::BadRequest,
+        }
     }
-}*/
+    refresh_token(token.unwrap(), &connection)
+}
 
 #[openapi]
 #[post("/api/users/manage/password", data = "<json_password>")]
@@ -157,13 +155,14 @@ fn missing_token(error: String) -> content::Json<String> {
     content::Json(response.to_string())
 }
 
-embed_migrations!();
+
 fn main() {
     dotenv().ok();
-    embedded_migrations::run_with_output(&db::connect().get().unwrap(), &mut stdout());
+    embed_migrations!();
+    embedded_migrations::run_with_output(&db::connect().get().unwrap(), &mut std::io::stdout());
     rocket::ignite()
         .manage(db::connect())
-        .mount("/", routes_with_openapi![save_note, get_all_notes, delete_note, delete_all_notes, new_user, login_user])
+        .mount("/", routes_with_openapi![save_note, get_all_notes, delete_note, delete_all_notes, new_user, login_user, change_password, refresh_user])
         .mount(
             "/swagger-ui/",
             make_swagger_ui(&SwaggerUIConfig {

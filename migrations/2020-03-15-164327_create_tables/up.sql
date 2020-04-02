@@ -3,15 +3,16 @@ CREATE SEQUENCE accounts_id_seq;
 
 CREATE TABLE IF NOT EXISTS accounts
 (
-    id         integer unique primary key default nextval('accounts_id_seq'),
-    created_at text not null,
-    updated_at text,
-    deleted_at text,
-    email      text not null,
-    username   text not null,
-    password   text not null,
-    image_url  text not null,
-    password_identifier text not null
+    id                  integer unique primary key default nextval('accounts_id_seq'),
+    created_at          text    not null,
+    updated_at          text,
+    deleted_at          text,
+    email               text    not null,
+    username            text    not null,
+    password            text    not null,
+    image_url           text    not null,
+    password_identifier text    not null,
+    verified            boolean not null
 );
 
 CREATE TABLE IF NOT EXISTS notes
@@ -39,7 +40,6 @@ CREATE INDEX IF NOT EXISTS idx_accounts_deleted_at ON accounts (deleted_at);
 
 CREATE TABLE IF NOT EXISTS tokens
 (
-    account_id integer not null REFERENCES accounts (id),
-    token      text    not null,
-    PRIMARY KEY (account_id, token)
+    account_id integer not null PRIMARY KEY REFERENCES accounts (id),
+    token      text    not null
 )

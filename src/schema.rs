@@ -9,6 +9,7 @@ table! {
         password -> Text,
         image_url -> Text,
         password_identifier -> Text,
+        verified -> Bool,
     }
 }
 
@@ -34,7 +35,7 @@ table! {
 }
 
 table! {
-    tokens (account_id, token) {
+    tokens (account_id) {
         account_id -> Int4,
         token -> Text,
     }
