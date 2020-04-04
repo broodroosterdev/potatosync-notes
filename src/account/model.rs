@@ -4,8 +4,6 @@ use diesel;
 use diesel::expression::exists::{exists, Exists};
 use diesel::prelude::*;
 use diesel::select;
-use jsonwebtokens::*;
-use jsonwebtokens::AlgorithmID;
 use serde_derive::*;
 
 use crate::account::controller::*;

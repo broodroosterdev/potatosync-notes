@@ -18,6 +18,7 @@ extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
 #[macro_use]
+
 extern crate tera;
 extern crate validator;
 #[macro_use]
@@ -32,13 +33,13 @@ use dotenv::dotenv;
 use rocket::{Data, Request, Response};
 use rocket::http::ContentType;
 use rocket::request::FromRequest;
-use rocket::response::{self, content, Responder, status};
+use rocket::response::{self, content, Redirect, Responder, status};
 use rocket_contrib::json::{Json, JsonValue};
 use rocket_failure::errors::*;
 use rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
 use serde_json::Value;
 
-use crate::account::controller::{create, get_info, login};
+use crate::account::controller::{create, get_info, login, verify_email};
 use crate::account::model::{LoginCredentials, NewAccount, Password, Username};
 use crate::account::token::{read_refresh_token, refresh_token, RefreshTokenJson, Token};
 use crate::note::controller::*;
@@ -58,6 +59,11 @@ fn new_user(json_creds: Json<NewAccount>, connection: db::Connection) -> ApiResp
     create(json_creds.0, &connection)
 }
 
+#[get("/api/users/verify/<id>/<token>")]
+fn verify_user(id: i32, token: String, connection: db::Connection) -> Redirect {
+    let verify_result = verify_email(id, token, &connection);
+    Redirect::to(format!("/api/users/verify?successful={}&message={}", verify_result.status, verify_result.message))
+}
 /*#[post("/api/tokens/delete", data = "<token>")]
 fn delete_token(token: Data, token: token) {
 
@@ -66,7 +72,6 @@ fn delete_token(token: Data, token: token) {
 #[openapi]
 #[post("/api/users/login", data = "<json_credentials>")]
 fn login_user(json_credentials: Json<LoginCredentials>, connection: db::Connection) -> ApiResponse {
-    let mut response = Response::build();
     let login_result = login(json_credentials.0.clone(), &connection);
     if login_result.is_err() {
         ApiResponse{
@@ -155,14 +160,15 @@ fn missing_token(error: String) -> content::Json<String> {
     content::Json(response.to_string())
 }
 
-
+embed_migrations!("migrations");
 fn main() {
     dotenv().ok();
-    embed_migrations!();
-    embedded_migrations::run_with_output(&db::connect().get().unwrap(), &mut std::io::stdout());
+
+    embedded_migrations::run_with_output(&db::connect().get().unwrap(), &mut std::io::stdout()).unwrap();
     rocket::ignite()
         .manage(db::connect())
         .mount("/", routes_with_openapi![save_note, get_all_notes, delete_note, delete_all_notes, new_user, login_user, change_password, refresh_user])
+        .mount("/", routes![verify_user])
         .mount(
             "/swagger-ui/",
             make_swagger_ui(&SwaggerUIConfig {

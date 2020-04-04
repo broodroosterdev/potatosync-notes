@@ -1,10 +1,11 @@
+use std::env;
+
 use bcrypt::{DEFAULT_COST, hash, verify};
 use chrono::{Local, SecondsFormat};
 use diesel::{ExpressionMethods, PgConnection, RunQueryDsl, select};
 use diesel::expression::exists::exists;
 use diesel::query_dsl::filter_dsl::FilterDsl;
 use diesel::result::Error;
-use jsonwebtokens::AlgorithmID;
 use rand::distributions::Alphanumeric;
 use rand::Rng;
 use rocket::response::status::BadRequest;
@@ -50,6 +51,9 @@ pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) ->
         return Err(StatusResponse::new("Both username and password missing".parse().unwrap(), false));
     }
     let account = get_account_result.unwrap();
+    if !account.verified {
+        return Err(StatusResponse::new("User is not verified".parse().unwrap(), false))
+    }
     let access_token = Token::create_access_token(account.id);
     let refresh_token = RefreshToken::create_refresh_token(account.id, account.password_identifier.clone(), connection);
     Ok(TokenResponse::new(account, access_token, refresh_token))
@@ -113,7 +117,8 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
             status: Status::BadRequest,
         };
     }
-    let email = create_token_email(account.username.clone(), "http://google.com".parse().unwrap());
+    let domain = env::var("DOMAIN").expect("Could not find DOMAIN in .env");
+    let email = create_token_email(account.username.clone(), format!("{}/api/users/verify/{}/{}", domain, token_db.account_id, token_db.token));
     send_email(email, account.email.clone());
     let access_token = Token::create_access_token(account.id);
     let refresh_token = RefreshToken::create_refresh_token(account.id, password_identifier.clone(), connection);
@@ -127,25 +132,35 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
         status: Status::Ok,
     };
 }
-/*
-pub(crate) fn verify_email(account_id: i32, token: TokenJson, connection: &PgConnection) -> ApiResponse {
-    let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection).expect("Could not check if account exists");
+
+pub(crate) fn verify_email(account_id: i32, used_token: String, connection: &PgConnection) -> StatusResponse {
+    let id_exists: bool = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection).expect("Could not check if account exists");
     if !id_exists {
-        return ApiResponse {
-            json: StatusResponse::new("UserNotFoundError".parse().unwrap(), false).to_string(),
-            status: Status::BadRequest,
-        }
+        return StatusResponse::new("UserNotFoundError".parse().unwrap(), false);
     }
-    let account = accounts::dsl::accounts.filter(accounts::id.eq(account_id)).first::<Account>(connection).unwrap();
-    let token_exists: Result<bool, diesel::result::Error> = select(exists(tokens::dsl::tokens.filter(tokens::account_id.eq(account_id)))).get_result(connection).expect("Could not check if token exists");
+    let mut account = accounts::dsl::accounts.filter(accounts::id.eq(account_id)).first::<Account>(connection).unwrap();
+    let token_exists: bool = select(exists(tokens::dsl::tokens.filter(tokens::account_id.eq(account_id)))).get_result(connection).expect("Could not check if token exists");
     if !token_exists {
-        return ApiResponse {
-            json: StatusResponse::new("TokenNotFoundError".parse().unwrap(), false).to_string(),
-            status: Status::BadRequest,
-        }
+        return StatusResponse::new("TokenNotFoundError".parse().unwrap(), false);
     }
-    let token = tokens
-}*/
+    let saved_token = tokens::dsl::tokens.filter(tokens::account_id.eq(account_id)).first::<VerificationToken>(connection).unwrap();
+    return if saved_token.token.eq(&used_token) {
+        account.verified = true;
+        let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))
+            .set(accounts::verified.eq(true))
+            .execute(connection);
+        if update_result.is_err() {
+            return StatusResponse::new("Can not update status of account".parse().unwrap(), false)
+        }
+        let delete_result = diesel::delete(tokens::dsl::tokens.filter(tokens::account_id.eq(account_id))).execute(connection);
+        if delete_result.is_err() {
+            return StatusResponse::new("Can not remove token".parse().unwrap(), false)
+        }
+        StatusResponse::new("VerificationSucces".parse().unwrap(), true)
+    } else {
+        StatusResponse::new("Token does not match".parse().unwrap(), false)
+    }
+}
 
 pub(crate) fn change_password(account_id: i32, password: Password, connection: &PgConnection) -> String {
     let new_password = password.password;

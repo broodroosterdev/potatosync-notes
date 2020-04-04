@@ -1,5 +1,5 @@
 -- Your SQL goes here
-CREATE SEQUENCE accounts_id_seq;
+CREATE SEQUENCE IF NOT EXISTS accounts_id_seq;
 
 CREATE TABLE IF NOT EXISTS accounts
 (
@@ -42,4 +42,4 @@ CREATE TABLE IF NOT EXISTS tokens
 (
     account_id integer not null PRIMARY KEY REFERENCES accounts (id),
     token      text    not null
-)
+);

@@ -9,8 +9,6 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>PotatoSync Registration</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="http://paulgoddarddesign.com/js/ripple.js"></script>
     <style type="text/css">
         .ExternalClass {
             width: 100%;
@@ -332,7 +330,7 @@
     <div style="display: none; max-height: 0px; overflow: hidden;">&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
     <!-- START CARD-->
     <tr>
-        <td class="padding-container" width="100%" valign="top" align="center" style="padding-top: 20px!important; padding-bottom: 18px!important; mso-padding-alt: 0px 0px 18px 0px;">
+        <td class="padding-container" width="100%" valign="top" align="center" style="padding-bottom: 18px!important; mso-padding-alt: 0px 0px 18px 0px;">
             <table class="wrapper" width="600" cellpadding="0" cellspacing="0" border="0" align="center">
                 <tr>
                     <td>
@@ -376,7 +374,7 @@
                                                     <!-- END BUTTON-->
                                                     <!-- BOTTOM TEXT-->
                                                     <tr>
-                                                        <td class="td-padding" align="left" style="font-family: 'Roboto'; color: #212121!important; font-size: 16px; line-height: 24px; padding-top: 18px; padding-left: 18px!important; padding-right: 18px!important; padding-bottom: 0px!important; mso-line-height-rule: exactly; mso-padding-alt: 18px 18px 0px 18px;">Direct link: <a style="text-decoration: none;" href="{{ url }}"><b style="color: #DB4437;"> {{ url }}</b></a><br><br> A big thank you from the POSP team!</td>
+                                                        <td class="td-padding" align="left" style="font-family: 'Roboto'; color: #212121!important; font-size: 16px; line-height: 24px; padding-top: 18px; padding-left: 18px!important; padding-right: 18px!important; padding-bottom: 0px!important; mso-line-height-rule: exactly; mso-padding-alt: 18px 18px 0px 18px;">Direct link: <a style="text-decoration: none;" href="{{ url }}"><b style="color: #DB4437;"> {{ url }}</b></a><br><br> <span style="color: black;">A big thank you from the POSP team!</span></td>
                                                     </tr>
                                                     <!-- END BOTTOM TEXT-->
                                                     <!-- LOGO-->
