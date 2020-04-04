@@ -8,14 +8,17 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-    - name: Switch to nighly
-      run: rustup default nightly
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+    - name: Docker Action
+      uses: zenato/docker-action@v1.0.0
+      with:
+        # Registry username
+        username: broodroosterdev
+        # Registry password
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        # Repository on registry
+        repository: potatosync-rust
+        # Image tag
+        tag: latest
