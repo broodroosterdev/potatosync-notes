@@ -1,0 +1,29 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    restart: always
+    networks:
+      - potatonotes
+    env_file:
+      - docker.env
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  api:
+    image: broodroosterdev/potatosync-rust:latest
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - potatonotes
+    env_file:
+      - ./docker.env
+    ports:
+      - 4000:4000
+
+networks:
+  potatonotes:
+
+volumes:
+  db-data:
