@@ -1,5 +1,6 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 #![feature(in_band_lifetimes)]
+extern crate openssl;
 #[macro_use]
 extern crate diesel;
 #[macro_use]
@@ -8,7 +9,6 @@ extern crate diesel_migrations;
 extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
-extern crate openssl;
 extern crate rand;
 #[macro_use]
 extern crate rocket;
