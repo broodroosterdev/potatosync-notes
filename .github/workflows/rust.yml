@@ -15,7 +15,7 @@ jobs:
       uses: zenato/docker-action@v1.0.0
       with:
         # Registry username
-        username: broodroosterdev
+        username: basmakes
         # Registry password
         password: ${{ secrets.DOCKER_PASSWORD }}
         # Repository on registry
