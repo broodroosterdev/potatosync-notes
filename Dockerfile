@@ -1,5 +1,6 @@
 ## Building Stage ##
 FROM messense/rust-musl-cross:x86_64-musl as builder
+RUN apt update -y
 RUN apt install libpq-dev -y
 RUN rustup default nightly
 RUN rustup target add x86_64-unknown-linux-musl
