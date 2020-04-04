@@ -19,6 +19,6 @@ jobs:
         # Registry password
         password: ${{ secrets.DOCKER_PASSWORD }}
         # Repository on registry
-        repository: potatosync-rust
+        repository: basmakes/potatosync-rust
         # Image tag
         tag: latest
