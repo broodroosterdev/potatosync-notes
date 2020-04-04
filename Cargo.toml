@@ -30,6 +30,7 @@ rand = "*"
 tera = "1.2.0"
 lazy_static = "1.4.0"
 sendgrid = "0.10.0"
+openssl = "*"
 [dependencies.rocket_contrib]
 version = "*"
 default-features = false

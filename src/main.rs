@@ -8,6 +8,7 @@ extern crate diesel_migrations;
 extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
+extern crate openssl;
 extern crate rand;
 #[macro_use]
 extern crate rocket;
@@ -17,12 +18,11 @@ extern crate rocket_okapi;
 extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
-#[macro_use]
-
 extern crate tera;
 extern crate validator;
 #[macro_use]
 extern crate validator_derive;
+
 
 use std::env;
 use std::io::{stdin, stdout};
