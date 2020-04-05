@@ -13,7 +13,6 @@ pub type PgPool = Pool<ConnectionManager<PgConnection>>;
 
 /// Initialize the database pool.
 pub fn connect() -> PgPool {
-    dotenv().ok();
     let database_url = env::var("DATABASE_URL").expect("Could not find DATABASE URL in .env");
     let manager = ConnectionManager::<PgConnection>::new(database_url);
     Pool::new(manager).expect("Failed to create pool")

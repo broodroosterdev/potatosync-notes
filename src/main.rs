@@ -1,6 +1,5 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 #![feature(in_band_lifetimes)]
-extern crate openssl;
 #[macro_use]
 extern crate diesel;
 #[macro_use]
@@ -9,6 +8,7 @@ extern crate diesel_migrations;
 extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
+extern crate openssl;
 extern crate rand;
 #[macro_use]
 extern crate rocket;
@@ -26,6 +26,7 @@ extern crate validator_derive;
 
 use std::env;
 use std::io::{stdin, stdout};
+use std::path::Path;
 
 use diesel::{Connection, PgConnection};
 use diesel_migrations::*;
@@ -162,8 +163,9 @@ fn missing_token(error: String) -> content::Json<String> {
 
 embed_migrations!("migrations");
 fn main() {
-    dotenv().ok();
-
+    if Path::new(".env").exists() {
+        dotenv().ok();
+    }
     embedded_migrations::run_with_output(&db::connect().get().unwrap(), &mut std::io::stdout()).unwrap();
     rocket::ignite()
         .manage(db::connect())

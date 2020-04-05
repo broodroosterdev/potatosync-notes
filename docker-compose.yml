@@ -11,14 +11,14 @@ services:
       - db-data:/var/lib/postgresql/data
 
   api:
-    image: basmakes/potatosync-rust:latest
+    image: 73368f97d094
     restart: always
     depends_on:
       - db
     networks:
       - potatonotes
     env_file:
-      - ./docker.env
+      - docker.env
     ports:
       - 4000:4000
 

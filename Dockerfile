@@ -5,22 +5,22 @@
 
 # You can override this `--build-arg BASE_IMAGE=...` to use different
 # version of Rust or OpenSSL.
-ARG BASE_IMAGE=ekidd/rust-musl-builder:latest
+ARG BASE_IMAGE=registry.gitlab.com/rust_musl_docker/image:nightly-2020-04-02
 
 # Our first FROM statement declares the build environment.
 FROM ${BASE_IMAGE} AS builder
 
 # Add our source code.
-ADD --chown=rust:rust . ./
-RUN rustup default nightly
-RUN rustup target add x86_64-unknown-linux-musl
+ADD . /workdir
 # Build our application.
-RUN cargo build --release
+RUN cargo build --release -vv --target=x86_64-unknown-linux-musl
 
 # Now, we need to build our _real_ Docker container, copying in `using-diesel`.
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
 COPY --from=builder \
-    /home/rust/src/target/x86_64-unknown-linux-musl/release/potatosync-rust \
+    /workdir/target/x86_64-unknown-linux-musl/release/potatosync-rust \
     /usr/local/bin/
+WORKDIR /usr/local/bin
+ENV ROCKET_PORT=4000
 CMD /usr/local/bin/potatosync-rust

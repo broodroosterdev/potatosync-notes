@@ -11,14 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Docker Action
-      uses: zenato/docker-action@v1.0.0
-      with:
-        # Registry username
-        username: basmakes
-        # Registry password
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        # Repository on registry
-        repository: potatosync-rust
-        # Image tag
-        tag: latest
+    - name: Setup docker
+        uses: docker-practice/actions-setup-docker@0.0.1
+    - name: Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v1.0.5
+    - name: Build and push docker image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo Logging Into Docker
+          docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+          echo Installing BuildX
+          update-binfmts --enable
+          docker buildx create --driver docker-container --use
+          docker buildx inspect --bootstrap
+          docker buildx ls
+          echo Building Containers and Publishing them
+          docker buildx build --platform linux/arm,linux/arm64,linux/amd64 --progress plain --pull -t "basmakes/potatosync-rust" --push .
