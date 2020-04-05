@@ -11,14 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Docker Action
-      uses: zenato/docker-action@v1.0.0
+    - name: Build and Publish docker image
+      uses: whoan/docker-build-with-cache-action@v4
       with:
         # Registry username
         username: basmakes
         # Registry password
         password: ${{ secrets.DOCKER_PASSWORD }}
         # Repository on registry
-        repository: basmakes/potatosync-rust
-        # Image tag
-        tag: latest
+        image_name: basmakes/potatosync-rust
