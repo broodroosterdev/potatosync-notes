@@ -12,13 +12,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup docker
-        uses: docker-practice/actions-setup-docker@0.0.1
+      uses: docker-practice/actions-setup-docker@0.0.1
     - name: Docker Buildx
-        uses: crazy-max/ghaction-docker-buildx@v1.0.5
+      uses: crazy-max/ghaction-docker-buildx@v1.0.5
     - name: Build and push docker image
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      env:
+        DOCKER_USERNAME: basmakes
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           echo Logging Into Docker
           docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
