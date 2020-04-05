@@ -19,13 +19,13 @@ jobs:
       env:
         DOCKER_USERNAME: basmakes
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          echo Logging Into Docker
-          docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-          echo Installing BuildX
-          update-binfmts --enable
-          docker buildx create --driver docker-container --use
-          docker buildx inspect --bootstrap
-          docker buildx ls
-          echo Building Containers and Publishing them
-          docker buildx build --platform linux/arm,linux/arm64,linux/amd64 --progress plain --pull -t "basmakes/potatosync-rust" --push .
+      run: |
+        echo Logging Into Docker
+        docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+        echo Installing BuildX
+        update-binfmts --enable
+        docker buildx create --driver docker-container --use
+        docker buildx inspect --bootstrap
+        docker buildx ls
+        echo Building Containers and Publishing them
+        docker buildx build --platform linux/arm,linux/arm64,linux/amd64 --progress plain --pull -t "basmakes/potatosync-rust" --push .
