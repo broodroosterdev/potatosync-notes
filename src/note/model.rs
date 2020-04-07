@@ -1,12 +1,12 @@
-use chrono::{FixedOffset, Local};
+use chrono::{FixedOffset, Local, SecondsFormat, Utc};
 use diesel::prelude::*;
 use serde_derive::*;
 
-use crate::status_response::StatusResponse;
 use crate::schema::notes;
+use crate::status_response::StatusResponse;
 
 #[table_name = "notes"]
-#[derive(Queryable, Serialize, Deserialize, Insertable, AsChangeset, JsonSchema)]
+#[derive(Queryable, Serialize, Deserialize, Insertable, AsChangeset, JsonSchema, PartialEq, Clone)]
 #[primary_key(note_id, account_id)]
 // {"note_id": 1, "title": "Test", "content": "Test", "is_starred": false, "date": "2020-03-19T14:21:06.275Z", "color": 0, "image_url":null, "is_list": false, "list_parse_string":null, "reminders":null, "hide_content": false, "pin":null, "password":null, "is_deleted": false, "is_archived": false}
 pub struct Note {
@@ -26,6 +26,7 @@ pub struct Note {
     pub is_starred: bool,
     pub pin: Option<String>,
     pub password: Option<String>,
+    pub last_updated: String
 }
 
 #[table_name = "notes"]
@@ -46,6 +47,7 @@ pub struct NewNote {
     pub is_starred: bool,
     pub pin: Option<String>,
     pub password: Option<String>,
+    pub last_updated: String
 }
 
 #[table_name = "notes"]
@@ -66,6 +68,7 @@ pub struct SavingNote {
     pub is_starred: bool,
     pub pin: Option<String>,
     pub password: Option<String>,
+    pub last_updated: String
 }
 
 impl SavingNote {
@@ -87,6 +90,7 @@ impl SavingNote {
             is_starred: self.is_starred,
             pin: self.pin.clone(),
             password: self.password.clone(),
+            last_updated: Local::now().to_rfc3339_opts(SecondsFormat::Millis, true)
         }
     }
 }
@@ -97,10 +101,15 @@ pub struct NoteId {
 }
 
 #[derive(Serialize, Deserialize, JsonSchema)]
+pub struct NoteLastUpdated {
+    pub(crate) last_updated: String
+}
+
+#[derive(Serialize, Deserialize, JsonSchema)]
 pub struct NoteResponse {
     pub(crate) message: String,
     pub(crate) status: bool,
-    pub(crate) notes: Option<Vec<Note>>
+    pub(crate) notes: Option<Vec<Note>>,
 }
 
 
@@ -111,28 +120,28 @@ pub mod tests {
     use super::*;
 
     /*
-            #[test]
-            pub fn check_create_note(){
-                let connection = db::connect().get().unwrap();
-                let note = Note{
-                    note_id: 1,
-                    account_id: 1,
-                    title: "Test2".to_string(),
-                    content: "Test2".to_string(),
-                    image_url: None,
-                    list_parse_string: None,
-                    reminders: "".to_string(),
-                    date: None,
-                    color: None,
-                    hide_content: None,
-                    is_deleted: None,
-                    is_archived: None,
-                    is_list: None,
-                    is_starred: None,
-                    pin: None,
-                    password: None
-                };
-                let response = Note::create_or_update(note, &connection);
-                println!("{}", response.to_string());
-            }*/
+                #[test]
+                pub fn check_create_note(){
+                    let connection = db::connect().get().unwrap();
+                    let note = Note{
+                        note_id: 1,
+                        account_id: 1,
+                        title: "Test2".to_string(),
+                        content: "Test2".to_string(),
+                        image_url: None,
+                        list_parse_string: None,
+                        reminders: "".to_string(),
+                        date: None,
+                        color: None,
+                        hide_content: None,
+                        is_deleted: None,
+                        is_archived: None,
+                        is_list: None,
+                        is_starred: None,
+                        pin: None,
+                        password: None
+                    };
+                    let response = Note::create_or_update(note, &connection);
+                    println!("{}", response.to_string());
+                }*/
 }

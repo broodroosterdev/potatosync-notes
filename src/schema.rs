@@ -31,6 +31,7 @@ table! {
         is_starred -> Bool,
         pin -> Nullable<Text>,
         password -> Nullable<Text>,
+        last_updated -> Text,
     }
 }
 
@@ -38,6 +39,7 @@ table! {
     tokens (account_id) {
         account_id -> Int4,
         token -> Text,
+        created_at -> Text,
     }
 }
 

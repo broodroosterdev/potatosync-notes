@@ -44,7 +44,7 @@ use crate::account::controller::{create, get_info, login, verify_email};
 use crate::account::model::{LoginCredentials, NewAccount, Password, Username};
 use crate::account::token::{read_refresh_token, refresh_token, RefreshTokenJson, Token};
 use crate::note::controller::*;
-use crate::note::model::{Note, NoteId, NoteResponse, SavingNote};
+use crate::note::model::{Note, NoteId, NoteLastUpdated, NoteResponse, SavingNote};
 use crate::status_response::ApiResponse;
 use crate::status_response::StatusResponse;
 
@@ -135,16 +135,18 @@ fn delete_note(json_note_id: Json<NoteId>, token: Token, connection: db::Connect
     let delete_result = delete(note_id, token.sub.parse().unwrap(), &connection);
     Json(delete_result)
 }
+
 #[openapi]
 #[post("/api/notes/deleteall")]
 fn delete_all_notes(token: Token, connection: db::Connection) -> Json<StatusResponse> {
     let delete_result = delete_all(token.sub.parse().unwrap(), &connection);
     Json(delete_result)
 }
+
 #[openapi]
-#[get("/api/notes/list")]
-fn get_all_notes(token: Token, connection: db::Connection) -> Json<NoteResponse> {
-    let notes = get_notes_by_account(token.sub.parse().unwrap(), &connection);
+#[get("/api/notes/list", data = "<json_last_updated>")]
+fn get_all_notes(json_last_updated: Json<NoteLastUpdated>, token: Token, connection: db::Connection) -> Json<NoteResponse> {
+    let notes = get_notes_by_account(token.sub.parse().unwrap(), json_last_updated.0, &connection);
     Json(notes)
 }
 

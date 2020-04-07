@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS notes
     is_starred        boolean not null,
     pin               text,
     password          text,
+    last_updated      text    not null,
     PRIMARY KEY (note_id, account_id)
 );
 
@@ -41,5 +42,6 @@ CREATE INDEX IF NOT EXISTS idx_accounts_deleted_at ON accounts (deleted_at);
 CREATE TABLE IF NOT EXISTS tokens
 (
     account_id integer not null PRIMARY KEY REFERENCES accounts (id),
-    token      text    not null
+    token      text    not null,
+    created_at text    not null
 );

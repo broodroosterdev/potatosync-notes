@@ -107,6 +107,7 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
     let token_db = VerificationToken {
         account_id: account.id,
         token,
+        created_at: Local::now().to_rfc3339_opts(SecondsFormat::Millis, true)
     };
     let token_insert_result = diesel::insert_into(tokens::table)
         .values(&token_db)

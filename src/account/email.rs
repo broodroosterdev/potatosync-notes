@@ -25,6 +25,7 @@ lazy_static! {
 pub struct VerificationToken {
     pub(crate) account_id: i32,
     pub(crate) token: String,
+    pub(crate) created_at: String
 }
 
 pub(crate) fn create_token_email(name: String, url: String) -> String {

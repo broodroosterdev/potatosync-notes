@@ -1,13 +1,15 @@
+use chrono::{DateTime, Local};
+use diesel::expression::exists::exists;
 use diesel::prelude::*;
+use diesel::select;
+use rayon::prelude::*;
 use serde_derive::*;
 
 use crate::db;
-use crate::note::model::{Note, NoteResponse};
-use crate::status_response::StatusResponse;
-use crate::schema::notes;
+use crate::note::model::{Note, NoteLastUpdated, NoteResponse};
 use crate::schema::accounts;
-use diesel::select;
-use diesel::expression::exists::exists;
+use crate::schema::notes;
+use crate::status_response::StatusResponse;
 
 pub(crate) fn create_or_update(note: Note, connection: &PgConnection) -> StatusResponse {
     let insert_result = diesel::insert_into(notes::table)
@@ -46,27 +48,37 @@ pub(crate) fn delete(note_id: i32, account_id: i32, connection: &PgConnection) -
     };
 }
 
-pub(crate) fn get_notes_by_account(account_id: i32, connection: &PgConnection) -> NoteResponse {
+pub(crate) fn get_notes_by_account(account_id: i32, note_last_updated: NoteLastUpdated, connection: &PgConnection) -> NoteResponse {
     let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection);
     if !id_exists.ok().unwrap() {
-        return NoteResponse{
+        return NoteResponse {
             message: "UserNotFoundError".parse().unwrap(),
             status: false,
-            notes: None
+            notes: None,
         };
     };
-    let notes = notes::dsl::notes.filter(notes::account_id.eq(account_id)).load::<Note>(connection);
-    return if notes.is_ok() {
+    let notes_result: Result<Vec<Note>, diesel::result::Error> = notes::dsl::notes.filter(notes::account_id.eq(account_id)).load::<Note>(connection);
+    return if notes_result.is_ok() {
+        let mut synced_notes = notes_result.unwrap();
+        let last_updated = DateTime::parse_from_rfc3339(note_last_updated.last_updated.as_ref()).expect("Could not parse DateTime string");
+        let mut updated_notes: Vec<Note> = vec![];
+        for note in synced_notes {
+            let note_date = DateTime::parse_from_rfc3339(note.last_updated.as_str()).expect("Could not parse DateTime string");
+            if !note_date.le(&last_updated) {
+                let copied: Note = note.clone();
+                updated_notes.push(copied);
+            }
+        };
         NoteResponse {
             message: "NoteListSuccess".parse().unwrap(),
             status: true,
-            notes: Some(notes.unwrap())
+            notes: Some(updated_notes),
         }
     } else {
         NoteResponse {
-            message: notes.err().unwrap().to_string(),
+            message: notes_result.err().unwrap().to_string(),
             status: false,
-            notes: None
+            notes: None,
         }
     };
 }
