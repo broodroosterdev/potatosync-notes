@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["connect","Initialize the database pool."]],"struct":[["Connection","Connection request guard type: a wrapper around an r2d2 pooled connection."]],"type":[["PgPool","An alias to the type for a pool of Diesel Postgres Connection"]]});

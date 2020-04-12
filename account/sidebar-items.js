@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["controller","Controller for handling Accounts"],["email","Utilities for working with email"],["model","Models for handling Accounts"],["token","Utilities for working with JWT"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["create_or_update","Creates note and if they already exist, it will update them in the DB"],["delete","Delete single note in DB"],["delete_all","Delete all notes of an user"],["get_notes_by_account","Get list of notes updated after provided timestamp"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["controller","Controller to handle the notes"],["model","Models used for handling notes"]]});
