@@ -70,7 +70,7 @@ mod tests {
     #[test]
     fn check_email_sending() {
         dotenv().ok();
-        let email = create_token_email("Test".parse().unwrap(), "http://example.com".parse().unwrap());
+        let email = create_token_email("Testing".parse().unwrap(), "http://example.com".parse().unwrap());
         send_email(email, "myth.usa538@gmail.com".parse().unwrap());
     }
 }
