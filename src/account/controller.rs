@@ -215,7 +215,7 @@ pub(crate) fn change_username(account_id: i32, username: Username, connection: &
     };
 }
 
-/// Gets info of user identified by account_id
+/// Gets info of user identified by account id
 pub(crate) fn get_info(account_id: i32, connection: &PgConnection) -> String {
     let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection);
     if !id_exists.ok().unwrap() {
