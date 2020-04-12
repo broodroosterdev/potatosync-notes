@@ -1,12 +1,14 @@
-use chrono::{FixedOffset, Local, SecondsFormat, Utc};
+use chrono::{DateTime, FixedOffset, Local, SecondsFormat, Utc};
+use chrono::serde::ts_milliseconds::*;
 use diesel::prelude::*;
 use serde_derive::*;
 
 use crate::schema::notes;
 use crate::status_response::StatusResponse;
 
+/// General Note struct used for retrieving from db and updating notes
 #[table_name = "notes"]
-#[derive(Queryable, Serialize, Deserialize, Insertable, AsChangeset, JsonSchema, PartialEq, Clone)]
+#[derive(Queryable, Serialize, Deserialize, Insertable, AsChangeset, PartialEq, Clone)]
 #[primary_key(note_id, account_id)]
 // {"note_id": 1, "title": "Test", "content": "Test", "is_starred": false, "date": "2020-03-19T14:21:06.275Z", "color": 0, "image_url":null, "is_list": false, "list_parse_string":null, "reminders":null, "hide_content": false, "pin":null, "password":null, "is_deleted": false, "is_archived": false}
 pub struct Note {
@@ -14,98 +16,124 @@ pub struct Note {
     pub account_id: i32,
     pub title: String,
     pub content: String,
-    pub image_url: Option<String>,
-    pub list_parse_string: Option<String>,
-    pub reminders: Option<String>,
-    pub date: String,
+    pub style_json: String,
+    pub starred: bool,
+    #[serde(deserialize_with = "deserialize")]
+    #[serde(serialize_with = "serialize")]
+    pub creation_date: DateTime<Utc>,
+    #[serde(deserialize_with = "deserialize")]
+    #[serde(serialize_with = "serialize")]
+    pub last_modify_date: DateTime<Utc>,
     pub color: i32,
+    pub images: String,
+    pub list: bool,
+    pub list_content: String,
+    pub reminders: String,
     pub hide_content: bool,
-    pub is_deleted: bool,
-    pub is_archived: bool,
-    pub is_list: bool,
-    pub is_starred: bool,
-    pub pin: Option<String>,
-    pub password: Option<String>,
-    pub last_updated: String
+    pub lock_note: bool,
+    pub uses_biometrics: bool,
+    pub deleted: bool,
+    pub archived: bool,
+    pub synced: bool,
 }
 
+/// Struct used for inserting new notes in the db. Note the missing note_id since it will be provided by the db.
 #[table_name = "notes"]
-#[derive(Queryable, Serialize, Deserialize, Insertable, JsonSchema)]
+#[derive(Queryable, Serialize, Deserialize, Insertable)]
 pub struct NewNote {
     pub account_id: i32,
     pub title: String,
     pub content: String,
-    pub image_url: Option<String>,
-    pub list_parse_string: Option<String>,
-    pub reminders: Option<String>,
-    pub date: String,
+    pub style_json: String,
+    pub starred: bool,
+    #[serde(deserialize_with = "deserialize")]
+    #[serde(serialize_with = "serialize")]
+    pub creation_date: DateTime<Utc>,
+    #[serde(deserialize_with = "deserialize")]
+    #[serde(serialize_with = "serialize")]
+    pub last_modify_date: DateTime<Utc>,
     pub color: i32,
+    pub images: String,
+    pub list: bool,
+    pub list_content: String,
+    pub reminders: String,
     pub hide_content: bool,
-    pub is_deleted: bool,
-    pub is_archived: bool,
-    pub is_list: bool,
-    pub is_starred: bool,
-    pub pin: Option<String>,
-    pub password: Option<String>,
-    pub last_updated: String
+    pub lock_note: bool,
+    pub uses_biometrics: bool,
+    pub deleted: bool,
+    pub archived: bool,
+    pub synced: bool,
 }
 
+/// Note as provided by the client when saving. Note the missing account_id since the client doesnt know the id.
 #[table_name = "notes"]
-#[derive(Queryable, Serialize, Deserialize, Insertable, Debug, JsonSchema)]
+#[derive(Queryable, Serialize, Deserialize, Insertable, Debug)]
 pub struct SavingNote {
     pub note_id: i32,
     pub title: String,
     pub content: String,
-    pub image_url: Option<String>,
-    pub list_parse_string: Option<String>,
-    pub reminders: Option<String>,
-    pub date: String,
+    pub style_json: String,
+    pub starred: bool,
+    #[serde(deserialize_with = "deserialize")]
+    #[serde(serialize_with = "serialize")]
+    pub creation_date: DateTime<Utc>,
+    #[serde(deserialize_with = "deserialize")]
+    #[serde(serialize_with = "serialize")]
+    pub last_modify_date: DateTime<Utc>,
     pub color: i32,
+    pub images: String,
+    pub list: bool,
+    pub list_content: String,
+    pub reminders: String,
     pub hide_content: bool,
-    pub is_deleted: bool,
-    pub is_archived: bool,
-    pub is_list: bool,
-    pub is_starred: bool,
-    pub pin: Option<String>,
-    pub password: Option<String>,
-    pub last_updated: String
+    pub lock_note: bool,
+    pub uses_biometrics: bool,
+    pub deleted: bool,
+    pub archived: bool,
+    pub synced: bool,
 }
 
 impl SavingNote {
+    /// Convert to Note by adding account_id
     pub fn to_note(&self, account_id: i32) -> Note {
         Note {
             note_id: self.note_id,
             account_id,
             title: self.title.clone(),
             content: self.content.clone(),
-            image_url: self.image_url.clone(),
-            list_parse_string: self.list_parse_string.clone(),
-            reminders: self.reminders.clone(),
-            date: self.date.clone(),
+            style_json: self.style_json.clone(),
+            starred: self.starred,
+            creation_date: self.creation_date.clone(),
+            last_modify_date: self.last_modify_date.clone(),
             color: self.color,
+            images: self.images.clone(),
+            list: self.list,
+            list_content: self.list_content.clone(),
+            reminders: self.reminders.clone(),
             hide_content: self.hide_content,
-            is_deleted: self.is_deleted,
-            is_archived: self.is_archived,
-            is_list: self.is_list,
-            is_starred: self.is_starred,
-            pin: self.pin.clone(),
-            password: self.password.clone(),
-            last_updated: Local::now().to_rfc3339_opts(SecondsFormat::Millis, true)
+            lock_note: self.lock_note,
+            uses_biometrics: self.uses_biometrics,
+            deleted: self.deleted,
+            archived: self.archived,
+            synced: self.synced,
         }
     }
 }
 
+/// Struct used when client needs to specify certain note_id
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct NoteId {
     pub(crate) note_id: i32,
 }
 
+/// Struct used when client needs to specify last_updated timestamp
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct NoteLastUpdated {
     pub(crate) last_updated: String
 }
 
-#[derive(Serialize, Deserialize, JsonSchema)]
+/// Struct used when server needs to return list of notes along with status of request
+#[derive(Serialize, Deserialize)]
 pub struct NoteResponse {
     pub(crate) message: String,
     pub(crate) status: bool,
@@ -118,30 +146,4 @@ pub mod tests {
     use crate::db;
 
     use super::*;
-
-    /*
-                #[test]
-                pub fn check_create_note(){
-                    let connection = db::connect().get().unwrap();
-                    let note = Note{
-                        note_id: 1,
-                        account_id: 1,
-                        title: "Test2".to_string(),
-                        content: "Test2".to_string(),
-                        image_url: None,
-                        list_parse_string: None,
-                        reminders: "".to_string(),
-                        date: None,
-                        color: None,
-                        hide_content: None,
-                        is_deleted: None,
-                        is_archived: None,
-                        is_list: None,
-                        is_starred: None,
-                        pin: None,
-                        password: None
-                    };
-                    let response = Note::create_or_update(note, &connection);
-                    println!("{}", response.to_string());
-                }*/
 }

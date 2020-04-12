@@ -1,17 +1,19 @@
-use rocket::response::Responder;
-use rocket::{Response, Request, response};
-use rocket_failure::errors::Status;
+use okapi::openapi3::RefOr::Ref;
+use okapi::openapi3::Responses;
+use rocket::{Request, Response, response};
 use rocket::http::ContentType;
+use rocket::response::Responder;
 use rocket_contrib::json::JsonValue;
-use rocket_okapi::response::OpenApiResponder;
+use rocket_failure::errors::Status;
 use rocket_okapi::gen::OpenApiGenerator;
 use rocket_okapi::OpenApiError;
-use okapi::openapi3::Responses;
+use rocket_okapi::response::OpenApiResponder;
 use rocket_okapi::Result;
-use okapi::openapi3::RefOr::Ref;
 use rocket_okapi::util::add_schema_response;
+
 use crate::account::model::TokenResponse;
 
+/// Sent back on every request to indicate status and in case it has failed an error of the request
 #[derive(Serialize, JsonSchema)]
 pub struct StatusResponse {
     pub(crate) message: String,
@@ -33,9 +35,12 @@ impl ToString for StatusResponse {
     }
 }
 
+/// Struct used for sending the StatusResponse and other json back with a specific http code
 #[derive(Debug)]
 pub(crate) struct ApiResponse {
+    /// The json to be sent back in serialized form
     pub(crate) json: String,
+    /// The statuscode to be used for the response (Status::Ok,Status::NotFound etc.)
     pub(crate) status: Status,
 }
 
@@ -45,16 +50,5 @@ impl<'r> Responder<'r> for ApiResponse {
             .status(self.status)
             .header(ContentType::JSON)
             .ok()
-    }
-}
-
-impl OpenApiResponder<'_> for ApiResponse {
-    fn responses(gen: &mut OpenApiGenerator) -> Result<Responses> {
-        let mut responses = Responses::default();
-        let token_schema = gen.json_schema::<TokenResponse>();
-        add_schema_response(&mut responses, 200, "application/json", token_schema)?;
-        let status_schema = gen.json_schema::<StatusResponse>();
-        add_schema_response(&mut responses, 400, "application/json", status_schema)?;
-        Ok(responses)
     }
 }

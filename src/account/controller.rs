@@ -1,7 +1,7 @@
 use std::env;
 
 use bcrypt::{DEFAULT_COST, hash, verify};
-use chrono::{Local, SecondsFormat};
+use chrono::{Local, SecondsFormat, Utc};
 use diesel::{ExpressionMethods, PgConnection, RunQueryDsl, select};
 use diesel::expression::exists::exists;
 use diesel::query_dsl::filter_dsl::FilterDsl;
@@ -13,12 +13,13 @@ use rocket_failure::errors::Status;
 
 use crate::account::email::{create_token_email, send_email, VerificationToken};
 use crate::account::model::{Account, InfoResponse, LoginCredentials, NewAccount, NewDBAccount, Password, TokenAccount, TokenResponse, Username, validate_password, validate_username};
-use crate::account::token::{RefreshToken, Token, TokenJson};
+use crate::account::token::{RefreshToken, Token};
 use crate::account::token;
 use crate::schema::accounts;
 use crate::schema::tokens;
 use crate::status_response::{ApiResponse, StatusResponse};
 
+/// Used to login user using DB and returns Error if credentials are incorrect
 pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) -> Result<TokenResponse, StatusResponse> {
     let get_account_result: Result<Account, diesel::result::Error>;
     if credentials.email.is_some() {
@@ -59,18 +60,22 @@ pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) ->
     Ok(TokenResponse::new(account, access_token, refresh_token))
 }
 
+/// Gets account by account_id from DB
 pub(crate) fn get_account_by_id(id: i32, connection: &PgConnection) -> Account {
     accounts::dsl::accounts.filter(accounts::id.eq(id)).first::<Account>(connection).unwrap()
 }
 
+/// Creates random password identifier to check if password has changed
 fn create_password_identifier() -> String {
     rand::thread_rng().sample_iter(&Alphanumeric).take(10).collect()
 }
 
+/// Creates random verification token for email verification
 fn create_verification_token() -> String {
     rand::thread_rng().sample_iter(&Alphanumeric).take(6).collect()
 }
 
+/// Registers account using DB
 pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiResponse {
     let is_valid: StatusResponse = account.is_valid(connection);
     if !is_valid.status {
@@ -83,8 +88,8 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
     let password_identifier = create_password_identifier();
     let token = create_verification_token();
     let account = NewDBAccount {
-        created_at: Local::now().to_rfc3339_opts(SecondsFormat::Millis, true),
-        updated_at: None,
+        created_at: Utc::now(),
+        updated_at: Some(Utc::now()),
         deleted_at: None,
         email: account.email.clone(),
         username: account.username.clone(),
@@ -92,6 +97,7 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
         image_url: "".to_string(),
         password_identifier: password_identifier.clone(),
         verified: false,
+        shared_prefs: "".to_string(),
     };
     let insert_result: Result<Account, Error> = diesel::insert_into(accounts::table)
         .values(&account)
@@ -134,6 +140,7 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
     };
 }
 
+/// Verifies email token and verifies user in DB
 pub(crate) fn verify_email(account_id: i32, used_token: String, connection: &PgConnection) -> StatusResponse {
     let id_exists: bool = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection).expect("Could not check if account exists");
     if !id_exists {
@@ -163,6 +170,7 @@ pub(crate) fn verify_email(account_id: i32, used_token: String, connection: &PgC
     }
 }
 
+/// Changes password of user
 pub(crate) fn change_password(account_id: i32, password: Password, connection: &PgConnection) -> String {
     let new_password = password.password;
     let password_valid = validate_password(new_password.clone());
@@ -186,6 +194,7 @@ pub(crate) fn change_password(account_id: i32, password: Password, connection: &
     };
 }
 
+/// Changes username of user
 pub(crate) fn change_username(account_id: i32, username: Username, connection: &PgConnection) -> String {
     let new_username = username.username;
     let username_valid = validate_username(new_username.clone(), connection);
@@ -206,6 +215,7 @@ pub(crate) fn change_username(account_id: i32, username: Username, connection: &
     };
 }
 
+/// Gets info of user identified by account_id
 pub(crate) fn get_info(account_id: i32, connection: &PgConnection) -> String {
     let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection);
     if !id_exists.ok().unwrap() {
@@ -214,6 +224,7 @@ pub(crate) fn get_info(account_id: i32, connection: &PgConnection) -> String {
     let account = accounts::dsl::accounts.filter(accounts::id.eq(account_id)).first::<Account>(connection).unwrap();
     return InfoResponse::new(account).to_string();
 }
+
 /*
 pub(crate) fn save_image(account_id: i32, image_url: String, connection: &PgConnection) -> String {
 

@@ -20,17 +20,14 @@ use crate::schema::tokens;
 use crate::status_response::ApiResponse;
 use crate::status_response::StatusResponse;
 
+/// Claims for access_token
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct Token {
     pub(crate) sub: String,
     exp: i64,
 }
 
-#[derive(Serialize, Deserialize, JsonSchema)]
-pub struct TokenJson {
-    pub(crate) token: Token
-}
-
+/// Get access_token from header and verify it
 pub fn read_token(key: &str) -> Result<Token, String> {
     let access_token_secret = env::var("ACCESS_TOKEN_SECRET").expect("Could not find ACCESS_TOKEN_SECRET in .env");
     let validation = Validation::default();
@@ -62,6 +59,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for Token {
 }
 
 impl Token {
+    /// Create new access_token for certain account_id
     pub(crate) fn create_access_token(account_id: i32) -> String {
         let access_token_secret = env::var("ACCESS_TOKEN_SECRET").expect("Could not find ACCESS_TOKEN_SECRET in .env");
         let user = serde_json::to_value(&Token {
@@ -73,6 +71,7 @@ impl Token {
     }
 }
 
+/// Used for storing token in DB
 #[table_name = "tokens"]
 #[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone, JsonSchema)]
 pub struct RefreshTokenDb {
@@ -80,6 +79,7 @@ pub struct RefreshTokenDb {
     token: String,
 }
 
+/// Claims of the refresh token
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct RefreshToken {
     pub(crate) sub: String,
@@ -87,12 +87,14 @@ pub struct RefreshToken {
 }
 
 impl RefreshToken {
+    /// Turns RefreshToken in RefreshTokenDb to store it in db
     fn create_db(&self, token: String) -> RefreshTokenDb {
         RefreshTokenDb {
             account_id: self.sub.parse().unwrap(),
             token,
         }
     }
+    /// Creates new refresh token with account_id and password identifier
     pub(crate) fn create_refresh_token(account_id: i32, password_identifier: String, connection: &PgConnection) -> String {
         let refresh_token_secret = env::var("REFRESH_TOKEN_SECRET").expect("Could not find REFRESH_TOKEN_SECRET in .env");
         let token = RefreshToken {
@@ -105,11 +107,13 @@ impl RefreshToken {
     }
 }
 
+/// Struct used for getting refresh_token from client when refreshing
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct RefreshTokenJson {
     pub(crate) token: String
 }
 
+/// Verify refresh token
 pub fn read_refresh_token(key: &str) -> Result<RefreshToken, String> {
     let connection = db::connect().get().unwrap();
     let token_exists: Result<bool, diesel::result::Error> = select(exists(tokens::dsl::tokens.filter(tokens::token.eq(key)))).get_result(&connection);
@@ -134,6 +138,7 @@ pub fn read_refresh_token(key: &str) -> Result<RefreshToken, String> {
     };
 }
 
+/// Struct used for sending back a new access_token with status of the request
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct RefreshResponse {
     message: String,
@@ -147,6 +152,8 @@ impl ToString for RefreshResponse {
     }
 }
 
+/// Refreshes the access token.
+/// Also checks if the password identifier matches with the one in the DB
 pub(crate) fn refresh_token(refresh_token: RefreshToken, connection: &PgConnection) -> ApiResponse {
     let account = get_account_by_id(refresh_token.sub.parse().unwrap(), connection);
     return if account.password_identifier.eq(&refresh_token.pwId) {

@@ -7,25 +7,39 @@ on:
     branches: [ master ]
 
 jobs:
+  publish-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: nightly
+      - uses: actions/checkout@master
+      - name: Run cargo doc
+        run: cargo doc
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/doc/potatosync_rust/
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup docker
-      uses: docker-practice/actions-setup-docker@0.0.1
-    - name: Docker Buildx
-      uses: crazy-max/ghaction-docker-buildx@v1.0.5
-    - name: Build and push docker image
-      env:
-        DOCKER_USERNAME: basmakes
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: |
-        echo Logging Into Docker
-        docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-        echo Installing BuildX
-        update-binfmts --enable
-        docker buildx create --driver docker-container --use
-        docker buildx inspect --bootstrap
-        docker buildx ls
-        echo Building Containers and Publishing them
-        docker buildx build --platform linux/arm,linux/arm64,linux/amd64 --progress plain --pull -t "basmakes/potatosync-rust" --push .
+      - uses: actions/checkout@v2
+      - name: Setup docker
+        uses: docker-practice/actions-setup-docker@0.0.1
+      - name: Docker Buildx
+        uses: crazy-max/ghaction-docker-buildx@v1.0.5
+      - name: Build and push docker image
+        env:
+          DOCKER_USERNAME: basmakes
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo Logging Into Docker
+          docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+          echo Installing BuildX
+          update-binfmts --enable
+          docker buildx create --driver docker-container --use
+          docker buildx inspect --bootstrap
+          docker buildx ls
+          echo Building Containers and Publishing them
+          docker buildx build --platform linux/arm,linux/arm64,linux/amd64 --progress plain --pull -t "basmakes/potatosync-rust" --push .

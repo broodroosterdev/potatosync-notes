@@ -20,6 +20,7 @@ lazy_static! {
     };
 }
 
+/// Used for storing verification token in DB
 #[table_name = "tokens"]
 #[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone, JsonSchema)]
 pub struct VerificationToken {
@@ -28,6 +29,7 @@ pub struct VerificationToken {
     pub(crate) created_at: String
 }
 
+///Creates email with provided verification url and username
 pub(crate) fn create_token_email(name: String, url: String) -> String {
     let mut context = Context::new();
     context.insert("name", &name);
@@ -36,6 +38,7 @@ pub(crate) fn create_token_email(name: String, url: String) -> String {
     return rendered;
 }
 
+///Sends created email to provided address using SendGrid
 pub(crate) fn send_email(email: String, address: String) {
     let api_key = env::var("SENDGRID_APIKEY").expect("Could not find SENDGRID APIKEY in .env");
     let sg = SGClient::new(api_key);

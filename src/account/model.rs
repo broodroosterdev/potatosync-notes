@@ -1,9 +1,12 @@
 use bcrypt::{DEFAULT_COST, hash, verify};
-use chrono::{DateTime, FixedOffset, Local, NaiveDateTime, SecondsFormat, Utc};
+use chrono::{DateTime, FixedOffset, Local, NaiveDateTime, SecondsFormat, TimeZone, Utc};
+use chrono::serde::{MilliSecondsTimestampVisitor, NanoSecondsTimestampVisitor};
+use chrono::serde::ts_milliseconds::*;
 use diesel;
 use diesel::expression::exists::{exists, Exists};
 use diesel::prelude::*;
 use diesel::select;
+use serde::{Deserialize, Deserializer, Serializer};
 use serde_derive::*;
 
 use crate::account::controller::*;
@@ -11,35 +14,77 @@ use crate::account::token::Token;
 use crate::schema::accounts;
 use crate::status_response::StatusResponse;
 
+/// Special function to serialize Option<DateTime<Utc>>
+pub fn serialize_option<S>(dt: &Option<DateTime<Utc>>, serializer: S) -> Result<S::Ok, S::Error>
+    where S: Serializer
+{
+    return if dt.is_some() {
+        serialize(&dt.unwrap(), serializer)
+    } else {
+        Serializer::serialize_none(serializer)
+    }
+}
+
+/// Special function to deserialize Option<DateTime<Utc>>
+pub fn deserialize_option<'de, D>(d: D) -> Result<Option<DateTime<Utc>>, D::Error>
+    where D: Deserializer<'de>
+{
+    let dt: Option<i64> = Option::deserialize(d)?;
+    if let Some(dt) = dt {
+        return Ok(Some(
+            Utc.timestamp_opt(dt / 1000,
+                              ((dt % 1000) * 1_000_000) as u32).unwrap()
+        ));
+    }
+    Ok(None)
+}
+
+/// General Account struct used for retrieving from DB and updating
 #[table_name = "accounts"]
-#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone, JsonSchema)]
+#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone)]
 pub struct Account {
     pub(crate) id: i32,
-    created_at: String,
-    updated_at: Option<String>,
-    deleted_at: Option<String>,
+    #[serde(deserialize_with = "deserialize")]
+    #[serde(serialize_with = "serialize")]
+    created_at: DateTime<Utc>,
+    #[serde(deserialize_with = "deserialize_option")]
+    #[serde(serialize_with = "serialize_option")]
+    updated_at: Option<DateTime<Utc>>,
+    #[serde(deserialize_with = "deserialize_option")]
+    #[serde(serialize_with = "serialize_option")]
+    deleted_at: Option<DateTime<Utc>>,
     pub(crate) email: String,
     pub(crate) username: String,
     pub(crate) password: String,
     image_url: String,
     pub(crate) password_identifier: String,
     pub(crate) verified: bool,
+    pub(crate) shared_prefs: String,
 }
 
+/// Struct used for adding new accounts to the DB. Note the missing id field since the database will provide it for us
 #[table_name = "accounts"]
 #[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize)]
 pub struct NewDBAccount {
-    pub(crate) created_at: String,
-    pub(crate) updated_at: Option<String>,
-    pub(crate) deleted_at: Option<String>,
+    #[serde(deserialize_with = "deserialize")]
+    #[serde(serialize_with = "serialize")]
+    pub(crate) created_at: DateTime<Utc>,
+    #[serde(deserialize_with = "deserialize_option")]
+    #[serde(serialize_with = "serialize_option")]
+    pub(crate) updated_at: Option<DateTime<Utc>>,
+    #[serde(deserialize_with = "deserialize_option")]
+    #[serde(serialize_with = "serialize_option")]
+    pub(crate) deleted_at: Option<DateTime<Utc>>,
     pub(crate) email: String,
     pub(crate) username: String,
     pub(crate) password: String,
     pub(crate) image_url: String,
     pub(crate) password_identifier: String,
     pub(crate) verified: bool,
+    pub(crate) shared_prefs: String,
 }
 
+/// Used for getting the credentials from the client
 #[derive(Serialize, Deserialize, Clone, JsonSchema)]
 pub struct LoginCredentials {
     pub(crate) email: Option<String>,
@@ -47,21 +92,25 @@ pub struct LoginCredentials {
     pub(crate) password: String,
 }
 
+/// Used when changing password
 #[derive(Serialize, Deserialize, Clone, JsonSchema)]
 pub struct Password {
     pub(crate) password: String
 }
 
+/// Used when changing username
 #[derive(Serialize, Deserialize, Clone, JsonSchema)]
 pub struct Username {
     pub(crate) username: String
 }
 
+/// Used when changing Profile picture
 #[derive(Serialize, Deserialize, Clone, JsonSchema)]
 pub struct Image {
     pub(crate) image: String
 }
 
+/// Used for verifying if the entered info when registering is valid
 #[derive(Serialize, Deserialize, JsonSchema)]
 pub struct NewAccount {
     pub(crate) email: String,
@@ -70,6 +119,7 @@ pub struct NewAccount {
 }
 
 impl NewAccount {
+    /// Checks if account is valid and can be created
     pub(crate) fn is_valid(&self, connection: &PgConnection) -> StatusResponse {
 
         let email_valid = validate_email(self.email.clone(), connection);
@@ -88,6 +138,7 @@ impl NewAccount {
     }
 }
 
+/// Checks if email is valid and doesnt exist in DB
 pub fn validate_email(email: String, connection: &PgConnection) -> Result<(), StatusResponse> {
     if !validator::validate_email(email.clone()) {
         return Err(StatusResponse::new("MalformedEmailError".parse().unwrap(), false));
@@ -99,6 +150,7 @@ pub fn validate_email(email: String, connection: &PgConnection) -> Result<(), St
     Ok(())
 }
 
+/// Checks if username is valid and doesnt exist in DB
 pub fn validate_username(username: String, connection: &PgConnection) -> Result<(), StatusResponse>{
     if username.chars().count() <= 4 || username.chars().count() > 60 {
         return Err(StatusResponse::new("UsernameOutOfBoundsError".parse().unwrap(), false));
@@ -110,6 +162,7 @@ pub fn validate_username(username: String, connection: &PgConnection) -> Result<
     Ok(())
 }
 
+/// Checks if password is valid
 pub fn validate_password(password: String) -> Result<(), StatusResponse>{
     if password.chars().count() < 8 || password.chars().count() > 60 {
         return Err(StatusResponse::new("PassOutOfBoundsError".parse().unwrap(), false));
@@ -117,7 +170,8 @@ pub fn validate_password(password: String) -> Result<(), StatusResponse>{
     Ok(())
 }
 
-#[derive(Serialize, Deserialize, JsonSchema)]
+/// Struct used for sending back account info when you have logged in
+#[derive(Serialize, Deserialize)]
 pub struct TokenResponse {
     pub(crate) message: String,
     pub(crate) status: bool,
@@ -140,14 +194,18 @@ impl ToString for TokenResponse {
     }
 }
 
-
-
-
-#[derive(Serialize, Deserialize, JsonSchema)]
+/// Struct used for returning account info in TokenResponse
+#[derive(Serialize, Deserialize)]
 pub struct TokenAccount {
-    created_at: String,
-    updated_at: Option<String>,
-    deleted_at: Option<String>,
+    #[serde(deserialize_with = "deserialize")]
+    #[serde(serialize_with = "serialize")]
+    created_at: DateTime<Utc>,
+    #[serde(deserialize_with = "deserialize_option")]
+    #[serde(serialize_with = "serialize_option")]
+    updated_at: Option<DateTime<Utc>>,
+    #[serde(deserialize_with = "deserialize_option")]
+    #[serde(serialize_with = "serialize_option")]
+    deleted_at: Option<DateTime<Utc>>,
     email: String,
     username: String,
     image_url: String,
@@ -170,7 +228,8 @@ impl TokenAccount {
     }
 }
 
-#[derive(Serialize, Deserialize, JsonSchema)]
+/// Struct used when returning account info to client
+#[derive(Serialize, Deserialize)]
 pub struct InfoResponse {
     pub(crate) message: String,
     pub(crate) status: bool,

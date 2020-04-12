@@ -54,23 +54,27 @@ mod account;
 mod db;
 mod status_response;
 
-#[openapi]
+
+/// Route for registering user
 #[post("/api/users/new", data = "<json_creds>")]
 fn new_user(json_creds: Json<NewAccount>, connection: db::Connection) -> ApiResponse {
     create(json_creds.0, &connection)
 }
 
+/// Route for verifying email token
 #[get("/api/users/verify/<id>/<token>")]
 fn verify_user(id: i32, token: String, connection: db::Connection) -> Redirect {
     let verify_result = verify_email(id, token, &connection);
     Redirect::to(format!("/api/users/verify?successful={}&message={}", verify_result.status, verify_result.message))
 }
+
+/// Route for logging out and deleting refresh_token to disable refreshing
 /*#[post("/api/tokens/delete", data = "<token>")]
 fn delete_token(token: Data, token: token) {
 
 }*/
 
-#[openapi]
+/// Route for logging in user
 #[post("/api/users/login", data = "<json_credentials>")]
 fn login_user(json_credentials: Json<LoginCredentials>, connection: db::Connection) -> ApiResponse {
     let login_result = login(json_credentials.0.clone(), &connection);
@@ -87,7 +91,7 @@ fn login_user(json_credentials: Json<LoginCredentials>, connection: db::Connecti
     }
 }
 
-#[openapi]
+/// Route for refreshing access_token with refresh_token
 #[post("/api/users/refresh", data = "<json_token>")]
 fn refresh_user(json_token: Json<RefreshTokenJson>, connection: db::Connection) -> ApiResponse {
     let token = read_refresh_token(json_token.token.as_str());
@@ -100,35 +104,41 @@ fn refresh_user(json_token: Json<RefreshTokenJson>, connection: db::Connection) 
     refresh_token(token.unwrap(), &connection)
 }
 
-#[openapi]
+/// Route for changing password of user
 #[post("/api/users/manage/password", data = "<json_password>")]
 fn change_password(json_password: Json<Password>, token: Token, connection: db::Connection) -> content::Json<String> {
     content::Json(account::controller::change_password(token.sub.parse().unwrap(), json_password.0, &connection))
 }
+
+/// Route for changing username of user
 /*
 #[post("/api/users/manage/username", data = "<json_username>")]
 fn change_username(json_username: Json<Username>, token: token, connection: db::Connection){
 
 }
 
+/// Route for changing profile picture of user
 #[post("api/users/manage/image", data = "<json_image>")]
 fn change_image(json_image: Json<Image>, token: Token, connection: db::Connection) -> content::Json<String> {
 
 }
 */
-#[openapi]
+
+/// Route for getting user info
 #[get("/api/users/info")]
-fn get_user_info(token: Token, connection: db::Connection) -> content::Json<String>{
+fn get_user_info(token: Token, connection: db::Connection) -> content::Json<String> {
     content::Json(get_info(token.sub.parse().unwrap(), &connection))
 }
-#[openapi]
+
+/// Route for saving note
 #[post("/api/notes/save", data = "<json_note>")]
 fn save_note(json_note: Json<SavingNote>, token: Token, connection: db::Connection) -> content::Json<String> {
     let note = json_note.0.to_note(token.sub.parse().unwrap());
     let create_result = create_or_update(note, &connection);
     content::Json(create_result.to_string())
 }
-#[openapi]
+
+/// Route for deleting single note identified by id
 #[post("/api/notes/delete", data = "<json_note_id>")]
 fn delete_note(json_note_id: Json<NoteId>, token: Token, connection: db::Connection) -> Json<StatusResponse> {
     let note_id = json_note_id.0.note_id;
@@ -136,20 +146,21 @@ fn delete_note(json_note_id: Json<NoteId>, token: Token, connection: db::Connect
     Json(delete_result)
 }
 
-#[openapi]
+/// Route for deleting all notes of an user
 #[post("/api/notes/deleteall")]
 fn delete_all_notes(token: Token, connection: db::Connection) -> Json<StatusResponse> {
     let delete_result = delete_all(token.sub.parse().unwrap(), &connection);
     Json(delete_result)
 }
 
-#[openapi]
+/// Route for getting all the notes which are updated after provided timestamp
 #[get("/api/notes/list", data = "<json_last_updated>")]
 fn get_all_notes(json_last_updated: Json<NoteLastUpdated>, token: Token, connection: db::Connection) -> Json<NoteResponse> {
     let notes = get_notes_by_account(token.sub.parse().unwrap(), json_last_updated.0, &connection);
     Json(notes)
 }
 
+/// Route used for catching 401 errors e.g. invalid access token
 #[catch(401)]
 fn token_error(req: &Request) -> ApiResponse {
     ApiResponse{
@@ -158,20 +169,19 @@ fn token_error(req: &Request) -> ApiResponse {
     }
 }
 
-fn missing_token(error: String) -> content::Json<String> {
-    let response = StatusResponse::new(error.parse().unwrap(), false);
-    content::Json(response.to_string())
-}
-
+/// Used to specify location of migration files
 embed_migrations!("migrations");
 fn main() {
+    // Load .env file
     if Path::new(".env").exists() {
         dotenv().ok();
     }
+    // Run migration
     embedded_migrations::run_with_output(&db::connect().get().unwrap(), &mut std::io::stdout()).unwrap();
+    // Start webserver
     rocket::ignite()
         .manage(db::connect())
-        .mount("/", routes_with_openapi![save_note, get_all_notes, delete_note, delete_all_notes, new_user, login_user, change_password, refresh_user])
+        .mount("/", routes![save_note, get_all_notes, delete_note, delete_all_notes, new_user, login_user, change_password, refresh_user])
         .mount("/", routes![verify_user])
         .mount(
             "/swagger-ui/",

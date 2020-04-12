@@ -8,7 +8,7 @@ use rocket::{Outcome, Request, State};
 use rocket::http::Status;
 use rocket::request::{self, FromRequest};
 
-// An alias to the type for a pool of Diesel Postgres Connection
+/// An alias to the type for a pool of Diesel Postgres Connection
 pub type PgPool = Pool<ConnectionManager<PgConnection>>;
 
 /// Initialize the database pool.
@@ -18,7 +18,7 @@ pub fn connect() -> PgPool {
     Pool::new(manager).expect("Failed to create pool")
 }
 
-// Connection request guard type: a wrapper around an r2d2 pooled connection.
+/// Connection request guard type: a wrapper around an r2d2 pooled connection.
 pub struct Connection(pub PooledConnection<ConnectionManager<PgConnection>>);
 
 /// Attempts to retrieve a single connection from the managed database pool. If
@@ -36,7 +36,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for Connection {
     }
 }
 
-// For the convenience of using an &Connection as an &MysqlConnection.
+/// For the convenience of using an &Connection as an &PgConnection.
 impl Deref for Connection {
     type Target = PgConnection;
 
