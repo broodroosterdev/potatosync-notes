@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["deserialize","Deserialize a [`BTreeMap`] from a list of tuples"],["serialize","Serialize the [`BTreeMap`] as a list of tuples"]]});

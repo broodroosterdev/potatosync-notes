@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ApiResponse",""],["StrictApiResponse",""]],"fn":[["err_msg",""]],"struct":[["ResponseHints",""],["Status","Structure representing an HTTP status: an integer code and a reason phrase."],["WebError",""]],"trait":[["ApiResultExt",""],["WebFail",""]],"type":[["ApiResult",""]]});

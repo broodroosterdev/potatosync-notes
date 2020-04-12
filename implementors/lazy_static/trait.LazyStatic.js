@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["potatosync_rust"] = [{"text":"impl <a class=\"trait\" href=\"lazy_static/trait.LazyStatic.html\" title=\"trait lazy_static::LazyStatic\">LazyStatic</a> for <a class=\"struct\" href=\"potatosync_rust/account/email/struct.TERA.html\" title=\"struct potatosync_rust::account::email::TERA\">TERA</a>","synthetic":false,"types":["potatosync_rust::account::email::TERA"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
