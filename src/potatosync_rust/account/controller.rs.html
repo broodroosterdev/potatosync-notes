@@ -233,6 +233,90 @@
 <span id="233">233</span>
 <span id="234">234</span>
 <span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
 
@@ -242,13 +326,14 @@
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">expression</span>::<span class="ident">exists</span>::<span class="ident">exists</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">query_dsl</span>::<span class="ident">filter_dsl</span>::<span class="ident">FilterDsl</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">openssl</span>::<span class="ident">sha</span>::<span class="ident">sha1</span>;
 <span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">distributions</span>::<span class="ident">Alphanumeric</span>;
 <span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">Rng</span>;
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">response</span>::<span class="ident">status</span>::<span class="ident">BadRequest</span>;
 <span class="kw">use</span> <span class="ident">rocket_failure</span>::<span class="ident">errors</span>::<span class="ident">Status</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">email</span>::{<span class="ident">create_token_email</span>, <span class="ident">send_email</span>, <span class="ident">VerificationToken</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">model</span>::{<span class="ident">Account</span>, <span class="ident">InfoResponse</span>, <span class="ident">LoginCredentials</span>, <span class="ident">NewAccount</span>, <span class="ident">NewDBAccount</span>, <span class="ident">Password</span>, <span class="ident">TokenAccount</span>, <span class="ident">TokenResponse</span>, <span class="ident">Username</span>, <span class="ident">validate_password</span>, <span class="ident">validate_username</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">model</span>::{<span class="ident">Account</span>, <span class="ident">InfoResponse</span>, <span class="ident">LoginCredentials</span>, <span class="ident">NewAccount</span>, <span class="ident">NewDBAccount</span>, <span class="ident">Password</span>, <span class="ident">PatchingAccount</span>, <span class="ident">TokenAccount</span>, <span class="ident">TokenResponse</span>, <span class="ident">Username</span>, <span class="ident">validate_password</span>, <span class="ident">validate_username</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">token</span>::{<span class="ident">RefreshToken</span>, <span class="ident">Token</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">token</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">schema</span>::<span class="ident">accounts</span>;
@@ -289,7 +374,7 @@
     }
     <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">get_account_result</span>.<span class="ident">unwrap</span>();
     <span class="kw">if</span> <span class="op">!</span><span class="ident">account</span>.<span class="ident">verified</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;User is not verified&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>))
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;User is not verified&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>));
     }
     <span class="kw">let</span> <span class="ident">access_token</span> <span class="op">=</span> <span class="ident">Token</span>::<span class="ident">create_access_token</span>(<span class="ident">account</span>.<span class="ident">id</span>);
     <span class="kw">let</span> <span class="ident">refresh_token</span> <span class="op">=</span> <span class="ident">RefreshToken</span>::<span class="ident">create_refresh_token</span>(<span class="ident">account</span>.<span class="ident">id</span>, <span class="ident">account</span>.<span class="ident">password_identifier</span>.<span class="ident">clone</span>(), <span class="ident">connection</span>);
@@ -349,7 +434,7 @@
     <span class="kw">let</span> <span class="ident">token_db</span> <span class="op">=</span> <span class="ident">VerificationToken</span> {
         <span class="ident">account_id</span>: <span class="ident">account</span>.<span class="ident">id</span>,
         <span class="ident">token</span>,
-        <span class="ident">created_at</span>: <span class="ident">Local</span>::<span class="ident">now</span>().<span class="ident">to_rfc3339_opts</span>(<span class="ident">SecondsFormat</span>::<span class="ident">Millis</span>, <span class="bool-val">true</span>)
+        <span class="ident">created_at</span>: <span class="ident">Local</span>::<span class="ident">now</span>().<span class="ident">to_rfc3339_opts</span>(<span class="ident">SecondsFormat</span>::<span class="ident">Millis</span>, <span class="bool-val">true</span>),
     };
     <span class="kw">let</span> <span class="ident">token_insert_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">insert_into</span>(<span class="ident">tokens</span>::<span class="ident">table</span>)
         .<span class="ident">values</span>(<span class="kw-2">&amp;</span><span class="ident">token_db</span>)
@@ -394,28 +479,113 @@
             .<span class="ident">set</span>(<span class="ident">accounts</span>::<span class="ident">verified</span>.<span class="ident">eq</span>(<span class="bool-val">true</span>))
             .<span class="ident">execute</span>(<span class="ident">connection</span>);
         <span class="kw">if</span> <span class="ident">update_result</span>.<span class="ident">is_err</span>() {
-            <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Can not update status of account&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>)
+            <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Can not update status of account&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>);
         }
         <span class="kw">let</span> <span class="ident">delete_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">delete</span>(<span class="ident">tokens</span>::<span class="ident">dsl</span>::<span class="ident">tokens</span>.<span class="ident">filter</span>(<span class="ident">tokens</span>::<span class="ident">account_id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>))).<span class="ident">execute</span>(<span class="ident">connection</span>);
         <span class="kw">if</span> <span class="ident">delete_result</span>.<span class="ident">is_err</span>() {
-            <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Can not remove token&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>)
+            <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Can not remove token&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>);
         }
         <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;VerificationSucces&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">true</span>)
     } <span class="kw">else</span> {
         <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Token does not match&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>)
+    };
+}
+
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_info</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">account</span>: <span class="ident">PatchingAccount</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
+    <span class="kw">let</span> <span class="ident">id_exists</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">select</span>(<span class="ident">exists</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))).<span class="ident">get_result</span>(<span class="ident">connection</span>);
+    <span class="kw">if</span> <span class="op">!</span><span class="ident">id_exists</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>() {
+        <span class="kw">return</span> <span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UserNotFoundError&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+        };
+    }
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">has_changes</span> <span class="op">=</span> <span class="bool-val">false</span>;
+    <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">shared_prefs</span>.<span class="ident">is_some</span>() {
+        <span class="ident">has_changes</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="kw">let</span> <span class="ident">change_result</span> <span class="op">=</span> <span class="ident">change_shared_prefs</span>(<span class="ident">account_id</span>, <span class="ident">account</span>.<span class="ident">shared_prefs</span>.<span class="ident">unwrap</span>(), <span class="ident">connection</span>);
+        <span class="kw">if</span> <span class="ident">change_result</span>.<span class="ident">is_err</span>() {
+            <span class="kw">return</span> <span class="ident">change_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>()
+        }
+    }
+    <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">username</span>.<span class="ident">is_some</span>() {
+        <span class="ident">has_changes</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="kw">let</span> <span class="ident">change_result</span> <span class="op">=</span> <span class="ident">change_username</span>(<span class="ident">account_id</span>, <span class="ident">account</span>.<span class="ident">username</span>.<span class="ident">unwrap</span>(), <span class="ident">connection</span>);
+        <span class="kw">if</span> <span class="ident">change_result</span>.<span class="ident">is_err</span>() {
+            <span class="kw">return</span> <span class="ident">change_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>()
+        }
+    }
+    <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">password</span>.<span class="ident">is_some</span>() {
+        <span class="ident">has_changes</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="kw">let</span> <span class="ident">change_result</span> <span class="op">=</span> <span class="ident">change_password</span>(<span class="ident">account_id</span>, <span class="ident">account</span>.<span class="ident">password</span>.<span class="ident">unwrap</span>(), <span class="ident">connection</span>);
+        <span class="kw">if</span> <span class="ident">change_result</span>.<span class="ident">is_err</span>() {
+            <span class="kw">return</span> <span class="ident">change_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>()
+        }
+    }
+    <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">image_url</span>.<span class="ident">is_some</span>() {
+        <span class="ident">has_changes</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="kw">let</span> <span class="ident">change_result</span> <span class="op">=</span> <span class="ident">change_image_url</span>(<span class="ident">account_id</span>, <span class="ident">account</span>.<span class="ident">image_url</span>.<span class="ident">unwrap</span>(), <span class="ident">connection</span>);
+        <span class="kw">if</span> <span class="ident">change_result</span>.<span class="ident">is_err</span>() {
+            <span class="kw">return</span> <span class="ident">change_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>()
+        }
+    }
+    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">has_changes</span> {
+        <span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UpdateSuccess&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">true</span>).<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="prelude-val">Ok</span>,
+        }
+    } <span class="kw">else</span> {
+        <span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;No changes&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+        }
     }
 }
 
+<span class="doccomment">/// Changes shared preferences of user</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_shared_prefs</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">new_shared_prefs</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ApiResponse</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">update_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">update</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))
+        .<span class="ident">set</span>(<span class="ident">accounts</span>::<span class="ident">shared_prefs</span>.<span class="ident">eq</span>(<span class="ident">new_shared_prefs</span>))
+        .<span class="ident">execute</span>(<span class="ident">connection</span>);
+    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">update_result</span>.<span class="ident">is_err</span>() {
+        <span class="prelude-val">Err</span>(<span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">update_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+        })
+    } <span class="kw">else</span> {
+        <span class="prelude-val">Ok</span>(())
+    };
+}
+
+<span class="doccomment">/// Changes username of user</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_username</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">new_username</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ApiResponse</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">username_valid</span> <span class="op">=</span> <span class="ident">validate_username</span>(<span class="ident">new_username</span>.<span class="ident">clone</span>(), <span class="ident">connection</span>);
+    <span class="kw">if</span> <span class="ident">username_valid</span>.<span class="ident">is_err</span>() {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">username_valid</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+        });
+    }
+    <span class="kw">let</span> <span class="ident">update_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">update</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))
+        .<span class="ident">set</span>(<span class="ident">accounts</span>::<span class="ident">username</span>.<span class="ident">eq</span>(<span class="ident">new_username</span>))
+        .<span class="ident">execute</span>(<span class="ident">connection</span>);
+    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">update_result</span>.<span class="ident">is_err</span>() {
+        <span class="prelude-val">Err</span>(<span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">update_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+        })
+    } <span class="kw">else</span> {
+        <span class="prelude-val">Ok</span>(())
+    };
+}
+
 <span class="doccomment">/// Changes password of user</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_password</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">password</span>: <span class="ident">Password</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="kw">let</span> <span class="ident">new_password</span> <span class="op">=</span> <span class="ident">password</span>.<span class="ident">password</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_password</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">new_password</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ApiResponse</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">password_valid</span> <span class="op">=</span> <span class="ident">validate_password</span>(<span class="ident">new_password</span>.<span class="ident">clone</span>());
     <span class="kw">if</span> <span class="ident">password_valid</span>.<span class="ident">is_err</span>() {
-        <span class="kw">return</span> <span class="ident">password_valid</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>();
-    }
-    <span class="kw">let</span> <span class="ident">id_exists</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">select</span>(<span class="ident">exists</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))).<span class="ident">get_result</span>(<span class="ident">connection</span>);
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">id_exists</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>() {
-        <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UserNotFoundError&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>();
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">password_valid</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+        });
     }
     <span class="kw">let</span> <span class="ident">password_identifier</span> <span class="op">=</span> <span class="ident">create_password_identifier</span>();
     <span class="kw">let</span> <span class="ident">hashed_password</span> <span class="op">=</span> <span class="ident">hash</span>(<span class="ident">new_password</span>.<span class="ident">clone</span>(), <span class="number">10</span>).<span class="ident">unwrap</span>();
@@ -424,32 +594,30 @@
               <span class="ident">accounts</span>::<span class="ident">password_identifier</span>.<span class="ident">eq</span>(<span class="ident">password_identifier</span>)))
         .<span class="ident">execute</span>(<span class="ident">connection</span>);
     <span class="kw">return</span> <span class="kw">if</span> <span class="ident">update_result</span>.<span class="ident">is_err</span>() {
-        <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">update_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>()
+        <span class="prelude-val">Err</span>(<span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">update_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+        })
     } <span class="kw">else</span> {
-        <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UpdateSuccess&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">true</span>).<span class="ident">to_string</span>()
+        <span class="prelude-val">Ok</span>(())
     };
 }
 
-<span class="doccomment">/// Changes username of user</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_username</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">username</span>: <span class="ident">Username</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="kw">let</span> <span class="ident">new_username</span> <span class="op">=</span> <span class="ident">username</span>.<span class="ident">username</span>;
-    <span class="kw">let</span> <span class="ident">username_valid</span> <span class="op">=</span> <span class="ident">validate_username</span>(<span class="ident">new_username</span>.<span class="ident">clone</span>(), <span class="ident">connection</span>);
-    <span class="kw">if</span> <span class="ident">username_valid</span>.<span class="ident">is_err</span>() {
-        <span class="kw">return</span> <span class="ident">username_valid</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>();
-    }
-    <span class="kw">let</span> <span class="ident">id_exists</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">select</span>(<span class="ident">exists</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))).<span class="ident">get_result</span>(<span class="ident">connection</span>);
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">id_exists</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>() {
-        <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UserNotFoundError&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>();
-    }
+<span class="doccomment">/// Changes image url of user</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_image_url</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">new_image_url</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ApiResponse</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">update_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">update</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))
-        .<span class="ident">set</span>(<span class="ident">accounts</span>::<span class="ident">username</span>.<span class="ident">eq</span>(<span class="ident">new_username</span>))
+        .<span class="ident">set</span>(<span class="ident">accounts</span>::<span class="ident">image_url</span>.<span class="ident">eq</span>(<span class="ident">new_image_url</span>))
         .<span class="ident">execute</span>(<span class="ident">connection</span>);
     <span class="kw">return</span> <span class="kw">if</span> <span class="ident">update_result</span>.<span class="ident">is_err</span>() {
-        <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">update_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>()
+        <span class="prelude-val">Err</span>(<span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">update_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+        })
     } <span class="kw">else</span> {
-        <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UpdateSuccess&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">true</span>).<span class="ident">to_string</span>()
+        <span class="prelude-val">Ok</span>(())
     };
 }
+
 
 <span class="doccomment">/// Gets info of user identified by account id</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">get_info</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {

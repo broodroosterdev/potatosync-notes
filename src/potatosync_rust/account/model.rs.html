@@ -320,6 +320,14 @@
 <span id="320">320</span>
 <span id="321">321</span>
 <span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">bcrypt</span>::{<span class="ident">DEFAULT_COST</span>, <span class="ident">hash</span>, <span class="ident">verify</span>};
 <span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">FixedOffset</span>, <span class="ident">Local</span>, <span class="ident">NaiveDateTime</span>, <span class="ident">SecondsFormat</span>, <span class="ident">TimeZone</span>, <span class="ident">Utc</span>};
@@ -383,6 +391,14 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">password_identifier</span>: <span class="ident">String</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">verified</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">shared_prefs</span>: <span class="ident">String</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PatchingAccount</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">password</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">image_url</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">shared_prefs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Struct used for adding new accounts to the DB. Note the missing id field since the database will provide it for us</span>
