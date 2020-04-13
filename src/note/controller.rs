@@ -3,16 +3,37 @@ use diesel::expression::exists::exists;
 use diesel::prelude::*;
 use diesel::select;
 use rayon::prelude::*;
+use rocket_failure::errors::Status;
 use serde_derive::*;
 
 use crate::db;
 use crate::note::model::{Note, NoteLastUpdated, NoteResponse};
 use crate::schema::accounts;
 use crate::schema::notes;
-use crate::status_response::StatusResponse;
+use crate::status_response::{ApiResponse, StatusResponse};
 
 ///Creates note and if they already exist, it will update them in the DB
-pub(crate) fn create_or_update(note: Note, connection: &PgConnection) -> StatusResponse {
+pub(crate) fn create(note: Note, connection: &PgConnection) -> ApiResponse {
+    let insert_result = diesel::insert_into(notes::table)
+        .values(&note)
+        .on_conflict((notes::columns::note_id, notes::columns::account_id))
+        .do_nothing()
+        .execute(connection);
+    return if insert_result.is_err() {
+        ApiResponse {
+            json: StatusResponse::new(insert_result.err().unwrap().to_string(), false).to_string(),
+            status: Status::BadRequest,
+        }
+    } else {
+        ApiResponse {
+            json: StatusResponse::new("NoteCreationSuccess".parse().unwrap(), true).to_string(),
+            status: Status::Ok,
+        }
+    };
+}
+
+///Updates note, it will create a new note if it doesnt exist
+pub(crate) fn update(note: Note, connection: &PgConnection) -> ApiResponse {
     let insert_result = diesel::insert_into(notes::table)
         .values(&note)
         .on_conflict((notes::columns::note_id, notes::columns::account_id))
@@ -20,14 +41,20 @@ pub(crate) fn create_or_update(note: Note, connection: &PgConnection) -> StatusR
         .set(&note)
         .execute(connection);
     return if insert_result.is_err() {
-        StatusResponse::new(insert_result.err().unwrap().to_string(), false)
+        ApiResponse {
+            json: StatusResponse::new(insert_result.err().unwrap().to_string(), false).to_string(),
+            status: Status::BadRequest,
+        }
     } else {
-        StatusResponse::new("NoteCreationSuccess".parse().unwrap(), true)
+        ApiResponse {
+            json: StatusResponse::new("NoteUpdateSuccess".parse().unwrap(), true).to_string(),
+            status: Status::Ok,
+        }
     };
 }
 
 /// Delete single note in DB
-pub(crate) fn delete(note_id: i32, account_id: i32, connection: &PgConnection) -> StatusResponse {
+pub(crate) fn delete(note_id: i32, account_id: i32, connection: &PgConnection) -> ApiResponse {
     let note_exists = notes::dsl::notes.select((notes::note_id))
         .filter(notes::note_id.eq(&note_id))
         .filter(notes::account_id.eq(&account_id))
@@ -38,22 +65,30 @@ pub(crate) fn delete(note_id: i32, account_id: i32, connection: &PgConnection) -
             .filter(notes::account_id.eq(&account_id))
             .execute(connection);
         if delete_result.is_err() {
-            return StatusResponse::new(delete_result.err().unwrap().to_string(), false);
+            return ApiResponse {
+                json: StatusResponse::new(delete_result.err().unwrap().to_string(), false).to_string(),
+                status: Status::BadRequest,
+            };
         }
-        StatusResponse::new("NoteDeleteSuccess".parse().unwrap(), true)
+        ApiResponse {
+            json: StatusResponse::new("NoteDeleteSuccess".parse().unwrap(), true).to_string(),
+            status: Status::Ok,
+        }
     } else {
-        StatusResponse::new(note_exists.err().unwrap().to_string(), false)
+        ApiResponse {
+            json: StatusResponse::new(note_exists.err().unwrap().to_string(), false).to_string(),
+            status: Status::Ok,
+        }
     };
 }
 
 /// Get list of notes updated after provided timestamp
-pub(crate) fn get_notes_by_account(account_id: i32, note_last_updated: NoteLastUpdated, connection: &PgConnection) -> NoteResponse {
+pub(crate) fn get_notes_by_account(account_id: i32, note_last_updated: NoteLastUpdated, connection: &PgConnection) -> ApiResponse {
     let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection);
     if !id_exists.ok().unwrap() {
-        return NoteResponse {
-            message: "UserNotFoundError".parse().unwrap(),
-            status: false,
-            notes: None,
+        return ApiResponse {
+            json: StatusResponse::new("UserNotFoundError".parse().unwrap(), false).to_string(),
+            status: Status::BadRequest,
         };
     };
     let notes_result: Result<Vec<Note>, diesel::result::Error> = notes::dsl::notes.filter(notes::account_id.eq(account_id)).load::<Note>(connection);
@@ -68,27 +103,35 @@ pub(crate) fn get_notes_by_account(account_id: i32, note_last_updated: NoteLastU
                 updated_notes.push(copied);
             }
         };
-        NoteResponse {
-            message: "NoteListSuccess".parse().unwrap(),
-            status: true,
-            notes: Some(updated_notes),
+        ApiResponse {
+            json: NoteResponse {
+                message: "NoteListSuccess".parse().unwrap(),
+                status: true,
+                notes: updated_notes,
+            }.to_string(),
+            status: Status::Ok,
         }
     } else {
-        NoteResponse {
-            message: notes_result.err().unwrap().to_string(),
-            status: false,
-            notes: None,
+        ApiResponse {
+            json: StatusResponse::new(notes_result.err().unwrap().to_string(), false).to_string(),
+            status: Status::BadRequest,
         }
     };
 }
 
 /// Delete all notes of an user
-pub(crate) fn delete_all(account_id: i32, connection: &PgConnection) -> StatusResponse {
+pub(crate) fn delete_all(account_id: i32, connection: &PgConnection) -> ApiResponse {
     let delete_result = diesel::delete(notes::table)
         .filter(notes::account_id.eq(&account_id))
         .execute(connection);
     if delete_result.is_err() {
-        return StatusResponse::new(delete_result.err().unwrap().to_string(), false);
+        return ApiResponse {
+            json: StatusResponse::new(delete_result.err().unwrap().to_string(), false).to_string(),
+            status: Status::BadRequest,
+        };
     }
-    StatusResponse::new("NotesDeleteSuccess".parse().unwrap(), true)
+    return ApiResponse {
+        json: StatusResponse::new("NotesDeleteSuccess".parse().unwrap(), true).to_string(),
+        status: Status::Ok,
+    };
 }

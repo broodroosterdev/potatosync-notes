@@ -41,7 +41,7 @@ use rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
 use serde_json::Value;
 
 use crate::account::controller::{create, get_info, login, verify_email};
-use crate::account::model::{LoginCredentials, NewAccount, Password, Username};
+use crate::account::model::{Image, LoginCredentials, NewAccount, Password, PatchingAccount, Username};
 use crate::account::token::{read_refresh_token, refresh_token, RefreshTokenJson, Token};
 use crate::note::controller::*;
 use crate::note::model::{Note, NoteId, NoteLastUpdated, NoteResponse, SavingNote};
@@ -53,7 +53,6 @@ mod schema;
 mod account;
 mod db;
 mod status_response;
-
 
 /// Route for registering user
 #[post("/api/users/new", data = "<json_creds>")]
@@ -68,28 +67,28 @@ fn verify_user(id: i32, token: String, connection: db::Connection) -> Redirect {
     Redirect::to(format!("/api/users/verify?successful={}&message={}", verify_result.status, verify_result.message))
 }
 
-/// Route for logging out and deleting refresh_token to disable refreshing
-/*#[post("/api/tokens/delete", data = "<token>")]
-fn delete_token(token: Data, token: token) {
-
-}*/
-
 /// Route for logging in user
 #[post("/api/users/login", data = "<json_credentials>")]
 fn login_user(json_credentials: Json<LoginCredentials>, connection: db::Connection) -> ApiResponse {
     let login_result = login(json_credentials.0.clone(), &connection);
     if login_result.is_err() {
-        ApiResponse{
+        ApiResponse {
             json: login_result.err().unwrap().to_string(),
-            status: Status::BadRequest
+            status: Status::BadRequest,
         }
     } else {
         ApiResponse {
             json: login_result.ok().unwrap().to_string(),
-            status: Status::Ok
+            status: Status::Ok,
         }
     }
 }
+
+/// Route for logging out and deleting refresh_token to disable refreshing
+/*#[post("/api/tokens/delete", data = "<token>")]
+fn delete_token(token: Data, token: token) {
+
+}*/
 
 /// Route for refreshing access_token with refresh_token
 #[post("/api/users/refresh", data = "<json_token>")]
@@ -99,30 +98,16 @@ fn refresh_user(json_token: Json<RefreshTokenJson>, connection: db::Connection) 
         return ApiResponse {
             json: StatusResponse::new(token.err().unwrap(), false).to_string(),
             status: Status::BadRequest,
-        }
+        };
     }
     refresh_token(token.unwrap(), &connection)
 }
 
 /// Route for changing password of user
-#[post("/api/users/manage/password", data = "<json_password>")]
-fn change_password(json_password: Json<Password>, token: Token, connection: db::Connection) -> content::Json<String> {
-    content::Json(account::controller::change_password(token.sub.parse().unwrap(), json_password.0, &connection))
+#[patch("/api/users/info", data = "<json_patch>")]
+fn change_user_info(json_patch: Json<PatchingAccount>, token: Token, connection: db::Connection) -> ApiResponse {
+    account::controller::change_info(token.sub.parse().unwrap(), json_patch.0, &connection)
 }
-
-/// Route for changing username of user
-/*
-#[post("/api/users/manage/username", data = "<json_username>")]
-fn change_username(json_username: Json<Username>, token: token, connection: db::Connection){
-
-}
-
-/// Route for changing profile picture of user
-#[post("api/users/manage/image", data = "<json_image>")]
-fn change_image(json_image: Json<Image>, token: Token, connection: db::Connection) -> content::Json<String> {
-
-}
-*/
 
 /// Route for getting user info
 #[get("/api/users/info")]
@@ -130,66 +115,63 @@ fn get_user_info(token: Token, connection: db::Connection) -> content::Json<Stri
     content::Json(get_info(token.sub.parse().unwrap(), &connection))
 }
 
+
 /// Route for saving note
-#[post("/api/notes/save", data = "<json_note>")]
-fn save_note(json_note: Json<SavingNote>, token: Token, connection: db::Connection) -> content::Json<String> {
+#[post("/api/notes", data = "<json_note>")]
+fn save_note(json_note: Json<SavingNote>, token: Token, connection: db::Connection) -> ApiResponse {
     let note = json_note.0.to_note(token.sub.parse().unwrap());
-    let create_result = create_or_update(note, &connection);
-    content::Json(create_result.to_string())
+    note::controller::create(note, &connection)
+}
+
+/// Route for updating note
+#[put("/api/notes", data = "<json_note>")]
+fn update_note(json_note: Json<SavingNote>, token: Token, connection: db::Connection) -> ApiResponse {
+    let note = json_note.0.to_note(token.sub.parse().unwrap());
+    note::controller::create(note, &connection)
 }
 
 /// Route for deleting single note identified by id
-#[post("/api/notes/delete", data = "<json_note_id>")]
-fn delete_note(json_note_id: Json<NoteId>, token: Token, connection: db::Connection) -> Json<StatusResponse> {
-    let note_id = json_note_id.0.note_id;
-    let delete_result = delete(note_id, token.sub.parse().unwrap(), &connection);
-    Json(delete_result)
+#[delete("/api/notes/<note_id>")]
+fn delete_note(note_id: i32, token: Token, connection: db::Connection) -> ApiResponse {
+    delete(note_id, token.sub.parse().unwrap(), &connection)
 }
 
 /// Route for deleting all notes of an user
-#[post("/api/notes/deleteall")]
-fn delete_all_notes(token: Token, connection: db::Connection) -> Json<StatusResponse> {
-    let delete_result = delete_all(token.sub.parse().unwrap(), &connection);
-    Json(delete_result)
+#[delete("/api/notes/all")]
+fn delete_all_notes(token: Token, connection: db::Connection) -> ApiResponse {
+    delete_all(token.sub.parse().unwrap(), &connection)
 }
 
 /// Route for getting all the notes which are updated after provided timestamp
 #[get("/api/notes/list", data = "<json_last_updated>")]
-fn get_all_notes(json_last_updated: Json<NoteLastUpdated>, token: Token, connection: db::Connection) -> Json<NoteResponse> {
-    let notes = get_notes_by_account(token.sub.parse().unwrap(), json_last_updated.0, &connection);
-    Json(notes)
+fn get_notes(json_last_updated: Json<NoteLastUpdated>, token: Token, connection: db::Connection) -> ApiResponse {
+    get_notes_by_account(token.sub.parse().unwrap(), json_last_updated.0, &connection)
 }
+
 
 /// Route used for catching 401 errors e.g. invalid access token
 #[catch(401)]
 fn token_error(req: &Request) -> ApiResponse {
-    ApiResponse{
+    ApiResponse {
         json: StatusResponse::new("Invalid auth token".parse().unwrap(), false).to_string(),
-        status: Status::Unauthorized
+        status: Status::Unauthorized,
     }
 }
 
 /// Used to specify location of migration files
 embed_migrations!("migrations");
 fn main() {
-    // Load .env file
+// Load .env file
     if Path::new(".env").exists() {
         dotenv().ok();
     }
-    // Run migration
+// Run migration
     embedded_migrations::run_with_output(&db::connect().get().unwrap(), &mut std::io::stdout()).unwrap();
-    // Start webserver
+// Start webserver
     rocket::ignite()
         .manage(db::connect())
-        .mount("/", routes![save_note, get_all_notes, delete_note, delete_all_notes, new_user, login_user, change_password, refresh_user])
-        .mount("/", routes![verify_user])
-        .mount(
-            "/swagger-ui/",
-            make_swagger_ui(&SwaggerUIConfig {
-                url: Some("../openapi.json".to_owned()),
-                urls: None,
-            }),
-        )
+        .mount("/", routes![new_user, verify_user, login_user, refresh_user, change_user_info, get_user_info])
+        .mount("/", routes![save_note, update_note, delete_note, delete_all_notes, get_notes])
         .register(catchers![token_error])
         .launch();
 }

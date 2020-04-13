@@ -62,6 +62,14 @@ pub struct Account {
     pub(crate) shared_prefs: String,
 }
 
+#[derive(Serialize, Deserialize, Clone)]
+pub struct PatchingAccount {
+    pub(crate) username: Option<String>,
+    pub(crate) password: Option<String>,
+    pub(crate) image_url: Option<String>,
+    pub(crate) shared_prefs: Option<String>,
+}
+
 /// Struct used for adding new accounts to the DB. Note the missing id field since the database will provide it for us
 #[table_name = "accounts"]
 #[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize)]

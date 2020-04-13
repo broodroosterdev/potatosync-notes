@@ -137,9 +137,14 @@ pub struct NoteLastUpdated {
 pub struct NoteResponse {
     pub(crate) message: String,
     pub(crate) status: bool,
-    pub(crate) notes: Option<Vec<Note>>,
+    pub(crate) notes: Vec<Note>,
 }
 
+impl ToString for NoteResponse {
+    fn to_string(&self) -> String {
+        serde_json::to_string(self).unwrap()
+    }
+}
 
 #[cfg(test)]
 pub mod tests {
