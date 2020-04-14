@@ -5,8 +5,8 @@ use chrono::Duration;
 use diesel::{ExpressionMethods, PgConnection, RunQueryDsl, select};
 use diesel::expression::exists::exists;
 use diesel::query_dsl::filter_dsl::FilterDsl;
-use jsonwebtoken::{decode, DecodingKey, encode, EncodingKey, Header, Validation};
-use jsonwebtoken::errors::ErrorKind;
+use jsonwebtokens::{Algorithm, AlgorithmID, encode, Verifier};
+use jsonwebtokens::error::Error;
 use rocket::{request, Request};
 use rocket::outcome::Outcome;
 use rocket::request::FromRequest;
@@ -30,14 +30,17 @@ pub struct Token {
 /// Get access_token from header and verify it
 pub fn read_token(key: &str) -> Result<Token, String> {
     let access_token_secret = env::var("ACCESS_TOKEN_SECRET").expect("Could not find ACCESS_TOKEN_SECRET in .env");
-    let validation = Validation::default();
-    let token_data = decode::<Token>(&key, &DecodingKey::from_secret(access_token_secret.as_bytes()), &validation);
-    return if token_data.is_ok() {
-        let user: Token = token_data.unwrap().claims;
+    let algo = Algorithm::new_hmac(AlgorithmID::HS256, access_token_secret).unwrap();
+    let verifier = Verifier::create()
+        .leeway(5)
+        .build().unwrap();
+    let claims = verifier.verify(&key, &algo);
+    return if claims.is_ok() {
+        let user: Token = serde_json::from_value(claims.unwrap()).unwrap();
         Ok(user)
     } else {
         println!("Token Error");
-        let error = token_data.err().unwrap().to_string();
+        let error = claims.err().unwrap().to_string();
         println!("{}", error);
         Err(error)
     };
@@ -66,7 +69,9 @@ impl Token {
             sub: account_id.to_string(),
             exp: chrono::Utc::now().checked_add_signed(Duration::minutes(15)).unwrap().timestamp(),
         }).unwrap();
-        let token = encode(&Header::default(), &user, &EncodingKey::from_secret(access_token_secret.as_bytes())).unwrap();
+        let algo = Algorithm::new_hmac(AlgorithmID::HS256, access_token_secret).unwrap();
+        let header = json!({"alg": algo.name()});
+        let token = encode(&header, &user, &algo).unwrap();
         token
     }
 }
@@ -101,8 +106,9 @@ impl RefreshToken {
             sub: account_id.to_string(),
             pwId: password_identifier,
         };
-        let token = encode(&Header::default(), &token, &EncodingKey::from_secret(refresh_token_secret.as_ref())).unwrap();
-        //diesel::insert_into(tokens::table).values(token.create_db(jwt.clone())).execute(connection);
+        let algo = Algorithm::new_hmac(AlgorithmID::HS256, refresh_token_secret).unwrap();
+        let header = json!({"alg": algo.name()});
+        let token = encode(&header, &token, &algo).unwrap();
         token
     }
 }
@@ -115,16 +121,14 @@ pub struct RefreshTokenJson {
 
 /// Verify refresh token
 pub fn read_refresh_token(key: &str) -> Result<RefreshToken, String> {
-    let connection = db::connect().get().unwrap();
-    let token_exists: Result<bool, diesel::result::Error> = select(exists(tokens::dsl::tokens.filter(tokens::token.eq(key)))).get_result(&connection);
-    if !token_exists.ok().unwrap() {
-        return Err("Token is expired".parse().unwrap());
-    }
     let refresh_token_secret = env::var("REFRESH_TOKEN_SECRET").expect("Could not find REFRESH_TOKEN_SECRET in .env");
-    let validation = Validation::default();
-    let token_data = decode::<RefreshToken>(&key, &DecodingKey::from_secret(refresh_token_secret.as_ref()), &validation);
-    return if token_data.is_ok() {
-        let refresh_token = token_data.unwrap().claims;
+    let algo = Algorithm::new_hmac(AlgorithmID::HS256, refresh_token_secret).unwrap();
+    let verifier = Verifier::create()
+        .leeway(5)
+        .build().unwrap();
+    let claims = verifier.verify(&key, &algo);
+    return if claims.is_ok() {
+        let refresh_token: RefreshToken = serde_json::from_value(claims.unwrap()).unwrap();
         let connection = db::connect().get().unwrap();
         let account = get_account_by_id(refresh_token.sub.parse().unwrap(), &connection);
         if account.password_identifier.eq(&refresh_token.pwId) {
@@ -134,7 +138,7 @@ pub fn read_refresh_token(key: &str) -> Result<RefreshToken, String> {
         }
     } else {
         println!("Token Error");
-        Err(token_data.err().unwrap().to_string())
+        Err(claims.err().unwrap().to_string())
     };
 }
 

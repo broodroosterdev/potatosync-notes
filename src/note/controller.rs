@@ -12,8 +12,9 @@ use crate::schema::accounts;
 use crate::schema::notes;
 use crate::status_response::{ApiResponse, StatusResponse};
 
-///Creates note and if they already exist, it will update them in the DB
-pub(crate) fn create(note: Note, connection: &PgConnection) -> ApiResponse {
+///Creates note and if they already exist, it will do nothing
+pub(crate) fn create(mut note: Note, connection: &PgConnection) -> ApiResponse {
+    note.synced = true;
     let insert_result = diesel::insert_into(notes::table)
         .values(&note)
         .on_conflict((notes::columns::note_id, notes::columns::account_id))
