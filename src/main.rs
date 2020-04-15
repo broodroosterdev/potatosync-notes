@@ -143,9 +143,9 @@ fn delete_all_notes(token: Token, connection: db::Connection) -> ApiResponse {
 }
 
 /// Route for getting all the notes which are updated after provided timestamp
-#[get("/api/notes/list", data = "<json_last_updated>")]
-fn get_notes(json_last_updated: Json<NoteLastUpdated>, token: Token, connection: db::Connection) -> ApiResponse {
-    get_notes_by_account(token.sub.parse().unwrap(), json_last_updated.0, &connection)
+#[get("/api/notes/list?<last_updated>")]
+fn get_notes(last_updated: String, token: Token, connection: db::Connection) -> ApiResponse {
+    get_notes_by_account(token.sub.parse().unwrap(), last_updated, &connection)
 }
 
 

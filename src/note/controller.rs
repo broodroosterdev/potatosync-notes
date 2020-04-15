@@ -84,7 +84,7 @@ pub(crate) fn delete(note_id: i32, account_id: i32, connection: &PgConnection) -
 }
 
 /// Get list of notes updated after provided timestamp
-pub(crate) fn get_notes_by_account(account_id: i32, note_last_updated: NoteLastUpdated, connection: &PgConnection) -> ApiResponse {
+pub(crate) fn get_notes_by_account(account_id: i32, timestamp_last_updated: String, connection: &PgConnection) -> ApiResponse {
     let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection);
     if !id_exists.ok().unwrap() {
         return ApiResponse {
@@ -95,7 +95,7 @@ pub(crate) fn get_notes_by_account(account_id: i32, note_last_updated: NoteLastU
     let notes_result: Result<Vec<Note>, diesel::result::Error> = notes::dsl::notes.filter(notes::account_id.eq(account_id)).load::<Note>(connection);
     return if notes_result.is_ok() {
         let mut synced_notes = notes_result.unwrap();
-        let last_updated = DateTime::parse_from_rfc3339(note_last_updated.last_updated.as_ref()).expect("Could not parse DateTime string");
+        let last_updated = DateTime::parse_from_rfc3339(timestamp_last_updated.as_ref()).expect("Could not parse DateTime string");
         let mut updated_notes: Vec<Note> = vec![];
         for note in synced_notes {
             let note_date = note.last_modify_date;
