@@ -10,10 +10,11 @@ use crate::status_response::StatusResponse;
 #[table_name = "notes"]
 #[derive(Queryable, Serialize, Deserialize, Insertable, AsChangeset, PartialEq, Clone)]
 #[primary_key(note_id, account_id)]
+#[changeset_options(treat_none_as_null = "true")]
 // {"note_id": 1, "title": "Test", "content": "Test", "is_starred": false, "date": "2020-03-19T14:21:06.275Z", "color": 0, "image_url":null, "is_list": false, "list_parse_string":null, "reminders":null, "hide_content": false, "pin":null, "password":null, "is_deleted": false, "is_archived": false}
 pub struct Note {
-    pub note_id: i32,
-    pub account_id: i32,
+    pub note_id: String,
+    pub account_id: String,
     pub title: String,
     pub content: String,
     pub style_json: String,
@@ -37,10 +38,12 @@ pub struct Note {
     pub synced: bool,
 }
 
+/*
 /// Struct used for inserting new notes in the db. Note the missing note_id since it will be provided by the db.
 #[table_name = "notes"]
 #[derive(Queryable, Serialize, Deserialize, Insertable)]
 pub struct NewNote {
+    pub note_id: String
     pub account_id: i32,
     pub title: String,
     pub content: String,
@@ -63,13 +66,13 @@ pub struct NewNote {
     pub deleted: bool,
     pub archived: bool,
     pub synced: bool,
-}
+}*/
 
 /// Note as provided by the client when saving. Note the missing account_id since the client doesnt know the id.
 #[table_name = "notes"]
 #[derive(Queryable, Serialize, Deserialize, Insertable, Debug)]
 pub struct SavingNote {
-    pub note_id: i32,
+    pub note_id: String,
     pub title: String,
     pub content: String,
     pub style_json: String,
@@ -95,9 +98,9 @@ pub struct SavingNote {
 
 impl SavingNote {
     /// Convert to Note by adding account_id
-    pub fn to_note(&self, account_id: i32) -> Note {
+    pub fn to_note(&self, account_id: String) -> Note {
         Note {
-            note_id: self.note_id,
+            note_id: self.note_id.clone(),
             account_id,
             title: self.title.clone(),
             content: self.content.clone(),

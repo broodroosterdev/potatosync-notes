@@ -62,7 +62,7 @@ fn new_user(json_creds: Json<NewAccount>, connection: db::Connection) -> ApiResp
 
 /// Route for verifying email token
 #[get("/api/users/verify/<id>/<token>")]
-fn verify_user(id: i32, token: String, connection: db::Connection) -> Redirect {
+fn verify_user(id: String, token: String, connection: db::Connection) -> Redirect {
     let verify_result = verify_email(id, token, &connection);
     Redirect::to(format!("/api/users/verify?successful={}&message={}", verify_result.status, verify_result.message))
 }
@@ -119,20 +119,20 @@ fn get_user_info(token: Token, connection: db::Connection) -> content::Json<Stri
 /// Route for saving note
 #[post("/api/notes", data = "<json_note>")]
 fn save_note(json_note: Json<SavingNote>, token: Token, connection: db::Connection) -> ApiResponse {
-    let note = json_note.0.to_note(token.sub.parse().unwrap());
+    let note = json_note.0.to_note(token.sub.clone());
     note::controller::create(note, &connection)
 }
 
 /// Route for updating note
 #[put("/api/notes", data = "<json_note>")]
 fn update_note(json_note: Json<SavingNote>, token: Token, connection: db::Connection) -> ApiResponse {
-    let note = json_note.0.to_note(token.sub.parse().unwrap());
-    note::controller::create(note, &connection)
+    let note = json_note.to_note(token.sub.clone());
+    note::controller::update(note, token.sub, &connection)
 }
 
 /// Route for deleting single note identified by id
 #[delete("/api/notes/<note_id>")]
-fn delete_note(note_id: i32, token: Token, connection: db::Connection) -> ApiResponse {
+fn delete_note(note_id: String, token: Token, connection: db::Connection) -> ApiResponse {
     delete(note_id, token.sub.parse().unwrap(), &connection)
 }
 

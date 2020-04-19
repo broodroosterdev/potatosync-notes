@@ -11,9 +11,10 @@ use rand::distributions::Alphanumeric;
 use rand::Rng;
 use rocket::response::status::BadRequest;
 use rocket_failure::errors::Status;
+use uuid::Uuid;
 
 use crate::account::email::{create_token_email, send_email, VerificationToken};
-use crate::account::model::{Account, InfoResponse, LoginCredentials, NewAccount, NewDBAccount, Password, PatchingAccount, TokenAccount, TokenResponse, Username, validate_password, validate_username};
+use crate::account::model::{Account, InfoResponse, LoginCredentials, NewAccount, Password, PatchingAccount, TokenAccount, TokenResponse, Username, validate_password, validate_username};
 use crate::account::token::{RefreshToken, Token};
 use crate::account::token;
 use crate::schema::accounts;
@@ -56,13 +57,13 @@ pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) ->
     if !account.verified {
         return Err(StatusResponse::new("User is not verified".parse().unwrap(), false));
     }
-    let access_token = Token::create_access_token(account.id);
-    let refresh_token = RefreshToken::create_refresh_token(account.id, account.password_identifier.clone(), connection);
+    let access_token = Token::create_access_token(account.id.clone());
+    let refresh_token = RefreshToken::create_refresh_token(account.id.clone(), account.password_identifier.clone(), connection);
     Ok(TokenResponse::new(account, access_token, refresh_token))
 }
 
 /// Gets account by account_id from DB
-pub(crate) fn get_account_by_id(id: i32, connection: &PgConnection) -> Account {
+pub(crate) fn get_account_by_id(id: String, connection: &PgConnection) -> Account {
     accounts::dsl::accounts.filter(accounts::id.eq(id)).first::<Account>(connection).unwrap()
 }
 
@@ -88,7 +89,8 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
     let hashed_password = hash(account.password.clone(), 10).expect("Error hashing password: ");
     let password_identifier = create_password_identifier();
     let token = create_verification_token();
-    let account = NewDBAccount {
+    let mut account = Account {
+        id: Uuid::new_v4().to_string(),
         created_at: Utc::now(),
         updated_at: Some(Utc::now()),
         deleted_at: None,
@@ -100,6 +102,10 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
         verified: false,
         shared_prefs: "".to_string(),
     };
+    if env::var("DISABLE_EMAIL_VERIFICATION").is_ok() && env::var("DISABLE_EMAIL_VERIFICATION").unwrap() == "true" {
+        println!("IMPORTANT: Automatically verifying user. If you did not intend this behaviour please kill the program and check your settings");
+        account.verified = true;
+    }
     let insert_result: Result<Account, Error> = diesel::insert_into(accounts::table)
         .values(&account)
         .returning(accounts::all_columns)
@@ -111,25 +117,27 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
         };
     }
     let account = insert_result.unwrap();
-    let token_db = VerificationToken {
-        account_id: account.id,
-        token,
-        created_at: Local::now().to_rfc3339_opts(SecondsFormat::Millis, true),
-    };
-    let token_insert_result = diesel::insert_into(tokens::table)
-        .values(&token_db)
-        .execute(connection);
-    if token_insert_result.is_err() {
-        return ApiResponse {
-            json: StatusResponse::new("Could not insert token into DB".parse().unwrap(), false).to_string(),
-            status: Status::BadRequest,
+    if env::var("DISABLE_EMAIL_VERIFICATION").is_err() || env::var("DISABLE_EMAIL_VERIFICATION").unwrap() != "true" {
+        let token_db = VerificationToken {
+            account_id: account.id.clone(),
+            token,
+            created_at: Local::now().to_rfc3339_opts(SecondsFormat::Millis, true),
         };
+        let token_insert_result = diesel::insert_into(tokens::table)
+            .values(&token_db)
+            .execute(connection);
+        if token_insert_result.is_err() {
+            return ApiResponse {
+                json: StatusResponse::new("Could not insert token into DB".parse().unwrap(), false).to_string(),
+                status: Status::BadRequest,
+            };
+        }
+        let domain = env::var("DOMAIN").expect("Could not find DOMAIN in .env");
+        let email = create_token_email(account.username.clone(), format!("{}/api/users/verify/{}/{}", domain, token_db.account_id, token_db.token));
+        send_email(email, account.email.clone());
     }
-    let domain = env::var("DOMAIN").expect("Could not find DOMAIN in .env");
-    let email = create_token_email(account.username.clone(), format!("{}/api/users/verify/{}/{}", domain, token_db.account_id, token_db.token));
-    send_email(email, account.email.clone());
-    let access_token = Token::create_access_token(account.id);
-    let refresh_token = RefreshToken::create_refresh_token(account.id, password_identifier.clone(), connection);
+    let access_token = Token::create_access_token(account.id.clone());
+    let refresh_token = RefreshToken::create_refresh_token(account.id.clone(), password_identifier.clone(), connection);
     let json = TokenResponse {
         message: "AccCreationSuccess".parse().unwrap(),
         status: true,
@@ -142,26 +150,26 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
 }
 
 /// Verifies email token and verifies user in DB
-pub(crate) fn verify_email(account_id: i32, used_token: String, connection: &PgConnection) -> StatusResponse {
-    let id_exists: bool = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection).expect("Could not check if account exists");
+pub(crate) fn verify_email(account_id: String, used_token: String, connection: &PgConnection) -> StatusResponse {
+    let id_exists: bool = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(&account_id)))).get_result(connection).expect("Could not check if account exists");
     if !id_exists {
         return StatusResponse::new("UserNotFoundError".parse().unwrap(), false);
     }
-    let mut account = accounts::dsl::accounts.filter(accounts::id.eq(account_id)).first::<Account>(connection).unwrap();
-    let token_exists: bool = select(exists(tokens::dsl::tokens.filter(tokens::account_id.eq(account_id)))).get_result(connection).expect("Could not check if token exists");
+    let mut account = accounts::dsl::accounts.filter(accounts::id.eq(&account_id)).first::<Account>(connection).unwrap();
+    let token_exists: bool = select(exists(tokens::dsl::tokens.filter(tokens::account_id.eq(&account_id)))).get_result(connection).expect("Could not check if token exists");
     if !token_exists {
         return StatusResponse::new("TokenNotFoundError".parse().unwrap(), false);
     }
-    let saved_token = tokens::dsl::tokens.filter(tokens::account_id.eq(account_id)).first::<VerificationToken>(connection).unwrap();
+    let saved_token = tokens::dsl::tokens.filter(tokens::account_id.eq(&account_id)).first::<VerificationToken>(connection).unwrap();
     return if saved_token.token.eq(&used_token) {
         account.verified = true;
-        let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))
+        let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(&account_id)))
             .set(accounts::verified.eq(true))
             .execute(connection);
         if update_result.is_err() {
             return StatusResponse::new("Can not update status of account".parse().unwrap(), false);
         }
-        let delete_result = diesel::delete(tokens::dsl::tokens.filter(tokens::account_id.eq(account_id))).execute(connection);
+        let delete_result = diesel::delete(tokens::dsl::tokens.filter(tokens::account_id.eq(&account_id))).execute(connection);
         if delete_result.is_err() {
             return StatusResponse::new("Can not remove token".parse().unwrap(), false);
         }
@@ -171,8 +179,8 @@ pub(crate) fn verify_email(account_id: i32, used_token: String, connection: &PgC
     };
 }
 
-pub(crate) fn change_info(account_id: i32, account: PatchingAccount, connection: &PgConnection) -> ApiResponse {
-    let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection);
+pub(crate) fn change_info(account_id: String, account: PatchingAccount, connection: &PgConnection) -> ApiResponse {
+    let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(&account_id)))).get_result(connection);
     if !id_exists.ok().unwrap() {
         return ApiResponse {
             json: StatusResponse::new("UserNotFoundError".parse().unwrap(), false).to_string(),
@@ -182,28 +190,28 @@ pub(crate) fn change_info(account_id: i32, account: PatchingAccount, connection:
     let mut has_changes = false;
     if account.shared_prefs.is_some() {
         has_changes = true;
-        let change_result = change_shared_prefs(account_id, account.shared_prefs.unwrap(), connection);
+        let change_result = change_shared_prefs(account_id.clone(), account.shared_prefs.unwrap(), connection);
         if change_result.is_err() {
             return change_result.err().unwrap()
         }
     }
     if account.username.is_some() {
         has_changes = true;
-        let change_result = change_username(account_id, account.username.unwrap(), connection);
+        let change_result = change_username(account_id.clone(), account.username.unwrap(), connection);
         if change_result.is_err() {
             return change_result.err().unwrap()
         }
     }
     if account.password.is_some() {
         has_changes = true;
-        let change_result = change_password(account_id, account.password.unwrap(), connection);
+        let change_result = change_password(account_id.clone(), account.password.unwrap(), connection);
         if change_result.is_err() {
             return change_result.err().unwrap()
         }
     }
     if account.image_url.is_some() {
         has_changes = true;
-        let change_result = change_image_url(account_id, account.image_url.unwrap(), connection);
+        let change_result = change_image_url(account_id.clone(), account.image_url.unwrap(), connection);
         if change_result.is_err() {
             return change_result.err().unwrap()
         }
@@ -222,7 +230,7 @@ pub(crate) fn change_info(account_id: i32, account: PatchingAccount, connection:
 }
 
 /// Changes shared preferences of user
-pub(crate) fn change_shared_prefs(account_id: i32, new_shared_prefs: String, connection: &PgConnection) -> Result<(), ApiResponse> {
+pub(crate) fn change_shared_prefs(account_id: String, new_shared_prefs: String, connection: &PgConnection) -> Result<(), ApiResponse> {
     let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))
         .set(accounts::shared_prefs.eq(new_shared_prefs))
         .execute(connection);
@@ -237,7 +245,7 @@ pub(crate) fn change_shared_prefs(account_id: i32, new_shared_prefs: String, con
 }
 
 /// Changes username of user
-pub(crate) fn change_username(account_id: i32, new_username: String, connection: &PgConnection) -> Result<(), ApiResponse> {
+pub(crate) fn change_username(account_id: String, new_username: String, connection: &PgConnection) -> Result<(), ApiResponse> {
     let username_valid = validate_username(new_username.clone(), connection);
     if username_valid.is_err() {
         return Err(ApiResponse {
@@ -259,7 +267,7 @@ pub(crate) fn change_username(account_id: i32, new_username: String, connection:
 }
 
 /// Changes password of user
-pub(crate) fn change_password(account_id: i32, new_password: String, connection: &PgConnection) -> Result<(), ApiResponse> {
+pub(crate) fn change_password(account_id: String, new_password: String, connection: &PgConnection) -> Result<(), ApiResponse> {
     let password_valid = validate_password(new_password.clone());
     if password_valid.is_err() {
         return Err(ApiResponse {
@@ -284,7 +292,7 @@ pub(crate) fn change_password(account_id: i32, new_password: String, connection:
 }
 
 /// Changes image url of user
-pub(crate) fn change_image_url(account_id: i32, new_image_url: String, connection: &PgConnection) -> Result<(), ApiResponse> {
+pub(crate) fn change_image_url(account_id: String, new_image_url: String, connection: &PgConnection) -> Result<(), ApiResponse> {
     let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))
         .set(accounts::image_url.eq(new_image_url))
         .execute(connection);
@@ -300,12 +308,12 @@ pub(crate) fn change_image_url(account_id: i32, new_image_url: String, connectio
 
 
 /// Gets info of user identified by account id
-pub(crate) fn get_info(account_id: i32, connection: &PgConnection) -> String {
-    let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection);
+pub(crate) fn get_info(account_id: String, connection: &PgConnection) -> String {
+    let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(&account_id)))).get_result(connection);
     if !id_exists.ok().unwrap() {
         return StatusResponse::new("UserNotFoundError".parse().unwrap(), false).to_string();
     }
-    let account = accounts::dsl::accounts.filter(accounts::id.eq(account_id)).first::<Account>(connection).unwrap();
+    let account = accounts::dsl::accounts.filter(accounts::id.eq(&account_id)).first::<Account>(connection).unwrap();
     return InfoResponse::new(account).to_string();
 }
 

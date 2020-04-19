@@ -43,20 +43,20 @@ pub fn deserialize_option<'de, D>(d: D) -> Result<Option<DateTime<Utc>>, D::Erro
 #[table_name = "accounts"]
 #[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone)]
 pub struct Account {
-    pub(crate) id: i32,
+    pub(crate) id: String,
     #[serde(deserialize_with = "deserialize")]
     #[serde(serialize_with = "serialize")]
-    created_at: DateTime<Utc>,
+    pub(crate) created_at: DateTime<Utc>,
     #[serde(deserialize_with = "deserialize_option")]
     #[serde(serialize_with = "serialize_option")]
-    updated_at: Option<DateTime<Utc>>,
+    pub(crate) updated_at: Option<DateTime<Utc>>,
     #[serde(deserialize_with = "deserialize_option")]
     #[serde(serialize_with = "serialize_option")]
-    deleted_at: Option<DateTime<Utc>>,
+    pub(crate) deleted_at: Option<DateTime<Utc>>,
     pub(crate) email: String,
     pub(crate) username: String,
     pub(crate) password: String,
-    image_url: String,
+    pub(crate) image_url: String,
     pub(crate) password_identifier: String,
     pub(crate) verified: bool,
     pub(crate) shared_prefs: String,
@@ -70,6 +70,7 @@ pub struct PatchingAccount {
     pub(crate) shared_prefs: Option<String>,
 }
 
+/*
 /// Struct used for adding new accounts to the DB. Note the missing id field since the database will provide it for us
 #[table_name = "accounts"]
 #[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize)]
@@ -90,7 +91,7 @@ pub struct NewDBAccount {
     pub(crate) password_identifier: String,
     pub(crate) verified: bool,
     pub(crate) shared_prefs: String,
-}
+}*/
 
 /// Used for getting the credentials from the client
 #[derive(Serialize, Deserialize, Clone, JsonSchema)]

@@ -1,6 +1,8 @@
 use chrono::{DateTime, Local};
+use diesel::expression::dsl::count;
 use diesel::expression::exists::exists;
 use diesel::prelude::*;
+use diesel::result::Error;
 use diesel::select;
 use rayon::prelude::*;
 use rocket_failure::errors::Status;
@@ -14,7 +16,6 @@ use crate::status_response::{ApiResponse, StatusResponse};
 
 ///Creates note and if they already exist, it will do nothing
 pub(crate) fn create(mut note: Note, connection: &PgConnection) -> ApiResponse {
-    note.synced = true;
     let insert_result = diesel::insert_into(notes::table)
         .values(&note)
         .on_conflict((notes::columns::note_id, notes::columns::account_id))
@@ -34,7 +35,17 @@ pub(crate) fn create(mut note: Note, connection: &PgConnection) -> ApiResponse {
 }
 
 ///Updates note, it will create a new note if it doesnt exist
-pub(crate) fn update(note: Note, connection: &PgConnection) -> ApiResponse {
+pub(crate) fn update(note: Note, account_id: String, connection: &PgConnection) -> ApiResponse {
+    let note_exists = notes::dsl::notes.select((notes::note_id))
+        .filter(notes::note_id.eq(&note.note_id))
+        .filter(notes::account_id.eq(&account_id))
+        .first::<String>(connection);
+    if note_exists.is_err() {
+        return ApiResponse {
+            json: StatusResponse::new("NoteDoesntExist".to_string(), false).to_string(),
+            status: Status::BadRequest,
+        }
+    }
     let insert_result = diesel::insert_into(notes::table)
         .values(&note)
         .on_conflict((notes::columns::note_id, notes::columns::account_id))
@@ -55,11 +66,11 @@ pub(crate) fn update(note: Note, connection: &PgConnection) -> ApiResponse {
 }
 
 /// Delete single note in DB
-pub(crate) fn delete(note_id: i32, account_id: i32, connection: &PgConnection) -> ApiResponse {
+pub(crate) fn delete(note_id: String, account_id: String, connection: &PgConnection) -> ApiResponse {
     let note_exists = notes::dsl::notes.select((notes::note_id))
         .filter(notes::note_id.eq(&note_id))
         .filter(notes::account_id.eq(&account_id))
-        .first::<i32>(connection);
+        .first::<String>(connection);
     return if note_exists.is_ok() {
         let delete_result = diesel::delete(notes::table)
             .filter(notes::note_id.eq(&note_id))
@@ -77,22 +88,22 @@ pub(crate) fn delete(note_id: i32, account_id: i32, connection: &PgConnection) -
         }
     } else {
         ApiResponse {
-            json: StatusResponse::new(note_exists.err().unwrap().to_string(), false).to_string(),
-            status: Status::Ok,
+            json: StatusResponse::new("NoteDoesntExist".to_string(), false).to_string(),
+            status: Status::BadRequest,
         }
     };
 }
 
 /// Get list of notes updated after provided timestamp
-pub(crate) fn get_notes_by_account(account_id: i32, timestamp_last_updated: String, connection: &PgConnection) -> ApiResponse {
-    let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection);
+pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: String, connection: &PgConnection) -> ApiResponse {
+    let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(&account_id)))).get_result(connection);
     if !id_exists.ok().unwrap() {
         return ApiResponse {
             json: StatusResponse::new("UserNotFoundError".parse().unwrap(), false).to_string(),
             status: Status::BadRequest,
         };
     };
-    let notes_result: Result<Vec<Note>, diesel::result::Error> = notes::dsl::notes.filter(notes::account_id.eq(account_id)).load::<Note>(connection);
+    let notes_result: Result<Vec<Note>, diesel::result::Error> = notes::dsl::notes.filter(notes::account_id.eq(&account_id)).load::<Note>(connection);
     return if notes_result.is_ok() {
         let mut synced_notes = notes_result.unwrap();
         let last_updated = DateTime::parse_from_rfc3339(timestamp_last_updated.as_ref()).expect("Could not parse DateTime string");
@@ -121,7 +132,7 @@ pub(crate) fn get_notes_by_account(account_id: i32, timestamp_last_updated: Stri
 }
 
 /// Delete all notes of an user
-pub(crate) fn delete_all(account_id: i32, connection: &PgConnection) -> ApiResponse {
+pub(crate) fn delete_all(account_id: String, connection: &PgConnection) -> ApiResponse {
     let delete_result = diesel::delete(notes::table)
         .filter(notes::account_id.eq(&account_id))
         .execute(connection);

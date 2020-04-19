@@ -24,9 +24,9 @@ lazy_static! {
 #[table_name = "tokens"]
 #[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone, JsonSchema)]
 pub struct VerificationToken {
-    pub(crate) account_id: i32,
+    pub(crate) account_id: String,
     pub(crate) token: String,
-    pub(crate) created_at: String
+    pub(crate) created_at: String,
 }
 
 ///Creates email with provided verification url and username

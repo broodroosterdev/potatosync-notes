@@ -1,6 +1,6 @@
 table! {
     accounts (id) {
-        id -> Int4,
+        id -> Text,
         created_at -> Timestamptz,
         updated_at -> Nullable<Timestamptz>,
         deleted_at -> Nullable<Timestamptz>,
@@ -16,8 +16,8 @@ table! {
 
 table! {
     notes (note_id, account_id) {
-        note_id -> Int4,
-        account_id -> Int4,
+        note_id -> Text,
+        account_id -> Text,
         title -> Text,
         content -> Text,
         style_json -> Text,
@@ -40,7 +40,7 @@ table! {
 
 table! {
     tokens (account_id) {
-        account_id -> Int4,
+        account_id -> Text,
         token -> Text,
         created_at -> Text,
     }
