@@ -101,9 +101,9 @@
 <span class="attribute">#[<span class="ident">table_name</span> <span class="op">=</span> <span class="string">&quot;tokens&quot;</span>]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Insertable</span>, <span class="ident">Queryable</span>, <span class="ident">AsChangeset</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">JsonSchema</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VerificationToken</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">account_id</span>: <span class="ident">i32</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">account_id</span>: <span class="ident">String</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">token</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">created_at</span>: <span class="ident">String</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">created_at</span>: <span class="ident">String</span>,
 }
 
 <span class="doccomment">///Creates email with provided verification url and username</span>

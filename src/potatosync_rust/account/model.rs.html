@@ -328,6 +328,7 @@
 <span id="328">328</span>
 <span id="329">329</span>
 <span id="330">330</span>
+<span id="331">331</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">bcrypt</span>::{<span class="ident">DEFAULT_COST</span>, <span class="ident">hash</span>, <span class="ident">verify</span>};
 <span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">FixedOffset</span>, <span class="ident">Local</span>, <span class="ident">NaiveDateTime</span>, <span class="ident">SecondsFormat</span>, <span class="ident">TimeZone</span>, <span class="ident">Utc</span>};
@@ -374,37 +375,7 @@
 <span class="attribute">#[<span class="ident">table_name</span> <span class="op">=</span> <span class="string">&quot;accounts&quot;</span>]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Insertable</span>, <span class="ident">Queryable</span>, <span class="ident">AsChangeset</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Account</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">id</span>: <span class="ident">i32</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;deserialize&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize&quot;</span>)]</span>
-    <span class="ident">created_at</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;deserialize_option&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize_option&quot;</span>)]</span>
-    <span class="ident">updated_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;deserialize_option&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize_option&quot;</span>)]</span>
-    <span class="ident">deleted_at</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">email</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">username</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">password</span>: <span class="ident">String</span>,
-    <span class="ident">image_url</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">password_identifier</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">verified</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">shared_prefs</span>: <span class="ident">String</span>,
-}
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PatchingAccount</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">password</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">image_url</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">shared_prefs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
-}
-
-<span class="doccomment">/// Struct used for adding new accounts to the DB. Note the missing id field since the database will provide it for us</span>
-<span class="attribute">#[<span class="ident">table_name</span> <span class="op">=</span> <span class="string">&quot;accounts&quot;</span>]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Insertable</span>, <span class="ident">Queryable</span>, <span class="ident">AsChangeset</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NewDBAccount</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">id</span>: <span class="ident">String</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;deserialize&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize&quot;</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">created_at</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span>,
@@ -422,6 +393,37 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">verified</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">shared_prefs</span>: <span class="ident">String</span>,
 }
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PatchingAccount</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">password</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">image_url</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">shared_prefs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+}
+
+<span class="comment">/*
+/// Struct used for adding new accounts to the DB. Note the missing id field since the database will provide it for us
+#[table_name = &quot;accounts&quot;]
+#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize)]
+pub struct NewDBAccount {
+    #[serde(deserialize_with = &quot;deserialize&quot;)]
+    #[serde(serialize_with = &quot;serialize&quot;)]
+    pub(crate) created_at: DateTime&lt;Utc&gt;,
+    #[serde(deserialize_with = &quot;deserialize_option&quot;)]
+    #[serde(serialize_with = &quot;serialize_option&quot;)]
+    pub(crate) updated_at: Option&lt;DateTime&lt;Utc&gt;&gt;,
+    #[serde(deserialize_with = &quot;deserialize_option&quot;)]
+    #[serde(serialize_with = &quot;serialize_option&quot;)]
+    pub(crate) deleted_at: Option&lt;DateTime&lt;Utc&gt;&gt;,
+    pub(crate) email: String,
+    pub(crate) username: String,
+    pub(crate) password: String,
+    pub(crate) image_url: String,
+    pub(crate) password_identifier: String,
+    pub(crate) verified: bool,
+    pub(crate) shared_prefs: String,
+}*/</span>
 
 <span class="doccomment">/// Used for getting the credentials from the client</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">JsonSchema</span>)]</span>

@@ -136,10 +136,23 @@
 <span id="136">136</span>
 <span id="137">137</span>
 <span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">Local</span>};
+<span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">expression</span>::<span class="ident">dsl</span>::<span class="ident">count</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">expression</span>::<span class="ident">exists</span>::<span class="ident">exists</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">select</span>;
 <span class="kw">use</span> <span class="ident">rayon</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">rocket_failure</span>::<span class="ident">errors</span>::<span class="ident">Status</span>;
@@ -153,7 +166,6 @@
 
 <span class="doccomment">///Creates note and if they already exist, it will do nothing</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create</span>(<span class="kw-2">mut</span> <span class="ident">note</span>: <span class="ident">Note</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="ident">note</span>.<span class="ident">synced</span> <span class="op">=</span> <span class="bool-val">true</span>;
     <span class="kw">let</span> <span class="ident">insert_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">insert_into</span>(<span class="ident">notes</span>::<span class="ident">table</span>)
         .<span class="ident">values</span>(<span class="kw-2">&amp;</span><span class="ident">note</span>)
         .<span class="ident">on_conflict</span>((<span class="ident">notes</span>::<span class="ident">columns</span>::<span class="ident">note_id</span>, <span class="ident">notes</span>::<span class="ident">columns</span>::<span class="ident">account_id</span>))
@@ -173,7 +185,17 @@
 }
 
 <span class="doccomment">///Updates note, it will create a new note if it doesnt exist</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">update</span>(<span class="ident">note</span>: <span class="ident">Note</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">update</span>(<span class="ident">note</span>: <span class="ident">Note</span>, <span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
+    <span class="kw">let</span> <span class="ident">note_exists</span> <span class="op">=</span> <span class="ident">notes</span>::<span class="ident">dsl</span>::<span class="ident">notes</span>.<span class="ident">select</span>((<span class="ident">notes</span>::<span class="ident">note_id</span>))
+        .<span class="ident">filter</span>(<span class="ident">notes</span>::<span class="ident">note_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">note</span>.<span class="ident">note_id</span>))
+        .<span class="ident">filter</span>(<span class="ident">notes</span>::<span class="ident">account_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>))
+        .<span class="ident">first</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(<span class="ident">connection</span>);
+    <span class="kw">if</span> <span class="ident">note_exists</span>.<span class="ident">is_err</span>() {
+        <span class="kw">return</span> <span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;NoteDoesntExist&quot;</span>.<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+        }
+    }
     <span class="kw">let</span> <span class="ident">insert_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">insert_into</span>(<span class="ident">notes</span>::<span class="ident">table</span>)
         .<span class="ident">values</span>(<span class="kw-2">&amp;</span><span class="ident">note</span>)
         .<span class="ident">on_conflict</span>((<span class="ident">notes</span>::<span class="ident">columns</span>::<span class="ident">note_id</span>, <span class="ident">notes</span>::<span class="ident">columns</span>::<span class="ident">account_id</span>))
@@ -194,11 +216,11 @@
 }
 
 <span class="doccomment">/// Delete single note in DB</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">delete</span>(<span class="ident">note_id</span>: <span class="ident">i32</span>, <span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">delete</span>(<span class="ident">note_id</span>: <span class="ident">String</span>, <span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
     <span class="kw">let</span> <span class="ident">note_exists</span> <span class="op">=</span> <span class="ident">notes</span>::<span class="ident">dsl</span>::<span class="ident">notes</span>.<span class="ident">select</span>((<span class="ident">notes</span>::<span class="ident">note_id</span>))
         .<span class="ident">filter</span>(<span class="ident">notes</span>::<span class="ident">note_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">note_id</span>))
         .<span class="ident">filter</span>(<span class="ident">notes</span>::<span class="ident">account_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>))
-        .<span class="ident">first</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>(<span class="ident">connection</span>);
+        .<span class="ident">first</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(<span class="ident">connection</span>);
     <span class="kw">return</span> <span class="kw">if</span> <span class="ident">note_exists</span>.<span class="ident">is_ok</span>() {
         <span class="kw">let</span> <span class="ident">delete_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">delete</span>(<span class="ident">notes</span>::<span class="ident">table</span>)
             .<span class="ident">filter</span>(<span class="ident">notes</span>::<span class="ident">note_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">note_id</span>))
@@ -216,22 +238,22 @@
         }
     } <span class="kw">else</span> {
         <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">note_exists</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="prelude-val">Ok</span>,
+            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;NoteDoesntExist&quot;</span>.<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
         }
     };
 }
 
 <span class="doccomment">/// Get list of notes updated after provided timestamp</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">get_notes_by_account</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">timestamp_last_updated</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="kw">let</span> <span class="ident">id_exists</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">select</span>(<span class="ident">exists</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))).<span class="ident">get_result</span>(<span class="ident">connection</span>);
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">get_notes_by_account</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">timestamp_last_updated</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
+    <span class="kw">let</span> <span class="ident">id_exists</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">select</span>(<span class="ident">exists</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>)))).<span class="ident">get_result</span>(<span class="ident">connection</span>);
     <span class="kw">if</span> <span class="op">!</span><span class="ident">id_exists</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>() {
         <span class="kw">return</span> <span class="ident">ApiResponse</span> {
             <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UserNotFoundError&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
             <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
         };
     };
-    <span class="kw">let</span> <span class="ident">notes_result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Note</span><span class="op">&gt;</span>, <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">notes</span>::<span class="ident">dsl</span>::<span class="ident">notes</span>.<span class="ident">filter</span>(<span class="ident">notes</span>::<span class="ident">account_id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)).<span class="ident">load</span>::<span class="op">&lt;</span><span class="ident">Note</span><span class="op">&gt;</span>(<span class="ident">connection</span>);
+    <span class="kw">let</span> <span class="ident">notes_result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Note</span><span class="op">&gt;</span>, <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">notes</span>::<span class="ident">dsl</span>::<span class="ident">notes</span>.<span class="ident">filter</span>(<span class="ident">notes</span>::<span class="ident">account_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>)).<span class="ident">load</span>::<span class="op">&lt;</span><span class="ident">Note</span><span class="op">&gt;</span>(<span class="ident">connection</span>);
     <span class="kw">return</span> <span class="kw">if</span> <span class="ident">notes_result</span>.<span class="ident">is_ok</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">synced_notes</span> <span class="op">=</span> <span class="ident">notes_result</span>.<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">last_updated</span> <span class="op">=</span> <span class="ident">DateTime</span>::<span class="ident">parse_from_rfc3339</span>(<span class="ident">timestamp_last_updated</span>.<span class="ident">as_ref</span>()).<span class="ident">expect</span>(<span class="string">&quot;Could not parse DateTime string&quot;</span>);
@@ -260,7 +282,7 @@
 }
 
 <span class="doccomment">/// Delete all notes of an user</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">delete_all</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">delete_all</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
     <span class="kw">let</span> <span class="ident">delete_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">delete</span>(<span class="ident">notes</span>::<span class="ident">table</span>)
         .<span class="ident">filter</span>(<span class="ident">notes</span>::<span class="ident">account_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>))
         .<span class="ident">execute</span>(<span class="ident">connection</span>);

@@ -243,10 +243,10 @@
 
 <span class="kw">impl</span> <span class="ident">Token</span> {
     <span class="doccomment">/// Create new access_token for certain account_id</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create_access_token</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create_access_token</span>(<span class="ident">account_id</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
         <span class="kw">let</span> <span class="ident">access_token_secret</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;ACCESS_TOKEN_SECRET&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not find ACCESS_TOKEN_SECRET in .env&quot;</span>);
         <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">to_value</span>(<span class="kw-2">&amp;</span><span class="ident">Token</span> {
-            <span class="ident">sub</span>: <span class="ident">account_id</span>.<span class="ident">to_string</span>(),
+            <span class="ident">sub</span>: <span class="ident">account_id</span>,
             <span class="ident">exp</span>: <span class="ident">chrono</span>::<span class="ident">Utc</span>::<span class="ident">now</span>().<span class="ident">checked_add_signed</span>(<span class="ident">Duration</span>::<span class="ident">minutes</span>(<span class="number">15</span>)).<span class="ident">unwrap</span>().<span class="ident">timestamp</span>(),
         }).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">algo</span> <span class="op">=</span> <span class="ident">Algorithm</span>::<span class="ident">new_hmac</span>(<span class="ident">AlgorithmID</span>::<span class="ident">HS256</span>, <span class="ident">access_token_secret</span>).<span class="ident">unwrap</span>();
@@ -260,7 +260,7 @@
 <span class="attribute">#[<span class="ident">table_name</span> <span class="op">=</span> <span class="string">&quot;tokens&quot;</span>]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Insertable</span>, <span class="ident">Queryable</span>, <span class="ident">AsChangeset</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">JsonSchema</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RefreshTokenDb</span> {
-    <span class="ident">account_id</span>: <span class="ident">i32</span>,
+    <span class="ident">account_id</span>: <span class="ident">String</span>,
     <span class="ident">token</span>: <span class="ident">String</span>,
 }
 
@@ -268,23 +268,23 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">JsonSchema</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RefreshToken</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">sub</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">pwId</span>: <span class="ident">String</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">password_id</span>: <span class="ident">String</span>
 }
 
 <span class="kw">impl</span> <span class="ident">RefreshToken</span> {
     <span class="doccomment">/// Turns RefreshToken in RefreshTokenDb to store it in db</span>
     <span class="kw">fn</span> <span class="ident">create_db</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">token</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RefreshTokenDb</span> {
         <span class="ident">RefreshTokenDb</span> {
-            <span class="ident">account_id</span>: <span class="self">self</span>.<span class="ident">sub</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+            <span class="ident">account_id</span>: <span class="self">self</span>.<span class="ident">sub</span>.<span class="ident">clone</span>(),
             <span class="ident">token</span>,
         }
     }
     <span class="doccomment">/// Creates new refresh token with account_id and password identifier</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create_refresh_token</span>(<span class="ident">account_id</span>: <span class="ident">i32</span>, <span class="ident">password_identifier</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create_refresh_token</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">password_identifier</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
         <span class="kw">let</span> <span class="ident">refresh_token_secret</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;REFRESH_TOKEN_SECRET&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not find REFRESH_TOKEN_SECRET in .env&quot;</span>);
         <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">RefreshToken</span> {
-            <span class="ident">sub</span>: <span class="ident">account_id</span>.<span class="ident">to_string</span>(),
-            <span class="ident">pwId</span>: <span class="ident">password_identifier</span>,
+            <span class="ident">sub</span>: <span class="ident">account_id</span>.<span class="ident">clone</span>(),
+            <span class="ident">password_id</span>: <span class="ident">password_identifier</span>,
         };
         <span class="kw">let</span> <span class="ident">algo</span> <span class="op">=</span> <span class="ident">Algorithm</span>::<span class="ident">new_hmac</span>(<span class="ident">AlgorithmID</span>::<span class="ident">HS256</span>, <span class="ident">refresh_token_secret</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="macro">json</span><span class="macro">!</span>({<span class="string">&quot;alg&quot;</span>: <span class="ident">algo</span>.<span class="ident">name</span>()});
@@ -310,8 +310,8 @@
     <span class="kw">return</span> <span class="kw">if</span> <span class="ident">claims</span>.<span class="ident">is_ok</span>() {
         <span class="kw">let</span> <span class="ident">refresh_token</span>: <span class="ident">RefreshToken</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_value</span>(<span class="ident">claims</span>.<span class="ident">unwrap</span>()).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">connection</span> <span class="op">=</span> <span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">get_account_by_id</span>(<span class="ident">refresh_token</span>.<span class="ident">sub</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="kw-2">&amp;</span><span class="ident">connection</span>);
-        <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">password_identifier</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">refresh_token</span>.<span class="ident">pwId</span>) {
+        <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">get_account_by_id</span>(<span class="ident">refresh_token</span>.<span class="ident">sub</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="ident">connection</span>);
+        <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">password_identifier</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">refresh_token</span>.<span class="ident">password_id</span>) {
             <span class="prelude-val">Ok</span>(<span class="ident">refresh_token</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="string">&quot;Password identifier does not match&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>())
@@ -339,12 +339,12 @@
 <span class="doccomment">/// Refreshes the access token.</span>
 <span class="doccomment">/// Also checks if the password identifier matches with the one in the DB</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">refresh_token</span>(<span class="ident">refresh_token</span>: <span class="ident">RefreshToken</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">get_account_by_id</span>(<span class="ident">refresh_token</span>.<span class="ident">sub</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="ident">connection</span>);
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">password_identifier</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">refresh_token</span>.<span class="ident">pwId</span>) {
+    <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">get_account_by_id</span>(<span class="ident">refresh_token</span>.<span class="ident">sub</span>.<span class="ident">clone</span>(), <span class="ident">connection</span>);
+    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">password_identifier</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">refresh_token</span>.<span class="ident">password_id</span>) {
         <span class="kw">let</span> <span class="ident">refresh_response</span> <span class="op">=</span> <span class="ident">RefreshResponse</span> {
             <span class="ident">message</span>: <span class="string">&quot;RefreshSuccess&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
             <span class="ident">status</span>: <span class="bool-val">true</span>,
-            <span class="ident">token</span>: <span class="ident">Token</span>::<span class="ident">create_access_token</span>(<span class="ident">refresh_token</span>.<span class="ident">sub</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()),
+            <span class="ident">token</span>: <span class="ident">Token</span>::<span class="ident">create_access_token</span>(<span class="ident">refresh_token</span>.<span class="ident">sub</span>.<span class="ident">clone</span>()),
         };
         <span class="ident">ApiResponse</span> {
             <span class="ident">json</span>: <span class="ident">refresh_response</span>.<span class="ident">to_string</span>(),

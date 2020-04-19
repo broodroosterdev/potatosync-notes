@@ -57,7 +57,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="macro">table</span><span class="macro">!</span> {
     <span class="ident">accounts</span> (<span class="ident">id</span>) {
-        <span class="ident">id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Int4</span>,
+        <span class="ident">id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
         <span class="ident">created_at</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Timestamptz</span>,
         <span class="ident">updated_at</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">Timestamptz</span><span class="op">&gt;</span>,
         <span class="ident">deleted_at</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">Timestamptz</span><span class="op">&gt;</span>,
@@ -73,8 +73,8 @@
 
 <span class="macro">table</span><span class="macro">!</span> {
     <span class="ident">notes</span> (<span class="ident">note_id</span>, <span class="ident">account_id</span>) {
-        <span class="ident">note_id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Int4</span>,
-        <span class="ident">account_id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Int4</span>,
+        <span class="ident">note_id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
+        <span class="ident">account_id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
         <span class="ident">title</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
         <span class="ident">content</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
         <span class="ident">style_json</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
@@ -97,7 +97,7 @@
 
 <span class="macro">table</span><span class="macro">!</span> {
     <span class="ident">tokens</span> (<span class="ident">account_id</span>) {
-        <span class="ident">account_id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Int4</span>,
+        <span class="ident">account_id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
         <span class="ident">token</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
         <span class="ident">created_at</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
     }

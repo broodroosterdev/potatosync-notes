@@ -185,6 +185,7 @@ ALIASES["unicode_xid"] = {};
 ALIASES["untrusted"] = {};
 ALIASES["url"] = {};
 ALIASES["utf8_ranges"] = {};
+ALIASES["uuid"] = {};
 ALIASES["validator"] = {};
 ALIASES["validator_derive"] = {};
 ALIASES["walkdir"] = {};
