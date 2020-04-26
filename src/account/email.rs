@@ -3,13 +3,11 @@ use std::env;
 use sendgrid::{Destination, Mail, SGClient};
 use tera::{Context, Tera};
 
-use dotenv::dotenv;
-
 use crate::schema::tokens;
 
 lazy_static! {
     pub static ref TERA: Tera = {
-        let mut tera = match Tera::new("templates/**/*") {
+        let tera = match Tera::new("templates/**/*") {
             Ok(t) => t,
             Err(e) => {
                 println!("Parsing error(s): {}", e);
@@ -22,7 +20,7 @@ lazy_static! {
 
 /// Used for storing verification token in DB
 #[table_name = "tokens"]
-#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone, JsonSchema)]
+#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone)]
 pub struct VerificationToken {
     pub(crate) account_id: String,
     pub(crate) token: String,

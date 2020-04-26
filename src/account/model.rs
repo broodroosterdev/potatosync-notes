@@ -1,16 +1,12 @@
-use bcrypt::{DEFAULT_COST, hash, verify};
-use chrono::{DateTime, FixedOffset, Local, NaiveDateTime, SecondsFormat, TimeZone, Utc};
-use chrono::serde::{MilliSecondsTimestampVisitor, NanoSecondsTimestampVisitor};
+use chrono::{DateTime, TimeZone, Utc};
 use chrono::serde::ts_milliseconds::*;
 use diesel;
-use diesel::expression::exists::{exists, Exists};
+use diesel::expression::exists::exists;
 use diesel::prelude::*;
 use diesel::select;
 use serde::{Deserialize, Deserializer, Serializer};
 use serde_derive::*;
 
-use crate::account::controller::*;
-use crate::account::token::Token;
 use crate::schema::accounts;
 use crate::status_response::StatusResponse;
 
@@ -94,7 +90,7 @@ pub struct NewDBAccount {
 }*/
 
 /// Used for getting the credentials from the client
-#[derive(Serialize, Deserialize, Clone, JsonSchema)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct LoginCredentials {
     pub(crate) email: Option<String>,
     pub(crate) username: Option<String>,
@@ -102,25 +98,25 @@ pub struct LoginCredentials {
 }
 
 /// Used when changing password
-#[derive(Serialize, Deserialize, Clone, JsonSchema)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Password {
     pub(crate) password: String
 }
 
 /// Used when changing username
-#[derive(Serialize, Deserialize, Clone, JsonSchema)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Username {
     pub(crate) username: String
 }
 
 /// Used when changing Profile picture
-#[derive(Serialize, Deserialize, Clone, JsonSchema)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct Image {
     pub(crate) image: String
 }
 
 /// Used for verifying if the entered info when registering is valid
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize)]
 pub struct NewAccount {
     pub(crate) email: String,
     pub(crate) username: String,
@@ -192,7 +188,7 @@ impl TokenResponse {
         TokenResponse {
             message: "LoginSuccess".parse().unwrap(),
             status: true,
-            account: TokenAccount::from_account(account, access_token, refresh_token),
+            account: TokenAccount::from_account(account, Some(access_token), Some(refresh_token)),
         }
     }
 }
@@ -218,12 +214,14 @@ pub struct TokenAccount {
     email: String,
     username: String,
     image_url: String,
-    refresh_token: String,
-    access_token: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    refresh_token: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    access_token: Option<String>,
 }
 
 impl TokenAccount {
-    pub(crate) fn from_account(account: Account, access_token: String, refresh_token: String) -> TokenAccount {
+    pub(crate) fn from_account(account: Account, access_token: Option<String>, refresh_token: Option<String>) -> TokenAccount {
         TokenAccount {
             created_at: account.created_at.clone(),
             updated_at: account.updated_at,

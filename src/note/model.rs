@@ -1,10 +1,9 @@
-use chrono::{DateTime, FixedOffset, Local, SecondsFormat, Utc};
+use chrono::{DateTime, Utc};
 use chrono::serde::ts_milliseconds::*;
-use diesel::prelude::*;
 use serde_derive::*;
 
+use crate::account::model::{deserialize_option, serialize_option};
 use crate::schema::notes;
-use crate::status_response::StatusResponse;
 
 /// General Note struct used for retrieving from db and updating notes
 #[table_name = "notes"]
@@ -123,14 +122,39 @@ impl SavingNote {
     }
 }
 
+#[table_name = "notes"]
+#[derive(Queryable, Serialize, Deserialize, Insertable, AsChangeset, PartialEq, Clone)]
+pub struct PatchingNote {
+    pub note_id: Option<String>,
+    pub account_id: Option<String>,
+    pub title: Option<String>,
+    pub content: Option<String>,
+    pub style_json: Option<String>,
+    pub starred: Option<bool>,
+    #[serde(deserialize_with = "deserialize_option")]
+    #[serde(serialize_with = "serialize_option")]
+    pub last_modify_date: Option<DateTime<Utc>>,
+    pub color: Option<i32>,
+    pub images: Option<String>,
+    pub list: Option<bool>,
+    pub list_content: Option<String>,
+    pub reminders: Option<String>,
+    pub hide_content: Option<bool>,
+    pub lock_note: Option<bool>,
+    pub uses_biometrics: Option<bool>,
+    pub deleted: Option<bool>,
+    pub archived: Option<bool>,
+    pub synced: Option<bool>,
+}
+
 /// Struct used when client needs to specify certain note_id
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize)]
 pub struct NoteId {
     pub(crate) note_id: i32,
 }
 
 /// Struct used when client needs to specify last_updated timestamp
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize)]
 pub struct NoteLastUpdated {
     pub(crate) last_updated: String
 }

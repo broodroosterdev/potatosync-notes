@@ -4,7 +4,6 @@
 extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
-#[macro_use]
 extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
@@ -13,38 +12,26 @@ extern crate rand;
 #[macro_use]
 extern crate rocket;
 #[macro_use]
-extern crate rocket_okapi;
-#[macro_use]
 extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
 extern crate tera;
 extern crate validator;
-#[macro_use]
 extern crate validator_derive;
 
-
-use std::env;
-use std::io::{stdin, stdout};
 use std::path::Path;
 
-use diesel::{Connection, PgConnection};
 use diesel_migrations::*;
 use dotenv::dotenv;
-use rocket::{Data, Request, Response};
-use rocket::http::ContentType;
-use rocket::request::FromRequest;
-use rocket::response::{self, content, Redirect, Responder, status};
-use rocket_contrib::json::{Json, JsonValue};
+use rocket::response::{content, Redirect};
+use rocket_contrib::json::Json;
 use rocket_failure::errors::*;
-use rocket_okapi::swagger_ui::{make_swagger_ui, SwaggerUIConfig};
-use serde_json::Value;
 
 use crate::account::controller::{create, get_info, login, verify_email};
-use crate::account::model::{Image, LoginCredentials, NewAccount, Password, PatchingAccount, Username};
+use crate::account::model::{LoginCredentials, NewAccount, PatchingAccount};
 use crate::account::token::{read_refresh_token, refresh_token, RefreshTokenJson, Token};
 use crate::note::controller::*;
-use crate::note::model::{Note, NoteId, NoteLastUpdated, NoteResponse, SavingNote};
+use crate::note::model::{PatchingNote, SavingNote};
 use crate::status_response::ApiResponse;
 use crate::status_response::StatusResponse;
 
@@ -115,6 +102,18 @@ fn get_user_info(token: Token, connection: db::Connection) -> content::Json<Stri
     content::Json(get_info(token.sub.parse().unwrap(), &connection))
 }
 
+/// Route for deleting account and notes
+#[delete("/api/users", data = "<json_token>")]
+fn delete_user(json_token: Json<RefreshTokenJson>, _token: Token, connection: db::Connection) -> ApiResponse {
+    let token = read_refresh_token(json_token.token.as_str());
+    if token.is_err() {
+        return ApiResponse {
+            json: StatusResponse::new(token.err().unwrap(), false).to_string(),
+            status: Status::BadRequest,
+        };
+    }
+    account::controller::delete_user(token.unwrap(), &connection)
+}
 
 /// Route for saving note
 #[post("/api/notes", data = "<json_note>")]
@@ -128,6 +127,12 @@ fn save_note(json_note: Json<SavingNote>, token: Token, connection: db::Connecti
 fn update_note(json_note: Json<SavingNote>, token: Token, connection: db::Connection) -> ApiResponse {
     let note = json_note.to_note(token.sub.clone());
     note::controller::update(note, token.sub, &connection)
+}
+
+#[patch("/api/notes/<note_id>", data = "<json_note>")]
+fn patch_note(note_id: String, json_note: Json<PatchingNote>, token: Token, connection: db::Connection) -> ApiResponse {
+    let note = json_note.0;
+    note::controller::patch(note, note_id, token.sub, &connection)
 }
 
 /// Route for deleting single note identified by id
@@ -151,14 +156,14 @@ fn get_notes(last_updated: String, token: Token, connection: db::Connection) -> 
 
 /// Route used for catching 401 errors e.g. invalid access token
 #[catch(401)]
-fn token_error(req: &Request) -> ApiResponse {
+fn token_error() -> ApiResponse {
     ApiResponse {
         json: StatusResponse::new("Invalid auth token".parse().unwrap(), false).to_string(),
         status: Status::Unauthorized,
     }
 }
 
-/// Used to specify location of migration files
+// Used to specify location of migration files
 embed_migrations!("migrations");
 fn main() {
 // Load .env file
@@ -170,8 +175,8 @@ fn main() {
 // Start webserver
     rocket::ignite()
         .manage(db::connect())
-        .mount("/", routes![new_user, verify_user, login_user, refresh_user, change_user_info, get_user_info])
-        .mount("/", routes![save_note, update_note, delete_note, delete_all_notes, get_notes])
+        .mount("/", routes![new_user, verify_user, login_user, refresh_user, change_user_info, get_user_info, delete_user])
+        .mount("/", routes![save_note, update_note, patch_note, delete_note, delete_all_notes, get_notes])
         .register(catchers![token_error])
         .launch();
 }

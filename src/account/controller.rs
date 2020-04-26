@@ -1,23 +1,21 @@
 use std::env;
 
-use bcrypt::{DEFAULT_COST, hash, verify};
+use bcrypt::hash;
 use chrono::{Local, SecondsFormat, Utc};
-use diesel::{ExpressionMethods, PgConnection, RunQueryDsl, select};
+use diesel::{Connection, ExpressionMethods, PgConnection, RunQueryDsl, select};
 use diesel::expression::exists::exists;
 use diesel::query_dsl::filter_dsl::FilterDsl;
 use diesel::result::Error;
-use openssl::sha::sha1;
 use rand::distributions::Alphanumeric;
 use rand::Rng;
-use rocket::response::status::BadRequest;
 use rocket_failure::errors::Status;
 use uuid::Uuid;
 
 use crate::account::email::{create_token_email, send_email, VerificationToken};
-use crate::account::model::{Account, InfoResponse, LoginCredentials, NewAccount, Password, PatchingAccount, TokenAccount, TokenResponse, Username, validate_password, validate_username};
+use crate::account::model::{Account, InfoResponse, LoginCredentials, NewAccount, PatchingAccount, TokenAccount, TokenResponse, validate_password, validate_username};
 use crate::account::token::{RefreshToken, Token};
-use crate::account::token;
 use crate::schema::accounts;
+use crate::schema::notes;
 use crate::schema::tokens;
 use crate::status_response::{ApiResponse, StatusResponse};
 
@@ -58,7 +56,7 @@ pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) ->
         return Err(StatusResponse::new("User is not verified".parse().unwrap(), false));
     }
     let access_token = Token::create_access_token(account.id.clone());
-    let refresh_token = RefreshToken::create_refresh_token(account.id.clone(), account.password_identifier.clone(), connection);
+    let refresh_token = RefreshToken::create_refresh_token(account.id.clone(), account.password_identifier.clone());
     Ok(TokenResponse::new(account, access_token, refresh_token))
 }
 
@@ -136,12 +134,10 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
         let email = create_token_email(account.username.clone(), format!("{}/api/users/verify/{}/{}", domain, token_db.account_id, token_db.token));
         send_email(email, account.email.clone());
     }
-    let access_token = Token::create_access_token(account.id.clone());
-    let refresh_token = RefreshToken::create_refresh_token(account.id.clone(), password_identifier.clone(), connection);
     let json = TokenResponse {
         message: "AccCreationSuccess".parse().unwrap(),
         status: true,
-        account: TokenAccount::from_account(account, access_token, refresh_token),
+        account: TokenAccount::from_account(account, None, None),
     }.to_string();
     return ApiResponse {
         json,
@@ -317,11 +313,27 @@ pub(crate) fn get_info(account_id: String, connection: &PgConnection) -> String 
     return InfoResponse::new(account).to_string();
 }
 
-/*
-pub(crate) fn save_image(account_id: i32, image_url: String, connection: &PgConnection) -> String {
-
-    let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))).get_result(connection);
+/// Delete user
+pub(crate) fn delete_user(refresh_token: RefreshToken, connection: &PgConnection) -> ApiResponse {
+    let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(&refresh_token.sub)))).get_result(connection);
     if !id_exists.ok().unwrap() {
-        return StatusResponse::new("UserNotFoundError".parse().unwrap(), false).to_string();
+        return ApiResponse {
+            json: StatusResponse::new("UserNotFoundError".parse().unwrap(), false).to_string(),
+            status: Status::NotFound,
+        };
     }
-}*/
+    let delete_result = diesel::delete(notes::table)
+        .filter(notes::dsl::account_id.eq(&refresh_token.sub))
+        .execute(connection);
+    return if delete_result.is_err() {
+        ApiResponse {
+            json: StatusResponse::new("Error while removing account".parse().unwrap(), false).to_string(),
+            status: Status::BadRequest,
+        }
+    } else {
+        ApiResponse {
+            json: StatusResponse::new("DeletionSuccess".parse().unwrap(), true).to_string(),
+            status: Status::Ok,
+        }
+    }
+}

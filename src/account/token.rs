@@ -1,27 +1,21 @@
 use std::env;
-use std::ops::Add;
 
 use chrono::Duration;
-use diesel::{ExpressionMethods, PgConnection, RunQueryDsl, select};
-use diesel::expression::exists::exists;
-use diesel::query_dsl::filter_dsl::FilterDsl;
+use diesel::PgConnection;
 use jsonwebtokens::{Algorithm, AlgorithmID, encode, Verifier};
-use jsonwebtokens::error::Error;
 use rocket::{request, Request};
 use rocket::outcome::Outcome;
 use rocket::request::FromRequest;
 use rocket_failure::errors::Status;
-use serde_json::Value;
 
 use crate::account::controller::get_account_by_id;
-use crate::account::model::Account;
 use crate::db;
 use crate::schema::tokens;
 use crate::status_response::ApiResponse;
 use crate::status_response::StatusResponse;
 
 /// Claims for access_token
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize)]
 pub struct Token {
     pub(crate) sub: String,
     exp: i64,
@@ -78,29 +72,22 @@ impl Token {
 
 /// Used for storing token in DB
 #[table_name = "tokens"]
-#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone, JsonSchema)]
+#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone)]
 pub struct RefreshTokenDb {
     account_id: String,
     token: String,
 }
 
 /// Claims of the refresh token
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize)]
 pub struct RefreshToken {
     pub(crate) sub: String,
     pub(crate) password_id: String
 }
 
 impl RefreshToken {
-    /// Turns RefreshToken in RefreshTokenDb to store it in db
-    fn create_db(&self, token: String) -> RefreshTokenDb {
-        RefreshTokenDb {
-            account_id: self.sub.clone(),
-            token,
-        }
-    }
     /// Creates new refresh token with account_id and password identifier
-    pub(crate) fn create_refresh_token(account_id: String, password_identifier: String, connection: &PgConnection) -> String {
+    pub(crate) fn create_refresh_token(account_id: String, password_identifier: String) -> String {
         let refresh_token_secret = env::var("REFRESH_TOKEN_SECRET").expect("Could not find REFRESH_TOKEN_SECRET in .env");
         let token = RefreshToken {
             sub: account_id.clone(),
@@ -114,7 +101,7 @@ impl RefreshToken {
 }
 
 /// Struct used for getting refresh_token from client when refreshing
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize)]
 pub struct RefreshTokenJson {
     pub(crate) token: String
 }
@@ -143,7 +130,7 @@ pub fn read_refresh_token(key: &str) -> Result<RefreshToken, String> {
 }
 
 /// Struct used for sending back a new access_token with status of the request
-#[derive(Serialize, Deserialize, JsonSchema)]
+#[derive(Serialize, Deserialize)]
 pub struct RefreshResponse {
     message: String,
     status: bool,

@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS accounts
 CREATE TABLE IF NOT EXISTS notes
 (
     note_id          text        not null,
-    account_id       text        not null REFERENCES accounts (id),
+    account_id       text        not null REFERENCES accounts (id) ON DELETE CASCADE,
     title            text        not null,
     content          text        not null,
     style_json       text        not null,
@@ -44,7 +44,7 @@ CREATE INDEX IF NOT EXISTS idx_accounts_deleted_at ON accounts (deleted_at);
 
 CREATE TABLE IF NOT EXISTS tokens
 (
-    account_id text not null PRIMARY KEY REFERENCES accounts (id),
+    account_id text not null PRIMARY KEY REFERENCES accounts (id) ON DELETE CASCADE,
     token      text not null,
     created_at text not null
 );

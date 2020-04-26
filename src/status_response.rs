@@ -1,20 +1,10 @@
-use okapi::openapi3::RefOr::Ref;
-use okapi::openapi3::Responses;
 use rocket::{Request, Response, response};
 use rocket::http::ContentType;
 use rocket::response::Responder;
-use rocket_contrib::json::JsonValue;
 use rocket_failure::errors::Status;
-use rocket_okapi::gen::OpenApiGenerator;
-use rocket_okapi::OpenApiError;
-use rocket_okapi::response::OpenApiResponder;
-use rocket_okapi::Result;
-use rocket_okapi::util::add_schema_response;
-
-use crate::account::model::TokenResponse;
 
 /// Sent back on every request to indicate status and in case it has failed an error of the request
-#[derive(Serialize, JsonSchema)]
+#[derive(Serialize)]
 pub struct StatusResponse {
     pub(crate) message: String,
     pub(crate) status: bool,

@@ -1,21 +1,26 @@
-use chrono::{DateTime, Local};
-use diesel::expression::dsl::count;
+use chrono::DateTime;
 use diesel::expression::exists::exists;
 use diesel::prelude::*;
-use diesel::result::Error;
 use diesel::select;
-use rayon::prelude::*;
 use rocket_failure::errors::Status;
-use serde_derive::*;
 
-use crate::db;
-use crate::note::model::{Note, NoteLastUpdated, NoteResponse};
+use crate::note::model::{Note, NoteResponse, PatchingNote};
 use crate::schema::accounts;
 use crate::schema::notes;
 use crate::status_response::{ApiResponse, StatusResponse};
 
 ///Creates note and if they already exist, it will do nothing
-pub(crate) fn create(mut note: Note, connection: &PgConnection) -> ApiResponse {
+pub(crate) fn create(note: Note, connection: &PgConnection) -> ApiResponse {
+    let note_exists = notes::dsl::notes.select(notes::note_id)
+        .filter(notes::note_id.eq(&note.note_id))
+        .filter(notes::account_id.eq(&note.account_id))
+        .first::<String>(connection);
+    if note_exists.is_ok() {
+        return ApiResponse {
+            json: StatusResponse::new("NoteAlreadyExist".to_string(), false).to_string(),
+            status: Status::BadRequest,
+        }
+    }
     let insert_result = diesel::insert_into(notes::table)
         .values(&note)
         .on_conflict((notes::columns::note_id, notes::columns::account_id))
@@ -36,7 +41,7 @@ pub(crate) fn create(mut note: Note, connection: &PgConnection) -> ApiResponse {
 
 ///Updates note, it will create a new note if it doesnt exist
 pub(crate) fn update(note: Note, account_id: String, connection: &PgConnection) -> ApiResponse {
-    let note_exists = notes::dsl::notes.select((notes::note_id))
+    let note_exists = notes::dsl::notes.select(notes::note_id)
         .filter(notes::note_id.eq(&note.note_id))
         .filter(notes::account_id.eq(&account_id))
         .first::<String>(connection);
@@ -65,9 +70,37 @@ pub(crate) fn update(note: Note, account_id: String, connection: &PgConnection) 
     };
 }
 
+pub(crate) fn patch(note: PatchingNote, note_id: String, account_id: String, connection: &PgConnection) -> ApiResponse {
+    let note_exists = notes::dsl::notes.select(notes::note_id)
+        .filter(notes::note_id.eq(&note_id))
+        .filter(notes::account_id.eq(&account_id))
+        .first::<String>(connection);
+    if note_exists.is_err() {
+        return ApiResponse {
+            json: StatusResponse::new("NoteDoesntExist".to_string(), false).to_string(),
+            status: Status::BadRequest,
+        }
+    }
+    let mut patching_note = note;
+    patching_note.note_id = Some(note_id);
+    patching_note.account_id = Some(account_id);
+    let update_result = diesel::update(notes::table).set(&patching_note).execute(connection);
+    if update_result.is_err() {
+        return ApiResponse {
+            json: StatusResponse::new(update_result.err().unwrap().to_string(), false).to_string(),
+            status: Status::BadRequest,
+        }
+    } else {
+        return ApiResponse {
+            json: StatusResponse::new("PatchingSuccess".parse().unwrap(), true).to_string(),
+            status: Status::Ok,
+        }
+    }
+}
+
 /// Delete single note in DB
 pub(crate) fn delete(note_id: String, account_id: String, connection: &PgConnection) -> ApiResponse {
-    let note_exists = notes::dsl::notes.select((notes::note_id))
+    let note_exists = notes::dsl::notes.select(notes::note_id)
         .filter(notes::note_id.eq(&note_id))
         .filter(notes::account_id.eq(&account_id))
         .first::<String>(connection);
@@ -105,7 +138,7 @@ pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: S
     };
     let notes_result: Result<Vec<Note>, diesel::result::Error> = notes::dsl::notes.filter(notes::account_id.eq(&account_id)).load::<Note>(connection);
     return if notes_result.is_ok() {
-        let mut synced_notes = notes_result.unwrap();
+        let synced_notes = notes_result.unwrap();
         let last_updated = DateTime::parse_from_rfc3339(timestamp_last_updated.as_ref()).expect("Could not parse DateTime string");
         let mut updated_notes: Vec<Note> = vec![];
         for note in synced_notes {
