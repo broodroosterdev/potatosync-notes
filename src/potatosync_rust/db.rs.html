@@ -55,14 +55,12 @@
 <span id="55">55</span>
 <span id="56">56</span>
 <span id="57">57</span>
-<span id="58">58</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Deref</span>;
 
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">pg</span>::<span class="ident">PgConnection</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">r2d2</span>::{<span class="ident">ConnectionManager</span>, <span class="ident">Pool</span>, <span class="ident">PooledConnection</span>};
-<span class="kw">use</span> <span class="ident">dotenv</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">rocket</span>::{<span class="ident">Outcome</span>, <span class="ident">Request</span>, <span class="ident">State</span>};
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">http</span>::<span class="ident">Status</span>;
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">request</span>::{<span class="self">self</span>, <span class="ident">FromRequest</span>};

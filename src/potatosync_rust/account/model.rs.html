@@ -327,22 +327,16 @@
 <span id="327">327</span>
 <span id="328">328</span>
 <span id="329">329</span>
-<span id="330">330</span>
-<span id="331">331</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">bcrypt</span>::{<span class="ident">DEFAULT_COST</span>, <span class="ident">hash</span>, <span class="ident">verify</span>};
-<span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">FixedOffset</span>, <span class="ident">Local</span>, <span class="ident">NaiveDateTime</span>, <span class="ident">SecondsFormat</span>, <span class="ident">TimeZone</span>, <span class="ident">Utc</span>};
-<span class="kw">use</span> <span class="ident">chrono</span>::<span class="ident">serde</span>::{<span class="ident">MilliSecondsTimestampVisitor</span>, <span class="ident">NanoSecondsTimestampVisitor</span>};
+<span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">TimeZone</span>, <span class="ident">Utc</span>};
 <span class="kw">use</span> <span class="ident">chrono</span>::<span class="ident">serde</span>::<span class="ident">ts_milliseconds</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>;
-<span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">expression</span>::<span class="ident">exists</span>::{<span class="ident">exists</span>, <span class="ident">Exists</span>};
+<span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">expression</span>::<span class="ident">exists</span>::<span class="ident">exists</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">select</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Deserializer</span>, <span class="ident">Serializer</span>};
 <span class="kw">use</span> <span class="ident">serde_derive</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">controller</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">token</span>::<span class="ident">Token</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">schema</span>::<span class="ident">accounts</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">status_response</span>::<span class="ident">StatusResponse</span>;
 
@@ -426,7 +420,7 @@ pub struct NewDBAccount {
 }*/</span>
 
 <span class="doccomment">/// Used for getting the credentials from the client</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">JsonSchema</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LoginCredentials</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">email</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">username</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
@@ -434,25 +428,25 @@ pub struct NewDBAccount {
 }
 
 <span class="doccomment">/// Used when changing password</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">JsonSchema</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Password</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">password</span>: <span class="ident">String</span>
 }
 
 <span class="doccomment">/// Used when changing username</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">JsonSchema</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Username</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">username</span>: <span class="ident">String</span>
 }
 
 <span class="doccomment">/// Used when changing Profile picture</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">JsonSchema</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Image</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">image</span>: <span class="ident">String</span>
 }
 
 <span class="doccomment">/// Used for verifying if the entered info when registering is valid</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">JsonSchema</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NewAccount</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">email</span>: <span class="ident">String</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">username</span>: <span class="ident">String</span>,
@@ -524,7 +518,7 @@ pub struct NewDBAccount {
         <span class="ident">TokenResponse</span> {
             <span class="ident">message</span>: <span class="string">&quot;LoginSuccess&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
             <span class="ident">status</span>: <span class="bool-val">true</span>,
-            <span class="ident">account</span>: <span class="ident">TokenAccount</span>::<span class="ident">from_account</span>(<span class="ident">account</span>, <span class="ident">access_token</span>, <span class="ident">refresh_token</span>),
+            <span class="ident">account</span>: <span class="ident">TokenAccount</span>::<span class="ident">from_account</span>(<span class="ident">account</span>, <span class="prelude-val">Some</span>(<span class="ident">access_token</span>), <span class="prelude-val">Some</span>(<span class="ident">refresh_token</span>)),
         }
     }
 }
@@ -550,12 +544,14 @@ pub struct NewDBAccount {
     <span class="ident">email</span>: <span class="ident">String</span>,
     <span class="ident">username</span>: <span class="ident">String</span>,
     <span class="ident">image_url</span>: <span class="ident">String</span>,
-    <span class="ident">refresh_token</span>: <span class="ident">String</span>,
-    <span class="ident">access_token</span>: <span class="ident">String</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
+    <span class="ident">refresh_token</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>)]</span>
+    <span class="ident">access_token</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">TokenAccount</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_account</span>(<span class="ident">account</span>: <span class="ident">Account</span>, <span class="ident">access_token</span>: <span class="ident">String</span>, <span class="ident">refresh_token</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenAccount</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_account</span>(<span class="ident">account</span>: <span class="ident">Account</span>, <span class="ident">access_token</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">refresh_token</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenAccount</span> {
         <span class="ident">TokenAccount</span> {
             <span class="ident">created_at</span>: <span class="ident">account</span>.<span class="ident">created_at</span>.<span class="ident">clone</span>(),
             <span class="ident">updated_at</span>: <span class="ident">account</span>.<span class="ident">updated_at</span>,

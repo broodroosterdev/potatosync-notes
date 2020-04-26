@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["OpenApiSettings","Settings which are used to customise the behaviour of the `OpenApiGenerator`."]]});

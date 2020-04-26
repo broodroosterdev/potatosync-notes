@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["make_swagger_ui","Transform the provided `SwaggerUIConfig` into a list of `Route`s that serve the swagger web ui."]],"struct":[["SwaggerUIConfig","A struct containing information about where and how the `openapi.json` files are served."],["UrlObject","Contains a named url."]]});

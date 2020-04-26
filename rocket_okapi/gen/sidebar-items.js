@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["OpenApiGenerator","A struct that visits all `rocket::Route`s, and aggregates information about them."]]});

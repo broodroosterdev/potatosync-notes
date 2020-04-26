@@ -72,21 +72,17 @@
 <span id="72">72</span>
 <span id="73">73</span>
 <span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
 
 <span class="kw">use</span> <span class="ident">sendgrid</span>::{<span class="ident">Destination</span>, <span class="ident">Mail</span>, <span class="ident">SGClient</span>};
 <span class="kw">use</span> <span class="ident">tera</span>::{<span class="ident">Context</span>, <span class="ident">Tera</span>};
 
-<span class="kw">use</span> <span class="ident">dotenv</span>::<span class="ident">dotenv</span>;
-
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">schema</span>::<span class="ident">tokens</span>;
 
 <span class="macro">lazy_static</span><span class="macro">!</span> {
     <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">TERA</span>: <span class="ident">Tera</span> <span class="op">=</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tera</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">Tera</span>::<span class="ident">new</span>(<span class="string">&quot;templates/**/*&quot;</span>) {
+        <span class="kw">let</span> <span class="ident">tera</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">Tera</span>::<span class="ident">new</span>(<span class="string">&quot;templates/**/*&quot;</span>) {
             <span class="prelude-val">Ok</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>,
             <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Parsing error(s): {}&quot;</span>, <span class="ident">e</span>);
@@ -99,7 +95,7 @@
 
 <span class="doccomment">/// Used for storing verification token in DB</span>
 <span class="attribute">#[<span class="ident">table_name</span> <span class="op">=</span> <span class="string">&quot;tokens&quot;</span>]</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Insertable</span>, <span class="ident">Queryable</span>, <span class="ident">AsChangeset</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>, <span class="ident">JsonSchema</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Insertable</span>, <span class="ident">Queryable</span>, <span class="ident">AsChangeset</span>, <span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VerificationToken</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">account_id</span>: <span class="ident">String</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">token</span>: <span class="ident">String</span>,

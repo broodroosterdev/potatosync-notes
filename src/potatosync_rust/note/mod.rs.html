@@ -18,25 +18,7 @@
 <span id="18">18</span>
 <span id="19">19</span>
 <span id="20">20</span>
-<span id="21">21</span>
-<span id="22">22</span>
-<span id="23">23</span>
-<span id="24">24</span>
-<span id="25">25</span>
-<span id="26">26</span>
-<span id="27">27</span>
-<span id="28">28</span>
-<span id="29">29</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">rocket</span>::{<span class="self">self</span>, <span class="ident">http</span>::<span class="ident">Status</span>};
-<span class="kw">use</span> <span class="ident">rocket_contrib</span>::<span class="ident">json</span>::{<span class="ident">Json</span>, <span class="ident">JsonValue</span>};
-
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">db</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">schema</span>::<span class="ident">notes</span>;
-
-<span class="kw">use</span> <span class="self">self</span>::<span class="ident">model</span>::<span class="ident">Note</span>;
-
 <span class="doccomment">/// Models used for handling notes</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">model</span>;
 <span class="doccomment">/// Controller to handle the notes</span>
@@ -49,13 +31,13 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="comment">/*
-                #[test]
-                fn check_getting_note(){
-                    tests::check_create_note();
-                    let connection = db::connect().get().unwrap();
-                    let result: Note = Note::get_by_id(1, &amp;connection);
-                    println!(&quot;{}&quot;, result.title);
-                }*/</span>
+                    #[test]
+                    fn check_getting_note(){
+                        tests::check_create_note();
+                        let connection = db::connect().get().unwrap();
+                        let result: Note = Note::get_by_id(1, &amp;connection);
+                        println!(&quot;{}&quot;, result.title);
+                    }*/</span>
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "potatosync_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

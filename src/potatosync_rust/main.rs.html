@@ -175,6 +175,11 @@
 <span id="175">175</span>
 <span id="176">176</span>
 <span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">proc_macro_hygiene</span>, <span class="ident">decl_macro</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">in_band_lifetimes</span>)]</span>
@@ -182,7 +187,6 @@
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">diesel</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">diesel_migrations</span>;
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">dotenv</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">lazy_static</span>;
@@ -191,38 +195,26 @@
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rocket</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rocket_okapi</span>;
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_json</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">tera</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">validator</span>;
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">validator_derive</span>;
 
-
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="ident">stdin</span>, <span class="ident">stdout</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
 
-<span class="kw">use</span> <span class="ident">diesel</span>::{<span class="ident">Connection</span>, <span class="ident">PgConnection</span>};
 <span class="kw">use</span> <span class="ident">diesel_migrations</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">dotenv</span>::<span class="ident">dotenv</span>;
-<span class="kw">use</span> <span class="ident">rocket</span>::{<span class="ident">Data</span>, <span class="ident">Request</span>, <span class="ident">Response</span>};
-<span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">http</span>::<span class="ident">ContentType</span>;
-<span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">request</span>::<span class="ident">FromRequest</span>;
-<span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">response</span>::{<span class="self">self</span>, <span class="ident">content</span>, <span class="ident">Redirect</span>, <span class="ident">Responder</span>, <span class="ident">status</span>};
-<span class="kw">use</span> <span class="ident">rocket_contrib</span>::<span class="ident">json</span>::{<span class="ident">Json</span>, <span class="ident">JsonValue</span>};
+<span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">response</span>::{<span class="ident">content</span>, <span class="ident">Redirect</span>};
+<span class="kw">use</span> <span class="ident">rocket_contrib</span>::<span class="ident">json</span>::<span class="ident">Json</span>;
 <span class="kw">use</span> <span class="ident">rocket_failure</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">rocket_okapi</span>::<span class="ident">swagger_ui</span>::{<span class="ident">make_swagger_ui</span>, <span class="ident">SwaggerUIConfig</span>};
-<span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">Value</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">controller</span>::{<span class="ident">create</span>, <span class="ident">get_info</span>, <span class="ident">login</span>, <span class="ident">verify_email</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">model</span>::{<span class="ident">Image</span>, <span class="ident">LoginCredentials</span>, <span class="ident">NewAccount</span>, <span class="ident">Password</span>, <span class="ident">PatchingAccount</span>, <span class="ident">Username</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">model</span>::{<span class="ident">LoginCredentials</span>, <span class="ident">NewAccount</span>, <span class="ident">PatchingAccount</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">token</span>::{<span class="ident">read_refresh_token</span>, <span class="ident">refresh_token</span>, <span class="ident">RefreshTokenJson</span>, <span class="ident">Token</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">note</span>::<span class="ident">controller</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">note</span>::<span class="ident">model</span>::{<span class="ident">Note</span>, <span class="ident">NoteId</span>, <span class="ident">NoteLastUpdated</span>, <span class="ident">NoteResponse</span>, <span class="ident">SavingNote</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">note</span>::<span class="ident">model</span>::{<span class="ident">PatchingNote</span>, <span class="ident">SavingNote</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">status_response</span>::<span class="ident">ApiResponse</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">status_response</span>::<span class="ident">StatusResponse</span>;
 
@@ -293,6 +285,18 @@ fn delete_token(token: Data, token: token) {
     <span class="ident">content</span>::<span class="ident">Json</span>(<span class="ident">get_info</span>(<span class="ident">token</span>.<span class="ident">sub</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="kw-2">&amp;</span><span class="ident">connection</span>))
 }
 
+<span class="doccomment">/// Route for deleting account and notes</span>
+<span class="attribute">#[<span class="ident">delete</span>(<span class="string">&quot;/api/users&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;json_token&gt;&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">delete_user</span>(<span class="ident">json_token</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">RefreshTokenJson</span><span class="op">&gt;</span>, <span class="ident">_token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
+    <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">read_refresh_token</span>(<span class="ident">json_token</span>.<span class="ident">token</span>.<span class="ident">as_str</span>());
+    <span class="kw">if</span> <span class="ident">token</span>.<span class="ident">is_err</span>() {
+        <span class="kw">return</span> <span class="ident">ApiResponse</span> {
+            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">token</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
+            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+        };
+    }
+    <span class="ident">account</span>::<span class="ident">controller</span>::<span class="ident">delete_user</span>(<span class="ident">token</span>.<span class="ident">unwrap</span>(), <span class="kw-2">&amp;</span><span class="ident">connection</span>)
+}
 
 <span class="doccomment">/// Route for saving note</span>
 <span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/notes&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;json_note&gt;&quot;</span>)]</span>
@@ -306,6 +310,12 @@ fn delete_token(token: Data, token: token) {
 <span class="kw">fn</span> <span class="ident">update_note</span>(<span class="ident">json_note</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">SavingNote</span><span class="op">&gt;</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
     <span class="kw">let</span> <span class="ident">note</span> <span class="op">=</span> <span class="ident">json_note</span>.<span class="ident">to_note</span>(<span class="ident">token</span>.<span class="ident">sub</span>.<span class="ident">clone</span>());
     <span class="ident">note</span>::<span class="ident">controller</span>::<span class="ident">update</span>(<span class="ident">note</span>, <span class="ident">token</span>.<span class="ident">sub</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>)
+}
+
+<span class="attribute">#[<span class="ident">patch</span>(<span class="string">&quot;/api/notes/&lt;note_id&gt;&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;json_note&gt;&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">patch_note</span>(<span class="ident">note_id</span>: <span class="ident">String</span>, <span class="ident">json_note</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">PatchingNote</span><span class="op">&gt;</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
+    <span class="kw">let</span> <span class="ident">note</span> <span class="op">=</span> <span class="ident">json_note</span>.<span class="number">0</span>;
+    <span class="ident">note</span>::<span class="ident">controller</span>::<span class="ident">patch</span>(<span class="ident">note</span>, <span class="ident">note_id</span>, <span class="ident">token</span>.<span class="ident">sub</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>)
 }
 
 <span class="doccomment">/// Route for deleting single note identified by id</span>
@@ -329,14 +339,14 @@ fn delete_token(token: Data, token: token) {
 
 <span class="doccomment">/// Route used for catching 401 errors e.g. invalid access token</span>
 <span class="attribute">#[<span class="ident">catch</span>(<span class="number">401</span>)]</span>
-<span class="kw">fn</span> <span class="ident">token_error</span>(<span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
+<span class="kw">fn</span> <span class="ident">token_error</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
     <span class="ident">ApiResponse</span> {
         <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Invalid auth token&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
         <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">Unauthorized</span>,
     }
 }
 
-<span class="doccomment">/// Used to specify location of migration files</span>
+<span class="comment">// Used to specify location of migration files</span>
 <span class="macro">embed_migrations</span><span class="macro">!</span>(<span class="string">&quot;migrations&quot;</span>);
 <span class="kw">fn</span> <span class="ident">main</span>() {
 <span class="comment">// Load .env file</span>
@@ -348,8 +358,8 @@ fn delete_token(token: Data, token: token) {
 <span class="comment">// Start webserver</span>
     <span class="ident">rocket</span>::<span class="ident">ignite</span>()
         .<span class="ident">manage</span>(<span class="ident">db</span>::<span class="ident">connect</span>())
-        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">new_user</span>, <span class="ident">verify_user</span>, <span class="ident">login_user</span>, <span class="ident">refresh_user</span>, <span class="ident">change_user_info</span>, <span class="ident">get_user_info</span>])
-        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">save_note</span>, <span class="ident">update_note</span>, <span class="ident">delete_note</span>, <span class="ident">delete_all_notes</span>, <span class="ident">get_notes</span>])
+        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">new_user</span>, <span class="ident">verify_user</span>, <span class="ident">login_user</span>, <span class="ident">refresh_user</span>, <span class="ident">change_user_info</span>, <span class="ident">get_user_info</span>, <span class="ident">delete_user</span>])
+        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">save_note</span>, <span class="ident">update_note</span>, <span class="ident">patch_note</span>, <span class="ident">delete_note</span>, <span class="ident">delete_all_notes</span>, <span class="ident">get_notes</span>])
         .<span class="ident">register</span>(<span class="macro">catchers</span><span class="macro">!</span>[<span class="ident">token_error</span>])
         .<span class="ident">launch</span>();
 }

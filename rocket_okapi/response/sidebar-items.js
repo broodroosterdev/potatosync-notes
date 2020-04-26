@@ -1,1 +1,0 @@
-initSidebarItems({"trait":[["OpenApiResponder","Implementing this trait means that any route returning the implementer can be marked with `#[openapi]`, and that the route can be documented."]]});
