@@ -1,12 +1,12 @@
 # potatosync-rust
 The potatosync api, but in rust with some added features for the v2 release
 
-##How to install
-####Prerequisites
+## How to install
+#### Prerequisites
 * Latest Rust Nightly
 * Cargo installed
 
-####Steps
+#### Steps
 
 * Install Postgres client dependencies
 ```
