@@ -89,6 +89,7 @@ ALIASES["num_bigint"] = {};
 ALIASES["num_cpus"] = {};
 ALIASES["num_integer"] = {};
 ALIASES["num_traits"] = {};
+ALIASES["once_cell"] = {};
 ALIASES["opaque_debug"] = {};
 ALIASES["openssl"] = {};
 ALIASES["openssl_sys"] = {};
