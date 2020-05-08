@@ -1,6 +1,6 @@
 use std::env;
 
-use bcrypt::hash;
+use bcrypt::{hash, verify};
 use chrono::{Local, SecondsFormat, Utc};
 use diesel::{Connection, ExpressionMethods, PgConnection, RunQueryDsl, select};
 use diesel::expression::exists::exists;
@@ -52,9 +52,15 @@ pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) ->
         return Err(StatusResponse::new("Both username and password missing".parse().unwrap(), false));
     }
     let account = get_account_result.unwrap();
+    let hash_result = verify(credentials.password, account.password.clone().as_ref()).unwrap();
+    if hash_result != true {
+        return Err(StatusResponse::new("Username/Email or Password is incorrect".parse().unwrap(), false));
+    }
     if !account.verified {
         return Err(StatusResponse::new("User is not verified".parse().unwrap(), false));
     }
+
+
     let access_token = Token::create_access_token(account.id.clone());
     let refresh_token = RefreshToken::create_refresh_token(account.id.clone(), account.password_identifier.clone());
     Ok(TokenResponse::new(account, access_token, refresh_token))
