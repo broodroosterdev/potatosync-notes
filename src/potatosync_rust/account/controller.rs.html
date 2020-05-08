@@ -337,10 +337,16 @@
 <span id="337">337</span>
 <span id="338">338</span>
 <span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
 
-<span class="kw">use</span> <span class="ident">bcrypt</span>::<span class="ident">hash</span>;
+<span class="kw">use</span> <span class="ident">bcrypt</span>::{<span class="ident">hash</span>, <span class="ident">verify</span>};
 <span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">Local</span>, <span class="ident">SecondsFormat</span>, <span class="ident">Utc</span>};
 <span class="kw">use</span> <span class="ident">diesel</span>::{<span class="ident">Connection</span>, <span class="ident">ExpressionMethods</span>, <span class="ident">PgConnection</span>, <span class="ident">RunQueryDsl</span>, <span class="ident">select</span>};
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">expression</span>::<span class="ident">exists</span>::<span class="ident">exists</span>;
@@ -392,9 +398,15 @@
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Both username and password missing&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>));
     }
     <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">get_account_result</span>.<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="ident">hash_result</span> <span class="op">=</span> <span class="ident">verify</span>(<span class="ident">credentials</span>.<span class="ident">password</span>, <span class="ident">account</span>.<span class="ident">password</span>.<span class="ident">clone</span>().<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
+    <span class="kw">if</span> <span class="ident">hash_result</span> <span class="op">!</span><span class="op">=</span> <span class="bool-val">true</span> {
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Username/Email or Password is incorrect&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>));
+    }
     <span class="kw">if</span> <span class="op">!</span><span class="ident">account</span>.<span class="ident">verified</span> {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;User is not verified&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>));
     }
+
+
     <span class="kw">let</span> <span class="ident">access_token</span> <span class="op">=</span> <span class="ident">Token</span>::<span class="ident">create_access_token</span>(<span class="ident">account</span>.<span class="ident">id</span>.<span class="ident">clone</span>());
     <span class="kw">let</span> <span class="ident">refresh_token</span> <span class="op">=</span> <span class="ident">RefreshToken</span>::<span class="ident">create_refresh_token</span>(<span class="ident">account</span>.<span class="ident">id</span>.<span class="ident">clone</span>(), <span class="ident">account</span>.<span class="ident">password_identifier</span>.<span class="ident">clone</span>());
     <span class="prelude-val">Ok</span>(<span class="ident">TokenResponse</span>::<span class="ident">new</span>(<span class="ident">account</span>, <span class="ident">access_token</span>, <span class="ident">refresh_token</span>))
