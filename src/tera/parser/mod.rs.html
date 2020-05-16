@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tera-1.2.0/src/parser/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tera/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tera-1.3.0/src/parser/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../tera/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1146,6 +1146,24 @@
 <span id="1146">1146</span>
 <span id="1147">1147</span>
 <span id="1148">1148</span>
+<span id="1149">1149</span>
+<span id="1150">1150</span>
+<span id="1151">1151</span>
+<span id="1152">1152</span>
+<span id="1153">1153</span>
+<span id="1154">1154</span>
+<span id="1155">1155</span>
+<span id="1156">1156</span>
+<span id="1157">1157</span>
+<span id="1158">1158</span>
+<span id="1159">1159</span>
+<span id="1160">1160</span>
+<span id="1161">1161</span>
+<span id="1162">1162</span>
+<span id="1163">1163</span>
+<span id="1164">1164</span>
+<span id="1165">1165</span>
+<span id="1166">1166</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
 
@@ -1215,7 +1233,7 @@
         <span class="kw">match</span> <span class="ident">p</span>.<span class="ident">as_rule</span>() {
             <span class="ident">Rule</span>::<span class="ident">ident</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">p</span>.<span class="ident">as_span</span>().<span class="ident">as_str</span>().<span class="ident">to_string</span>()),
             <span class="ident">Rule</span>::<span class="ident">logic_expr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">parse_logic_expr</span>(<span class="ident">p</span>)<span class="question-mark">?</span>),
-            <span class="ident">Rule</span>::<span class="ident">array</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Expr</span>::<span class="ident">new</span>(<span class="ident">parse_array</span>(<span class="ident">p</span>)<span class="question-mark">?</span>)),
+            <span class="ident">Rule</span>::<span class="ident">array_filter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">parse_array_with_filters</span>(<span class="ident">p</span>)<span class="question-mark">?</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;{:?} not supposed to get there (parse_kwarg)!&quot;</span>, <span class="ident">p</span>.<span class="ident">as_rule</span>()),
         };
     }
@@ -1454,11 +1472,27 @@
     <span class="prelude-val">Ok</span>(<span class="ident">Expr</span> { <span class="ident">val</span>: <span class="ident">expr_val</span>.<span class="ident">unwrap</span>(), <span class="ident">negated</span>: <span class="bool-val">false</span>, <span class="ident">filters</span> })
 }
 
+<span class="doccomment">/// An array with optional filters</span>
+<span class="kw">fn</span> <span class="ident">parse_array_with_filters</span>(<span class="ident">pair</span>: <span class="ident">Pair</span><span class="op">&lt;</span><span class="ident">Rule</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TeraResult</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">array</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">filters</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
+
+    <span class="kw">for</span> <span class="ident">p</span> <span class="kw">in</span> <span class="ident">pair</span>.<span class="ident">into_inner</span>() {
+        <span class="kw">match</span> <span class="ident">p</span>.<span class="ident">as_rule</span>() {
+            <span class="ident">Rule</span>::<span class="ident">array</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">array</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">parse_array</span>(<span class="ident">p</span>)<span class="question-mark">?</span>),
+            <span class="ident">Rule</span>::<span class="ident">filter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">filters</span>.<span class="ident">push</span>(<span class="ident">parse_filter</span>(<span class="ident">p</span>)<span class="question-mark">?</span>),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;Got {:?}&quot;</span>, <span class="ident">p</span>),
+        };
+    }
+
+    <span class="prelude-val">Ok</span>(<span class="ident">Expr</span> { <span class="ident">val</span>: <span class="ident">array</span>.<span class="ident">unwrap</span>(), <span class="ident">negated</span>: <span class="bool-val">false</span>, <span class="ident">filters</span> })
+}
+
 <span class="kw">fn</span> <span class="ident">parse_in_condition_container</span>(<span class="ident">pair</span>: <span class="ident">Pair</span><span class="op">&lt;</span><span class="ident">Rule</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TeraResult</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">expr</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">for</span> <span class="ident">p</span> <span class="kw">in</span> <span class="ident">pair</span>.<span class="ident">into_inner</span>() {
         <span class="kw">match</span> <span class="ident">p</span>.<span class="ident">as_rule</span>() {
-            <span class="ident">Rule</span>::<span class="ident">array</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Expr</span>::<span class="ident">new</span>(<span class="ident">parse_array</span>(<span class="ident">p</span>)<span class="question-mark">?</span>)),
+            <span class="ident">Rule</span>::<span class="ident">array_filter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">parse_array_with_filters</span>(<span class="ident">p</span>)<span class="question-mark">?</span>),
             <span class="ident">Rule</span>::<span class="ident">dotted_square_bracket_ident</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">expr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Expr</span>::<span class="ident">new</span>(<span class="ident">ExprVal</span>::<span class="ident">Ident</span>(<span class="ident">p</span>.<span class="ident">as_str</span>().<span class="ident">to_string</span>())))
             }
@@ -1652,6 +1686,7 @@
                 <span class="ident">ws</span>.<span class="ident">right</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">as_span</span>().<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;-}}&quot;</span>;
             }
             <span class="ident">Rule</span>::<span class="ident">logic_expr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">parse_logic_expr</span>(<span class="ident">p</span>)<span class="question-mark">?</span>),
+            <span class="ident">Rule</span>::<span class="ident">array_filter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">parse_array_with_filters</span>(<span class="ident">p</span>)<span class="question-mark">?</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;unexpected {:?} rule in parse_variable_tag&quot;</span>, <span class="ident">p</span>.<span class="ident">as_rule</span>()),
         }
     }
@@ -1716,7 +1751,7 @@
             }
             <span class="ident">Rule</span>::<span class="ident">ident</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">key</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">p</span>.<span class="ident">as_str</span>().<span class="ident">to_string</span>()),
             <span class="ident">Rule</span>::<span class="ident">logic_expr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">parse_logic_expr</span>(<span class="ident">p</span>)<span class="question-mark">?</span>),
-            <span class="ident">Rule</span>::<span class="ident">array</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Expr</span>::<span class="ident">new</span>(<span class="ident">parse_array</span>(<span class="ident">p</span>)<span class="question-mark">?</span>)),
+            <span class="ident">Rule</span>::<span class="ident">array_filter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">expr</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">parse_array_with_filters</span>(<span class="ident">p</span>)<span class="question-mark">?</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;unexpected {:?} rule in parse_set_tag&quot;</span>, <span class="ident">p</span>.<span class="ident">as_rule</span>()),
         }
     }
@@ -1953,7 +1988,7 @@
                         <span class="ident">Rule</span>::<span class="ident">basic_expr_filter</span> <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="ident">container</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">parse_basic_expr_with_filters</span>(<span class="ident">p2</span>)<span class="question-mark">?</span>);
                         }
-                        <span class="ident">Rule</span>::<span class="ident">array</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">container</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Expr</span>::<span class="ident">new</span>(<span class="ident">parse_array</span>(<span class="ident">p2</span>)<span class="question-mark">?</span>)),
+                        <span class="ident">Rule</span>::<span class="ident">array_filter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">container</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">parse_array_with_filters</span>(<span class="ident">p2</span>)<span class="question-mark">?</span>),
                         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
                     };
                 }
@@ -2167,6 +2202,7 @@
                     <span class="ident">Rule</span>::<span class="ident">string_expr_filter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;a string or a concatenation of strings&quot;</span>.<span class="ident">to_string</span>(),
                     <span class="ident">Rule</span>::<span class="ident">all_chars</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;a character&quot;</span>.<span class="ident">to_string</span>(),
                     <span class="ident">Rule</span>::<span class="ident">array</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;an array of values&quot;</span>.<span class="ident">to_string</span>(),
+                    <span class="ident">Rule</span>::<span class="ident">array_filter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;an array of values with an optional filter&quot;</span>.<span class="ident">to_string</span>(),
                     <span class="ident">Rule</span>::<span class="ident">basic_val</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;a value&quot;</span>.<span class="ident">to_string</span>(),
                     <span class="ident">Rule</span>::<span class="ident">basic_op</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;a mathematical operator&quot;</span>.<span class="ident">to_string</span>(),
                     <span class="ident">Rule</span>::<span class="ident">comparison_op</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;a comparison operator&quot;</span>.<span class="ident">to_string</span>(),

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/pin-project-internal-0.4.13/src/utils.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>utils.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../pin_project_internal/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/pin-project-internal-0.4.16/src/utils.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>utils.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../pin_project_internal/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -368,21 +368,9 @@
 <span id="368">368</span>
 <span id="369">369</span>
 <span id="370">370</span>
-<span id="371">371</span>
-<span id="372">372</span>
-<span id="373">373</span>
-<span id="374">374</span>
-<span id="375">375</span>
-<span id="376">376</span>
-<span id="377">377</span>
-<span id="378">378</span>
-<span id="379">379</span>
-<span id="380">380</span>
-<span id="381">381</span>
-<span id="382">382</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">proc_macro2</span>::{<span class="ident">Group</span>, <span class="ident">TokenStream</span>, <span class="ident">TokenTree</span>};
-<span class="kw">use</span> <span class="ident">quote</span>::{<span class="ident">format_ident</span>, <span class="ident">quote_spanned</span>};
+<span class="kw">use</span> <span class="ident">quote</span>::<span class="ident">format_ident</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">iter</span>::<span class="ident">FromIterator</span>, <span class="ident">mem</span>};
 <span class="kw">use</span> <span class="ident">syn</span>::{
     <span class="ident">parse</span>::{<span class="ident">ParseBuffer</span>, <span class="ident">ParseStream</span>},
@@ -390,9 +378,6 @@
     <span class="ident">visit_mut</span>::{<span class="self">self</span>, <span class="ident">VisitMut</span>},
     <span class="kw-2">*</span>,
 };
-
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">DEFAULT_LIFETIME_NAME</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;&#39;pin&quot;</span>;
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">CURRENT_PRIVATE_MODULE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;__private&quot;</span>;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">Variants</span> <span class="op">=</span> <span class="ident">Punctuated</span><span class="op">&lt;</span><span class="ident">Variant</span>, <span class="ident">token</span>::<span class="ident">Comma</span><span class="op">&gt;</span>;
 
@@ -407,6 +392,12 @@
     };
 }
 
+<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">parse_quote_spanned</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span>:<span class="ident">expr</span> <span class="op">=</span><span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">syn</span>::<span class="ident">parse2</span>(<span class="ident">quote</span>::<span class="macro">quote_spanned</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">span</span> <span class="op">=</span><span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>)).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">e</span>))
+    };
+}
+
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">Mutability</span> {
     <span class="ident">Mutable</span>,
@@ -414,31 +405,42 @@
     <span class="ident">Owned</span>,
 }
 
-<span class="doccomment">/// Creates the ident of projected type from the ident of the original type.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">proj_ident</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>, <span class="ident">mutability</span>: <span class="ident">Mutability</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ident</span> {
-    <span class="kw">match</span> <span class="ident">mutability</span> {
-        <span class="ident">Mutability</span>::<span class="ident">Mutable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__{}Projection&quot;</span>, <span class="ident">ident</span>),
-        <span class="ident">Mutability</span>::<span class="ident">Immutable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__{}ProjectionRef&quot;</span>, <span class="ident">ident</span>),
-        <span class="ident">Mutability</span>::<span class="ident">Owned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__{}ProjectionOwned&quot;</span>, <span class="ident">ident</span>),
+<span class="kw">impl</span> <span class="ident">Mutability</span> {
+    <span class="doccomment">/// Returns the name of method and attribute.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">method_name</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">Mutable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;project&quot;</span>,
+            <span class="ident">Immutable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;project_ref&quot;</span>,
+            <span class="ident">Owned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;project_replace&quot;</span>,
+        }
+    }
+
+    <span class="doccomment">/// Creates the ident of the projected type from the ident of the original type.</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">proj_ident</span>(<span class="self">self</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Ident</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">Mutable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__{}Projection&quot;</span>, <span class="ident">ident</span>),
+            <span class="ident">Immutable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__{}ProjectionRef&quot;</span>, <span class="ident">ident</span>),
+            <span class="ident">Owned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__{}ProjectionOwned&quot;</span>, <span class="ident">ident</span>),
+        }
     }
 }
 
 <span class="doccomment">/// Determines the lifetime names. Ensure it doesn&#39;t overlap with any existing lifetime names.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">determine_lifetime_name</span>(
-    <span class="ident">lifetime_name</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">String</span>,
-    <span class="ident">generics</span>: <span class="kw-2">&amp;</span><span class="ident">Punctuated</span><span class="op">&lt;</span><span class="ident">GenericParam</span>, <span class="ident">token</span>::<span class="ident">Comma</span><span class="op">&gt;</span>,
-) {
-    <span class="kw">let</span> <span class="ident">existing_lifetimes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">generics</span>
-        .<span class="ident">iter</span>()
-        .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">param</span><span class="op">|</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">GenericParam</span>::<span class="ident">Lifetime</span>(<span class="ident">LifetimeDef</span> { <span class="ident">lifetime</span>, .. }) <span class="op">=</span> <span class="ident">param</span> {
-                <span class="prelude-val">Some</span>(<span class="ident">lifetime</span>.<span class="ident">to_string</span>())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">None</span>
-            }
-        })
-        .<span class="ident">collect</span>();
-    <span class="kw">while</span> <span class="ident">existing_lifetimes</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="ident">name</span>.<span class="ident">starts_with</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">lifetime_name</span>)) {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">determine_lifetime_name</span>(<span class="ident">lifetime_name</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">String</span>, <span class="ident">generics</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Generics</span>) {
+    <span class="kw">struct</span> <span class="ident">CollectLifetimes</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>);
+
+    <span class="kw">impl</span> <span class="ident">VisitMut</span> <span class="kw">for</span> <span class="ident">CollectLifetimes</span> {
+        <span class="kw">fn</span> <span class="ident">visit_lifetime_def_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LifetimeDef</span>) {
+            <span class="self">self</span>.<span class="number">0</span>.<span class="ident">push</span>(<span class="ident">node</span>.<span class="ident">lifetime</span>.<span class="ident">to_string</span>())
+        }
+    }
+
+    <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">lifetime_name</span>.<span class="ident">starts_with</span>(<span class="string">&#39;\&#39;&#39;</span>));
+
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lifetimes</span> <span class="op">=</span> <span class="ident">CollectLifetimes</span>(<span class="ident">Vec</span>::<span class="ident">new</span>());
+    <span class="ident">lifetimes</span>.<span class="ident">visit_generics_mut</span>(<span class="ident">generics</span>);
+
+    <span class="kw">while</span> <span class="ident">lifetimes</span>.<span class="number">0</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="ident">name</span>.<span class="ident">starts_with</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">lifetime_name</span>)) {
         <span class="ident">lifetime_name</span>.<span class="ident">push</span>(<span class="string">&#39;_&#39;</span>);
     }
 }
@@ -450,7 +452,7 @@
     <span class="ident">generics</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Generics</span>,
     <span class="ident">lifetime</span>: <span class="ident">Lifetime</span>,
     <span class="ident">orig_generics</span>: <span class="kw-2">&amp;</span><span class="ident">Generics</span>,
-    <span class="ident">orig_ident</span>: <span class="ident">Ident</span>,
+    <span class="ident">orig_ident</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WherePredicate</span> {
     <span class="ident">insert_lifetime</span>(<span class="ident">generics</span>, <span class="ident">lifetime</span>.<span class="ident">clone</span>());
 
@@ -468,31 +470,16 @@
 
 <span class="doccomment">/// Inserts a `lifetime` at position `0` of `generics.params`.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">insert_lifetime</span>(<span class="ident">generics</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Generics</span>, <span class="ident">lifetime</span>: <span class="ident">Lifetime</span>) {
-    <span class="kw">if</span> <span class="ident">generics</span>.<span class="ident">lt_token</span>.<span class="ident">is_none</span>() {
-        <span class="ident">generics</span>.<span class="ident">lt_token</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">token</span>::<span class="ident">Lt</span>::<span class="ident">default</span>())
-    }
-    <span class="kw">if</span> <span class="ident">generics</span>.<span class="ident">gt_token</span>.<span class="ident">is_none</span>() {
-        <span class="ident">generics</span>.<span class="ident">gt_token</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">token</span>::<span class="ident">Gt</span>::<span class="ident">default</span>())
-    }
+    <span class="ident">generics</span>.<span class="ident">lt_token</span>.<span class="ident">get_or_insert_with</span>(<span class="ident">token</span>::<span class="ident">Lt</span>::<span class="ident">default</span>);
+    <span class="ident">generics</span>.<span class="ident">gt_token</span>.<span class="ident">get_or_insert_with</span>(<span class="ident">token</span>::<span class="ident">Gt</span>::<span class="ident">default</span>);
 
-    <span class="ident">generics</span>.<span class="ident">params</span>.<span class="ident">insert</span>(
-        <span class="number">0</span>,
-        <span class="ident">GenericParam</span>::<span class="ident">Lifetime</span>(<span class="ident">LifetimeDef</span> {
-            <span class="ident">attrs</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">lifetime</span>,
-            <span class="ident">colon_token</span>: <span class="prelude-val">None</span>,
-            <span class="ident">bounds</span>: <span class="ident">Punctuated</span>::<span class="ident">new</span>(),
-        }),
-    );
+    <span class="ident">generics</span>.<span class="ident">params</span>.<span class="ident">insert</span>(<span class="number">0</span>, <span class="ident">GenericParam</span>::<span class="ident">Lifetime</span>(<span class="ident">LifetimeDef</span>::<span class="ident">new</span>(<span class="ident">lifetime</span>)));
 }
 
 <span class="doccomment">/// Determines the visibility of the projected type and projection method.</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">determine_visibility</span>(<span class="ident">vis</span>: <span class="kw-2">&amp;</span><span class="ident">Visibility</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Visibility</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Visibility</span>::<span class="ident">Public</span>(<span class="ident">token</span>) <span class="op">=</span> <span class="ident">vis</span> {
-        <span class="ident">syn</span>::<span class="ident">parse2</span>(<span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">token</span>.<span class="ident">pub_token</span>.<span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
-            <span class="kw">pub</span>(<span class="kw">crate</span>)
-        })
-        .<span class="ident">unwrap</span>()
+        <span class="macro">parse_quote_spanned</span><span class="macro">!</span>(<span class="ident">token</span>.<span class="ident">pub_token</span>.<span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">pub</span>(<span class="kw">crate</span>))
     } <span class="kw">else</span> {
         <span class="ident">vis</span>.<span class="ident">clone</span>()
     }
@@ -511,7 +498,6 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">SliceExt</span> {
     <span class="kw">fn</span> <span class="ident">position_exact</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>;
     <span class="kw">fn</span> <span class="ident">find</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Attribute</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">find_exact</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Attribute</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">VecExt</span> {
@@ -535,10 +521,6 @@
 
     <span class="kw">fn</span> <span class="ident">find</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Attribute</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">position</span>(<span class="op">|</span><span class="ident">attr</span><span class="op">|</span> <span class="ident">attr</span>.<span class="ident">path</span>.<span class="ident">is_ident</span>(<span class="ident">ident</span>)).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">get</span>(<span class="ident">i</span>))
-    }
-
-    <span class="kw">fn</span> <span class="ident">find_exact</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Attribute</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">position_exact</span>(<span class="ident">ident</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">pos</span><span class="op">|</span> <span class="ident">pos</span>.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">get</span>(<span class="ident">i</span>)))
     }
 }
 
@@ -574,15 +556,9 @@
 <span class="comment">// Replace `self`/`Self` with `__self`/`self_ty`.</span>
 <span class="comment">// Based on https://github.com/dtolnay/async-trait/blob/0.1.30/src/receiver.rs</span>
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">ReplaceReceiver</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">self_ty</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Type</span>,
-}
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">ReplaceReceiver</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Type</span>);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ReplaceReceiver</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">self_ty</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">self_ty</span> }
-    }
-
+<span class="kw">impl</span> <span class="ident">ReplaceReceiver</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">self_to_qself</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">qself</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">QSelf</span><span class="op">&gt;</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Path</span>) {
         <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">leading_colon</span>.<span class="ident">is_some</span>() {
             <span class="kw">return</span>;
@@ -600,7 +576,7 @@
 
         <span class="kw-2">*</span><span class="ident">qself</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">QSelf</span> {
             <span class="ident">lt_token</span>: <span class="ident">token</span>::<span class="ident">Lt</span>::<span class="ident">default</span>(),
-            <span class="ident">ty</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">self_ty</span>.<span class="ident">clone</span>()),
+            <span class="ident">ty</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>()),
             <span class="ident">position</span>: <span class="number">0</span>,
             <span class="ident">as_token</span>: <span class="prelude-val">None</span>,
             <span class="ident">gt_token</span>: <span class="ident">token</span>::<span class="ident">Gt</span>::<span class="ident">default</span>(),
@@ -625,7 +601,7 @@
             <span class="kw">return</span>;
         }
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="ident">self_ty</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">self_ty</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="ident">self_ty</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span> {
             <span class="kw">let</span> <span class="ident">variant</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">replace</span>(<span class="ident">path</span>, <span class="ident">self_ty</span>.<span class="ident">path</span>.<span class="ident">clone</span>());
             <span class="kw">for</span> <span class="ident">segment</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">path</span>.<span class="ident">segments</span> {
                 <span class="kw">if</span> <span class="kw">let</span> <span class="ident">PathArguments</span>::<span class="ident">AngleBracketed</span>(<span class="ident">bracketed</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">segment</span>.<span class="ident">arguments</span> {
@@ -652,7 +628,7 @@
     <span class="kw">fn</span> <span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Type</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="ident">node</span>) <span class="op">=</span> <span class="ident">ty</span> {
             <span class="kw">if</span> <span class="ident">node</span>.<span class="ident">qself</span>.<span class="ident">is_none</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">node</span>.<span class="ident">path</span>.<span class="ident">is_ident</span>(<span class="string">&quot;Self&quot;</span>) {
-                <span class="kw-2">*</span><span class="ident">ty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">self_ty</span>.<span class="ident">clone</span>();
+                <span class="kw-2">*</span><span class="ident">ty</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>();
             } <span class="kw">else</span> {
                 <span class="self">self</span>.<span class="ident">visit_type_path_mut</span>(<span class="ident">node</span>);
             }

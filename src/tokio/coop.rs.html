@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.20/src/coop.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>coop.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../tokio/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tokio-0.2.21/src/coop.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>coop.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../tokio/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -239,153 +239,16 @@
 <span id="239">239</span>
 <span id="240">240</span>
 <span id="241">241</span>
-<span id="242">242</span>
-<span id="243">243</span>
-<span id="244">244</span>
-<span id="245">245</span>
-<span id="246">246</span>
-<span id="247">247</span>
-<span id="248">248</span>
-<span id="249">249</span>
-<span id="250">250</span>
-<span id="251">251</span>
-<span id="252">252</span>
-<span id="253">253</span>
-<span id="254">254</span>
-<span id="255">255</span>
-<span id="256">256</span>
-<span id="257">257</span>
-<span id="258">258</span>
-<span id="259">259</span>
-<span id="260">260</span>
-<span id="261">261</span>
-<span id="262">262</span>
-<span id="263">263</span>
-<span id="264">264</span>
-<span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
-<span id="272">272</span>
-<span id="273">273</span>
-<span id="274">274</span>
-<span id="275">275</span>
-<span id="276">276</span>
-<span id="277">277</span>
-<span id="278">278</span>
-<span id="279">279</span>
-<span id="280">280</span>
-<span id="281">281</span>
-<span id="282">282</span>
-<span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
-<span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-<span id="296">296</span>
-<span id="297">297</span>
-<span id="298">298</span>
-<span id="299">299</span>
-<span id="300">300</span>
-<span id="301">301</span>
-<span id="302">302</span>
-<span id="303">303</span>
-<span id="304">304</span>
-<span id="305">305</span>
-<span id="306">306</span>
-<span id="307">307</span>
-<span id="308">308</span>
-<span id="309">309</span>
-<span id="310">310</span>
-<span id="311">311</span>
-<span id="312">312</span>
-<span id="313">313</span>
-<span id="314">314</span>
-<span id="315">315</span>
-<span id="316">316</span>
-<span id="317">317</span>
-<span id="318">318</span>
-<span id="319">319</span>
-<span id="320">320</span>
-<span id="321">321</span>
-<span id="322">322</span>
-<span id="323">323</span>
-<span id="324">324</span>
-<span id="325">325</span>
-<span id="326">326</span>
-<span id="327">327</span>
-<span id="328">328</span>
-<span id="329">329</span>
-<span id="330">330</span>
-<span id="331">331</span>
-<span id="332">332</span>
-<span id="333">333</span>
-<span id="334">334</span>
-<span id="335">335</span>
-<span id="336">336</span>
-<span id="337">337</span>
-<span id="338">338</span>
-<span id="339">339</span>
-<span id="340">340</span>
-<span id="341">341</span>
-<span id="342">342</span>
-<span id="343">343</span>
-<span id="344">344</span>
-<span id="345">345</span>
-<span id="346">346</span>
-<span id="347">347</span>
-<span id="348">348</span>
-<span id="349">349</span>
-<span id="350">350</span>
-<span id="351">351</span>
-<span id="352">352</span>
-<span id="353">353</span>
-<span id="354">354</span>
-<span id="355">355</span>
-<span id="356">356</span>
-<span id="357">357</span>
-<span id="358">358</span>
-<span id="359">359</span>
-<span id="360">360</span>
-<span id="361">361</span>
-<span id="362">362</span>
-<span id="363">363</span>
-<span id="364">364</span>
-<span id="365">365</span>
-<span id="366">366</span>
-<span id="367">367</span>
-<span id="368">368</span>
-<span id="369">369</span>
-<span id="370">370</span>
-<span id="371">371</span>
-<span id="372">372</span>
-<span id="373">373</span>
-<span id="374">374</span>
-<span id="375">375</span>
-<span id="376">376</span>
-<span id="377">377</span>
-<span id="378">378</span>
-<span id="379">379</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Opt-in yield points for improved cooperative scheduling.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! A single call to [`poll`] on a top-level task may potentially do a lot of work before it</span>
-<span class="doccomment">//! returns `Poll::Pending`. If a task runs for a long period of time without yielding back to the</span>
-<span class="doccomment">//! executor, it can starve other tasks waiting on that executor to execute them, or drive</span>
-<span class="doccomment">//! underlying resources. Since Rust does not have a runtime, it is difficult to forcibly preempt a</span>
-<span class="doccomment">//! long-running task. Instead, this module provides an opt-in mechanism for futures to collaborate</span>
-<span class="doccomment">//! with the executor to avoid starvation.</span>
+<span class="doccomment">//! A single call to [`poll`] on a top-level task may potentially do a lot of</span>
+<span class="doccomment">//! work before it returns `Poll::Pending`. If a task runs for a long period of</span>
+<span class="doccomment">//! time without yielding back to the executor, it can starve other tasks</span>
+<span class="doccomment">//! waiting on that executor to execute them, or drive underlying resources.</span>
+<span class="doccomment">//! Since Rust does not have a runtime, it is difficult to forcibly preempt a</span>
+<span class="doccomment">//! long-running task. Instead, this module provides an opt-in mechanism for</span>
+<span class="doccomment">//! futures to collaborate with the executor to avoid starvation.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Consider a future like this one:</span>
 <span class="doccomment">//!</span>
@@ -396,9 +259,10 @@
 <span class="doccomment">//! }</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! It may look harmless, but consider what happens under heavy load if the input stream is</span>
-<span class="doccomment">//! _always_ ready. If we spawn `drop_all`, the task will never yield, and will starve other tasks</span>
-<span class="doccomment">//! and resources on the same executor. With opt-in yield points, this problem is alleviated:</span>
+<span class="doccomment">//! It may look harmless, but consider what happens under heavy load if the</span>
+<span class="doccomment">//! input stream is _always_ ready. If we spawn `drop_all`, the task will never</span>
+<span class="doccomment">//! yield, and will starve other tasks and resources on the same executor. With</span>
+<span class="doccomment">//! opt-in yield points, this problem is alleviated:</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```ignore</span>
 <span class="doccomment">//! # use tokio::stream::{Stream, StreamExt};</span>
@@ -409,71 +273,99 @@
 <span class="doccomment">//! }</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! The `proceed` future will coordinate with the executor to make sure that every so often control</span>
-<span class="doccomment">//! is yielded back to the executor so it can run other tasks.</span>
+<span class="doccomment">//! The `proceed` future will coordinate with the executor to make sure that</span>
+<span class="doccomment">//! every so often control is yielded back to the executor so it can run other</span>
+<span class="doccomment">//! tasks.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Placing yield points</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! Voluntary yield points should be placed _after_ at least some work has been done. If they are</span>
-<span class="doccomment">//! not, a future sufficiently deep in the task hierarchy may end up _never_ getting to run because</span>
-<span class="doccomment">//! of the number of yield points that inevitably appear before it is reached. In general, you will</span>
-<span class="doccomment">//! want yield points to only appear in &quot;leaf&quot; futures -- those that do not themselves poll other</span>
-<span class="doccomment">//! futures. By doing this, you avoid double-counting each iteration of the outer future against</span>
-<span class="doccomment">//! the cooperating budget.</span>
+<span class="doccomment">//! Voluntary yield points should be placed _after_ at least some work has been</span>
+<span class="doccomment">//! done. If they are not, a future sufficiently deep in the task hierarchy may</span>
+<span class="doccomment">//! end up _never_ getting to run because of the number of yield points that</span>
+<span class="doccomment">//! inevitably appear before it is reached. In general, you will want yield</span>
+<span class="doccomment">//! points to only appear in &quot;leaf&quot; futures -- those that do not themselves poll</span>
+<span class="doccomment">//! other futures. By doing this, you avoid double-counting each iteration of</span>
+<span class="doccomment">//! the outer future against the cooperating budget.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!   [`poll`]: https://doc.rust-lang.org/std/future/trait.Future.html#tymethod.poll</span>
+<span class="doccomment">//! [`poll`]: https://doc.rust-lang.org/std/future/trait.Future.html#tymethod.poll</span>
 
 <span class="comment">// NOTE: The doctests in this module are ignored since the whole module is (currently) private.</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cell</span>::<span class="ident">Cell</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">future</span>::<span class="ident">Future</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>};
-
-<span class="doccomment">/// Constant used to determine how much &quot;work&quot; a task is allowed to do without yielding.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The value itself is chosen somewhat arbitrarily. It needs to be high enough to amortize wakeup</span>
-<span class="doccomment">/// and scheduling costs, but low enough that we do not starve other tasks for too long. The value</span>
-<span class="doccomment">/// also needs to be high enough that particularly deep tasks are able to do at least some useful</span>
-<span class="doccomment">/// work at all.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that as more yield points are added in the ecosystem, this value will probably also have</span>
-<span class="doccomment">/// to be raised.</span>
-<span class="kw">const</span> <span class="ident">BUDGET</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">128</span>;
-
-<span class="doccomment">/// Constant used to determine if budgeting has been disabled.</span>
-<span class="kw">const</span> <span class="ident">UNCONSTRAINED</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">usize</span>::<span class="ident">max_value</span>();
 
 <span class="macro">thread_local</span><span class="macro">!</span> {
-    <span class="kw">static</span> <span class="ident">HITS</span>: <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Cell</span>::<span class="ident">new</span>(<span class="ident">UNCONSTRAINED</span>);
+    <span class="kw">static</span> <span class="ident">CURRENT</span>: <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">Budget</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Cell</span>::<span class="ident">new</span>(<span class="ident">Budget</span>::<span class="ident">unconstrained</span>());
 }
 
-<span class="doccomment">/// Run the given closure with a cooperative task budget.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Enabling budgeting when it is already enabled is a no-op.</span>
+<span class="doccomment">/// Opaque type tracking the amount of &quot;work&quot; a task may still do before</span>
+<span class="doccomment">/// yielding back to the scheduler.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>)]</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Budget</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>);
+
+<span class="kw">impl</span> <span class="ident">Budget</span> {
+    <span class="doccomment">/// Budget assigned to a task on each poll.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// The value itself is chosen somewhat arbitrarily. It needs to be high</span>
+    <span class="doccomment">/// enough to amortize wakeup and scheduling costs, but low enough that we</span>
+    <span class="doccomment">/// do not starve other tasks for too long. The value also needs to be high</span>
+    <span class="doccomment">/// enough that particularly deep tasks are able to do at least some useful</span>
+    <span class="doccomment">/// work at all.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Note that as more yield points are added in the ecosystem, this value</span>
+    <span class="doccomment">/// will probably also have to be raised.</span>
+    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">initial</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Budget</span> {
+        <span class="ident">Budget</span>(<span class="prelude-val">Some</span>(<span class="number">128</span>))
+    }
+
+    <span class="doccomment">/// Returns an unconstrained budget. Operations will not be limited.</span>
+    <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">unconstrained</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Budget</span> {
+        <span class="ident">Budget</span>(<span class="prelude-val">None</span>)
+    }
+}
+
+<span class="macro">cfg_rt_threaded</span><span class="macro">!</span> {
+    <span class="kw">impl</span> <span class="ident">Budget</span> {
+        <span class="kw">fn</span> <span class="ident">has_remaining</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="self">self</span>.<span class="number">0</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">budget</span><span class="op">|</span> <span class="ident">budget</span> <span class="op">&gt;</span> <span class="number">0</span>).<span class="ident">unwrap_or</span>(<span class="bool-val">true</span>)
+        }
+    }
+}
+
+<span class="doccomment">/// Run the given closure with a cooperative task budget. When the function</span>
+<span class="doccomment">/// returns, the budget is reset to the value prior to calling the function.</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">budget</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>
-<span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">FnOnce</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>,
-{
-    <span class="ident">HITS</span>.<span class="ident">with</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">hits</span><span class="op">|</span> {
-        <span class="kw">if</span> <span class="ident">hits</span>.<span class="ident">get</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">UNCONSTRAINED</span> {
-            <span class="comment">// We are already being budgeted.</span>
-            <span class="comment">//</span>
-            <span class="comment">// Arguably this should be an error, but it can happen &quot;correctly&quot;</span>
-            <span class="comment">// such as with block_on + LocalSet, so we make it a no-op.</span>
-            <span class="kw">return</span> <span class="ident">f</span>();
-        }
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">budget</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span> {
+    <span class="ident">with_budget</span>(<span class="ident">Budget</span>::<span class="ident">initial</span>(), <span class="ident">f</span>)
+}
 
-        <span class="kw">struct</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>);
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-                <span class="self">self</span>.<span class="number">0</span>.<span class="ident">set</span>(<span class="ident">UNCONSTRAINED</span>);
-            }
-        }
+<span class="macro">cfg_rt_threaded</span><span class="macro">!</span> {
+    <span class="doccomment">/// Set the current task&#39;s budget</span>
+    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;blocking&quot;</span>)]</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">set</span>(<span class="ident">budget</span>: <span class="ident">Budget</span>) {
+        <span class="ident">CURRENT</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> <span class="ident">cell</span>.<span class="ident">set</span>(<span class="ident">budget</span>))
+    }
+}
 
-        <span class="ident">hits</span>.<span class="ident">set</span>(<span class="ident">BUDGET</span>);
-        <span class="kw">let</span> <span class="ident">_guard</span> <span class="op">=</span> <span class="ident">Guard</span>(<span class="ident">hits</span>);
+<span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+<span class="kw">fn</span> <span class="ident">with_budget</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">budget</span>: <span class="ident">Budget</span>, <span class="ident">f</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span> {
+    <span class="kw">struct</span> <span class="ident">ResetGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="ident">cell</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">Budget</span><span class="op">&gt;</span>,
+        <span class="ident">prev</span>: <span class="ident">Budget</span>,
+    }
+
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">ResetGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+            <span class="self">self</span>.<span class="ident">cell</span>.<span class="ident">set</span>(<span class="self">self</span>.<span class="ident">prev</span>);
+        }
+    }
+
+    <span class="ident">CURRENT</span>.<span class="ident">with</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
+        <span class="kw">let</span> <span class="ident">prev</span> <span class="op">=</span> <span class="ident">cell</span>.<span class="ident">get</span>();
+
+        <span class="ident">cell</span>.<span class="ident">set</span>(<span class="ident">budget</span>);
+
+        <span class="kw">let</span> <span class="ident">_guard</span> <span class="op">=</span> <span class="ident">ResetGuard</span> { <span class="ident">cell</span>, <span class="ident">prev</span> };
+
         <span class="ident">f</span>()
     })
 }
@@ -481,279 +373,111 @@
 <span class="macro">cfg_rt_threaded</span><span class="macro">!</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">has_budget_remaining</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="ident">HITS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">hits</span><span class="op">|</span> <span class="ident">hits</span>.<span class="ident">get</span>() <span class="op">&gt;</span> <span class="number">0</span>)
+        <span class="ident">CURRENT</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> <span class="ident">cell</span>.<span class="ident">get</span>().<span class="ident">has_remaining</span>())
     }
 }
 
 <span class="macro">cfg_blocking_impl</span><span class="macro">!</span> {
     <span class="doccomment">/// Forcibly remove the budgeting constraints early.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">stop</span>() {
-        <span class="ident">HITS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">hits</span><span class="op">|</span> {
-            <span class="ident">hits</span>.<span class="ident">set</span>(<span class="ident">UNCONSTRAINED</span>);
-        });
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Returns the remaining budget</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">stop</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Budget</span> {
+        <span class="ident">CURRENT</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">prev</span> <span class="op">=</span> <span class="ident">cell</span>.<span class="ident">get</span>();
+            <span class="ident">cell</span>.<span class="ident">set</span>(<span class="ident">Budget</span>::<span class="ident">unconstrained</span>());
+            <span class="ident">prev</span>
+        })
     }
 }
 
-<span class="doccomment">/// Invoke `f` with a subset of the remaining budget.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This is useful if you have sub-futures that you need to poll, but that you want to restrict</span>
-<span class="doccomment">/// from using up your entire budget. For example, imagine the following future:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// # use std::{future::Future, pin::Pin, task::{Context, Poll}};</span>
-<span class="doccomment">/// use futures::stream::FuturesUnordered;</span>
-<span class="doccomment">/// struct MyFuture&lt;F1, F2&gt; {</span>
-<span class="doccomment">///     big: FuturesUnordered&lt;F1&gt;,</span>
-<span class="doccomment">///     small: F2,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// use tokio::stream::Stream;</span>
-<span class="doccomment">/// impl&lt;F1, F2&gt; Future for MyFuture&lt;F1, F2&gt;</span>
-<span class="doccomment">///   where F1: Future, F2: Future</span>
-<span class="doccomment">/// # , F1: Unpin, F2: Unpin</span>
-<span class="doccomment">/// {</span>
-<span class="doccomment">///     type Output = F2::Output;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     // fn poll(...)</span>
-<span class="doccomment">/// # fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;F2::Output&gt; {</span>
-<span class="doccomment">/// #   let this = &amp;mut *self;</span>
-<span class="doccomment">///     let mut big = // something to pin self.big</span>
-<span class="doccomment">/// #                 Pin::new(&amp;mut this.big);</span>
-<span class="doccomment">///     let small = // something to pin self.small</span>
-<span class="doccomment">/// #             Pin::new(&amp;mut this.small);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     // see if any of the big futures have finished</span>
-<span class="doccomment">///     while let Some(e) = futures::ready!(big.as_mut().poll_next(cx)) {</span>
-<span class="doccomment">///         // do something with e</span>
-<span class="doccomment">/// #       let _ = e;</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     // see if the small future has finished</span>
-<span class="doccomment">///     small.poll(cx)</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// # }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// It could be that every time `poll` gets called, `big` ends up spending the entire budget, and</span>
-<span class="doccomment">/// `small` never gets polled. That would be sad. If you want to stick up for the little future,</span>
-<span class="doccomment">/// that&#39;s what `limit` is for. It lets you portion out a smaller part of the yield budget to a</span>
-<span class="doccomment">/// particular segment of your code. In the code above, you would write</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,ignore</span>
-<span class="doccomment">/// # use std::{future::Future, pin::Pin, task::{Context, Poll}};</span>
-<span class="doccomment">/// # use futures::stream::FuturesUnordered;</span>
-<span class="doccomment">/// # struct MyFuture&lt;F1, F2&gt; {</span>
-<span class="doccomment">/// #     big: FuturesUnordered&lt;F1&gt;,</span>
-<span class="doccomment">/// #     small: F2,</span>
-<span class="doccomment">/// # }</span>
-<span class="doccomment">/// #</span>
-<span class="doccomment">/// # use tokio::stream::Stream;</span>
-<span class="doccomment">/// # impl&lt;F1, F2&gt; Future for MyFuture&lt;F1, F2&gt;</span>
-<span class="doccomment">/// #   where F1: Future, F2: Future</span>
-<span class="doccomment">/// # , F1: Unpin, F2: Unpin</span>
-<span class="doccomment">/// # {</span>
-<span class="doccomment">/// # type Output = F2::Output;</span>
-<span class="doccomment">/// # fn poll(mut self: Pin&lt;&amp;mut Self&gt;, cx: &amp;mut Context&lt;&#39;_&gt;) -&gt; Poll&lt;F2::Output&gt; {</span>
-<span class="doccomment">/// #   let this = &amp;mut *self;</span>
-<span class="doccomment">/// #   let mut big = Pin::new(&amp;mut this.big);</span>
-<span class="doccomment">/// #   let small = Pin::new(&amp;mut this.small);</span>
-<span class="doccomment">/// #</span>
-<span class="doccomment">///     // see if any of the big futures have finished</span>
-<span class="doccomment">///     while let Some(e) = futures::ready!(tokio::coop::limit(64, || big.as_mut().poll_next(cx))) {</span>
-<span class="doccomment">/// #       // do something with e</span>
-<span class="doccomment">/// #       let _ = e;</span>
-<span class="doccomment">/// #   }</span>
-<span class="doccomment">/// #   small.poll(cx)</span>
-<span class="doccomment">/// # }</span>
-<span class="doccomment">/// # }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Now, even if `big` spends its entire budget, `small` will likely be left with some budget left</span>
-<span class="doccomment">/// to also do useful work. In particular, if the remaining budget was `N` at the start of `poll`,</span>
-<span class="doccomment">/// `small` will have at least a budget of `N - 64`. It may be more if `big` did not spend its</span>
-<span class="doccomment">/// entire budget.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that you cannot _increase_ your budget by calling `limit`. The budget provided to the code</span>
-<span class="doccomment">/// inside the buget is the _minimum_ of the _current_ budget and the bound.</span>
-<span class="doccomment">///</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>, <span class="ident">dead_code</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">limit</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">bound</span>: <span class="ident">usize</span>, <span class="ident">f</span>: <span class="kw">impl</span> <span class="ident">FnOnce</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span> {
-    <span class="ident">HITS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">hits</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="ident">budget</span> <span class="op">=</span> <span class="ident">hits</span>.<span class="ident">get</span>();
-        <span class="comment">// with_bound cannot _increase_ the remaining budget</span>
-        <span class="kw">let</span> <span class="ident">bound</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">budget</span>, <span class="ident">bound</span>);
-        <span class="comment">// When f() exits, how much should we add to what is left?</span>
-        <span class="kw">let</span> <span class="ident">floor</span> <span class="op">=</span> <span class="ident">budget</span>.<span class="ident">saturating_sub</span>(<span class="ident">bound</span>);
-        <span class="comment">// Make sure we restore the remaining budget even on panic</span>
-        <span class="kw">struct</span> <span class="ident">RestoreBudget</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Cell</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>, <span class="ident">usize</span>);
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">RestoreBudget</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-                <span class="kw">let</span> <span class="ident">left</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">get</span>();
-                <span class="self">self</span>.<span class="number">0</span>.<span class="ident">set</span>(<span class="self">self</span>.<span class="number">1</span> <span class="op">+</span> <span class="ident">left</span>);
+<span class="macro">cfg_coop</span><span class="macro">!</span> {
+    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">task</span>::{<span class="ident">Context</span>, <span class="ident">Poll</span>};
+
+    <span class="doccomment">/// Returns `Poll::Pending` if the current task has exceeded its budget and should yield.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="ident">CURRENT</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">budget</span> <span class="op">=</span> <span class="ident">cell</span>.<span class="ident">get</span>();
+
+            <span class="kw">if</span> <span class="ident">budget</span>.<span class="ident">decrement</span>() {
+                <span class="ident">cell</span>.<span class="ident">set</span>(<span class="ident">budget</span>);
+                <span class="ident">Poll</span>::<span class="ident">Ready</span>(())
+            } <span class="kw">else</span> {
+                <span class="ident">cx</span>.<span class="ident">waker</span>().<span class="ident">wake_by_ref</span>();
+                <span class="ident">Poll</span>::<span class="ident">Pending</span>
             }
-        }
-        <span class="comment">// Time to restrict!</span>
-        <span class="ident">hits</span>.<span class="ident">set</span>(<span class="ident">bound</span>);
-        <span class="kw">let</span> <span class="ident">_restore</span> <span class="op">=</span> <span class="ident">RestoreBudget</span>(<span class="kw-2">&amp;</span><span class="ident">hits</span>, <span class="ident">floor</span>);
-        <span class="ident">f</span>()
-    })
-}
-
-<span class="doccomment">/// Returns `Poll::Pending` if the current task has exceeded its budget and should yield.</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>, <span class="ident">dead_code</span>)]</span>
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="ident">HITS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">hits</span><span class="op">|</span> {
-        <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="ident">hits</span>.<span class="ident">get</span>();
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">=</span><span class="op">=</span> <span class="ident">UNCONSTRAINED</span> {
-            <span class="comment">// opted out of budgeting</span>
-            <span class="ident">Poll</span>::<span class="ident">Ready</span>(())
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">n</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="ident">cx</span>.<span class="ident">waker</span>().<span class="ident">wake_by_ref</span>();
-            <span class="ident">Poll</span>::<span class="ident">Pending</span>
-        } <span class="kw">else</span> {
-            <span class="ident">hits</span>.<span class="ident">set</span>(<span class="ident">n</span>.<span class="ident">saturating_sub</span>(<span class="number">1</span>));
-            <span class="ident">Poll</span>::<span class="ident">Ready</span>(())
-        }
-    })
-}
-
-<span class="doccomment">/// Resolves immediately unless the current task has already exceeded its budget.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This should be placed after at least some work has been done. Otherwise a future sufficiently</span>
-<span class="doccomment">/// deep in the task hierarchy may end up never getting to run because of the number of yield</span>
-<span class="doccomment">/// points that inevitably appear before it is even reached. For example:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// # use tokio::stream::{Stream, StreamExt};</span>
-<span class="doccomment">/// async fn drop_all&lt;I: Stream + Unpin&gt;(mut input: I) {</span>
-<span class="doccomment">///     while let Some(_) = input.next().await {</span>
-<span class="doccomment">///         tokio::coop::proceed().await;</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>, <span class="ident">dead_code</span>)]</span>
-<span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">proceed</span>() {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">future</span>::<span class="ident">poll_fn</span>;
-    <span class="ident">poll_fn</span>(<span class="op">|</span><span class="ident">cx</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)).<span class="kw">await</span>;
-}
-
-<span class="ident">pin_project_lite</span>::<span class="macro">pin_project</span><span class="macro">!</span> {
-    <span class="doccomment">/// A future that cooperatively yields to the task scheduler when polling,</span>
-    <span class="doccomment">/// if the task&#39;s budget is exhausted.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Internally, this is simply a future combinator which calls</span>
-    <span class="doccomment">/// [`poll_proceed`] in its `poll` implementation before polling the wrapped</span>
-    <span class="doccomment">/// future.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust,ignore</span>
-    <span class="doccomment">/// # #[tokio::main]</span>
-    <span class="doccomment">/// # async fn main() {</span>
-    <span class="doccomment">/// use tokio::coop::CoopFutureExt;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// async {  /* ... */ }</span>
-    <span class="doccomment">///     .cooperate()</span>
-    <span class="doccomment">///     .await;</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`poll_proceed`]: fn@poll_proceed</span>
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>, <span class="ident">dead_code</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CoopFuture</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">pin</span>]</span>
-        <span class="ident">future</span>: <span class="ident">F</span>,
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Future</span><span class="op">&gt;</span> <span class="ident">Future</span> <span class="kw">for</span> <span class="ident">CoopFuture</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">F</span>::<span class="ident">Output</span>;
-    <span class="kw">fn</span> <span class="ident">poll</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Output</span><span class="op">&gt;</span> {
-        <span class="macro">ready</span><span class="macro">!</span>(<span class="ident">poll_proceed</span>(<span class="ident">cx</span>));
-        <span class="self">self</span>.<span class="ident">project</span>().<span class="ident">future</span>.<span class="ident">poll</span>(<span class="ident">cx</span>)
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Future</span><span class="op">&gt;</span> <span class="ident">CoopFuture</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Returns a new `CoopFuture` wrapping the given future.</span>
-    <span class="doccomment">///</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_pub</span>, <span class="ident">dead_code</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">future</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">future</span> }
-    }
-}
-
-<span class="comment">// Currently only used by `tokio::sync`; and if we make this combinator public,</span>
-<span class="comment">// it should probably be on the `FutureExt` trait instead.</span>
-<span class="macro">cfg_sync</span><span class="macro">!</span> {
-    <span class="doccomment">/// Extension trait providing `Future::cooperate` extension method.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note: if/when the co-op API becomes public, this method should probably be</span>
-    <span class="doccomment">/// provided by `FutureExt`, instead.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait</span> <span class="ident">CoopFutureExt</span>: <span class="ident">Future</span> {
-        <span class="doccomment">/// Wrap `self` to cooperatively yield to the scheduler when polling, if the</span>
-        <span class="doccomment">/// task&#39;s budget is exhausted.</span>
-        <span class="kw">fn</span> <span class="ident">cooperate</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CoopFuture</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-        <span class="kw">where</span>
-            <span class="self">Self</span>: <span class="ident">Sized</span>,
-        {
-            <span class="ident">CoopFuture</span>::<span class="ident">new</span>(<span class="self">self</span>)
-        }
+        })
     }
 
-    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="ident">CoopFutureExt</span> <span class="kw">for</span> <span class="ident">F</span> <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">Future</span> {}
+    <span class="kw">impl</span> <span class="ident">Budget</span> {
+        <span class="doccomment">/// Decrement the budget. Returns `true` if successful. Decrementing fails</span>
+        <span class="doccomment">/// when there is not enough remaining budget.</span>
+        <span class="kw">fn</span> <span class="ident">decrement</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">num</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span> {
+                <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">num</span> <span class="op">&gt;</span> <span class="number">0</span> {
+                    <span class="kw-2">*</span><span class="ident">num</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
+                    <span class="bool-val">true</span>
+                } <span class="kw">else</span> {
+                    <span class="bool-val">false</span>
+                }
+            } <span class="kw">else</span> {
+                <span class="bool-val">true</span>
+            }
+    }
+    }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">test</span>, <span class="ident">not</span>(<span class="ident">loom</span>)))]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
-    <span class="kw">fn</span> <span class="ident">get</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="ident">HITS</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">hits</span><span class="op">|</span> <span class="ident">hits</span>.<span class="ident">get</span>())
+    <span class="kw">fn</span> <span class="ident">get</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Budget</span> {
+        <span class="ident">CURRENT</span>.<span class="ident">with</span>(<span class="op">|</span><span class="ident">cell</span><span class="op">|</span> <span class="ident">cell</span>.<span class="ident">get</span>())
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">bugeting</span>() {
+        <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">future</span>::<span class="ident">poll_fn</span>;
         <span class="kw">use</span> <span class="ident">tokio_test</span>::<span class="kw-2">*</span>;
 
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="ident">UNCONSTRAINED</span>);
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">get</span>().<span class="number">0</span>.<span class="ident">is_none</span>());
+
         <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="ident">UNCONSTRAINED</span>);
-        <span class="ident">budget</span>(<span class="op">|</span><span class="op">|</span> {
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="ident">BUDGET</span>);
-            <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="ident">BUDGET</span> <span class="op">-</span> <span class="number">1</span>);
-            <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="ident">BUDGET</span> <span class="op">-</span> <span class="number">2</span>);
-        });
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="ident">UNCONSTRAINED</span>);
+
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">get</span>().<span class="number">0</span>.<span class="ident">is_none</span>());
 
         <span class="ident">budget</span>(<span class="op">|</span><span class="op">|</span> {
-            <span class="ident">limit</span>(<span class="number">3</span>, <span class="op">|</span><span class="op">|</span> {
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="number">3</span>);
-                <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="number">2</span>);
-                <span class="ident">limit</span>(<span class="number">4</span>, <span class="op">|</span><span class="op">|</span> {
-                    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="number">2</span>);
-                    <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
-                    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="number">1</span>);
-                });
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="number">1</span>);
-                <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="number">0</span>);
-                <span class="macro">assert_pending</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="number">0</span>);
-                <span class="macro">assert_pending</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="number">0</span>);
-            });
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="ident">BUDGET</span> <span class="op">-</span> <span class="number">3</span>);
+            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>().<span class="number">0</span>, <span class="ident">Budget</span>::<span class="ident">initial</span>().<span class="number">0</span>);
             <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="ident">BUDGET</span> <span class="op">-</span> <span class="number">4</span>);
-            <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(<span class="ident">proceed</span>()).<span class="ident">poll</span>());
-            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>(), <span class="ident">BUDGET</span> <span class="op">-</span> <span class="number">5</span>);
+            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>().<span class="number">0</span>.<span class="ident">unwrap</span>(), <span class="ident">Budget</span>::<span class="ident">initial</span>().<span class="number">0</span>.<span class="ident">unwrap</span>() <span class="op">-</span> <span class="number">1</span>);
+            <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
+            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>().<span class="number">0</span>.<span class="ident">unwrap</span>(), <span class="ident">Budget</span>::<span class="ident">initial</span>().<span class="number">0</span>.<span class="ident">unwrap</span>() <span class="op">-</span> <span class="number">2</span>);
+
+            <span class="ident">budget</span>(<span class="op">|</span><span class="op">|</span> {
+                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>().<span class="number">0</span>, <span class="ident">Budget</span>::<span class="ident">initial</span>().<span class="number">0</span>);
+
+                <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
+                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>().<span class="number">0</span>.<span class="ident">unwrap</span>(), <span class="ident">Budget</span>::<span class="ident">initial</span>().<span class="number">0</span>.<span class="ident">unwrap</span>() <span class="op">-</span> <span class="number">1</span>);
+            });
+
+            <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get</span>().<span class="number">0</span>.<span class="ident">unwrap</span>(), <span class="ident">Budget</span>::<span class="ident">initial</span>().<span class="number">0</span>.<span class="ident">unwrap</span>() <span class="op">-</span> <span class="number">2</span>);
+        });
+
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">get</span>().<span class="number">0</span>.<span class="ident">is_none</span>());
+
+        <span class="ident">budget</span>(<span class="op">|</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="ident">get</span>().<span class="number">0</span>.<span class="ident">unwrap</span>();
+
+            <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">n</span> {
+                <span class="macro">assert_ready</span><span class="macro">!</span>(<span class="ident">task</span>::<span class="ident">spawn</span>(()).<span class="ident">enter</span>(<span class="op">|</span><span class="ident">cx</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">poll_proceed</span>(<span class="ident">cx</span>)));
+            }
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">task</span> <span class="op">=</span> <span class="ident">task</span>::<span class="ident">spawn</span>(<span class="ident">poll_fn</span>(<span class="op">|</span><span class="ident">cx</span><span class="op">|</span> {
+                <span class="macro">ready</span><span class="macro">!</span>(<span class="ident">poll_proceed</span>(<span class="ident">cx</span>));
+                <span class="ident">Poll</span>::<span class="ident">Ready</span>(())
+            }));
+
+            <span class="macro">assert_pending</span><span class="macro">!</span>(<span class="ident">task</span>.<span class="ident">poll</span>());
         });
     }
 }

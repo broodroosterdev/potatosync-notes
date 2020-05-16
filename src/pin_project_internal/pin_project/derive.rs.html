@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/pin-project-internal-0.4.13/src/pin_project/derive.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>derive.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../pin_project_internal/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/pin-project-internal-0.4.16/src/pin_project/derive.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>derive.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../pin_project_internal/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1076,13 +1076,6 @@
 <span id="1076">1076</span>
 <span id="1077">1077</span>
 <span id="1078">1078</span>
-<span id="1079">1079</span>
-<span id="1080">1080</span>
-<span id="1081">1081</span>
-<span id="1082">1082</span>
-<span id="1083">1083</span>
-<span id="1084">1084</span>
-<span id="1085">1085</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">proc_macro2</span>::{<span class="ident">Span</span>, <span class="ident">TokenStream</span>};
 <span class="kw">use</span> <span class="ident">quote</span>::{<span class="ident">format_ident</span>, <span class="ident">quote</span>, <span class="ident">quote_spanned</span>};
@@ -1094,95 +1087,73 @@
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">PIN</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::{
-    <span class="ident">determine_lifetime_name</span>, <span class="ident">determine_visibility</span>, <span class="ident">insert_lifetime_and_bound</span>, <span class="ident">proj_ident</span>,
-    <span class="ident">Immutable</span>, <span class="ident">Mutable</span>, <span class="ident">Owned</span>, <span class="ident">ParseBufferExt</span>, <span class="ident">ReplaceReceiver</span>, <span class="ident">SliceExt</span>, <span class="ident">Variants</span>,
-    <span class="ident">CURRENT_PRIVATE_MODULE</span>, <span class="ident">DEFAULT_LIFETIME_NAME</span>,
+    <span class="ident">determine_lifetime_name</span>, <span class="ident">determine_visibility</span>, <span class="ident">insert_lifetime_and_bound</span>, <span class="ident">Immutable</span>, <span class="ident">Mutable</span>,
+    <span class="ident">Owned</span>, <span class="ident">ParseBufferExt</span>, <span class="ident">ReplaceReceiver</span>, <span class="ident">SliceExt</span>, <span class="ident">Variants</span>,
 };
 
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">parse_derive</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">item</span> <span class="op">=</span> <span class="ident">syn</span>::<span class="ident">parse2</span>(<span class="ident">input</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">syn</span>::<span class="ident">parse2</span>(<span class="ident">input</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">DeriveInput</span> { <span class="ident">attrs</span>, <span class="ident">vis</span>, <span class="ident">ident</span>, <span class="ident">generics</span>, <span class="ident">data</span> } <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">input</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">new</span>(<span class="ident">attrs</span>, <span class="ident">vis</span>, <span class="ident">ident</span>, <span class="ident">generics</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">packed_check</span>;
 
-    <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">item</span> {
-        <span class="ident">Item</span>::<span class="ident">Struct</span>(<span class="ident">ItemStruct</span> { <span class="ident">attrs</span>, <span class="ident">vis</span>, <span class="ident">ident</span>, <span class="ident">generics</span>, <span class="ident">fields</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="ident">validate_struct</span>(<span class="ident">ident</span>, <span class="ident">fields</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">new</span>(<span class="ident">attrs</span>, <span class="ident">vis</span>, <span class="ident">ident</span>, <span class="ident">generics</span>)<span class="question-mark">?</span>;
-
+    <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">items</span>, <span class="ident">scoped_items</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">data</span> {
+        <span class="ident">Data</span>::<span class="ident">Struct</span>(<span class="ident">data</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// Do this first for a better error message.</span>
-            <span class="kw">let</span> <span class="ident">packed_check</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">ensure_not_packed</span>(<span class="ident">fields</span>)<span class="question-mark">?</span>;
-
-            <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">proj_items</span>, <span class="ident">proj_impl</span>) <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">parse_struct</span>(<span class="ident">fields</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">unpin_impl</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">make_unpin_impl</span>();
-            <span class="kw">let</span> <span class="ident">drop_impl</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">make_drop_impl</span>();
-
-            <span class="kw">let</span> <span class="ident">dummy_const</span> <span class="op">=</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__SCOPE_{}&quot;</span>, <span class="ident">ident</span>);
-            <span class="ident">proj_items</span>.<span class="ident">extend</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                <span class="comment">// All items except projected types are generated inside a `const` scope.</span>
-                <span class="comment">// This makes it impossible for user code to refer to these types.</span>
-                <span class="comment">// However, this prevents Rustdoc from displaying docs for any</span>
-                <span class="comment">// of our types. In particular, users cannot see the</span>
-                <span class="comment">// automatically generated `Unpin` impl for the &#39;__UnpinStruct&#39; types</span>
-                <span class="comment">//</span>
-                <span class="comment">// Previously, we provided a flag to correctly document the</span>
-                <span class="comment">// automatically generated `Unpin` impl by using def-site hygiene,</span>
-                <span class="comment">// but it is now removed.</span>
-                <span class="comment">//</span>
-                <span class="comment">// Refs:</span>
-                <span class="comment">// * https://github.com/rust-lang/rust/issues/63281</span>
-                <span class="comment">// * https://github.com/taiki-e/pin-project/pull/53#issuecomment-525906867</span>
-                <span class="comment">// * https://github.com/taiki-e/pin-project/pull/70</span>
-                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
-                <span class="kw">const</span> #<span class="ident">dummy_const</span>: () <span class="op">=</span> {
-                    #<span class="ident">proj_impl</span>
-                    #<span class="ident">unpin_impl</span>
-                    #<span class="ident">drop_impl</span>
-                    #<span class="ident">packed_check</span>
-                };
-            });
-
-            <span class="prelude-val">Ok</span>(<span class="ident">proj_items</span>)
+            <span class="ident">packed_check</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">cx</span>.<span class="ident">ensure_not_packed</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">fields</span>)<span class="question-mark">?</span>);
+            <span class="ident">cx</span>.<span class="ident">parse_struct</span>(<span class="ident">data</span>)<span class="question-mark">?</span>
         }
-        <span class="ident">Item</span>::<span class="ident">Enum</span>(<span class="ident">ItemEnum</span> { <span class="ident">attrs</span>, <span class="ident">vis</span>, <span class="ident">ident</span>, <span class="ident">generics</span>, <span class="ident">brace_token</span>, <span class="ident">variants</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="ident">validate_enum</span>(<span class="kw-2">*</span><span class="ident">brace_token</span>, <span class="ident">variants</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">new</span>(<span class="ident">attrs</span>, <span class="ident">vis</span>, <span class="ident">ident</span>, <span class="ident">generics</span>)<span class="question-mark">?</span>;
-
+        <span class="ident">Data</span>::<span class="ident">Enum</span>(<span class="ident">data</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// We don&#39;t need to check for `#[repr(packed)]`,</span>
             <span class="comment">// since it does not apply to enums.</span>
-
-            <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">proj_items</span>, <span class="ident">proj_impl</span>) <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">parse_enum</span>(<span class="ident">variants</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">unpin_impl</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">make_unpin_impl</span>();
-            <span class="kw">let</span> <span class="ident">drop_impl</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">make_drop_impl</span>();
-
-            <span class="kw">let</span> <span class="ident">dummy_const</span> <span class="op">=</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__SCOPE_{}&quot;</span>, <span class="ident">ident</span>);
-            <span class="ident">proj_items</span>.<span class="ident">extend</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
-                <span class="kw">const</span> #<span class="ident">dummy_const</span>: () <span class="op">=</span> {
-                    #<span class="ident">proj_impl</span>
-                    #<span class="ident">unpin_impl</span>
-                    #<span class="ident">drop_impl</span>
-                };
-            });
-
-            <span class="prelude-val">Ok</span>(<span class="ident">proj_items</span>)
+            <span class="ident">packed_check</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+            <span class="ident">cx</span>.<span class="ident">parse_enum</span>(<span class="ident">data</span>)<span class="question-mark">?</span>
         }
-        <span class="ident">item</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">item</span>, <span class="string">&quot;#[pin_project] attribute may only be used on structs or enums&quot;</span>)),
-    }
+        <span class="ident">Data</span>::<span class="ident">Union</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(
+                <span class="ident">input</span>,
+                <span class="string">&quot;#[pin_project] attribute may only be used on structs or enums&quot;</span>
+            ));
+        }
+    };
+
+    <span class="kw">let</span> <span class="ident">unpin_impl</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">make_unpin_impl</span>();
+    <span class="kw">let</span> <span class="ident">drop_impl</span> <span class="op">=</span> <span class="ident">cx</span>.<span class="ident">make_drop_impl</span>();
+    <span class="kw">let</span> <span class="ident">dummy_const</span> <span class="op">=</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__SCOPE_{}&quot;</span>, <span class="ident">ident</span>);
+    <span class="ident">items</span>.<span class="ident">extend</span>(<span class="macro">quote</span><span class="macro">!</span> {
+        <span class="comment">// All items except projected types are generated inside a `const` scope.</span>
+        <span class="comment">// This makes it impossible for user code to refer to these types.</span>
+        <span class="comment">// However, this prevents Rustdoc from displaying docs for any</span>
+        <span class="comment">// of our types. In particular, users cannot see the</span>
+        <span class="comment">// automatically generated `Unpin` impl for the &#39;__UnpinStruct&#39; types</span>
+        <span class="comment">//</span>
+        <span class="comment">// Previously, we provided a flag to correctly document the</span>
+        <span class="comment">// automatically generated `Unpin` impl by using def-site hygiene,</span>
+        <span class="comment">// but it is now removed.</span>
+        <span class="comment">//</span>
+        <span class="comment">// Refs:</span>
+        <span class="comment">// * https://github.com/rust-lang/rust/issues/63281</span>
+        <span class="comment">// * https://github.com/taiki-e/pin-project/pull/53#issuecomment-525906867</span>
+        <span class="comment">// * https://github.com/taiki-e/pin-project/pull/70</span>
+        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
+        <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/55058</span>
+        <span class="kw">const</span> #<span class="ident">dummy_const</span>: () <span class="op">=</span> {
+            #<span class="ident">scoped_items</span>
+            #<span class="ident">unpin_impl</span>
+            #<span class="ident">drop_impl</span>
+            #<span class="ident">packed_check</span>
+        };
+    });
+    <span class="prelude-val">Ok</span>(<span class="ident">items</span>)
 }
 
 <span class="kw">fn</span> <span class="ident">validate_struct</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>, <span class="ident">fields</span>: <span class="kw-2">&amp;</span><span class="ident">Fields</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">match</span> <span class="ident">fields</span> {
-        <span class="ident">Fields</span>::<span class="ident">Named</span>(<span class="ident">FieldsNamed</span> { <span class="ident">named</span>: <span class="ident">f</span>, .. })
-        <span class="op">|</span> <span class="ident">Fields</span>::<span class="ident">Unnamed</span>(<span class="ident">FieldsUnnamed</span> { <span class="ident">unnamed</span>: <span class="ident">f</span>, .. })
-            <span class="kw">if</span> <span class="ident">f</span>.<span class="ident">is_empty</span>() <span class="op">=</span><span class="op">&gt;</span>
-        {
-            <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(
-                <span class="ident">fields</span>,
-                <span class="string">&quot;#[pin_project] attribute may not be used on structs with zero fields&quot;</span>
-            ))
-        }
-        <span class="ident">Fields</span>::<span class="ident">Unit</span> <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">ident</span>, <span class="string">&quot;#[pin_project] attribute may not be used on structs with units&quot;</span>))
-        }
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
+    <span class="kw">if</span> <span class="ident">fields</span>.<span class="ident">is_empty</span>() {
+        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="string">&quot;#[pin_project] attribute may not be used on structs with zero fields&quot;</span>;
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Fields</span>::<span class="ident">Unit</span> <span class="op">=</span> <span class="ident">fields</span> { <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">ident</span>, <span class="ident">msg</span>)) } <span class="kw">else</span> { <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">fields</span>, <span class="ident">msg</span>)) }
+    } <span class="kw">else</span> {
+        <span class="prelude-val">Ok</span>(())
     }
 }
 
@@ -1198,7 +1169,7 @@
             <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">e</span>, <span class="string">&quot;#[pin_project] attribute may not be used on enums with discriminants&quot;</span>))
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">attr</span>) <span class="op">=</span> <span class="ident">v</span>.<span class="ident">attrs</span>.<span class="ident">find</span>(<span class="ident">PIN</span>) {
             <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">attr</span>, <span class="string">&quot;#[pin] attribute may only be used on fields of structs or variants&quot;</span>))
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Fields</span>::<span class="ident">Unit</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">fields</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">v</span>.<span class="ident">fields</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">Ok</span>(<span class="ident">has_field</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)
@@ -1207,54 +1178,48 @@
     <span class="kw">if</span> <span class="ident">has_field</span> {
         <span class="prelude-val">Ok</span>(())
     } <span class="kw">else</span> {
-        <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(
-            <span class="ident">variants</span>,
-            <span class="string">&quot;#[pin_project] attribute may not be used on enums that have no field&quot;</span>
-        ))
+        <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">variants</span>, <span class="string">&quot;#[pin_project] attribute may not be used on enums with zero fields&quot;</span>))
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
 <span class="kw">struct</span> <span class="ident">Args</span> {
-    <span class="doccomment">/// `PinnedDrop`.</span>
+    <span class="doccomment">/// `PinnedDrop` argument.</span>
     <span class="ident">pinned_drop</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Span</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// `UnsafeUnpin`.</span>
-    <span class="ident">unsafe_unpin</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Span</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// `Replace`.</span>
+    <span class="doccomment">/// `Replace` argument.</span>
     <span class="ident">replace</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Span</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// `UnsafeUnpin` or `!Unpin` argument.</span>
+    <span class="ident">unpin_impl</span>: <span class="ident">UnpinImpl</span>,
 }
 
 <span class="kw">const</span> <span class="ident">DUPLICATE_PIN</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;duplicate #[pin] attribute&quot;</span>;
 
 <span class="kw">impl</span> <span class="ident">Args</span> {
     <span class="kw">fn</span> <span class="ident">get</span>(<span class="ident">attrs</span>: <span class="kw-2">&amp;</span>[<span class="ident">Attribute</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="ident">Attribute</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Args</span><span class="op">&gt;</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prev</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="ident">Attribute</span>, <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>)<span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
-        <span class="kw">for</span> <span class="ident">attr</span> <span class="kw">in</span> <span class="ident">attrs</span> {
-            <span class="kw">if</span> <span class="ident">attr</span>.<span class="ident">path</span>.<span class="ident">is_ident</span>(<span class="ident">PIN</span>) {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">prev_attr</span>, <span class="ident">prev_res</span>)) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">prev</span> {
-                    <span class="comment">// As the `#[pin]` attribute generated by `#[pin_project]`</span>
-                    <span class="comment">// has the same span as `#[pin_project]`, it is possible</span>
-                    <span class="comment">// that a useless error message will be generated.</span>
-                    <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">syn</span>::<span class="ident">parse2</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>(<span class="ident">attr</span>.<span class="ident">tokens</span>.<span class="ident">clone</span>());
-                    <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="kw">match</span> (<span class="kw-2">&amp;</span><span class="ident">prev_res</span>, <span class="ident">res</span>) {
-                        (<span class="prelude-val">Ok</span>(<span class="kw">_</span>), <span class="prelude-val">Ok</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
-                        (<span class="kw">_</span>, <span class="prelude-val">Ok</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">prev_attr</span>,
-                        (<span class="prelude-val">Ok</span>(<span class="kw">_</span>), <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">attr</span>,
-                        (<span class="prelude-val">Err</span>(<span class="ident">prev_err</span>), <span class="prelude-val">Err</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
-                            <span class="kw">if</span> <span class="ident">prev_err</span>.<span class="ident">to_string</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">DUPLICATE_PIN</span> {
-                                <span class="ident">attr</span>
-                            } <span class="kw">else</span> {
-                                <span class="ident">prev_attr</span>
-                            }
+        <span class="kw">for</span> <span class="ident">attr</span> <span class="kw">in</span> <span class="ident">attrs</span>.<span class="ident">iter</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">attr</span><span class="op">|</span> <span class="ident">attr</span>.<span class="ident">path</span>.<span class="ident">is_ident</span>(<span class="ident">PIN</span>)) {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">prev_attr</span>, <span class="ident">prev_res</span>)) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">prev</span> {
+                <span class="comment">// As the `#[pin]` attribute generated by `#[pin_project]`</span>
+                <span class="comment">// has the same span as `#[pin_project]`, it is possible</span>
+                <span class="comment">// that a useless error message will be generated.</span>
+                <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">syn</span>::<span class="ident">parse2</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>(<span class="ident">attr</span>.<span class="ident">tokens</span>.<span class="ident">clone</span>());
+                <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="kw">match</span> (<span class="kw-2">&amp;</span><span class="ident">prev_res</span>, <span class="ident">res</span>) {
+                    (<span class="prelude-val">Ok</span>(<span class="kw">_</span>), <span class="prelude-val">Ok</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+                    (<span class="kw">_</span>, <span class="prelude-val">Ok</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">prev_attr</span>,
+                    (<span class="prelude-val">Ok</span>(<span class="kw">_</span>), <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">attr</span>,
+                    (<span class="prelude-val">Err</span>(<span class="ident">prev_err</span>), <span class="prelude-val">Err</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="kw">if</span> <span class="ident">prev_err</span>.<span class="ident">to_string</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">DUPLICATE_PIN</span> {
+                            <span class="ident">attr</span>
+                        } <span class="kw">else</span> {
+                            <span class="ident">prev_attr</span>
                         }
-                    };
-                    <span class="comment">// This error message is not ideal, but as this should basically be</span>
-                    <span class="comment">// rejected by attribute side, users will rarely actually see this error.</span>
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">span</span>, <span class="ident">DUPLICATE_PIN</span>));
-                }
-                <span class="ident">prev</span> <span class="op">=</span> <span class="prelude-val">Some</span>((<span class="ident">attr</span>, <span class="ident">syn</span>::<span class="ident">parse2</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>(<span class="ident">attr</span>.<span class="ident">tokens</span>.<span class="ident">clone</span>())));
+                    }
+                };
+                <span class="comment">// This error message is not ideal, but as this should basically be</span>
+                <span class="comment">// rejected by attribute side, users will rarely actually see this error.</span>
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">span</span>, <span class="ident">DUPLICATE_PIN</span>));
             }
+            <span class="ident">prev</span> <span class="op">=</span> <span class="prelude-val">Some</span>((<span class="ident">attr</span>, <span class="ident">syn</span>::<span class="ident">parse2</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>(<span class="ident">attr</span>.<span class="ident">tokens</span>.<span class="ident">clone</span>())));
         }
 
         <span class="comment">// This `unwrap` only fails if another macro removes `#[pin]`.</span>
@@ -1264,11 +1229,15 @@
 
 <span class="kw">impl</span> <span class="ident">Parse</span> <span class="kw">for</span> <span class="ident">Args</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="comment">// `(&lt;private&gt;(&lt;args&gt;))` -&gt; `&lt;args&gt;`</span>
+        <span class="kw">mod</span> <span class="ident">kw</span> {
+            <span class="ident">syn</span>::<span class="macro">custom_keyword</span><span class="macro">!</span>(<span class="ident">Unpin</span>);
+        }
+
+        <span class="comment">// `(__private(&lt;args&gt;))` -&gt; `&lt;args&gt;`</span>
         <span class="kw">fn</span> <span class="ident">parse_input</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ParseBuffer</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">content</span>) <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parenthesized</span>() {
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">private</span>) <span class="op">=</span> <span class="ident">content</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">Ident</span><span class="op">&gt;</span>() {
-                    <span class="kw">if</span> <span class="ident">private</span> <span class="op">=</span><span class="op">=</span> <span class="ident">CURRENT_PRIVATE_MODULE</span> {
+                    <span class="kw">if</span> <span class="ident">private</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;__private&quot;</span> {
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">args</span>) <span class="op">=</span> <span class="ident">content</span>.<span class="ident">parenthesized</span>() {
                             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">args</span>);
                         }
@@ -1284,7 +1253,7 @@
         }
 
         <span class="comment">// Replace `prev` with `new`. Returns `Err` if `prev` is `Some`.</span>
-        <span class="kw">fn</span> <span class="ident">replace</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">prev</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">T</span>, <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">update</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">prev</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">new</span>: <span class="ident">T</span>, <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
             <span class="kw">if</span> <span class="ident">prev</span>.<span class="ident">replace</span>(<span class="ident">new</span>).<span class="ident">is_some</span>() {
                 <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">token</span>, <span class="string">&quot;duplicate `{}` argument&quot;</span>, <span class="ident">token</span>))
             } <span class="kw">else</span> {
@@ -1293,32 +1262,26 @@
         }
 
         <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">parse_input</span>(<span class="ident">input</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pinned_drop</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">replace</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unsafe_unpin</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">not_unpin</span> <span class="op">=</span> <span class="prelude-val">None</span>;
         <span class="kw">while</span> <span class="op">!</span><span class="ident">input</span>.<span class="ident">is_empty</span>() {
-            <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">Ident</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
-            <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">token</span>.<span class="ident">to_string</span>() {
-                <span class="string">&quot;PinnedDrop&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">args</span>.<span class="ident">pinned_drop</span>, <span class="ident">token</span>.<span class="ident">span</span>(), <span class="kw-2">&amp;</span><span class="ident">token</span>)<span class="question-mark">?</span>;
-                    <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">replace</span>.<span class="ident">is_some</span>() {
-                        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(
-                            <span class="ident">token</span>,
-                            <span class="string">&quot;arguments `PinnedDrop` and `Replace` are mutually exclusive&quot;</span>
-                        ));
-                    }
+            <span class="kw">if</span> <span class="ident">input</span>.<span class="ident">peek</span>(<span class="ident">token</span>::<span class="ident">Bang</span>) {
+                <span class="kw">let</span> <span class="ident">t</span>: <span class="ident">token</span>::<span class="ident">Bang</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">k</span>: <span class="ident">kw</span>::<span class="ident">Unpin</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
+                <span class="kw">if</span> <span class="ident">not_unpin</span>.<span class="ident">replace</span>(<span class="ident">k</span>).<span class="ident">is_some</span>() {
+                    <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">t</span> #<span class="ident">k</span>);
+                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">span</span>, <span class="string">&quot;duplicate `!Unpin` argument&quot;</span>,));
                 }
-                <span class="string">&quot;Replace&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">args</span>.<span class="ident">replace</span>, <span class="ident">token</span>.<span class="ident">span</span>(), <span class="kw-2">&amp;</span><span class="ident">token</span>)<span class="question-mark">?</span>;
-                    <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">pinned_drop</span>.<span class="ident">is_some</span>() {
-                        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(
-                            <span class="ident">token</span>,
-                            <span class="string">&quot;arguments `PinnedDrop` and `Replace` are mutually exclusive&quot;</span>
-                        ));
-                    }
+            } <span class="kw">else</span> {
+                <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">Ident</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+                <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">token</span>.<span class="ident">to_string</span>() {
+                    <span class="string">&quot;PinnedDrop&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pinned_drop</span>, <span class="ident">token</span>.<span class="ident">span</span>(), <span class="kw-2">&amp;</span><span class="ident">token</span>)<span class="question-mark">?</span>,
+                    <span class="string">&quot;Replace&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">replace</span>, <span class="ident">token</span>.<span class="ident">span</span>(), <span class="kw-2">&amp;</span><span class="ident">token</span>)<span class="question-mark">?</span>,
+                    <span class="string">&quot;UnsafeUnpin&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">unsafe_unpin</span>, <span class="ident">token</span>.<span class="ident">span</span>(), <span class="kw-2">&amp;</span><span class="ident">token</span>)<span class="question-mark">?</span>,
+                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">token</span>, <span class="string">&quot;unexpected argument: {}&quot;</span>, <span class="ident">token</span>)),
                 }
-                <span class="string">&quot;UnsafeUnpin&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">args</span>.<span class="ident">unsafe_unpin</span>, <span class="ident">token</span>.<span class="ident">span</span>(), <span class="kw-2">&amp;</span><span class="ident">token</span>)<span class="question-mark">?</span>;
-                }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">error</span><span class="macro">!</span>(<span class="ident">token</span>, <span class="string">&quot;unexpected argument: {}&quot;</span>, <span class="ident">token</span>)),
             }
 
             <span class="kw">if</span> <span class="op">!</span><span class="ident">input</span>.<span class="ident">is_empty</span>() {
@@ -1326,7 +1289,25 @@
             }
         }
 
-        <span class="prelude-val">Ok</span>(<span class="ident">args</span>)
+        <span class="kw">if</span> <span class="kw">let</span> (<span class="prelude-val">Some</span>(<span class="ident">span</span>), <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=</span> (<span class="ident">pinned_drop</span>, <span class="ident">replace</span>) {
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">new</span>(
+                <span class="ident">span</span>,
+                <span class="string">&quot;arguments `PinnedDrop` and `Replace` are mutually exclusive&quot;</span>,
+            ));
+        }
+        <span class="kw">let</span> <span class="ident">unpin_impl</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">unsafe_unpin</span>, <span class="ident">not_unpin</span>) {
+            (<span class="prelude-val">Some</span>(<span class="ident">span</span>), <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">new</span>(
+                    <span class="ident">span</span>,
+                    <span class="string">&quot;arguments `UnsafeUnpin` and `!Unpin` are mutually exclusive&quot;</span>,
+                ));
+            }
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UnpinImpl</span>::<span class="ident">Default</span>,
+            (<span class="prelude-val">Some</span>(<span class="ident">span</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UnpinImpl</span>::<span class="ident">Unsafe</span>(<span class="ident">span</span>),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">span</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UnpinImpl</span>::<span class="ident">Negative</span>(<span class="ident">span</span>.<span class="ident">span</span>),
+        };
+
+        <span class="prelude-val">Ok</span>(<span class="self">Self</span> { <span class="ident">pinned_drop</span>, <span class="ident">replace</span>, <span class="ident">unpin_impl</span> })
     }
 }
 
@@ -1342,7 +1323,7 @@
 }
 
 <span class="kw">struct</span> <span class="ident">ProjectedType</span> {
-    <span class="doccomment">/// Visibility of the projected type.</span>
+    <span class="doccomment">/// Visibility of the projected types.</span>
     <span class="ident">vis</span>: <span class="ident">Visibility</span>,
     <span class="doccomment">/// Name of the projected type returned by `project` method.</span>
     <span class="ident">mut_ident</span>: <span class="ident">Ident</span>,
@@ -1350,11 +1331,11 @@
     <span class="ident">ref_ident</span>: <span class="ident">Ident</span>,
     <span class="doccomment">/// Name of the projected type returned by `project_replace` method.</span>
     <span class="ident">own_ident</span>: <span class="ident">Ident</span>,
-    <span class="doccomment">/// Lifetime on the generated projected type.</span>
+    <span class="doccomment">/// Lifetime on the generated projected types.</span>
     <span class="ident">lifetime</span>: <span class="ident">Lifetime</span>,
-    <span class="doccomment">/// Generics of the projected type.</span>
+    <span class="doccomment">/// Generics of the projected types.</span>
     <span class="ident">generics</span>: <span class="ident">Generics</span>,
-    <span class="doccomment">/// `where` clause of the projected type. This has an additional</span>
+    <span class="doccomment">/// `where` clause of the projected types. This has an additional</span>
     <span class="doccomment">/// bound generated by `insert_lifetime_and_bound`</span>
     <span class="ident">where_clause</span>: <span class="ident">WhereClause</span>,
 }
@@ -1376,20 +1357,31 @@
     <span class="ident">proj_ref_fields</span>: <span class="ident">TokenStream</span>,
     <span class="ident">proj_own_fields</span>: <span class="ident">TokenStream</span>,
     <span class="ident">proj_move</span>: <span class="ident">TokenStream</span>,
-    <span class="ident">proj_drop</span>: <span class="ident">TokenStream</span>,
+    <span class="ident">proj_drop</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Ident</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">struct</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// The original type.</span>
     <span class="ident">orig</span>: <span class="ident">OriginalType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The projected types.</span>
     <span class="ident">proj</span>: <span class="ident">ProjectedType</span>,
     <span class="doccomment">/// Types of the pinned fields.</span>
     <span class="ident">pinned_fields</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Type</span><span class="op">&gt;</span>,
     <span class="doccomment">/// `PinnedDrop` argument.</span>
     <span class="ident">pinned_drop</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Span</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// `UnsafeUnpin` argument.</span>
-    <span class="ident">unsafe_unpin</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Span</span><span class="op">&gt;</span>,
     <span class="doccomment">/// `Replace` argument (requires Sized bound)</span>
     <span class="ident">replace</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Span</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// `UnsafeUnpin` or `!Unpin` argument.</span>
+    <span class="ident">unpin_impl</span>: <span class="ident">UnpinImpl</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
+<span class="kw">enum</span> <span class="ident">UnpinImpl</span> {
+    <span class="ident">Default</span>,
+    <span class="doccomment">/// `UnsafeUnpin`.</span>
+    <span class="ident">Unsafe</span>(<span class="ident">Span</span>),
+    <span class="doccomment">/// `!Unpin`.</span>
+    <span class="ident">Negative</span>(<span class="ident">Span</span>),
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
@@ -1399,17 +1391,15 @@
         <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Ident</span>,
         <span class="ident">generics</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">Generics</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">Args</span> { <span class="ident">pinned_drop</span>, <span class="ident">unsafe_unpin</span>, <span class="ident">replace</span> } <span class="op">=</span> <span class="ident">Args</span>::<span class="ident">get</span>(<span class="ident">attrs</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">Args</span> { <span class="ident">pinned_drop</span>, <span class="ident">replace</span>, <span class="ident">unpin_impl</span> } <span class="op">=</span> <span class="ident">Args</span>::<span class="ident">get</span>(<span class="ident">attrs</span>)<span class="question-mark">?</span>;
 
-        {
-            <span class="kw">let</span> <span class="ident">ty_generics</span> <span class="op">=</span> <span class="ident">generics</span>.<span class="ident">split_for_impl</span>().<span class="number">1</span>;
-            <span class="kw">let</span> <span class="ident">self_ty</span> <span class="op">=</span> <span class="ident">syn</span>::<span class="macro">parse_quote</span><span class="macro">!</span>(#<span class="ident">ident</span> #<span class="ident">ty_generics</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">visitor</span> <span class="op">=</span> <span class="ident">ReplaceReceiver</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">self_ty</span>);
-            <span class="ident">visitor</span>.<span class="ident">visit_where_clause_mut</span>(<span class="ident">generics</span>.<span class="ident">make_where_clause</span>());
-        }
+        <span class="kw">let</span> <span class="ident">ty_generics</span> <span class="op">=</span> <span class="ident">generics</span>.<span class="ident">split_for_impl</span>().<span class="number">1</span>;
+        <span class="kw">let</span> <span class="ident">self_ty</span> <span class="op">=</span> <span class="ident">syn</span>::<span class="macro">parse_quote</span><span class="macro">!</span>(#<span class="ident">ident</span> #<span class="ident">ty_generics</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">visitor</span> <span class="op">=</span> <span class="ident">ReplaceReceiver</span>(<span class="kw-2">&amp;</span><span class="ident">self_ty</span>);
+        <span class="ident">visitor</span>.<span class="ident">visit_where_clause_mut</span>(<span class="ident">generics</span>.<span class="ident">make_where_clause</span>());
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lifetime_name</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="ident">DEFAULT_LIFETIME_NAME</span>);
-        <span class="ident">determine_lifetime_name</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">lifetime_name</span>, <span class="kw-2">&amp;</span><span class="ident">generics</span>.<span class="ident">params</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lifetime_name</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;&#39;pin&quot;</span>);
+        <span class="ident">determine_lifetime_name</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">lifetime_name</span>, <span class="ident">generics</span>);
         <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="ident">Lifetime</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">lifetime_name</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>());
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_generics</span> <span class="op">=</span> <span class="ident">generics</span>.<span class="ident">clone</span>();
@@ -1419,30 +1409,35 @@
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">proj_generics</span>,
             <span class="ident">lifetime</span>.<span class="ident">clone</span>(),
             <span class="kw-2">&amp;</span><span class="ident">ty_generics_as_generics</span>,
-            <span class="ident">ident</span>.<span class="ident">clone</span>(),
+            <span class="ident">ident</span>,
         );
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">where_clause</span> <span class="op">=</span> <span class="ident">generics</span>.<span class="ident">clone</span>().<span class="ident">make_where_clause</span>().<span class="ident">clone</span>();
         <span class="ident">where_clause</span>.<span class="ident">predicates</span>.<span class="ident">push</span>(<span class="ident">pred</span>);
 
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
+            <span class="ident">pinned_drop</span>,
+            <span class="ident">replace</span>,
+            <span class="ident">unpin_impl</span>,
             <span class="ident">proj</span>: <span class="ident">ProjectedType</span> {
                 <span class="ident">vis</span>: <span class="ident">determine_visibility</span>(<span class="ident">vis</span>),
-                <span class="ident">mut_ident</span>: <span class="ident">proj_ident</span>(<span class="ident">ident</span>, <span class="ident">Mutable</span>),
-                <span class="ident">ref_ident</span>: <span class="ident">proj_ident</span>(<span class="ident">ident</span>, <span class="ident">Immutable</span>),
-                <span class="ident">own_ident</span>: <span class="ident">proj_ident</span>(<span class="ident">ident</span>, <span class="ident">Owned</span>),
+                <span class="ident">mut_ident</span>: <span class="ident">Mutable</span>.<span class="ident">proj_ident</span>(<span class="ident">ident</span>),
+                <span class="ident">ref_ident</span>: <span class="ident">Immutable</span>.<span class="ident">proj_ident</span>(<span class="ident">ident</span>),
+                <span class="ident">own_ident</span>: <span class="ident">Owned</span>.<span class="ident">proj_ident</span>(<span class="ident">ident</span>),
                 <span class="ident">lifetime</span>,
                 <span class="ident">generics</span>: <span class="ident">proj_generics</span>,
                 <span class="ident">where_clause</span>,
             },
             <span class="ident">orig</span>: <span class="ident">OriginalType</span> { <span class="ident">attrs</span>, <span class="ident">vis</span>, <span class="ident">ident</span>, <span class="ident">generics</span> },
-            <span class="ident">pinned_drop</span>,
-            <span class="ident">unsafe_unpin</span>,
-            <span class="ident">replace</span>,
             <span class="ident">pinned_fields</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">parse_struct</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fields</span>: <span class="kw-2">&amp;</span><span class="ident">Fields</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">TokenStream</span>, <span class="ident">TokenStream</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse_struct</span>(
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="ident">DataStruct</span> { <span class="ident">fields</span>, .. }: <span class="kw-2">&amp;</span><span class="ident">DataStruct</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">TokenStream</span>, <span class="ident">TokenStream</span>)<span class="op">&gt;</span> {
+        <span class="ident">validate_struct</span>(<span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">ident</span>, <span class="ident">fields</span>)<span class="question-mark">?</span>;
+
         <span class="kw">let</span> <span class="ident">ProjectedFields</span> {
             <span class="ident">proj_pat</span>,
             <span class="ident">proj_body</span>,
@@ -1465,7 +1460,6 @@
         <span class="kw">let</span> <span class="ident">orig_where_clause</span> <span class="op">=</span> <span class="ident">orig_generics</span>.<span class="ident">where_clause</span>.<span class="ident">take</span>();
         <span class="kw">let</span> <span class="ident">proj_generics</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">generics</span>;
         <span class="kw">let</span> <span class="ident">where_clause</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">where_clause</span>;
-        <span class="kw">let</span> <span class="ident">private</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="ident">CURRENT_PRIVATE_MODULE</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>());
 
         <span class="comment">// For tuple structs, we need to generate `(T1, T2) where Foo: Bar`</span>
         <span class="comment">// For non-tuple structs, we need to generate `where Foo: Bar { field1: T }`</span>
@@ -1484,16 +1478,22 @@
         };
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_items</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span> {
+            <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span> <span class="comment">// TODO: If the user gave it a name, it should appear in the document.</span>
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">mut_mut</span>)]</span> <span class="comment">// This lint warns `&amp;mut &amp;mut &lt;ty&gt;`.</span>
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span> <span class="comment">// This lint warns unused fields/variants.</span>
+            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/55058</span>
             #<span class="ident">vis</span> <span class="kw">struct</span> #<span class="ident">proj_ident</span> #<span class="ident">proj_generics</span> #<span class="ident">where_clause_fields</span>
+            <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span> <span class="comment">// TODO: If the user gave it a name, it should appear in the document.</span>
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span> <span class="comment">// This lint warns unused fields/variants.</span>
+            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/55058</span>
             #<span class="ident">vis</span> <span class="kw">struct</span> #<span class="ident">proj_ref_ident</span> #<span class="ident">proj_generics</span> #<span class="ident">where_clause_ref_fields</span>
         };
-
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">replace</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">replace</span> {
-            <span class="ident">proj_items</span>.<span class="ident">extend</span>(<span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">replace</span> <span class="op">=</span><span class="op">&gt;</span>
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">replace</span>.<span class="ident">is_some</span>() {
+            <span class="comment">// Currently, using quote_spanned here does not seem to have any effect on the diagnostics.</span>
+            <span class="ident">proj_items</span>.<span class="ident">extend</span>(<span class="macro">quote</span><span class="macro">!</span> {
+                <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span> <span class="comment">// TODO: If the user gave it a name, it should appear in the document.</span>
                 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span> <span class="comment">// This lint warns unused fields/variants.</span>
+                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/55058</span>
                 #<span class="ident">vis</span> <span class="kw">struct</span> #<span class="ident">proj_own_ident</span> #<span class="ident">orig_generics</span> #<span class="ident">where_clause_own_fields</span>
             });
         }
@@ -1515,7 +1515,7 @@
 
             <span class="comment">// Destructors will run in reverse order, so next create a guard to overwrite</span>
             <span class="comment">// `self` with the replacement value without calling destructors.</span>
-            <span class="kw">let</span> <span class="ident">__guard</span> <span class="op">=</span> ::<span class="ident">pin_project</span>::#<span class="ident">private</span>::<span class="ident">UnsafeOverwriteGuard</span> {
+            <span class="kw">let</span> <span class="ident">__guard</span> <span class="op">=</span> ::<span class="ident">pin_project</span>::<span class="ident">__private</span>::<span class="ident">UnsafeOverwriteGuard</span> {
                 <span class="ident">target</span>: <span class="ident">__self_ptr</span>,
                 <span class="ident">value</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">mem</span>::<span class="ident">ManuallyDrop</span>::<span class="ident">new</span>(<span class="ident">__replacement</span>),
             };
@@ -1525,7 +1525,9 @@
             <span class="comment">// Due to a compiler bug (https://github.com/rust-lang/rust/issues/47949)</span>
             <span class="comment">// this must be in its own scope, or else `__result` will not be dropped</span>
             <span class="comment">// if any of the destructors panic.</span>
-            { #<span class="ident">proj_drop</span> }
+            {
+                #( <span class="kw">let</span> <span class="ident">__guard</span> <span class="op">=</span> ::<span class="ident">pin_project</span>::<span class="ident">__private</span>::<span class="ident">UnsafeDropInPlaceGuard</span>(#<span class="ident">proj_drop</span>); )<span class="op">*</span>
+            }
 
             <span class="comment">// Finally, return the result</span>
             <span class="ident">__result</span>
@@ -1535,7 +1537,12 @@
         <span class="prelude-val">Ok</span>((<span class="ident">proj_items</span>, <span class="ident">proj_impl</span>))
     }
 
-    <span class="kw">fn</span> <span class="ident">parse_enum</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">variants</span>: <span class="kw-2">&amp;</span><span class="ident">Variants</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">TokenStream</span>, <span class="ident">TokenStream</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse_enum</span>(
+        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+        <span class="ident">DataEnum</span> { <span class="ident">brace_token</span>, <span class="ident">variants</span>, .. }: <span class="kw-2">&amp;</span><span class="ident">DataEnum</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">TokenStream</span>, <span class="ident">TokenStream</span>)<span class="op">&gt;</span> {
+        <span class="ident">validate_enum</span>(<span class="kw-2">*</span><span class="ident">brace_token</span>, <span class="ident">variants</span>)<span class="question-mark">?</span>;
+
         <span class="kw">let</span> <span class="ident">ProjectedVariants</span> {
             <span class="ident">proj_variants</span>,
             <span class="ident">proj_ref_variants</span>,
@@ -1555,20 +1562,26 @@
         <span class="kw">let</span> <span class="ident">where_clause</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">where_clause</span>;
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_items</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span> {
+            <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span> <span class="comment">// TODO: If the user gave it a name, it should appear in the document.</span>
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">mut_mut</span>)]</span> <span class="comment">// This lint warns `&amp;mut &amp;mut &lt;ty&gt;`.</span>
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span> <span class="comment">// This lint warns unused fields/variants.</span>
+            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/55058</span>
             #<span class="ident">vis</span> <span class="kw">enum</span> #<span class="ident">proj_ident</span> #<span class="ident">proj_generics</span> #<span class="ident">where_clause</span> {
                 #<span class="ident">proj_variants</span>
             }
+            <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span> <span class="comment">// TODO: If the user gave it a name, it should appear in the document.</span>
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span> <span class="comment">// This lint warns unused fields/variants.</span>
+            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/55058</span>
             #<span class="ident">vis</span> <span class="kw">enum</span> #<span class="ident">proj_ref_ident</span> #<span class="ident">proj_generics</span> #<span class="ident">where_clause</span> {
                 #<span class="ident">proj_ref_variants</span>
             }
         };
-
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">replace</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">replace</span> {
-            <span class="ident">proj_items</span>.<span class="ident">extend</span>(<span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">replace</span> <span class="op">=</span><span class="op">&gt;</span>
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">replace</span>.<span class="ident">is_some</span>() {
+            <span class="comment">// Currently, using quote_spanned here does not seem to have any effect on the diagnostics.</span>
+            <span class="ident">proj_items</span>.<span class="ident">extend</span>(<span class="macro">quote</span><span class="macro">!</span> {
+                <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span> <span class="comment">// TODO: If the user gave it a name, it should appear in the document.</span>
                 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span> <span class="comment">// This lint warns unused fields/variants.</span>
+                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust/issues/55058</span>
                 #<span class="ident">vis</span> <span class="kw">enum</span> #<span class="ident">proj_own_ident</span> #<span class="ident">orig_generics</span> #<span class="ident">orig_where_clause</span> {
                     #<span class="ident">proj_own_variants</span>
                 }
@@ -1603,7 +1616,6 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_arms</span> <span class="op">=</span> <span class="ident">TokenStream</span>::<span class="ident">new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_ref_arms</span> <span class="op">=</span> <span class="ident">TokenStream</span>::<span class="ident">new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_own_arms</span> <span class="op">=</span> <span class="ident">TokenStream</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">private</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="ident">CURRENT_PRIVATE_MODULE</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>());
 
         <span class="kw">for</span> <span class="ident">Variant</span> { <span class="ident">ident</span>, <span class="ident">fields</span>, .. } <span class="kw">in</span> <span class="ident">variants</span> {
             <span class="kw">let</span> <span class="ident">ProjectedFields</span> {
@@ -1650,7 +1662,7 @@
 
                     <span class="comment">// Destructors will run in reverse order, so next create a guard to overwrite</span>
                     <span class="comment">// `self` with the replacement value without calling destructors.</span>
-                    <span class="kw">let</span> <span class="ident">__guard</span> <span class="op">=</span> ::<span class="ident">pin_project</span>::#<span class="ident">private</span>::<span class="ident">UnsafeOverwriteGuard</span> {
+                    <span class="kw">let</span> <span class="ident">__guard</span> <span class="op">=</span> ::<span class="ident">pin_project</span>::<span class="ident">__private</span>::<span class="ident">UnsafeOverwriteGuard</span> {
                         <span class="ident">target</span>: <span class="ident">__self_ptr</span>,
                         <span class="ident">value</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">mem</span>::<span class="ident">ManuallyDrop</span>::<span class="ident">new</span>(<span class="ident">__replacement</span>),
                     };
@@ -1660,7 +1672,9 @@
                     <span class="comment">// Due to a compiler bug (https://github.com/rust-lang/rust/issues/47949)</span>
                     <span class="comment">// this must be in its own scope, or else `__result` will not be dropped</span>
                     <span class="comment">// if any of the destructors panic.</span>
-                    { #<span class="ident">proj_drop</span> }
+                    {
+                        #( <span class="kw">let</span> <span class="ident">__guard</span> <span class="op">=</span> ::<span class="ident">pin_project</span>::<span class="ident">__private</span>::<span class="ident">UnsafeDropInPlaceGuard</span>(#<span class="ident">proj_drop</span>); )<span class="op">*</span>
+                    }
 
                     <span class="comment">// Finally, return the result</span>
                     <span class="ident">__result</span>
@@ -1689,48 +1703,32 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_own_fields</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">fields</span>.<span class="ident">len</span>());
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_move</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">fields</span>.<span class="ident">len</span>());
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_drop</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">fields</span>.<span class="ident">len</span>());
-        <span class="kw">let</span> <span class="ident">private</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="ident">CURRENT_PRIVATE_MODULE</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>());
 
         <span class="kw">for</span> <span class="ident">Field</span> { <span class="ident">attrs</span>, <span class="ident">vis</span>, <span class="ident">ident</span>, <span class="ident">ty</span>, .. } <span class="kw">in</span> <span class="ident">fields</span> {
-            <span class="kw">if</span> <span class="ident">attrs</span>.<span class="ident">find_exact</span>(<span class="ident">PIN</span>)<span class="question-mark">?</span>.<span class="ident">is_some</span>() {
+            <span class="kw">if</span> <span class="ident">attrs</span>.<span class="ident">position_exact</span>(<span class="ident">PIN</span>)<span class="question-mark">?</span>.<span class="ident">is_some</span>() {
                 <span class="self">self</span>.<span class="ident">pinned_fields</span>.<span class="ident">push</span>(<span class="ident">ty</span>.<span class="ident">clone</span>());
+                <span class="ident">proj_drop</span>.<span class="ident">push</span>(<span class="ident">ident</span>.<span class="ident">as_ref</span>().<span class="ident">cloned</span>().<span class="ident">unwrap</span>());
 
                 <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">lifetime</span>;
-                <span class="ident">proj_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> #<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> <span class="kw-2">mut</span> (#<span class="ident">ty</span>)<span class="op">&gt;</span>
-                });
-                <span class="ident">proj_ref_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> #<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> (#<span class="ident">ty</span>)<span class="op">&gt;</span>
-                });
-                <span class="ident">proj_own_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> #<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span><span class="op">&lt;</span>#<span class="ident">ty</span><span class="op">&gt;</span>
-                });
-                <span class="ident">proj_body</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>::<span class="ident">new_unchecked</span>(#<span class="ident">ident</span>)
-                });
-                <span class="ident">proj_move</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>
-                });
-                <span class="ident">proj_drop</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    <span class="kw">let</span> <span class="ident">__guard</span> <span class="op">=</span> ::<span class="ident">pin_project</span>::#<span class="ident">private</span>::<span class="ident">UnsafeDropInPlaceGuard</span>(#<span class="ident">ident</span>);
-                });
+                <span class="ident">proj_fields</span>.<span class="ident">push</span>(
+                    <span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> #<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> <span class="kw-2">mut</span> (#<span class="ident">ty</span>)<span class="op">&gt;</span>),
+                );
+                <span class="ident">proj_ref_fields</span>.<span class="ident">push</span>(
+                    <span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> #<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> (#<span class="ident">ty</span>)<span class="op">&gt;</span>),
+                );
+                <span class="ident">proj_own_fields</span>
+                    .<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> #<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span><span class="op">&lt;</span>#<span class="ident">ty</span><span class="op">&gt;</span>));
+                <span class="ident">proj_body</span>.<span class="ident">push</span>(
+                    <span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>::<span class="ident">new_unchecked</span>(#<span class="ident">ident</span>)),
+                );
+                <span class="ident">proj_move</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>));
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">lifetime</span>;
-                <span class="ident">proj_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> #<span class="ident">ident</span>: <span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> <span class="kw-2">mut</span> (#<span class="ident">ty</span>)
-                });
-                <span class="ident">proj_ref_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> #<span class="ident">ident</span>: <span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> (#<span class="ident">ty</span>)
-                });
-                <span class="ident">proj_own_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> #<span class="ident">ident</span>: #<span class="ident">ty</span>
-                });
-                <span class="ident">proj_body</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">ident</span>
-                });
-                <span class="ident">proj_move</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">ptr</span>::<span class="ident">read</span>(#<span class="ident">ident</span>)
-                });
+                <span class="ident">proj_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> #<span class="ident">ident</span>: <span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> <span class="kw-2">mut</span> (#<span class="ident">ty</span>)));
+                <span class="ident">proj_ref_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> #<span class="ident">ident</span>: <span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> (#<span class="ident">ty</span>)));
+                <span class="ident">proj_own_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> #<span class="ident">ident</span>: #<span class="ident">ty</span>));
+                <span class="ident">proj_body</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">ident</span>));
+                <span class="ident">proj_move</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">ident</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">ptr</span>::<span class="ident">read</span>(#<span class="ident">ident</span>)));
             }
             <span class="ident">proj_pat</span>.<span class="ident">push</span>(<span class="ident">ident</span>);
         }
@@ -1741,7 +1739,6 @@
         <span class="kw">let</span> <span class="ident">proj_ref_fields</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>({ #(#<span class="ident">proj_ref_fields</span>),<span class="op">*</span> });
         <span class="kw">let</span> <span class="ident">proj_own_fields</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>({ #(#<span class="ident">proj_own_fields</span>),<span class="op">*</span> });
         <span class="kw">let</span> <span class="ident">proj_move</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>({ #(#<span class="ident">proj_move</span>),<span class="op">*</span> });
-        <span class="kw">let</span> <span class="ident">proj_drop</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>(#(#<span class="ident">proj_drop</span>)<span class="kw-2">*</span>);
 
         <span class="prelude-val">Ok</span>(<span class="ident">ProjectedFields</span> {
             <span class="ident">proj_pat</span>,
@@ -1765,49 +1762,29 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_own_fields</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">fields</span>.<span class="ident">len</span>());
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_move</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">fields</span>.<span class="ident">len</span>());
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_drop</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">fields</span>.<span class="ident">len</span>());
-        <span class="kw">let</span> <span class="ident">private</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="ident">CURRENT_PRIVATE_MODULE</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>());
 
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">Field</span> { <span class="ident">attrs</span>, <span class="ident">vis</span>, <span class="ident">ty</span>, .. }) <span class="kw">in</span> <span class="ident">fields</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;_{}&quot;</span>, <span class="ident">i</span>);
-            <span class="kw">if</span> <span class="ident">attrs</span>.<span class="ident">find_exact</span>(<span class="ident">PIN</span>)<span class="question-mark">?</span>.<span class="ident">is_some</span>() {
+            <span class="kw">if</span> <span class="ident">attrs</span>.<span class="ident">position_exact</span>(<span class="ident">PIN</span>)<span class="question-mark">?</span>.<span class="ident">is_some</span>() {
                 <span class="self">self</span>.<span class="ident">pinned_fields</span>.<span class="ident">push</span>(<span class="ident">ty</span>.<span class="ident">clone</span>());
+                <span class="ident">proj_drop</span>.<span class="ident">push</span>(<span class="ident">id</span>.<span class="ident">clone</span>());
 
                 <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">lifetime</span>;
-                <span class="ident">proj_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> <span class="kw-2">mut</span> (#<span class="ident">ty</span>)<span class="op">&gt;</span>
-                });
-                <span class="ident">proj_ref_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> (#<span class="ident">ty</span>)<span class="op">&gt;</span>
-                });
-                <span class="ident">proj_own_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span><span class="op">&lt;</span>#<span class="ident">ty</span><span class="op">&gt;</span>
-                });
-                <span class="ident">proj_body</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>::<span class="ident">new_unchecked</span>(#<span class="ident">id</span>)
-                });
-                <span class="ident">proj_move</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>
-                });
-                <span class="ident">proj_drop</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    <span class="kw">let</span> <span class="ident">__guard</span> <span class="op">=</span> ::<span class="ident">pin_project</span>::#<span class="ident">private</span>::<span class="ident">UnsafeDropInPlaceGuard</span>(#<span class="ident">id</span>);
-                });
+                <span class="ident">proj_fields</span>
+                    .<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> <span class="kw-2">mut</span> (#<span class="ident">ty</span>)<span class="op">&gt;</span>));
+                <span class="ident">proj_ref_fields</span>
+                    .<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> (#<span class="ident">ty</span>)<span class="op">&gt;</span>));
+                <span class="ident">proj_own_fields</span>
+                    .<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span><span class="op">&lt;</span>#<span class="ident">ty</span><span class="op">&gt;</span>));
+                <span class="ident">proj_body</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>::<span class="ident">new_unchecked</span>(#<span class="ident">id</span>)));
+                <span class="ident">proj_move</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>));
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">lifetime</span>;
-                <span class="ident">proj_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> <span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> <span class="kw-2">mut</span> (#<span class="ident">ty</span>)
-                });
-                <span class="ident">proj_ref_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> <span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> (#<span class="ident">ty</span>)
-                });
-                <span class="ident">proj_own_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">vis</span> #<span class="ident">ty</span>
-                });
-                <span class="ident">proj_body</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    #<span class="ident">id</span>
-                });
-                <span class="ident">proj_move</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                    ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">ptr</span>::<span class="ident">read</span>(#<span class="ident">id</span>)
-                });
+                <span class="ident">proj_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> <span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> <span class="kw-2">mut</span> (#<span class="ident">ty</span>)));
+                <span class="ident">proj_ref_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> <span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> (#<span class="ident">ty</span>)));
+                <span class="ident">proj_own_fields</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">vis</span> #<span class="ident">ty</span>));
+                <span class="ident">proj_body</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">id</span>));
+                <span class="ident">proj_move</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">ptr</span>::<span class="ident">read</span>(#<span class="ident">id</span>)));
             }
             <span class="ident">proj_pat</span>.<span class="ident">push</span>(<span class="ident">id</span>);
         }
@@ -1818,7 +1795,6 @@
         <span class="kw">let</span> <span class="ident">proj_ref_fields</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>((#(#<span class="ident">proj_ref_fields</span>),<span class="kw-2">*</span>));
         <span class="kw">let</span> <span class="ident">proj_own_fields</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>((#(#<span class="ident">proj_own_fields</span>),<span class="kw-2">*</span>));
         <span class="kw">let</span> <span class="ident">proj_move</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>((#(#<span class="ident">proj_move</span>),<span class="kw-2">*</span>));
-        <span class="kw">let</span> <span class="ident">proj_drop</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>(#(#<span class="ident">proj_drop</span>)<span class="kw-2">*</span>);
 
         <span class="prelude-val">Ok</span>(<span class="ident">ProjectedFields</span> {
             <span class="ident">proj_pat</span>,
@@ -1831,113 +1807,138 @@
         })
     }
 
-    <span class="doccomment">/// Creates conditional `Unpin` implementation for original type.</span>
-    <span class="kw">fn</span> <span class="ident">make_unpin_impl</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">unsafe_unpin</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">unsafe_unpin</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_generics</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">generics</span>.<span class="ident">clone</span>();
-            <span class="kw">let</span> <span class="ident">orig_ident</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">ident</span>;
-            <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">lifetime</span>;
+    <span class="doccomment">/// Creates `Unpin` implementation for original type.</span>
+    <span class="kw">fn</span> <span class="ident">make_unpin_impl</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">unpin_impl</span> {
+            <span class="ident">UnpinImpl</span>::<span class="ident">Unsafe</span>(<span class="ident">span</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_generics</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">generics</span>.<span class="ident">clone</span>();
+                <span class="kw">let</span> <span class="ident">orig_ident</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">ident</span>;
+                <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">lifetime</span>;
 
-            <span class="kw">let</span> <span class="ident">private</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="ident">CURRENT_PRIVATE_MODULE</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>());
-            <span class="ident">proj_generics</span>.<span class="ident">make_where_clause</span>().<span class="ident">predicates</span>.<span class="ident">push</span>(
-                <span class="comment">// Make the error message highlight `UnsafeUnpin` argument.</span>
-                <span class="ident">syn</span>::<span class="ident">parse2</span>(<span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">unsafe_unpin</span> <span class="op">=</span><span class="op">&gt;</span>
-                    ::<span class="ident">pin_project</span>::#<span class="ident">private</span>::<span class="ident">Wrapper</span><span class="op">&lt;</span>#<span class="ident">lifetime</span>, <span class="self">Self</span><span class="op">&gt;</span>: ::<span class="ident">pin_project</span>::<span class="ident">UnsafeUnpin</span>
-                })
-                .<span class="ident">unwrap</span>(),
-            );
+                <span class="ident">proj_generics</span>.<span class="ident">make_where_clause</span>().<span class="ident">predicates</span>.<span class="ident">push</span>(
+                    <span class="comment">// Make the error message highlight `UnsafeUnpin` argument.</span>
+                    <span class="macro">parse_quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
+                        ::<span class="ident">pin_project</span>::<span class="ident">__private</span>::<span class="ident">Wrapper</span><span class="op">&lt;</span>#<span class="ident">lifetime</span>, <span class="self">Self</span><span class="op">&gt;</span>: ::<span class="ident">pin_project</span>::<span class="ident">UnsafeUnpin</span>
+                    },
+                );
 
-            <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="kw">_</span>, <span class="ident">where_clause</span>) <span class="op">=</span> <span class="ident">proj_generics</span>.<span class="ident">split_for_impl</span>();
-            <span class="kw">let</span> <span class="ident">ty_generics</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>().<span class="number">1</span>;
+                <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="kw">_</span>, <span class="ident">where_clause</span>) <span class="op">=</span> <span class="ident">proj_generics</span>.<span class="ident">split_for_impl</span>();
+                <span class="kw">let</span> <span class="ident">ty_generics</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>().<span class="number">1</span>;
 
-            <span class="macro">quote</span><span class="macro">!</span> {
-                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span>
-                <span class="kw">impl</span> #<span class="ident">impl_generics</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">Unpin</span> <span class="kw">for</span> #<span class="ident">orig_ident</span> #<span class="ident">ty_generics</span> #<span class="ident">where_clause</span> {}
-            }
-        } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">full_where_clause</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">where_clause</span>.<span class="ident">as_ref</span>().<span class="ident">cloned</span>().<span class="ident">unwrap</span>();
-
-            <span class="comment">// Generate a field in our new struct for every</span>
-            <span class="comment">// pinned field in the original type.</span>
-            <span class="kw">let</span> <span class="ident">fields</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>
-                .<span class="ident">pinned_fields</span>
-                .<span class="ident">iter</span>()
-                .<span class="ident">enumerate</span>()
-                .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">i</span>, <span class="ident">ty</span>)<span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">field_ident</span> <span class="op">=</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__field{}&quot;</span>, <span class="ident">i</span>);
-                    <span class="macro">quote</span><span class="macro">!</span> {
-                        #<span class="ident">field_ident</span>: #<span class="ident">ty</span>
-                    }
-                })
-                .<span class="ident">collect</span>();
-
-            <span class="comment">// We could try to determine the subset of type parameters</span>
-            <span class="comment">// and lifetimes that are actually used by the pinned fields</span>
-            <span class="comment">// (as opposed to those only used by unpinned fields).</span>
-            <span class="comment">// However, this would be tricky and error-prone, since</span>
-            <span class="comment">// it&#39;s possible for users to create types that would alias</span>
-            <span class="comment">// with generic parameters (e.g. &#39;struct T&#39;).</span>
-            <span class="comment">//</span>
-            <span class="comment">// Instead, we generate a use of every single type parameter</span>
-            <span class="comment">// and lifetime used in the original struct. For type parameters,</span>
-            <span class="comment">// we generate code like this:</span>
-            <span class="comment">//</span>
-            <span class="comment">// ```rust</span>
-            <span class="comment">// struct AlwaysUnpin&lt;T: ?Sized&gt;(PhantomData&lt;T&gt;) {}</span>
-            <span class="comment">// impl&lt;T: ?Sized&gt; Unpin for AlwaysUnpin&lt;T&gt; {}</span>
-            <span class="comment">//</span>
-            <span class="comment">// ...</span>
-            <span class="comment">// _field: AlwaysUnpin&lt;(A, B, C)&gt;</span>
-            <span class="comment">// ```</span>
-            <span class="comment">//</span>
-            <span class="comment">// This ensures that any unused type parameters</span>
-            <span class="comment">// don&#39;t end up with `Unpin` bounds.</span>
-            <span class="kw">let</span> <span class="ident">lifetime_fields</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>
-                .<span class="ident">orig</span>
-                .<span class="ident">generics</span>
-                .<span class="ident">lifetimes</span>()
-                .<span class="ident">enumerate</span>()
-                .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">i</span>, <span class="ident">LifetimeDef</span> { <span class="ident">lifetime</span>, .. })<span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">field_ident</span> <span class="op">=</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__lifetime{}&quot;</span>, <span class="ident">i</span>);
-                    <span class="macro">quote</span><span class="macro">!</span> {
-                        #<span class="ident">field_ident</span>: <span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> ()
-                    }
-                })
-                .<span class="ident">collect</span>();
-
-            <span class="kw">let</span> <span class="ident">orig_ident</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">ident</span>;
-            <span class="kw">let</span> <span class="ident">struct_ident</span> <span class="op">=</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__{}&quot;</span>, <span class="ident">orig_ident</span>);
-            <span class="kw">let</span> <span class="ident">vis</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">vis</span>;
-            <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">lifetime</span>;
-            <span class="kw">let</span> <span class="ident">type_params</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">type_params</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">t</span>.<span class="ident">ident</span>).<span class="ident">collect</span>();
-            <span class="kw">let</span> <span class="ident">proj_generics</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">generics</span>;
-            <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="ident">proj_ty_generics</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">proj_generics</span>.<span class="ident">split_for_impl</span>();
-            <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">ty_generics</span>, <span class="ident">where_clause</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>();
-
-            <span class="ident">full_where_clause</span>.<span class="ident">predicates</span>.<span class="ident">push</span>(<span class="ident">syn</span>::<span class="macro">parse_quote</span><span class="macro">!</span> {
-                #<span class="ident">struct_ident</span> #<span class="ident">proj_ty_generics</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">Unpin</span>
-            });
-
-            <span class="kw">let</span> <span class="ident">private</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="ident">CURRENT_PRIVATE_MODULE</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>());
-            <span class="macro">quote</span><span class="macro">!</span> {
-                <span class="comment">// This needs to have the same visibility as the original type,</span>
-                <span class="comment">// due to the limitations of the &#39;public in private&#39; error.</span>
-                <span class="comment">//</span>
-                <span class="comment">// Our goal is to implement the public trait `Unpin` for</span>
-                <span class="comment">// a potentially public user type. Because of this, rust</span>
-                <span class="comment">// requires that any types mentioned in the where clause of</span>
-                <span class="comment">// our `Unpin` impl also be public. This means that our generated</span>
-                <span class="comment">// `__UnpinStruct` type must also be public.</span>
-                <span class="comment">// However, we ensure that the user can never actually reference</span>
-                <span class="comment">// this &#39;public&#39; type by creating this type in the inside of `const`.</span>
-                #<span class="ident">vis</span> <span class="kw">struct</span> #<span class="ident">struct_ident</span> #<span class="ident">proj_generics</span> #<span class="ident">where_clause</span> {
-                    <span class="ident">__pin_project_use_generics</span>: ::<span class="ident">pin_project</span>::#<span class="ident">private</span>::<span class="ident">AlwaysUnpin</span><span class="op">&lt;</span>#<span class="ident">lifetime</span>, (#(#<span class="ident">type_params</span>),<span class="kw-2">*</span>)<span class="op">&gt;</span>,
-
-                    #(#<span class="ident">fields</span>,)<span class="op">*</span>
-                    #(#<span class="ident">lifetime_fields</span>,)<span class="op">*</span>
+                <span class="macro">quote</span><span class="macro">!</span> {
+                    <span class="kw">impl</span> #<span class="ident">impl_generics</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">Unpin</span> <span class="kw">for</span> #<span class="ident">orig_ident</span> #<span class="ident">ty_generics</span> #<span class="ident">where_clause</span> {}
                 }
+            }
+            <span class="ident">UnpinImpl</span>::<span class="ident">Negative</span>(<span class="ident">span</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proj_generics</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">generics</span>.<span class="ident">clone</span>();
+                <span class="kw">let</span> <span class="ident">orig_ident</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">ident</span>;
+                <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">lifetime</span>;
 
-                <span class="kw">impl</span> #<span class="ident">impl_generics</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">Unpin</span> <span class="kw">for</span> #<span class="ident">orig_ident</span> #<span class="ident">ty_generics</span> #<span class="ident">full_where_clause</span> {}
+                <span class="ident">proj_generics</span>.<span class="ident">make_where_clause</span>().<span class="ident">predicates</span>.<span class="ident">push</span>(<span class="macro">parse_quote</span><span class="macro">!</span> {
+                    ::<span class="ident">pin_project</span>::<span class="ident">__private</span>::<span class="ident">Wrapper</span><span class="op">&lt;</span>
+                        #<span class="ident">lifetime</span>, ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">PhantomPinned</span>
+                    <span class="op">&gt;</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">Unpin</span>
+                });
+
+                <span class="kw">let</span> (<span class="ident">proj_impl_generics</span>, <span class="kw">_</span>, <span class="ident">proj_where_clause</span>) <span class="op">=</span> <span class="ident">proj_generics</span>.<span class="ident">split_for_impl</span>();
+                <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="ident">ty_generics</span>, <span class="ident">orig_where_clause</span>) <span class="op">=</span>
+                    <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>();
+
+                <span class="comment">// For interoperability with `forbid(unsafe_code)`, `unsafe` token should be call-site span.</span>
+                <span class="kw">let</span> <span class="ident">unsafety</span> <span class="op">=</span> <span class="ident">token</span>::<span class="ident">Unsafe</span>::<span class="ident">default</span>();
+                <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
+                    <span class="kw">impl</span> #<span class="ident">proj_impl_generics</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">Unpin</span> <span class="kw">for</span> #<span class="ident">orig_ident</span> #<span class="ident">ty_generics</span> #<span class="ident">proj_where_clause</span> {}
+
+                    <span class="comment">// A dummy impl of `UnsafeUnpin`, to ensure that the user cannot implement it.</span>
+                    <span class="comment">//</span>
+                    <span class="comment">// To ensure that users don&#39;t accidentally write a non-functional `UnsafeUnpin`</span>
+                    <span class="comment">// impls, we emit one ourselves. If the user ends up writing a `UnsafeUnpin` impl,</span>
+                    <span class="comment">// they&#39;ll get a &quot;conflicting implementations of trait&quot; error when coherence</span>
+                    <span class="comment">// checks are run.</span>
+                    #<span class="ident">unsafety</span> <span class="kw">impl</span> #<span class="ident">impl_generics</span> ::<span class="ident">pin_project</span>::<span class="ident">UnsafeUnpin</span> <span class="kw">for</span> #<span class="ident">orig_ident</span> #<span class="ident">ty_generics</span> #<span class="ident">orig_where_clause</span> {}
+                }
+            }
+            <span class="ident">UnpinImpl</span>::<span class="ident">Default</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">full_where_clause</span> <span class="op">=</span>
+                    <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">where_clause</span>.<span class="ident">as_ref</span>().<span class="ident">cloned</span>().<span class="ident">unwrap</span>();
+
+                <span class="comment">// Generate a field in our new struct for every</span>
+                <span class="comment">// pinned field in the original type.</span>
+                <span class="kw">let</span> <span class="ident">fields</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pinned_fields</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">i</span>, <span class="ident">ty</span>)<span class="op">|</span> {
+                    <span class="kw">let</span> <span class="ident">field_ident</span> <span class="op">=</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__field{}&quot;</span>, <span class="ident">i</span>);
+                    <span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">field_ident</span>: #<span class="ident">ty</span>)
+                });
+
+                <span class="comment">// We could try to determine the subset of type parameters</span>
+                <span class="comment">// and lifetimes that are actually used by the pinned fields</span>
+                <span class="comment">// (as opposed to those only used by unpinned fields).</span>
+                <span class="comment">// However, this would be tricky and error-prone, since</span>
+                <span class="comment">// it&#39;s possible for users to create types that would alias</span>
+                <span class="comment">// with generic parameters (e.g. &#39;struct T&#39;).</span>
+                <span class="comment">//</span>
+                <span class="comment">// Instead, we generate a use of every single type parameter</span>
+                <span class="comment">// and lifetime used in the original struct. For type parameters,</span>
+                <span class="comment">// we generate code like this:</span>
+                <span class="comment">//</span>
+                <span class="comment">// ```rust</span>
+                <span class="comment">// struct AlwaysUnpin&lt;T: ?Sized&gt;(PhantomData&lt;T&gt;) {}</span>
+                <span class="comment">// impl&lt;T: ?Sized&gt; Unpin for AlwaysUnpin&lt;T&gt; {}</span>
+                <span class="comment">//</span>
+                <span class="comment">// ...</span>
+                <span class="comment">// _field: AlwaysUnpin&lt;(A, B, C)&gt;</span>
+                <span class="comment">// ```</span>
+                <span class="comment">//</span>
+                <span class="comment">// This ensures that any unused type parameters</span>
+                <span class="comment">// don&#39;t end up with `Unpin` bounds.</span>
+                <span class="kw">let</span> <span class="ident">lifetime_fields</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">lifetimes</span>().<span class="ident">enumerate</span>().<span class="ident">map</span>(
+                    <span class="op">|</span>(<span class="ident">i</span>, <span class="ident">LifetimeDef</span> { <span class="ident">lifetime</span>, .. })<span class="op">|</span> {
+                        <span class="kw">let</span> <span class="ident">field_ident</span> <span class="op">=</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__lifetime{}&quot;</span>, <span class="ident">i</span>);
+                        <span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">field_ident</span>: <span class="kw-2">&amp;</span>#<span class="ident">lifetime</span> ())
+                    },
+                );
+
+                <span class="kw">let</span> <span class="ident">orig_ident</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">ident</span>;
+                <span class="kw">let</span> <span class="ident">struct_ident</span> <span class="op">=</span> <span class="macro">format_ident</span><span class="macro">!</span>(<span class="string">&quot;__{}&quot;</span>, <span class="ident">orig_ident</span>);
+                <span class="kw">let</span> <span class="ident">vis</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">vis</span>;
+                <span class="kw">let</span> <span class="ident">lifetime</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">lifetime</span>;
+                <span class="kw">let</span> <span class="ident">type_params</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">type_params</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">t</span>.<span class="ident">ident</span>);
+                <span class="kw">let</span> <span class="ident">proj_generics</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">generics</span>;
+                <span class="kw">let</span> (<span class="ident">proj_impl_generics</span>, <span class="ident">proj_ty_generics</span>, <span class="kw">_</span>) <span class="op">=</span> <span class="ident">proj_generics</span>.<span class="ident">split_for_impl</span>();
+                <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="ident">ty_generics</span>, <span class="ident">where_clause</span>) <span class="op">=</span>
+                    <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>();
+
+                <span class="ident">full_where_clause</span>.<span class="ident">predicates</span>.<span class="ident">push</span>(<span class="ident">syn</span>::<span class="macro">parse_quote</span><span class="macro">!</span> {
+                    #<span class="ident">struct_ident</span> #<span class="ident">proj_ty_generics</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">Unpin</span>
+                });
+
+                <span class="macro">quote</span><span class="macro">!</span> {
+                    <span class="comment">// This needs to have the same visibility as the original type,</span>
+                    <span class="comment">// due to the limitations of the &#39;public in private&#39; error.</span>
+                    <span class="comment">//</span>
+                    <span class="comment">// Our goal is to implement the public trait `Unpin` for</span>
+                    <span class="comment">// a potentially public user type. Because of this, rust</span>
+                    <span class="comment">// requires that any types mentioned in the where clause of</span>
+                    <span class="comment">// our `Unpin` impl also be public. This means that our generated</span>
+                    <span class="comment">// `__UnpinStruct` type must also be public.</span>
+                    <span class="comment">// However, we ensure that the user can never actually reference</span>
+                    <span class="comment">// this &#39;public&#39; type by creating this type in the inside of `const`.</span>
+                    #<span class="ident">vis</span> <span class="kw">struct</span> #<span class="ident">struct_ident</span> #<span class="ident">proj_generics</span> #<span class="ident">where_clause</span> {
+                        <span class="ident">__pin_project_use_generics</span>: ::<span class="ident">pin_project</span>::<span class="ident">__private</span>::<span class="ident">AlwaysUnpin</span><span class="op">&lt;</span>#<span class="ident">lifetime</span>, (#(#<span class="ident">type_params</span>),<span class="kw-2">*</span>)<span class="op">&gt;</span>,
+
+                        #(#<span class="ident">fields</span>,)<span class="op">*</span>
+                        #(#<span class="ident">lifetime_fields</span>,)<span class="op">*</span>
+                    }
+
+                    <span class="kw">impl</span> #<span class="ident">proj_impl_generics</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">marker</span>::<span class="ident">Unpin</span> <span class="kw">for</span> #<span class="ident">orig_ident</span> #<span class="ident">ty_generics</span> #<span class="ident">full_where_clause</span> {}
+
+                    <span class="comment">// A dummy impl of `UnsafeUnpin`, to ensure that the user cannot implement it.</span>
+                    <span class="comment">//</span>
+                    <span class="comment">// To ensure that users don&#39;t accidentally write a non-functional `UnsafeUnpin`</span>
+                    <span class="comment">// impls, we emit one ourselves. If the user ends up writing a `UnsafeUnpin` impl,</span>
+                    <span class="comment">// they&#39;ll get a &quot;conflicting implementations of trait&quot; error when coherence</span>
+                    <span class="comment">// checks are run.</span>
+                    <span class="kw">unsafe</span> <span class="kw">impl</span> #<span class="ident">impl_generics</span> ::<span class="ident">pin_project</span>::<span class="ident">UnsafeUnpin</span> <span class="kw">for</span> #<span class="ident">orig_ident</span> #<span class="ident">ty_generics</span> #<span class="ident">where_clause</span> {}
+                }
             }
         }
     }
@@ -1947,28 +1948,20 @@
         <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">ident</span>;
         <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="ident">ty_generics</span>, <span class="ident">where_clause</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>();
 
-        <span class="kw">let</span> <span class="ident">private</span> <span class="op">=</span> <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="ident">CURRENT_PRIVATE_MODULE</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>());
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">pinned_drop</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">pinned_drop</span> {
-            <span class="comment">// Make the error message highlight `PinnedDrop` argument.</span>
-            <span class="comment">// See https://github.com/taiki-e/pin-project/issues/16#issuecomment-513586812</span>
-            <span class="comment">// for why this is only for the span of function calls,</span>
-            <span class="comment">// not the entire `impl` block.</span>
-            <span class="kw">let</span> <span class="ident">call_drop</span> <span class="op">=</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">pinned_drop</span> <span class="op">=</span><span class="op">&gt;</span>
-                ::<span class="ident">pin_project</span>::#<span class="ident">private</span>::<span class="ident">PinnedDrop</span>::<span class="ident">drop</span>(<span class="ident">pinned_self</span>)
-            };
-
-            <span class="macro">quote</span><span class="macro">!</span> {
-                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span>
+            <span class="comment">// For interoperability with `forbid(unsafe_code)`, `unsafe` token should be call-site span.</span>
+            <span class="kw">let</span> <span class="ident">unsafety</span> <span class="op">=</span> <span class="ident">token</span>::<span class="ident">Unsafe</span>::<span class="ident">default</span>();
+            <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">pinned_drop</span> <span class="op">=</span><span class="op">&gt;</span>
                 <span class="kw">impl</span> #<span class="ident">impl_generics</span> ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">ops</span>::<span class="ident">Drop</span> <span class="kw">for</span> #<span class="ident">ident</span> #<span class="ident">ty_generics</span> #<span class="ident">where_clause</span> {
                     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
                         <span class="comment">// Safety - we&#39;re in &#39;drop&#39;, so we know that &#39;self&#39; will</span>
                         <span class="comment">// never move again.</span>
-                        <span class="kw">let</span> <span class="ident">pinned_self</span> <span class="op">=</span> <span class="kw">unsafe</span> { ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>::<span class="ident">new_unchecked</span>(<span class="self">self</span>) };
+                        <span class="kw">let</span> <span class="ident">pinned_self</span> <span class="op">=</span> #<span class="ident">unsafety</span> { ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>::<span class="ident">new_unchecked</span>(<span class="self">self</span>) };
                         <span class="comment">// We call `pinned_drop` only once. Since `PinnedDrop::drop`</span>
                         <span class="comment">// is an unsafe method and a private API, it is never called again in safe</span>
                         <span class="comment">// code *unless the user uses a maliciously crafted macro*.</span>
-                        <span class="kw">unsafe</span> {
-                            #<span class="ident">call_drop</span>;
+                        #<span class="ident">unsafety</span> {
+                            ::<span class="ident">pin_project</span>::<span class="ident">__private</span>::<span class="ident">PinnedDrop</span>::<span class="ident">drop</span>(<span class="ident">pinned_self</span>);
                         }
                     }
                 }
@@ -2001,7 +1994,6 @@
                 <span class="kw">trait</span> #<span class="ident">trait_ident</span> {}
                 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">drop_bounds</span>)]</span>
                 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">ops</span>::<span class="ident">Drop</span><span class="op">&gt;</span> #<span class="ident">trait_ident</span> <span class="kw">for</span> <span class="ident">T</span> {}
-                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span>
                 <span class="kw">impl</span> #<span class="ident">impl_generics</span> #<span class="ident">trait_ident</span> <span class="kw">for</span> #<span class="ident">ident</span> #<span class="ident">ty_generics</span> #<span class="ident">where_clause</span> {}
 
                 <span class="comment">// A dummy impl of `PinnedDrop`, to ensure that the user cannot implement it.</span>
@@ -2014,8 +2006,7 @@
                 <span class="comment">// impls, we emit one ourselves. If the user ends up writing a `PinnedDrop` impl,</span>
                 <span class="comment">// they&#39;ll get a &quot;conflicting implementations of trait&quot; error when coherence</span>
                 <span class="comment">// checks are run.</span>
-                <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span>
-                <span class="kw">impl</span> #<span class="ident">impl_generics</span> ::<span class="ident">pin_project</span>::#<span class="ident">private</span>::<span class="ident">PinnedDrop</span> <span class="kw">for</span> #<span class="ident">ident</span> #<span class="ident">ty_generics</span> #<span class="ident">where_clause</span> {
+                <span class="kw">impl</span> #<span class="ident">impl_generics</span> ::<span class="ident">pin_project</span>::<span class="ident">__private</span>::<span class="ident">PinnedDrop</span> <span class="kw">for</span> #<span class="ident">ident</span> #<span class="ident">ty_generics</span> #<span class="ident">where_clause</span> {
                     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">drop</span>(<span class="self">self</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>) {}
                 }
             }
@@ -2040,8 +2031,8 @@
         <span class="kw">let</span> <span class="ident">proj_ty_generics</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">proj</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>().<span class="number">1</span>;
         <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="ident">ty_generics</span>, <span class="ident">where_clause</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>();
 
-        <span class="kw">let</span> <span class="ident">replace_impl</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">replace</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">_replace</span><span class="op">|</span> {
-            <span class="comment">// TODO: Use `_replace`&#39;s span.</span>
+        <span class="kw">let</span> <span class="ident">replace_impl</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">replace</span>.<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
+            <span class="comment">// Currently, using quote_spanned here does not seem to have any effect on the diagnostics.</span>
             <span class="macro">quote</span><span class="macro">!</span> {
                 #<span class="ident">vis</span> <span class="kw">fn</span> <span class="ident">project_replace</span>(
                     <span class="self">self</span>: ::<span class="ident">pin_project</span>::<span class="ident">__reexport</span>::<span class="ident">pin</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>,
@@ -2142,26 +2133,21 @@
         <span class="kw">match</span> <span class="ident">fields</span> {
             <span class="ident">Fields</span>::<span class="ident">Named</span>(<span class="ident">FieldsNamed</span> { <span class="ident">named</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">for</span> <span class="ident">Field</span> { <span class="ident">ident</span>, .. } <span class="kw">in</span> <span class="ident">named</span> {
-                    <span class="ident">field_refs</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                        <span class="kw-2">&amp;</span><span class="ident">val</span>.#<span class="ident">ident</span>;
-                    });
+                    <span class="ident">field_refs</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">val</span>.#<span class="ident">ident</span>;));
                 }
             }
             <span class="ident">Fields</span>::<span class="ident">Unnamed</span>(<span class="ident">FieldsUnnamed</span> { <span class="ident">unnamed</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">for</span> (<span class="ident">index</span>, <span class="kw">_</span>) <span class="kw">in</span> <span class="ident">unnamed</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
                     <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">Index</span>::<span class="ident">from</span>(<span class="ident">index</span>);
-                    <span class="ident">field_refs</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span> {
-                        <span class="kw-2">&amp;</span><span class="ident">val</span>.#<span class="ident">index</span>;
-                    });
+                    <span class="ident">field_refs</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">val</span>.#<span class="ident">index</span>;));
                 }
             }
-            <span class="ident">Fields</span>::<span class="ident">Unit</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+            <span class="ident">Fields</span>::<span class="ident">Unit</span> <span class="op">=</span><span class="op">&gt;</span> {}
         }
 
         <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="ident">ty_generics</span>, <span class="ident">where_clause</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>();
         <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">orig</span>.<span class="ident">ident</span>;
         <span class="prelude-val">Ok</span>(<span class="macro">quote</span><span class="macro">!</span> {
-            <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">single_use_lifetimes</span>)]</span>
             <span class="attribute">#[<span class="ident">deny</span>(<span class="ident">safe_packed_borrows</span>)]</span>
             <span class="kw">fn</span> <span class="ident">__assert_not_repr_packed</span> #<span class="ident">impl_generics</span> (<span class="ident">val</span>: <span class="kw-2">&amp;</span>#<span class="ident">ident</span> #<span class="ident">ty_generics</span>) #<span class="ident">where_clause</span> {
                 #(#<span class="ident">field_refs</span>)<span class="op">*</span>

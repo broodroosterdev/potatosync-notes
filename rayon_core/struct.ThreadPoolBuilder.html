@@ -140,7 +140,7 @@ unobserved.</p>
 process. To prevent this, wrap the body of your panic handler
 in a call to <code>std::panic::catch_unwind()</code>.</p>
 </div><h4 id='method.stack_size' class="method"><code id='stack_size.v'>pub fn <a href='#method.stack_size' class='fnname'>stack_size</a>(self, stack_size: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; Self</code><a class='srclink' href='../src/rayon_core/lib.rs.html#479-482' title='goto source code'>[src]</a></h4><div class='docblock'><p>Set the stack size of the worker threads</p>
-</div><h4 id='method.breadth_first' class="method"><code id='breadth_first.v'>pub fn <a href='#method.breadth_first' class='fnname'>breadth_first</a>(self) -&gt; Self</code><a class='srclink' href='../src/rayon_core/lib.rs.html#513-516' title='goto source code'>[src]</a></h4><div class='stability'><div class='stab deprecated'>Deprecated: <p>use <code>scope_fifo</code> and <code>spawn_fifo</code> for similar effect</p>
+</div><h4 id='method.breadth_first' class="method"><code id='breadth_first.v'>pub fn <a href='#method.breadth_first' class='fnname'>breadth_first</a>(self) -&gt; Self</code><a class='srclink' href='../src/rayon_core/lib.rs.html#513-516' title='goto source code'>[src]</a></h4><div class='stability'><div class='stab deprecated'><span class='emoji'>👎</span> Deprecated: <p>use <code>scope_fifo</code> and <code>spawn_fifo</code> for similar effect</p>
 </div></div><div class='docblock'><p><strong>(DEPRECATED)</strong> Suggest to worker threads that they execute
 spawned jobs in a &quot;breadth-first&quot; fashion.</p>
 <p>Typically, when a worker thread is idle or blocked, it will
