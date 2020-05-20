@@ -23,9 +23,9 @@ jobs:
         run: mv sample.env .env
       - name: Cache Rust dependencies
         uses: actions/cache@preview
-          with:
-            path: target
-            key: rust-test
+        with:
+          path: target
+          key: rust-test
       - name: Run cargo test
         run: cargo test
   publish-docs:
