@@ -436,7 +436,7 @@
             <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
         };
     }
-    <span class="kw">let</span> <span class="ident">hashed_password</span> <span class="op">=</span> <span class="ident">hash</span>(<span class="ident">account</span>.<span class="ident">password</span>.<span class="ident">clone</span>(), <span class="number">10</span>).<span class="ident">expect</span>(<span class="string">&quot;Error hashing password: &quot;</span>);
+    <span class="kw">let</span> <span class="ident">hashed_password</span> <span class="op">=</span> <span class="ident">hash</span>(<span class="ident">account</span>.<span class="ident">password</span>.<span class="ident">clone</span>(), <span class="number">12</span>).<span class="ident">expect</span>(<span class="string">&quot;Error hashing password: &quot;</span>);
     <span class="kw">let</span> <span class="ident">password_identifier</span> <span class="op">=</span> <span class="ident">create_password_identifier</span>();
     <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">create_verification_token</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">Account</span> {
@@ -689,4 +689,4 @@
         }
     }
 }</pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "potatosync_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "potatosync_rust";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

@@ -180,6 +180,12 @@
 <span id="180">180</span>
 <span id="181">181</span>
 <span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">proc_macro_hygiene</span>, <span class="ident">decl_macro</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">in_band_lifetimes</span>)]</span>
@@ -302,7 +308,7 @@ fn delete_token(token: Data, token: token) {
 <span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/notes&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;json_note&gt;&quot;</span>)]</span>
 <span class="kw">fn</span> <span class="ident">save_note</span>(<span class="ident">json_note</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">SavingNote</span><span class="op">&gt;</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
     <span class="kw">let</span> <span class="ident">note</span> <span class="op">=</span> <span class="ident">json_note</span>.<span class="number">0</span>.<span class="ident">to_note</span>(<span class="ident">token</span>.<span class="ident">sub</span>.<span class="ident">clone</span>());
-    <span class="ident">note</span>::<span class="ident">controller</span>::<span class="ident">create</span>(<span class="ident">note</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>)
+    <span class="ident">note</span>::<span class="ident">controller</span>::<span class="ident">add</span>(<span class="ident">note</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>)
 }
 
 <span class="doccomment">/// Route for updating note</span>
@@ -336,6 +342,11 @@ fn delete_token(token: Data, token: token) {
     <span class="ident">get_notes_by_account</span>(<span class="ident">token</span>.<span class="ident">sub</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="ident">last_updated</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>)
 }
 
+<span class="doccomment">/// Route for checking connectivity</span>
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/ping&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">ping</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">return</span> <span class="string">&quot;Pong!&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>();
+}
 
 <span class="doccomment">/// Route used for catching 401 errors e.g. invalid access token</span>
 <span class="attribute">#[<span class="ident">catch</span>(<span class="number">401</span>)]</span>
@@ -360,8 +371,9 @@ fn delete_token(token: Data, token: token) {
         .<span class="ident">manage</span>(<span class="ident">db</span>::<span class="ident">connect</span>())
         .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">new_user</span>, <span class="ident">verify_user</span>, <span class="ident">login_user</span>, <span class="ident">refresh_user</span>, <span class="ident">change_user_info</span>, <span class="ident">get_user_info</span>, <span class="ident">delete_user</span>])
         .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">save_note</span>, <span class="ident">update_note</span>, <span class="ident">patch_note</span>, <span class="ident">delete_note</span>, <span class="ident">delete_all_notes</span>, <span class="ident">get_notes</span>])
+        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">ping</span>])
         .<span class="ident">register</span>(<span class="macro">catchers</span><span class="macro">!</span>[<span class="ident">token_error</span>])
         .<span class="ident">launch</span>();
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "potatosync_rust";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "potatosync_rust";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
