@@ -34,7 +34,6 @@ table! {
         uses_biometrics -> Bool,
         deleted -> Bool,
         archived -> Bool,
-        synced -> Bool,
     }
 }
 

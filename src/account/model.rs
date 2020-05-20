@@ -5,6 +5,7 @@ use diesel::expression::exists::exists;
 use diesel::prelude::*;
 use diesel::select;
 use serde::{Deserialize, Deserializer, Serializer};
+use serde::de::Error;
 use serde_derive::*;
 
 use crate::schema::accounts;
@@ -15,9 +16,9 @@ pub fn serialize_option<S>(dt: &Option<DateTime<Utc>>, serializer: S) -> Result<
     where S: Serializer
 {
     return if dt.is_some() {
-        serialize(&dt.unwrap(), serializer)
+        serializer.serialize_i64(dt.unwrap().timestamp())
     } else {
-        Serializer::serialize_none(serializer)
+        serializer.serialize_none()
     }
 }
 
@@ -169,7 +170,7 @@ pub fn validate_username(username: String, connection: &PgConnection) -> Result<
 
 /// Checks if password is valid
 pub fn validate_password(password: String) -> Result<(), StatusResponse>{
-    if password.chars().count() < 8 || password.chars().count() > 60 {
+    if password.chars().count() < 8 || password.chars().count() > 64 {
         return Err(StatusResponse::new("PassOutOfBoundsError".parse().unwrap(), false));
     }
     Ok(())

@@ -119,7 +119,7 @@ fn delete_user(json_token: Json<RefreshTokenJson>, _token: Token, connection: db
 #[post("/api/notes", data = "<json_note>")]
 fn save_note(json_note: Json<SavingNote>, token: Token, connection: db::Connection) -> ApiResponse {
     let note = json_note.0.to_note(token.sub.clone());
-    note::controller::create(note, &connection)
+    note::controller::add(note, &connection)
 }
 
 /// Route for updating note
@@ -153,6 +153,11 @@ fn get_notes(last_updated: String, token: Token, connection: db::Connection) -> 
     get_notes_by_account(token.sub.parse().unwrap(), last_updated, &connection)
 }
 
+/// Route for checking connectivity
+#[get("/ping")]
+fn ping() -> String {
+    return "Pong!".parse().unwrap();
+}
 
 /// Route used for catching 401 errors e.g. invalid access token
 #[catch(401)]
@@ -177,6 +182,7 @@ fn main() {
         .manage(db::connect())
         .mount("/", routes![new_user, verify_user, login_user, refresh_user, change_user_info, get_user_info, delete_user])
         .mount("/", routes![save_note, update_note, patch_note, delete_note, delete_all_notes, get_notes])
+        .mount("/", routes![ping])
         .register(catchers![token_error])
         .launch();
 }

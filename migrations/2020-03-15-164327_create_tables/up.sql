@@ -1,6 +1,4 @@
 -- Your SQL goes here
-CREATE SEQUENCE IF NOT EXISTS accounts_id_seq;
-
 CREATE TABLE IF NOT EXISTS accounts
 (
     id                  text primary key,
@@ -36,7 +34,6 @@ CREATE TABLE IF NOT EXISTS notes
     uses_biometrics  bool        not null,
     deleted          bool        not null,
     archived         bool        not null,
-    synced           bool        not null,
     PRIMARY KEY (note_id, account_id)
 );
 

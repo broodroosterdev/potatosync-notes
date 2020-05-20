@@ -90,7 +90,7 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
             status: Status::BadRequest,
         };
     }
-    let hashed_password = hash(account.password.clone(), 10).expect("Error hashing password: ");
+    let hashed_password = hash(account.password.clone(), 12).expect("Error hashing password: ");
     let password_identifier = create_password_identifier();
     let token = create_verification_token();
     let mut account = Account {

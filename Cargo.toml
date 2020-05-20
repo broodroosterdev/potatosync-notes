@@ -33,3 +33,5 @@ uuid = { version = "0.8", features = ["serde", "v4"] }
 version = "*"
 default-features = false
 features = ["json"]
+[dev-dependencies]
+mocktopus = "0.7.0"

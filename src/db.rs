@@ -52,6 +52,7 @@ mod tests {
 
     #[test]
     fn check_connect() {
+        dotenv::dotenv().ok();
         connect();
     }
 }

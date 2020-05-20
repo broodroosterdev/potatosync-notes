@@ -34,7 +34,32 @@ pub struct Note {
     pub uses_biometrics: bool,
     pub deleted: bool,
     pub archived: bool,
-    pub synced: bool,
+}
+
+#[cfg(test)]
+impl Note {
+    pub(crate) fn mock_empty() -> Note {
+        Note {
+            note_id: "".to_string(),
+            account_id: "".to_string(),
+            title: "".to_string(),
+            content: "".to_string(),
+            style_json: "".to_string(),
+            starred: false,
+            creation_date: Utc::now(),
+            last_modify_date: Utc::now(),
+            color: 0,
+            images: "".to_string(),
+            list: false,
+            list_content: "".to_string(),
+            reminders: "".to_string(),
+            hide_content: false,
+            lock_note: false,
+            uses_biometrics: false,
+            deleted: false,
+            archived: false,
+        }
+    }
 }
 
 /*
@@ -92,7 +117,6 @@ pub struct SavingNote {
     pub uses_biometrics: bool,
     pub deleted: bool,
     pub archived: bool,
-    pub synced: bool,
 }
 
 impl SavingNote {
@@ -117,7 +141,6 @@ impl SavingNote {
             uses_biometrics: self.uses_biometrics,
             deleted: self.deleted,
             archived: self.archived,
-            synced: self.synced,
         }
     }
 }
@@ -125,12 +148,11 @@ impl SavingNote {
 #[table_name = "notes"]
 #[derive(Queryable, Serialize, Deserialize, Insertable, AsChangeset, PartialEq, Clone)]
 pub struct PatchingNote {
-    pub note_id: Option<String>,
-    pub account_id: Option<String>,
     pub title: Option<String>,
     pub content: Option<String>,
     pub style_json: Option<String>,
     pub starred: Option<bool>,
+    #[serde(default)]
     #[serde(deserialize_with = "deserialize_option")]
     #[serde(serialize_with = "serialize_option")]
     pub last_modify_date: Option<DateTime<Utc>>,
@@ -144,7 +166,48 @@ pub struct PatchingNote {
     pub uses_biometrics: Option<bool>,
     pub deleted: Option<bool>,
     pub archived: Option<bool>,
-    pub synced: Option<bool>,
+}
+
+#[cfg(test)]
+impl PatchingNote {
+    pub(crate) fn mock_empty() -> PatchingNote {
+        return PatchingNote {
+            title: None,
+            content: None,
+            style_json: None,
+            starred: None,
+            last_modify_date: None,
+            color: None,
+            images: None,
+            list: None,
+            list_content: None,
+            reminders: None,
+            hide_content: None,
+            lock_note: None,
+            uses_biometrics: None,
+            deleted: None,
+            archived: None,
+        }
+    }
+    pub(crate) fn mock_empty_with_last_modify() -> PatchingNote {
+        return PatchingNote {
+            title: None,
+            content: None,
+            style_json: None,
+            starred: None,
+            last_modify_date: Some(Utc::now()),
+            color: None,
+            images: None,
+            list: None,
+            list_content: None,
+            reminders: None,
+            hide_content: None,
+            lock_note: None,
+            uses_biometrics: None,
+            deleted: None,
+            archived: None,
+        }
+    }
 }
 
 /// Struct used when client needs to specify certain note_id
@@ -171,11 +234,4 @@ impl ToString for NoteResponse {
     fn to_string(&self) -> String {
         serde_json::to_string(self).unwrap()
     }
-}
-
-#[cfg(test)]
-pub mod tests {
-    use crate::db;
-
-    use super::*;
 }

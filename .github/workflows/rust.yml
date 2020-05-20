@@ -7,6 +7,22 @@ on:
     branches: [ master ]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: nightly
+      - uses: actions/checkout@master
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql db: 'notes'
+          postgresql user: 'notes'
+          postgresql password: 'notes'
+      - name: Create .env
+        run: mv sample.env .env
+      - name: Run cargo test
+        run: cargo test
   publish-docs:
     runs-on: ubuntu-latest
     steps:

@@ -54,7 +54,7 @@ pub(crate) fn send_email(email: String, address: String) {
     };
 }
 
-
+/*
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -71,4 +71,4 @@ mod tests {
         let email = create_token_email("Testing".parse().unwrap(), "http://example.com".parse().unwrap());
         send_email(email, "myth.usa538@gmail.com".parse().unwrap());
     }
-}
+}*/
