@@ -22,7 +22,7 @@ jobs:
       - name: Create .env
         run: mv sample.env .env
       - name: Cache Rust dependencies
-          uses: actions/cache@preview
+        uses: actions/cache@preview
           with:
             path: target
             key: rust-test
