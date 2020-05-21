@@ -1,0 +1,20 @@
+name: Docker
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  publish-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: nightly
+      - uses: actions/checkout@master
+      - name: Run cargo doc
+        run: cargo doc
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./target/doc/
