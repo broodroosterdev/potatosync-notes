@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["Atlantic",""],["Central",""],["Eastern",""],["Mountain",""],["Newfoundland",""],["Pacific",""],["Saskatchewan",""],["Yukon",""]]});
+initSidebarItems({"constant":[["Atlantic",""],["Central",""],["EastSaskatchewan",""],["Eastern",""],["Mountain",""],["Newfoundland",""],["Pacific",""],["Saskatchewan",""],["Yukon",""]]});
