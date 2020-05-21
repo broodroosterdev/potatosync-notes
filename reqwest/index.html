@@ -99,9 +99,9 @@ security to connect to HTTPS destinations. This means schannel on Windows,
 Security-Framework on macOS, and OpenSSL on Linux.</p>
 <ul>
 <li>Additional X509 certificates can be configured on a <code>ClientBuilder</code> with the
-<a href="Certificate"><code>Certificate</code></a> type.</li>
+<a href="../reqwest/struct.Certificate.html"><code>Certificate</code></a> type.</li>
 <li>Client certificates can be add to a <code>ClientBuilder</code> with the
-[<code>Identity</code>][Identity] type.</li>
+<a href="../reqwest/struct.Identity.html" title="Identity"><code>Identity</code></a> type.</li>
 <li>Various parts of TLS can also be configured or even disabled on the
 <code>ClientBuilder</code>.</li>
 </ul>
@@ -131,9 +131,11 @@ threadpool using <code>getaddrinfo</code>.</li>
 </td></tr><tr class='module-item'><td><a class="mod" href="redirect/index.html" title='reqwest::redirect mod'>redirect</a></td><td class='docblock-short'><p>Redirect Handling</p>
 </td></tr></table><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table><tr class='module-item'><td><a class="struct" href="struct.Body.html" title='reqwest::Body struct'>Body</a></td><td class='docblock-short'><p>An asynchronous request body.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Certificate.html" title='reqwest::Certificate struct'>Certificate</a></td><td class='docblock-short'><p>Represents a server X509 certificate.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Client.html" title='reqwest::Client struct'>Client</a></td><td class='docblock-short'><p>An asynchronous <code>Client</code> to make Requests with.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.ClientBuilder.html" title='reqwest::ClientBuilder struct'>ClientBuilder</a></td><td class='docblock-short'><p>A <code>ClientBuilder</code> can be used to create a <code>Client</code> with  custom configuration.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Error.html" title='reqwest::Error struct'>Error</a></td><td class='docblock-short'><p>The Errors that may occur when processing a <code>Request</code>.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Identity.html" title='reqwest::Identity struct'>Identity</a></td><td class='docblock-short'><p>Represents a private key and X509 cert as a client certificate.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Method.html" title='reqwest::Method struct'>Method</a></td><td class='docblock-short'><p>The Request Method (VERB)</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Proxy.html" title='reqwest::Proxy struct'>Proxy</a></td><td class='docblock-short'><p>Configuration of a proxy that a <code>Client</code> should pass requests to.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Request.html" title='reqwest::Request struct'>Request</a></td><td class='docblock-short'><p>A request which can be executed with <code>Client::execute()</code>.</p>

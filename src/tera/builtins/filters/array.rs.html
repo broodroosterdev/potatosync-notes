@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tera-1.3.0/src/builtins/filters/array.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>array.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../tera/index.html'><div class='logo-container'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/tera-1.2.0/src/builtins/filters/array.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>array.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../tera/index.html'><div class='logo-container'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -790,32 +790,6 @@
 <span id="790">790</span>
 <span id="791">791</span>
 <span id="792">792</span>
-<span id="793">793</span>
-<span id="794">794</span>
-<span id="795">795</span>
-<span id="796">796</span>
-<span id="797">797</span>
-<span id="798">798</span>
-<span id="799">799</span>
-<span id="800">800</span>
-<span id="801">801</span>
-<span id="802">802</span>
-<span id="803">803</span>
-<span id="804">804</span>
-<span id="805">805</span>
-<span id="806">806</span>
-<span id="807">807</span>
-<span id="808">808</span>
-<span id="809">809</span>
-<span id="810">810</span>
-<span id="811">811</span>
-<span id="812">812</span>
-<span id="813">813</span>
-<span id="814">814</span>
-<span id="815">815</span>
-<span id="816">816</span>
-<span id="817">817</span>
-<span id="818">818</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">/// Filters operating on array</span>
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
@@ -1005,7 +979,6 @@
 
 <span class="doccomment">/// Filter the array values, returning only the values where the `attribute` is equal to the `value`</span>
 <span class="doccomment">/// Values without the `attribute` or with a null `attribute` are discarded</span>
-<span class="doccomment">/// If the `value` is not passed, discard all elements where the attribute is null.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">filter</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">Value</span>, <span class="ident">args</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Value</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">arr</span> <span class="op">=</span> <span class="macro">try_get_value</span><span class="macro">!</span>(<span class="string">&quot;filter&quot;</span>, <span class="string">&quot;value&quot;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>, <span class="ident">value</span>);
     <span class="kw">if</span> <span class="ident">arr</span>.<span class="ident">is_empty</span>() {
@@ -1016,17 +989,23 @@
         <span class="prelude-val">Some</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">try_get_value</span><span class="macro">!</span>(<span class="string">&quot;filter&quot;</span>, <span class="string">&quot;attribute&quot;</span>, <span class="ident">String</span>, <span class="ident">val</span>),
         <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">msg</span>(<span class="string">&quot;The `filter` filter has to have an `attribute` argument&quot;</span>)),
     };
-    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">get</span>(<span class="string">&quot;value&quot;</span>).<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span><span class="ident">Value</span>::<span class="ident">Null</span>);
+    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">get</span>(<span class="string">&quot;value&quot;</span>) {
+        <span class="prelude-val">Some</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>,
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">msg</span>(<span class="string">&quot;The `filter` filter has to have a `value` argument&quot;</span>)),
+    };
 
     <span class="kw">let</span> <span class="ident">json_pointer</span> <span class="op">=</span> <span class="ident">get_json_pointer</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>);
     <span class="ident">arr</span> <span class="op">=</span> <span class="ident">arr</span>
         .<span class="ident">into_iter</span>()
         .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">pointer</span>(<span class="kw-2">&amp;</span><span class="ident">json_pointer</span>).<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span><span class="ident">Value</span>::<span class="ident">Null</span>);
-            <span class="kw">if</span> <span class="ident">value</span>.<span class="ident">is_null</span>() {
-                <span class="op">!</span><span class="ident">val</span>.<span class="ident">is_null</span>()
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">val</span>) <span class="op">=</span> <span class="ident">v</span>.<span class="ident">pointer</span>(<span class="kw-2">&amp;</span><span class="ident">json_pointer</span>) {
+                <span class="kw">if</span> <span class="ident">val</span>.<span class="ident">is_null</span>() {
+                    <span class="bool-val">false</span>
+                } <span class="kw">else</span> {
+                    <span class="ident">val</span> <span class="op">=</span><span class="op">=</span> <span class="ident">value</span>
+                }
             } <span class="kw">else</span> {
-                <span class="ident">val</span> <span class="op">=</span><span class="op">=</span> <span class="ident">value</span>
+                <span class="bool-val">false</span>
             }
         })
         .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
@@ -1541,37 +1520,6 @@
         <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro">json</span><span class="macro">!</span>([
             {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2015</span>},
             {<span class="string">&quot;id&quot;</span>: <span class="number">2</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2015</span>},
-        ]);
-
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">filter</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>, <span class="kw-2">&amp;</span><span class="ident">args</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">res</span>.<span class="ident">is_ok</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">res</span>.<span class="ident">unwrap</span>(), <span class="ident">to_value</span>(<span class="ident">expected</span>).<span class="ident">unwrap</span>());
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_filter_no_value</span>() {
-        <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="macro">json</span><span class="macro">!</span>([
-            {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2015</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">2</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2015</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">3</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2016</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">4</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2017</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">5</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2017</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">6</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2017</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">7</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2018</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">8</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">9</span>, <span class="string">&quot;year&quot;</span>: <span class="ident">null</span>},
-        ]);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
-        <span class="ident">args</span>.<span class="ident">insert</span>(<span class="string">&quot;attribute&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">to_value</span>(<span class="string">&quot;year&quot;</span>).<span class="ident">unwrap</span>());
-
-        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro">json</span><span class="macro">!</span>([
-            {<span class="string">&quot;id&quot;</span>: <span class="number">1</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2015</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">2</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2015</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">3</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2016</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">4</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2017</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">5</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2017</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">6</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2017</span>},
-            {<span class="string">&quot;id&quot;</span>: <span class="number">7</span>, <span class="string">&quot;year&quot;</span>: <span class="number">2018</span>},
         ]);
 
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">filter</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>, <span class="kw-2">&amp;</span><span class="ident">args</span>);
