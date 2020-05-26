@@ -33,7 +33,7 @@ In case there are issues with doing so, feel free to reach out
 What i will promise to you:
 * A timely (striving for within 24 hour) response to your messages
 * No legal action to be undertaken as a result of finding the vulnerability and your report
-* A public (or anonymous, when preferred) thank you for finding and responsible disclosing the vulnerability in the PR, changelog and README
+* A public (or anonymous, when preferred) thank you for finding and responsibly disclosing the vulnerability in the PR, changelog and README
 * I will work with you to try to find the issue and resolve it ASAP
 * I will keep you informed of new information or related progress
 
