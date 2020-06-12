@@ -39,9 +39,23 @@ CREATE TABLE IF NOT EXISTS notes
 
 CREATE INDEX IF NOT EXISTS idx_accounts_deleted_at ON accounts (deleted_at);
 
-CREATE TABLE IF NOT EXISTS tokens
+CREATE TABLE IF NOT EXISTS reset_tokens
 (
-    account_id text not null PRIMARY KEY REFERENCES accounts (id) ON DELETE CASCADE,
-    token      text not null,
-    created_at text not null
+    account_id  text not null PRIMARY KEY REFERENCES accounts (id) ON DELETE CASCADE,
+    reset_token text not null,
+    expires_at  timestamptz not null
+);
+
+CREATE TABLE IF NOT EXISTS verification_tokens
+(
+    account_id  text not null PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE,
+    verification_token       text not null,
+    expires_at  timestamptz  not null
+);
+
+CREATE TABLE IF NOT EXISTS session_tokens
+(
+    account_id  text not null PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE,
+    session_token  text not null,
+    expires_at  timestamptz not null
 );

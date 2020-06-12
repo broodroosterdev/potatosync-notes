@@ -3,8 +3,6 @@ use std::env;
 use sendgrid::{Destination, Mail, SGClient};
 use tera::{Context, Tera};
 
-use crate::schema::tokens;
-
 lazy_static! {
     pub static ref TERA: Tera = {
         let tera = match Tera::new("templates/**/*") {
@@ -18,17 +16,8 @@ lazy_static! {
     };
 }
 
-/// Used for storing verification token in DB
-#[table_name = "tokens"]
-#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone)]
-pub struct VerificationToken {
-    pub(crate) account_id: String,
-    pub(crate) token: String,
-    pub(crate) created_at: String,
-}
-
 ///Creates email with provided verification url and username
-pub(crate) fn create_token_email(name: String, url: String) -> String {
+pub(crate) fn create_verification_email(name: String, url: String) -> String {
     let mut context = Context::new();
     context.insert("name", &name);
     context.insert("url", &url);
@@ -37,7 +26,7 @@ pub(crate) fn create_token_email(name: String, url: String) -> String {
 }
 
 ///Sends created email to provided address using SendGrid
-pub(crate) fn send_email(email: String, address: String) {
+pub(crate) fn send_email(email: String, subject: &str, address: String) {
     let api_key = env::var("SENDGRID_APIKEY").expect("Could not find SENDGRID APIKEY in .env");
     let sg = SGClient::new(api_key);
     let mail_info = Mail::new()
@@ -46,7 +35,7 @@ pub(crate) fn send_email(email: String, address: String) {
             name: address.as_str(),
         })
         .add_from("test@example.com")
-        .add_subject("Confirming your new Potatosync account")
+        .add_subject(subject)
         .add_html(email.as_str());
     match sg.send(mail_info) {
         Err(err) => println!("Error: {}", err),

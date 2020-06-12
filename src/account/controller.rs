@@ -1,8 +1,8 @@
 use std::env;
 
 use bcrypt::{hash, verify};
-use chrono::{Local, SecondsFormat, Utc};
-use diesel::{Connection, ExpressionMethods, PgConnection, RunQueryDsl, select};
+use chrono::{Duration, Utc};
+use diesel::{ExpressionMethods, PgConnection, RunQueryDsl, select};
 use diesel::expression::exists::exists;
 use diesel::query_dsl::filter_dsl::FilterDsl;
 use diesel::result::Error;
@@ -11,64 +11,67 @@ use rand::Rng;
 use rocket_failure::errors::Status;
 use uuid::Uuid;
 
-use crate::account::email::{create_token_email, send_email, VerificationToken};
-use crate::account::model::{Account, InfoResponse, LoginCredentials, NewAccount, PatchingAccount, TokenAccount, TokenResponse, validate_password, validate_username};
+use crate::account::email::{create_verification_email, send_email};
+use crate::account::model::{Account, InfoResponse, LoginCredentials, NewAccount, password_is_valid, PatchingAccount, TokenAccount, TokenResponse, username_is_valid, VerificationToken};
+use crate::account::repository::{account_from_email, account_from_username, email_exists, insert_account, insert_verification_token, username_exists};
+use crate::account::responses::{INCORRECT_CREDENTIALS, INTERNAL_ERROR, INVALID_EMAIL, INVALID_PASSWORD, INVALID_USERNAME, USER_NOT_VERIFIED};
 use crate::account::token::{RefreshToken, Token};
+use crate::error::ApiError;
 use crate::schema::accounts;
 use crate::schema::notes;
-use crate::schema::tokens;
+use crate::schema::verification_tokens;
 use crate::status_response::{ApiResponse, StatusResponse};
 
 /// Used to login user using DB and returns Error if credentials are incorrect
-pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) -> Result<TokenResponse, StatusResponse> {
-    let get_account_result: Result<Account, diesel::result::Error>;
+pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) -> Result<TokenResponse, ApiError> {
+    let get_account_result: Result<Account, String>;
     if credentials.email.is_some() {
         let email = credentials.email.clone().unwrap().clone();
-        let email_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::email.eq(email.clone())))).get_result(connection);
-        if email_exists.is_err() {
-            return Err(StatusResponse::new("Could not search for email in database".parse().unwrap(), false));
-        }
-        if !email_exists.ok().unwrap() {
-            return Err(StatusResponse::new("Email address not found".parse().unwrap(), false));
-        }
-        get_account_result = accounts::dsl::accounts.filter(accounts::email.eq(email.clone())).first::<Account>(connection);
-        if get_account_result.is_err() {
-            return Err(StatusResponse::new("Could not get account from database".parse().unwrap(), false));
+        match email_exists(&email, connection) {
+            Err(_error) => {
+                return Err(INCORRECT_CREDENTIALS);
+            }
+            Ok(exists) => {
+                if !exists {
+                    return Err(INCORRECT_CREDENTIALS);
+                }
+                get_account_result = account_from_email(&email, connection);
+                if get_account_result.is_err() {
+                    return Err(INCORRECT_CREDENTIALS);
+                }
+            }
         }
     } else if credentials.username.is_some() {
         let username = credentials.username.clone().unwrap().clone();
-        let username_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::username.eq(username.clone())))).get_result(connection);
-        if username_exists.is_err() {
-            return Err(StatusResponse::new("Could not search for username in database".parse().unwrap(), false));
-        }
-        if !username_exists.ok().unwrap() {
-            return Err(StatusResponse::new("UsernameNotFoundError".parse().unwrap(), false));
-        }
-        get_account_result = accounts::dsl::accounts.filter(accounts::username.eq(username.clone())).first::<Account>(connection);
-        if get_account_result.is_err() {
-            return Err(StatusResponse::new("Could not get account from database".parse().unwrap(), false));
+        match username_exists(&username, connection) {
+            Err(_error) => {
+                return Err(INCORRECT_CREDENTIALS);
+            }
+            Ok(exists) => {
+                if !exists {
+                    return Err(INCORRECT_CREDENTIALS);
+                }
+                get_account_result = account_from_username(&username, connection);
+                if get_account_result.is_err() {
+                    return Err(INCORRECT_CREDENTIALS);
+                }
+            }
         }
     } else {
-        return Err(StatusResponse::new("Both username and password missing".parse().unwrap(), false));
+        return Err(INCORRECT_CREDENTIALS);
     }
     let account = get_account_result.unwrap();
     let hash_result = verify(credentials.password, account.password.clone().as_ref()).unwrap();
     if hash_result != true {
-        return Err(StatusResponse::new("Username/Email or Password is incorrect".parse().unwrap(), false));
+        return Err(INCORRECT_CREDENTIALS);
     }
     if !account.verified {
-        return Err(StatusResponse::new("User is not verified".parse().unwrap(), false));
+        return Err(USER_NOT_VERIFIED);
     }
-
 
     let access_token = Token::create_access_token(account.id.clone());
     let refresh_token = RefreshToken::create_refresh_token(account.id.clone(), account.password_identifier.clone());
     Ok(TokenResponse::new(account, access_token, refresh_token))
-}
-
-/// Gets account by account_id from DB
-pub(crate) fn get_account_by_id(id: String, connection: &PgConnection) -> Account {
-    accounts::dsl::accounts.filter(accounts::id.eq(id)).first::<Account>(connection).unwrap()
 }
 
 /// Creates random password identifier to check if password has changed
@@ -83,16 +86,29 @@ fn create_verification_token() -> String {
 
 /// Registers account using DB
 pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiResponse {
-    let is_valid: StatusResponse = account.is_valid(connection);
-    if !is_valid.status {
-        return ApiResponse {
-            json: is_valid.to_string(),
-            status: Status::BadRequest,
-        };
+    let validation_result = account.is_valid(connection);
+    if validation_result.is_err(){
+        println!("Invalid");
+        return validation_result.err().unwrap().to_response();
+    }
+
+    match email_exists(&account.email, connection) {
+        Err(error) => {
+            println!("exists");
+            return INVALID_EMAIL.to_response();
+        },
+        _ => {}
+    }
+    match username_exists(&account.username, connection) {
+        Err(error) => {
+            println!("exists");
+            return INVALID_USERNAME.to_response();
+        },
+        _ => {}
     }
     let hashed_password = hash(account.password.clone(), 12).expect("Error hashing password: ");
     let password_identifier = create_password_identifier();
-    let token = create_verification_token();
+    let verification_token = create_verification_token();
     let mut account = Account {
         id: Uuid::new_v4().to_string(),
         created_at: Utc::now(),
@@ -110,45 +126,38 @@ pub(crate) fn create(account: NewAccount, connection: &PgConnection) -> ApiRespo
         println!("IMPORTANT: Automatically verifying user. If you did not intend this behaviour please kill the program and check your settings");
         account.verified = true;
     }
-    let insert_result: Result<Account, Error> = diesel::insert_into(accounts::table)
-        .values(&account)
-        .returning(accounts::all_columns)
-        .get_result(connection);
-    if insert_result.is_err() {
-        return ApiResponse {
-            json: StatusResponse::new("Could not insert account into DB".parse().unwrap(), false).to_string(),
-            status: Status::BadRequest,
-        };
-    }
-    let account = insert_result.unwrap();
-    if env::var("DISABLE_EMAIL_VERIFICATION").is_err() || env::var("DISABLE_EMAIL_VERIFICATION").unwrap() != "true" {
-        let token_db = VerificationToken {
-            account_id: account.id.clone(),
-            token,
-            created_at: Local::now().to_rfc3339_opts(SecondsFormat::Millis, true),
-        };
-        let token_insert_result = diesel::insert_into(tokens::table)
-            .values(&token_db)
-            .execute(connection);
-        if token_insert_result.is_err() {
-            return ApiResponse {
-                json: StatusResponse::new("Could not insert token into DB".parse().unwrap(), false).to_string(),
-                status: Status::BadRequest,
-            };
+    return match insert_account(&account, connection) {
+        Err(_) => INTERNAL_ERROR.to_response(),
+        Ok(account) => {
+            if env::var("DISABLE_EMAIL_VERIFICATION").is_err() || env::var("DISABLE_EMAIL_VERIFICATION").unwrap() != "true" {
+                let token_db = VerificationToken {
+                    account_id: account.id.clone(),
+                    verification_token,
+                    expires_at: Utc::now() + Duration::days(1),
+                };
+                match insert_verification_token(&token_db, connection) {
+                    Err(error) => {
+                        println!("Could not save verification token in database: {}", error);
+                        return INTERNAL_ERROR.to_response()
+                    },
+                    _ => {}
+                }
+                let domain = env::var("DOMAIN").expect("Could not find DOMAIN in .env");
+                let email = create_verification_email(account.username.clone(), format!("{}/api/users/verify/{}/{}", domain, token_db.account_id, token_db.verification_token));
+                send_email(email, "Confirming your new Potatosync account", account.email.clone());
+            }
+            let json = TokenResponse {
+                message: "AccCreationSuccess".parse().unwrap(),
+                status: true,
+                account: TokenAccount::from_account(account, None, None),
+            }.to_string();
+            ApiResponse {
+                json,
+                status: Status::Ok,
+            }
         }
-        let domain = env::var("DOMAIN").expect("Could not find DOMAIN in .env");
-        let email = create_token_email(account.username.clone(), format!("{}/api/users/verify/{}/{}", domain, token_db.account_id, token_db.token));
-        send_email(email, account.email.clone());
     }
-    let json = TokenResponse {
-        message: "AccCreationSuccess".parse().unwrap(),
-        status: true,
-        account: TokenAccount::from_account(account, None, None),
-    }.to_string();
-    return ApiResponse {
-        json,
-        status: Status::Ok,
-    };
+
 }
 
 /// Verifies email token and verifies user in DB
@@ -158,12 +167,12 @@ pub(crate) fn verify_email(account_id: String, used_token: String, connection: &
         return StatusResponse::new("UserNotFoundError".parse().unwrap(), false);
     }
     let mut account = accounts::dsl::accounts.filter(accounts::id.eq(&account_id)).first::<Account>(connection).unwrap();
-    let token_exists: bool = select(exists(tokens::dsl::tokens.filter(tokens::account_id.eq(&account_id)))).get_result(connection).expect("Could not check if token exists");
+    let token_exists: bool = select(exists(verification_tokens::dsl::verification_tokens.filter(verification_tokens::account_id.eq(&account_id)))).get_result(connection).expect("Could not check if token exists");
     if !token_exists {
         return StatusResponse::new("TokenNotFoundError".parse().unwrap(), false);
     }
-    let saved_token = tokens::dsl::tokens.filter(tokens::account_id.eq(&account_id)).first::<VerificationToken>(connection).unwrap();
-    return if saved_token.token.eq(&used_token) {
+    let saved_token = verification_tokens::dsl::verification_tokens.filter(verification_tokens::account_id.eq(&account_id)).first::<VerificationToken>(connection).unwrap();
+    return if saved_token.verification_token.eq(&used_token) {
         account.verified = true;
         let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(&account_id)))
             .set(accounts::verified.eq(true))
@@ -171,7 +180,7 @@ pub(crate) fn verify_email(account_id: String, used_token: String, connection: &
         if update_result.is_err() {
             return StatusResponse::new("Can not update status of account".parse().unwrap(), false);
         }
-        let delete_result = diesel::delete(tokens::dsl::tokens.filter(tokens::account_id.eq(&account_id))).execute(connection);
+        let delete_result = diesel::delete(verification_tokens::dsl::verification_tokens.filter(verification_tokens::account_id.eq(&account_id))).execute(connection);
         if delete_result.is_err() {
             return StatusResponse::new("Can not remove token".parse().unwrap(), false);
         }
@@ -194,28 +203,28 @@ pub(crate) fn change_info(account_id: String, account: PatchingAccount, connecti
         has_changes = true;
         let change_result = change_shared_prefs(account_id.clone(), account.shared_prefs.unwrap(), connection);
         if change_result.is_err() {
-            return change_result.err().unwrap()
+            return change_result.err().unwrap();
         }
     }
     if account.username.is_some() {
         has_changes = true;
         let change_result = change_username(account_id.clone(), account.username.unwrap(), connection);
         if change_result.is_err() {
-            return change_result.err().unwrap()
+            return change_result.err().unwrap();
         }
     }
     if account.password.is_some() {
         has_changes = true;
         let change_result = change_password(account_id.clone(), account.password.unwrap(), connection);
         if change_result.is_err() {
-            return change_result.err().unwrap()
+            return change_result.err().unwrap();
         }
     }
     if account.image_url.is_some() {
         has_changes = true;
         let change_result = change_image_url(account_id.clone(), account.image_url.unwrap(), connection);
         if change_result.is_err() {
-            return change_result.err().unwrap()
+            return change_result.err().unwrap();
         }
     }
     return if has_changes {
@@ -228,7 +237,7 @@ pub(crate) fn change_info(account_id: String, account: PatchingAccount, connecti
             json: StatusResponse::new("No changes".parse().unwrap(), false).to_string(),
             status: Status::BadRequest,
         }
-    }
+    };
 }
 
 /// Changes shared preferences of user
@@ -248,12 +257,18 @@ pub(crate) fn change_shared_prefs(account_id: String, new_shared_prefs: String, 
 
 /// Changes username of user
 pub(crate) fn change_username(account_id: String, new_username: String, connection: &PgConnection) -> Result<(), ApiResponse> {
-    let username_valid = validate_username(new_username.clone(), connection);
-    if username_valid.is_err() {
-        return Err(ApiResponse {
-            json: username_valid.err().unwrap().to_string(),
-            status: Status::BadRequest,
-        });
+    match username_exists(&new_username, connection){
+        Err(error) => {
+            println!("Could not check if username exists: {}", error);
+            return Err(INVALID_USERNAME.to_response())
+        }
+        _ => {}
+    }
+    match username_is_valid(&new_username){
+        false => {
+            return Err(INVALID_USERNAME.to_response())
+        }
+        _ => {}
     }
     let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))
         .set(accounts::username.eq(new_username))
@@ -270,12 +285,9 @@ pub(crate) fn change_username(account_id: String, new_username: String, connecti
 
 /// Changes password of user
 pub(crate) fn change_password(account_id: String, new_password: String, connection: &PgConnection) -> Result<(), ApiResponse> {
-    let password_valid = validate_password(new_password.clone());
-    if password_valid.is_err() {
-        return Err(ApiResponse {
-            json: password_valid.err().unwrap().to_string(),
-            status: Status::BadRequest,
-        });
+    let password_valid = password_is_valid(&new_password);
+    if !password_valid {
+        return Err(INVALID_PASSWORD.to_response());
     }
     let password_identifier = create_password_identifier();
     let hashed_password = hash(new_password.clone(), 10).unwrap();
@@ -341,5 +353,206 @@ pub(crate) fn delete_user(refresh_token: RefreshToken, connection: &PgConnection
             json: StatusResponse::new("DeletionSuccess".parse().unwrap(), true).to_string(),
             status: Status::Ok,
         }
+    };
+}
+
+#[cfg(test)]
+mod tests {
+    use bcrypt::DEFAULT_COST;
+    use mocktopus::mocking::*;
+
+    use crate::db;
+
+    use super::*;
+
+    #[test]
+    fn success_response_when_login_successful() {
+        dotenv::dotenv().ok();
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(true)));
+        let mut account = Account::mock_empty();
+        account.password = hash("test", DEFAULT_COST).unwrap();
+        account.verified = true;
+        account_from_email.mock_safe(move |_, _| MockResult::Return(Ok(account.clone())));
+        let credentials = LoginCredentials {
+            email: Some("test@example.com".to_string()),
+            username: None,
+            password: "test".to_string(),
+        };
+        let login_result = login(credentials, &db::connect().get().unwrap());
+        assert!(login_result.is_ok());
+        println!("{}", login_result.ok().unwrap().to_string());
+    }
+
+    #[test]
+    fn invalid_on_missing_username_and_password_on_login() {
+        dotenv::dotenv().ok();
+        let credentials = LoginCredentials {
+            email: None,
+            username: None,
+            password: "".to_string(),
+        };
+        let login_result = login(credentials, &db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!("{}", login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
+    }
+
+    #[test]
+    fn invalid_on_non_existing_email_on_login() {
+        dotenv::dotenv().ok();
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(false)));
+        let credentials = LoginCredentials {
+            email: Some("test@example.com".to_string()),
+            username: None,
+            password: "".to_string(),
+        };
+        let login_result = login(credentials, &db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!("{}", login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
+    }
+
+    #[test]
+    fn invalid_on_non_existing_username_on_login() {
+        dotenv::dotenv().ok();
+        username_exists.mock_safe(|_, _| MockResult::Return(Ok(false)));
+        let credentials = LoginCredentials {
+            email: None,
+            username: Some("test".to_string()),
+            password: "".to_string(),
+        };
+        let login_result = login(credentials, &db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!("{}", login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
+    }
+
+    #[test]
+    fn invalid_when_error_account_from_email_on_login() {
+        dotenv::dotenv().ok();
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(true)));
+        account_from_email.mock_safe(|_, _| MockResult::Return(Err(String::from("Error"))));
+        let credentials = LoginCredentials {
+            email: Some("test@example.com".to_string()),
+            username: None,
+            password: "".to_string(),
+        };
+        let login_result = login(credentials, &db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!("{}", login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
+    }
+
+    #[test]
+    fn invalid_when_error_account_from_username_on_login() {
+        dotenv::dotenv().ok();
+        username_exists.mock_safe(|_, _| MockResult::Return(Ok(true)));
+        account_from_username.mock_safe(|_, _| MockResult::Return(Err(String::from("Error"))));
+        let credentials = LoginCredentials {
+            email: None,
+            username: Some("test".to_string()),
+            password: "".to_string(),
+        };
+        let login_result = login(credentials, &db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!("{}", login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
+    }
+
+    #[test]
+    fn invalid_when_password_not_matching() {
+        dotenv::dotenv().ok();
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(true)));
+        let mut account = Account::mock_empty();
+        account.password = hash("test", DEFAULT_COST).unwrap();
+        account_from_email.mock_safe(move |_, _| MockResult::Return(Ok(account.clone())));
+        let credentials = LoginCredentials {
+            email: Some("test@example.com".to_string()),
+            username: None,
+            password: "not test".to_string(),
+        };
+        let login_result = login(credentials, &db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!("{}", login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
+    }
+
+    #[test]
+    fn not_verified_error_when_not_verified_on_login() {
+        dotenv::dotenv().ok();
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(true)));
+        let mut account = Account::mock_empty();
+        account.password = hash("test", DEFAULT_COST).unwrap();
+        account_from_email.mock_safe(move |_, _| MockResult::Return(Ok(account.clone())));
+        let credentials = LoginCredentials {
+            email: Some("test@example.com".to_string()),
+            username: None,
+            password: "not test".to_string(),
+        };
+        let login_result = login(credentials, &db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!("{}", login_result);
+        assert_eq!(login_result.description, expected_result.description);
+        assert_eq!(login_result.code, expected_result.code);
+    }
+
+    #[test]
+    fn success_response_when_create_successful() {
+        dotenv::dotenv().ok();
+        env::set_var("DISABLE_EMAIL_VERIFICATION", "true");
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(false)));
+        username_exists.mock_safe(|_, _| MockResult::Return(Ok(false)));
+        let account = Account {
+            id: Uuid::new_v4().to_string(),
+            created_at: Utc::now(),
+            updated_at: Some(Utc::now()),
+            deleted_at: None,
+            email: "test@example.com".to_string(),
+            username: "test123".to_string(),
+            password: hash("strongEnoughPassword".to_string(), 12).unwrap(),
+            image_url: "".to_string(),
+            password_identifier: create_password_identifier(),
+            verified: false,
+            shared_prefs: "".to_string(),
+        };
+        let account_copy = account.clone();
+        insert_account.mock_safe(move |_, _| MockResult::Return(Ok(account_copy.clone())));
+        let new_account = NewAccount {
+            email: "test@example.com".to_string(),
+            username: "test123".to_string(),
+            password: "strongEnoughPassword".to_string(),
+        };
+        let create_result = create(new_account, &db::connect().get().unwrap());
+        let expected_result = ApiResponse {
+            json: TokenResponse {
+                message: "AccCreationSuccess".to_string(),
+                status: true,
+                account: TokenAccount::from_account(account.clone(), None, None),
+            }.to_string(),
+            status: Status::Ok,
+        };
+        println!("{} : {}", create_result.status, create_result.json);
+        assert_eq!(create_result.status, expected_result.status);
+        assert_eq!(create_result.json, expected_result.json);
     }
 }

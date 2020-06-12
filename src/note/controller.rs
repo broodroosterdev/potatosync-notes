@@ -1,14 +1,10 @@
-use chrono::DateTime;
-use diesel::expression::exists::exists;
+use chrono::{DateTime, TimeZone, Utc};
 use diesel::prelude::*;
-use diesel::select;
 use rocket_failure::errors::Status;
 
 use crate::note::model::{Note, NoteResponse, PatchingNote};
-use crate::note::repository::{note_exists, note_insert_if_empty, note_patch_if_exists, note_update_if_exists};
+use crate::note::repository::{note_delete, note_delete_all, note_exists, note_insert_if_empty, note_patch_if_exists, note_update_if_exists, notes_get_all};
 use crate::note::responses::*;
-use crate::schema::accounts;
-use crate::schema::notes;
 use crate::status_response::{ApiResponse, StatusResponse};
 
 ///Adds note and if they already exist, it will do nothing
@@ -24,7 +20,7 @@ pub(crate) fn add(note: Note, connection: &PgConnection) -> ApiResponse {
             json: StatusResponse::new(error, false).to_string(),
             status: Status::BadRequest,
         },
-        Ok(changed) => ApiResponse {
+        Ok(_changed) => ApiResponse {
             json: StatusResponse::new(NOTE_ADD_SUCCESS.to_string(), true).to_string(),
             status: Status::Ok,
         }
@@ -44,7 +40,7 @@ pub(crate) fn update(note: Note, account_id: String, connection: &PgConnection) 
             json: StatusResponse::new(error, false).to_string(),
             status: Status::BadRequest,
         },
-        Ok(changed) => ApiResponse {
+        Ok(_changed) => ApiResponse {
             json: StatusResponse::new(NOTE_UPDATE_SUCCESS.to_string(), true).to_string(),
             status: Status::Ok,
         }
@@ -70,7 +66,7 @@ pub(crate) fn patch(note: PatchingNote, note_id: String, account_id: String, con
             json: StatusResponse::new(error, false).to_string(),
             status: Status::BadRequest,
         },
-        Ok(changed) => ApiResponse {
+        Ok(_changed) => ApiResponse {
             json: StatusResponse::new(NOTE_PATCH_SUCCESS.to_string(), true).to_string(),
             status: Status::Ok,
         }
@@ -79,65 +75,20 @@ pub(crate) fn patch(note: PatchingNote, note_id: String, account_id: String, con
 
 /// Delete single note in DB
 pub(crate) fn delete(note_id: String, account_id: String, connection: &PgConnection) -> ApiResponse {
-    let note_exists = notes::dsl::notes.select(notes::note_id)
-        .filter(notes::note_id.eq(&note_id))
-        .filter(notes::account_id.eq(&account_id))
-        .first::<String>(connection);
-    return if note_exists.is_ok() {
-        let delete_result = diesel::delete(notes::table)
-            .filter(notes::note_id.eq(&note_id))
-            .filter(notes::account_id.eq(&account_id))
-            .execute(connection);
-        if delete_result.is_err() {
-            return ApiResponse {
-                json: StatusResponse::new(delete_result.err().unwrap().to_string(), false).to_string(),
+    return if note_exists(&account_id, &note_id, connection) {
+        return match note_delete(account_id, note_id, connection) {
+            Err(error) => ApiResponse {
+                json: StatusResponse::new(error, false).to_string(),
                 status: Status::BadRequest,
-            };
-        }
-        ApiResponse {
-            json: StatusResponse::new("NoteDeleteSuccess".parse().unwrap(), true).to_string(),
-            status: Status::Ok,
-        }
-    } else {
-        ApiResponse {
-            json: StatusResponse::new("NoteDoesntExist".to_string(), false).to_string(),
-            status: Status::BadRequest,
-        }
-    };
-}
-
-/// Get list of notes updated after provided timestamp
-pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: String, connection: &PgConnection) -> ApiResponse {
-    let id_exists: Result<bool, diesel::result::Error> = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(&account_id)))).get_result(connection);
-    if !id_exists.ok().unwrap() {
-        return ApiResponse {
-            json: StatusResponse::new("UserNotFoundError".parse().unwrap(), false).to_string(),
-            status: Status::BadRequest,
-        };
-    };
-    let notes_result: Result<Vec<Note>, diesel::result::Error> = notes::dsl::notes.filter(notes::account_id.eq(&account_id)).load::<Note>(connection);
-    return if notes_result.is_ok() {
-        let synced_notes = notes_result.unwrap();
-        let last_updated = DateTime::parse_from_rfc3339(timestamp_last_updated.as_ref()).expect("Could not parse DateTime string");
-        let mut updated_notes: Vec<Note> = vec![];
-        for note in synced_notes {
-            let note_date = note.last_modify_date;
-            if !note_date.le(&last_updated) {
-                let copied: Note = note.clone();
-                updated_notes.push(copied);
+            },
+            Ok(_changed) => ApiResponse {
+                json: StatusResponse::new(NOTE_DELETE_SUCCESS.to_string(), true).to_string(),
+                status: Status::Ok,
             }
-        };
-        ApiResponse {
-            json: NoteResponse {
-                message: "NoteListSuccess".parse().unwrap(),
-                status: true,
-                notes: updated_notes,
-            }.to_string(),
-            status: Status::Ok,
         }
     } else {
         ApiResponse {
-            json: StatusResponse::new(notes_result.err().unwrap().to_string(), false).to_string(),
+            json: StatusResponse::new(NOTE_NOT_EXISTS.to_string(), false).to_string(),
             status: Status::BadRequest,
         }
     };
@@ -145,26 +96,53 @@ pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: S
 
 /// Delete all notes of an user
 pub(crate) fn delete_all(account_id: String, connection: &PgConnection) -> ApiResponse {
-    let delete_result = diesel::delete(notes::table)
-        .filter(notes::account_id.eq(&account_id))
-        .execute(connection);
-    if delete_result.is_err() {
-        return ApiResponse {
-            json: StatusResponse::new(delete_result.err().unwrap().to_string(), false).to_string(),
+    return match note_delete_all(account_id, connection) {
+        Err(error) => ApiResponse {
+            json: StatusResponse::new(error, false).to_string(),
             status: Status::BadRequest,
-        };
-    }
-    return ApiResponse {
-        json: StatusResponse::new("NotesDeleteSuccess".parse().unwrap(), true).to_string(),
-        status: Status::Ok,
+        },
+        Ok(_) => ApiResponse {
+            json: StatusResponse::new(NOTES_DELETE_SUCCESS.to_string(), true).to_string(),
+            status: Status::Ok,
+        }
     };
 }
+
+/// Get list of notes updated after provided timestamp
+pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: i64, connection: &PgConnection) -> ApiResponse {
+    return match notes_get_all(account_id, connection) {
+        Err(error) => ApiResponse {
+            json: StatusResponse::new(error, false).to_string(),
+            status: Status::BadRequest,
+        },
+        Ok(synced_notes) => {
+            let last_updated = Utc.timestamp(timestamp_last_updated/1000, 0);
+            let mut updated_notes: Vec<Note> = vec![];
+            for note in synced_notes {
+                if !note.last_modify_date.le(&last_updated){
+                    updated_notes.push(note);
+                }
+            }
+            ApiResponse {
+                json: NoteResponse {
+                    message: NOTE_LIST_SUCCESS.to_string(),
+                    status: true,
+                    notes: updated_notes,
+                }.to_string(),
+                status: Status::Ok,
+            }
+        }
+    }
+}
+
 
 
 #[cfg(test)]
 mod tests {
     use std::borrow::Borrow;
+    use std::ops::Sub;
 
+    use chrono::{Duration, FixedOffset, TimeZone, Utc};
     use mocktopus::mocking::*;
 
     use crate::db;
@@ -274,6 +252,89 @@ mod tests {
         let correct_result = ApiResponse {
             json: StatusResponse::new(NOTE_MISSING_LAST_MODIFY.to_string(), false).to_string(),
             status: Status::BadRequest,
+        };
+        println!("{} : {}", result.status, result.json);
+        assert_eq!(result.json, correct_result.json);
+        assert_eq!(result.status, correct_result.status);
+    }
+
+    #[test]
+    fn success_when_deleting_existing(){
+        dotenv::dotenv().ok();
+        note_exists.mock_safe(|_, _, _| MockResult::Return(false));
+        note_delete.mock_safe(|_,_,_| MockResult::Return(Ok(1)));
+        let result = delete("".to_string(), "".to_string(), &db::connect().get().unwrap());
+        let correct_result = ApiResponse {
+            json: StatusResponse::new(NOTE_NOT_EXISTS.to_string(), false).to_string(),
+            status: Status::BadRequest,
+        };
+        println!("{} : {}", result.status, result.json);
+        assert_eq!(result.json, correct_result.json);
+        assert_eq!(result.status, correct_result.status);
+    }
+
+    #[test]
+    fn error_when_deleting_nonexistent(){
+        dotenv::dotenv().ok();
+        note_exists.mock_safe(|_, _, _| MockResult::Return(false));
+        let result = delete("".to_string(), "".to_string(), &db::connect().get().unwrap());
+        let correct_result = ApiResponse {
+            json: StatusResponse::new(NOTE_NOT_EXISTS.to_string(), false).to_string(),
+            status: Status::BadRequest,
+        };
+        println!("{} : {}", result.status, result.json);
+        assert_eq!(result.json, correct_result.json);
+        assert_eq!(result.status, correct_result.status);
+    }
+
+    #[test]
+    fn success_when_deleting_all_success(){
+        dotenv::dotenv().ok();
+        note_delete_all.mock_safe(|_,_| MockResult::Return(Ok(5)));
+        let result = delete_all("".to_string(), &db::connect().get().unwrap());
+        let correct_result = ApiResponse {
+            json: StatusResponse::new(NOTES_DELETE_SUCCESS.to_string(), true).to_string(),
+            status: Status::Ok,
+        };
+        println!("{} : {}", result.status, result.json);
+        assert_eq!(result.json, correct_result.json);
+        assert_eq!(result.status, correct_result.status);
+    }
+
+    #[test]
+    fn error_when_deleting_all_error(){
+        dotenv::dotenv().ok();
+        note_delete_all.mock_safe(|_,_| MockResult::Return(Err("Error".to_string())));
+        let result = delete_all("".to_string(), &db::connect().get().unwrap());
+        let correct_result = ApiResponse {
+            json: StatusResponse::new("Error".to_string(), false).to_string(),
+            status: Status::BadRequest
+        };
+        println!("{} : {}", result.status, result.json);
+        assert_eq!(result.json, correct_result.json);
+        assert_eq!(result.status, correct_result.status);
+    }
+
+    #[test]
+    fn success_when_getting_notes_after_modify(){
+        dotenv::dotenv().ok();
+        let date = Utc::now();
+        let mut note = Note::mock_empty();
+        note.last_modify_date = date;
+        note.creation_date = note.last_modify_date.clone();
+        let mut note_copy = note.clone();
+        notes_get_all.mock_safe(move |_,_| MockResult::Return({
+            Ok(vec![note_copy.clone()])
+        }));
+        let last_modify = note.last_modify_date.clone() - Duration::minutes(1);
+        let result = get_notes_by_account("".to_string(), last_modify.timestamp_millis(), &db::connect().get().unwrap());
+        let correct_result = ApiResponse {
+            json: NoteResponse {
+                message: NOTE_LIST_SUCCESS.to_string(),
+                status: true,
+                notes: vec![note]
+            }.to_string(),
+            status: Status::Ok
         };
         println!("{} : {}", result.status, result.json);
         assert_eq!(result.json, correct_result.json);

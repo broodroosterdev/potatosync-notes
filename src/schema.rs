@@ -38,18 +38,28 @@ table! {
 }
 
 table! {
-    tokens (account_id) {
+    reset_tokens (account_id) {
         account_id -> Text,
-        token -> Text,
-        created_at -> Text,
+        reset_token -> Text,
+        expires_at -> Timestamptz,
+    }
+}
+
+table! {
+    verification_tokens (account_id) {
+        account_id -> Text,
+        verification_token -> Text,
+        expires_at -> Timestamptz,
     }
 }
 
 joinable!(notes -> accounts (account_id));
-joinable!(tokens -> accounts (account_id));
+joinable!(reset_tokens -> accounts (account_id));
+joinable!(verification_tokens -> accounts (account_id));
 
 allow_tables_to_appear_in_same_query!(
     accounts,
     notes,
-    tokens,
+    reset_tokens,
+    verification_tokens,
 );

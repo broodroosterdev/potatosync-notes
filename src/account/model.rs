@@ -4,11 +4,18 @@ use diesel;
 use diesel::expression::exists::exists;
 use diesel::prelude::*;
 use diesel::select;
+#[cfg(test)]
+use mocktopus::macros::*;
+use regex::Regex;
 use serde::{Deserialize, Deserializer, Serializer};
-use serde::de::Error;
 use serde_derive::*;
 
+use crate::account::repository::{email_exists, username_exists};
+use crate::account::responses::{INVALID_EMAIL, INVALID_PASSWORD, INVALID_USERNAME};
+use crate::error::ApiError;
 use crate::schema::accounts;
+use crate::schema::reset_tokens;
+use crate::schema::verification_tokens;
 use crate::status_response::StatusResponse;
 
 /// Special function to serialize Option<DateTime<Utc>>
@@ -57,6 +64,25 @@ pub struct Account {
     pub(crate) password_identifier: String,
     pub(crate) verified: bool,
     pub(crate) shared_prefs: String,
+}
+
+#[cfg(test)]
+impl Account {
+    pub(crate) fn mock_empty() -> Account{
+        return Account{
+            id: "".to_string(),
+            created_at: Utc::now(),
+            updated_at: None,
+            deleted_at: None,
+            email: "".to_string(),
+            username: "".to_string(),
+            password: "".to_string(),
+            image_url: "".to_string(),
+            password_identifier: "".to_string(),
+            verified: false,
+            shared_prefs: "".to_string()
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize, Clone)]
@@ -126,54 +152,41 @@ pub struct NewAccount {
 
 impl NewAccount {
     /// Checks if account is valid and can be created
-    pub(crate) fn is_valid(&self, connection: &PgConnection) -> StatusResponse {
-
-        let email_valid = validate_email(self.email.clone(), connection);
-        if email_valid.is_err() {
-            return email_valid.err().unwrap();
+    pub(crate) fn is_valid(&self, connection: &PgConnection) -> Result<(), ApiError> {
+        let email_valid = email_is_valid(&self.email);
+        if !email_valid {
+            return Err(INVALID_EMAIL);
         }
-        let username_valid = validate_username(self.username.clone(), connection);
-        if username_valid.is_err() {
-            return username_valid.err().unwrap();
+        let username_valid = username_is_valid(&self.username);
+        if !username_valid {
+            return Err(INVALID_USERNAME);
         }
-        let password_valid = validate_password(self.password.clone());
-        if password_valid.is_err() {
-            return password_valid.err().unwrap();
+        let password_valid = password_is_valid(&self.password);
+        if !password_valid {
+            return Err(INVALID_PASSWORD);
         }
-        return StatusResponse::new("ValidationSuccess".parse().unwrap(), true);
+        return Ok(());
     }
 }
 
-/// Checks if email is valid and doesnt exist in DB
-pub fn validate_email(email: String, connection: &PgConnection) -> Result<(), StatusResponse> {
-    if !validator::validate_email(email.clone()) {
-        return Err(StatusResponse::new("MalformedEmailError".parse().unwrap(), false));
-    }
-    let email_exists = select(exists(accounts::dsl::accounts.filter(accounts::email.eq(email.clone())))).get_result(connection);
-    if email_exists.ok().unwrap() {
-        return Err(StatusResponse::new("EmailAlreadyExistsError".parse().unwrap(), false));
-    }
-    Ok(())
+/// Checks if email is valid
+#[cfg_attr(test, mockable)]
+pub fn email_is_valid(email: &String) -> bool {
+    let email_regex = Regex::new(r"^([a-z0-9_+]([a-z0-9_+.]*[a-z0-9_+])?)@([a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6})").unwrap();
+    return email_regex.is_match(email.clone().as_str());
 }
 
-/// Checks if username is valid and doesnt exist in DB
-pub fn validate_username(username: String, connection: &PgConnection) -> Result<(), StatusResponse>{
-    if username.chars().count() <= 4 || username.chars().count() > 60 {
-        return Err(StatusResponse::new("UsernameOutOfBoundsError".parse().unwrap(), false));
-    }
-    let username_exists = select(exists(accounts::dsl::accounts.filter(accounts::username.eq(username.clone())))).get_result(connection);
-    if username_exists.ok().unwrap() {
-        return Err(StatusResponse::new("UsernameAlreadyExistsError".parse().unwrap(), false));
-    }
-    Ok(())
+
+/// Checks if username is valid
+#[cfg_attr(test, mockable)]
+pub fn username_is_valid(username: &String) -> bool {
+    return username.chars().count() >= 4 && username.chars().count() < 60;
 }
 
 /// Checks if password is valid
-pub fn validate_password(password: String) -> Result<(), StatusResponse>{
-    if password.chars().count() < 8 || password.chars().count() > 64 {
-        return Err(StatusResponse::new("PassOutOfBoundsError".parse().unwrap(), false));
-    }
-    Ok(())
+#[cfg_attr(test, mockable)]
+pub fn password_is_valid(password: &String) -> bool {
+    return password.chars().count() > 8 && password.chars().count() < 64;
 }
 
 /// Struct used for sending back account info when you have logged in
@@ -261,70 +274,85 @@ impl ToString for InfoResponse {
     }
 }
 
-/*
-#[cfg(test)]
-mod tests {
-    use std::thread;
-    use std::time::Duration;
+/// Struct used for storing the password reset tokens
+#[table_name = "reset_tokens"]
+#[derive(Insertable, Queryable, Serialize, Clone)]
+pub struct ResetToken {
+    pub(crate) account_id: String,
+    pub(crate) reset_token: String,
+    pub(crate) expires_at: DateTime<Utc>
+}
 
-    use crate::account::token::{read_refresh_token, read_token};
-    use crate::db;
+/// Used for storing verification token in DB
+#[table_name = "verification_tokens"]
+#[derive(Insertable, Queryable, Serialize, Deserialize, Clone)]
+pub struct VerificationToken {
+    pub(crate) account_id: String,
+    pub(crate) verification_token: String,
+    pub(crate) expires_at: DateTime<Utc>,
+}
 
-    use super::*;
-
-    #[test]
-    fn check_validation() {
-        let connection = db::connect().get().unwrap();
-        let new_account = NewAccount {
-            email: "test3@test.com".to_string(),
-            username: "broodrooster3".to_string(),
-            password: "broodrooster".to_string(),
-        };
-        let valid = new_account.is_valid(&connection);
-        if valid.status != true {
-            println!("{}", valid.message);
-        }
-    }
-
-    /*#[test]
-    fn check_creation() {
-        let connection = db::connect().get().unwrap();
-        check_validation();
-        let new_account = NewAccount {
-            email: "test3@test.com".to_string(),
-            username: "broodrooster3".to_string(),
-            password: "broodrooster".to_string(),
-        };
-        let create_result = create(new_account, &connection);
-        println!("{}", create_result);
-    }*/
-
-    #[test]
-    fn check_login() {
-        let connection = db::connect().get().unwrap();
-        let credentials = LoginCredentials {
-            email: Some("test3@test.com".to_string()),
-            username: None,
-            password: "broodrooster".to_string(),
-        };
-        let login_result = login(credentials, &connection);
-        println!("{}", login_result);
-    }
-
-    #[test]
-    fn check_expire() {
-        let connection = db::connect().get().unwrap();
-        let credentials = LoginCredentials {
-            email: Some("test3@test.com".to_string()),
-            username: None,
-            password: "broodrooster".to_string(),
-        };
-        let login_result = login(credentials, &connection);
-        let token_response: TokenResponse = serde_json::from_str(login_result.as_str()).unwrap();
-        println!("{}", login_result);
-        println!("Waiting for 20 seconds...");
-        thread::sleep(Duration::from_secs(20));
-        println!("{}", read_token(token_response.account.access_token.as_ref()).err().unwrap());
-    }
+/// Used for storing active session tokens
+/*#[table_name = "session_tokens"]
+#[derive(Insertabl, Queryable, Serialize, Clone)]
+pub struct SessionToken {
+    pub(crate) account_id: String,
+    pub(crate) session_token: String,
+    pub(crate) expires_at: DateTime<Utc>
 }*/
 
+#[cfg(test)]
+mod tests {
+    use mocktopus::mocking::{Mockable, MockResult};
+
+    use crate::account::model::{email_is_valid, password_is_valid, username_is_valid};
+    use crate::account::repository::email_exists;
+    use crate::db;
+
+    #[test]
+    fn give_error_when_email_malformed(){
+        dotenv::dotenv().ok();
+        let email = "testexample.com".to_string();
+        let is_valid = email_is_valid(&email);
+        assert_eq!(is_valid, false);
+        let email = "test@example.".to_string();
+        let is_valid = email_is_valid(&email);
+        assert_eq!(is_valid, false);
+    }
+
+    #[test]
+    fn give_ok_when_email_correct(){
+        dotenv::dotenv().ok();
+        let email = "test@example.com".to_string();
+        let is_valid = email_is_valid(&email);
+        assert!(is_valid);
+    }
+
+    #[test]
+    fn give_error_when_username_out_of_bounds(){
+        let username = "test".repeat(20);
+        let is_valid = username_is_valid(&username);
+        assert_eq!(is_valid, false)
+    }
+
+    #[test]
+    fn give_ok_when_username_correct(){
+        let username = "test".to_string();
+        let is_valid = username_is_valid(&username);
+        assert!(is_valid);
+    }
+
+    #[test]
+    fn give_error_when_password_out_of_bounds(){
+        let password = "test".repeat(20);
+        let is_valid = password_is_valid(&password);
+        assert_eq!(is_valid, false);
+    }
+
+    #[test]
+    fn give_ok_when_password_correct(){
+        let password = "testingpassword".to_string();
+        let is_valid = password_is_valid(&password);
+        assert!(is_valid);
+    }
+}

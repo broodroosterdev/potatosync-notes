@@ -62,36 +62,6 @@ impl Note {
     }
 }
 
-/*
-/// Struct used for inserting new notes in the db. Note the missing note_id since it will be provided by the db.
-#[table_name = "notes"]
-#[derive(Queryable, Serialize, Deserialize, Insertable)]
-pub struct NewNote {
-    pub note_id: String
-    pub account_id: i32,
-    pub title: String,
-    pub content: String,
-    pub style_json: String,
-    pub starred: bool,
-    #[serde(deserialize_with = "deserialize")]
-    #[serde(serialize_with = "serialize")]
-    pub creation_date: DateTime<Utc>,
-    #[serde(deserialize_with = "deserialize")]
-    #[serde(serialize_with = "serialize")]
-    pub last_modify_date: DateTime<Utc>,
-    pub color: i32,
-    pub images: String,
-    pub list: bool,
-    pub list_content: String,
-    pub reminders: String,
-    pub hide_content: bool,
-    pub lock_note: bool,
-    pub uses_biometrics: bool,
-    pub deleted: bool,
-    pub archived: bool,
-    pub synced: bool,
-}*/
-
 /// Note as provided by the client when saving. Note the missing account_id since the client doesnt know the id.
 #[table_name = "notes"]
 #[derive(Queryable, Serialize, Deserialize, Insertable, Debug)]

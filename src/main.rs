@@ -9,6 +9,7 @@ extern crate dotenv;
 extern crate lazy_static;
 extern crate openssl;
 extern crate rand;
+extern crate regex;
 #[macro_use]
 extern crate rocket;
 #[macro_use]
@@ -40,6 +41,7 @@ mod schema;
 mod account;
 mod db;
 mod status_response;
+mod error;
 
 /// Route for registering user
 #[post("/api/users/new", data = "<json_creds>")]
@@ -59,10 +61,7 @@ fn verify_user(id: String, token: String, connection: db::Connection) -> Redirec
 fn login_user(json_credentials: Json<LoginCredentials>, connection: db::Connection) -> ApiResponse {
     let login_result = login(json_credentials.0.clone(), &connection);
     if login_result.is_err() {
-        ApiResponse {
-            json: login_result.err().unwrap().to_string(),
-            status: Status::BadRequest,
-        }
+       return login_result.err().unwrap().to_response()
     } else {
         ApiResponse {
             json: login_result.ok().unwrap().to_string(),
@@ -149,7 +148,7 @@ fn delete_all_notes(token: Token, connection: db::Connection) -> ApiResponse {
 
 /// Route for getting all the notes which are updated after provided timestamp
 #[get("/api/notes/list?<last_updated>")]
-fn get_notes(last_updated: String, token: Token, connection: db::Connection) -> ApiResponse {
+fn get_notes(last_updated: i64, token: Token, connection: db::Connection) -> ApiResponse {
     get_notes_by_account(token.sub.parse().unwrap(), last_updated, &connection)
 }
 

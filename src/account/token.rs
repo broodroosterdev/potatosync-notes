@@ -8,9 +8,8 @@ use rocket::outcome::Outcome;
 use rocket::request::FromRequest;
 use rocket_failure::errors::Status;
 
-use crate::account::controller::get_account_by_id;
+use crate::account::repository::get_account_by_id;
 use crate::db;
-use crate::schema::tokens;
 use crate::status_response::ApiResponse;
 use crate::status_response::StatusResponse;
 
@@ -64,18 +63,10 @@ impl Token {
             exp: chrono::Utc::now().checked_add_signed(Duration::minutes(15)).unwrap().timestamp(),
         }).unwrap();
         let algo = Algorithm::new_hmac(AlgorithmID::HS256, access_token_secret).unwrap();
-        let header = json!({"alg": algo.name()});
+        let header = json!({"alg": algo.name(), "typ": "JWT"});
         let token = encode(&header, &user, &algo).unwrap();
         token
     }
-}
-
-/// Used for storing token in DB
-#[table_name = "tokens"]
-#[derive(Insertable, Queryable, AsChangeset, Serialize, Deserialize, Clone)]
-pub struct RefreshTokenDb {
-    account_id: String,
-    token: String,
 }
 
 /// Claims of the refresh token
@@ -164,3 +155,4 @@ pub(crate) fn refresh_token(refresh_token: RefreshToken, connection: &PgConnecti
         }
     }
 }
+
