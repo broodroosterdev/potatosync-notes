@@ -16,14 +16,14 @@ use crate::account::model::{Account, InfoResponse, LoginCredentials, NewAccount,
 use crate::account::repository::{account_from_email, account_from_username, email_exists, insert_account, insert_verification_token, username_exists};
 use crate::account::responses::{INCORRECT_CREDENTIALS, INTERNAL_ERROR, INVALID_EMAIL, INVALID_PASSWORD, INVALID_USERNAME, USER_NOT_VERIFIED};
 use crate::account::token::{RefreshToken, Token};
-use crate::error::ApiError;
+use crate::responses::{ApiError, TokenSuccess};
 use crate::schema::accounts;
 use crate::schema::notes;
 use crate::schema::verification_tokens;
 use crate::status_response::{ApiResponse, StatusResponse};
 
 /// Used to login user using DB and returns Error if credentials are incorrect
-pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) -> Result<TokenResponse, ApiError> {
+pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) -> Result<TokenSuccess, ApiError> {
     let get_account_result: Result<Account, String>;
     if credentials.email.is_some() {
         let email = credentials.email.clone().unwrap().clone();
@@ -71,7 +71,7 @@ pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) ->
 
     let access_token = Token::create_access_token(account.id.clone());
     let refresh_token = RefreshToken::create_refresh_token(account.id.clone(), account.password_identifier.clone());
-    Ok(TokenResponse::new(account, access_token, refresh_token))
+    Ok(TokenSuccess::new(TokenAccount::from_account(account, Some(access_token), Some(refresh_token))))
 }
 
 /// Creates random password identifier to check if password has changed

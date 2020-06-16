@@ -1,4 +1,4 @@
-use crate::error::ApiError;
+use crate::responses::{ApiError, ApiSuccess};
 
 pub(crate) const INCORRECT_CREDENTIALS: ApiError = ApiError {
     description: "Incorrect login credentials (username/email/password)",
@@ -23,4 +23,10 @@ pub(crate) const INVALID_PASSWORD: ApiError = ApiError {
 pub(crate) const INTERNAL_ERROR: ApiError = ApiError {
     description: "Internal error, ask the administrator to check the logs",
     code: 30
+};
+
+
+pub(crate) const LOGIN_SUCCESS: ApiSuccess = ApiSuccess {
+    description: "Logged in successfully",
+    code: 40
 };

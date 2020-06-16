@@ -12,7 +12,7 @@ use serde_derive::*;
 
 use crate::account::repository::{email_exists, username_exists};
 use crate::account::responses::{INVALID_EMAIL, INVALID_PASSWORD, INVALID_USERNAME};
-use crate::error::ApiError;
+use crate::responses::ApiError;
 use crate::schema::accounts;
 use crate::schema::reset_tokens;
 use crate::schema::verification_tokens;
@@ -214,7 +214,7 @@ impl ToString for TokenResponse {
 }
 
 /// Struct used for returning account info in TokenResponse
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct TokenAccount {
     #[serde(deserialize_with = "deserialize")]
     #[serde(serialize_with = "serialize")]

@@ -33,6 +33,7 @@ use crate::account::model::{LoginCredentials, NewAccount, PatchingAccount};
 use crate::account::token::{read_refresh_token, refresh_token, RefreshTokenJson, Token};
 use crate::note::controller::*;
 use crate::note::model::{PatchingNote, SavingNote};
+use crate::responses::{ApiError, TokenSuccess};
 use crate::status_response::ApiResponse;
 use crate::status_response::StatusResponse;
 
@@ -41,7 +42,7 @@ mod schema;
 mod account;
 mod db;
 mod status_response;
-mod error;
+mod responses;
 
 /// Route for registering user
 #[post("/api/users/new", data = "<json_creds>")]
@@ -58,16 +59,8 @@ fn verify_user(id: String, token: String, connection: db::Connection) -> Redirec
 
 /// Route for logging in user
 #[post("/api/users/login", data = "<json_credentials>")]
-fn login_user(json_credentials: Json<LoginCredentials>, connection: db::Connection) -> ApiResponse {
-    let login_result = login(json_credentials.0.clone(), &connection);
-    if login_result.is_err() {
-       return login_result.err().unwrap().to_response()
-    } else {
-        ApiResponse {
-            json: login_result.ok().unwrap().to_string(),
-            status: Status::Ok,
-        }
-    }
+fn login_user(json_credentials: Json<LoginCredentials>, connection: db::Connection) -> Result<TokenSuccess, ApiError> {
+    login(json_credentials.0.clone(), &connection)
 }
 
 /// Route for logging out and deleting refresh_token to disable refreshing
@@ -79,14 +72,13 @@ fn delete_token(token: Data, token: token) {
 /// Route for refreshing access_token with refresh_token
 #[post("/api/users/refresh", data = "<json_token>")]
 fn refresh_user(json_token: Json<RefreshTokenJson>, connection: db::Connection) -> ApiResponse {
-    let token = read_refresh_token(json_token.token.as_str());
-    if token.is_err() {
-        return ApiResponse {
-            json: StatusResponse::new(token.err().unwrap(), false).to_string(),
+    return match read_refresh_token(json_token.token.as_str()) {
+        Err(error) => ApiResponse {
+            json: StatusResponse::new(error, false).to_string(),
             status: Status::BadRequest,
-        };
+        },
+        Ok(token) => refresh_token(token, &connection)
     }
-    refresh_token(token.unwrap(), &connection)
 }
 
 /// Route for changing password of user
