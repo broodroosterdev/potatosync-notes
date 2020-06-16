@@ -126,7 +126,7 @@ to be reallocated, which would also make any pointers to it invalid.</p>
 <p>The returned range is half-open, which means that the end pointer
 points <em>one past</em> the last element of the slice. This way, an empty
 slice is represented by two equal pointers, and the difference between
-the two pointers represents the size of the size.</p>
+the two pointers represents the size of the slice.</p>
 <p>See <a href="#method.as_ptr"><code>as_ptr</code></a> for warnings on using these pointers. The end pointer
 requires extra caution, as it does not point to a valid element in the
 slice.</p>
