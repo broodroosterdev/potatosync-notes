@@ -17,7 +17,7 @@ jobs:
           postgresql user: 'notes'
           postgresql password: 'notes'
       - name: Create .env
-        run: mv sample.env .env
+        run: mv env.example .env
       - name: Cache cargo build
         uses: actions/cache@v1
         with:
