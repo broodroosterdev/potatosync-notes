@@ -964,7 +964,7 @@ synchronization overhead, which may also inhibit some optimizations.</p>
 many more items in other threads (with long sleep delays) before the
 panic is finally propagated.</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<div class='information'><div class='tooltip should_panic'>ⓘ<span class='tooltiptext'>This example panics</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
 <span class="kw">use</span> <span class="ident">rayon</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">thread</span>, <span class="ident">time</span>};
 
