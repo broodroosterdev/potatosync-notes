@@ -119,8 +119,7 @@ pub struct NewDBAccount {
 /// Used for getting the credentials from the client
 #[derive(Serialize, Deserialize, Clone)]
 pub struct LoginCredentials {
-    pub(crate) email: Option<String>,
-    pub(crate) username: Option<String>,
+    pub(crate) username: String,
     pub(crate) password: String,
 }
 

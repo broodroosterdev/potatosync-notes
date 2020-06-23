@@ -8,15 +8,15 @@ extern crate dotenv;
 #[macro_use]
 extern crate lazy_static;
 extern crate openssl;
-extern crate rand;
 extern crate regex;
+extern crate reqwest;
 #[macro_use]
 extern crate rocket;
 #[macro_use]
 extern crate serde_derive;
 #[macro_use]
 extern crate serde_json;
-extern crate tera;
+extern crate tokkit;
 extern crate validator;
 extern crate validator_derive;
 
@@ -28,9 +28,8 @@ use rocket::response::{content, Redirect};
 use rocket_contrib::json::Json;
 use rocket_failure::errors::*;
 
-use crate::account::controller::{create, get_info, login, verify_email};
 use crate::account::model::{LoginCredentials, NewAccount, PatchingAccount};
-use crate::account::token::{read_refresh_token, refresh_token, RefreshTokenJson, Token};
+use crate::account::token::Token;
 use crate::note::controller::*;
 use crate::note::model::{PatchingNote, SavingNote};
 use crate::responses::{ApiError, TokenSuccess};
@@ -43,14 +42,14 @@ mod account;
 mod db;
 mod status_response;
 mod responses;
-
+/*
 /// Route for registering user
 #[post("/api/users/new", data = "<json_creds>")]
 fn new_user(json_creds: Json<NewAccount>, connection: db::Connection) -> ApiResponse {
     create(json_creds.0, &connection)
 }
 
-/// Route for verifying email token
+/*/// Route for verifying email token
 #[get("/api/users/verify/<id>/<token>")]
 fn verify_user(id: String, token: String, connection: db::Connection) -> Redirect {
     let verify_result = verify_email(id, token, &connection);
@@ -79,7 +78,7 @@ fn refresh_user(json_token: Json<RefreshTokenJson>, connection: db::Connection) 
         },
         Ok(token) => refresh_token(token, &connection)
     }
-}
+}*/
 
 /// Route for changing password of user
 #[patch("/api/users/info", data = "<json_patch>")]
@@ -104,7 +103,7 @@ fn delete_user(json_token: Json<RefreshTokenJson>, _token: Token, connection: db
         };
     }
     account::controller::delete_user(token.unwrap(), &connection)
-}
+}*/
 
 /// Route for saving note
 #[post("/api/notes", data = "<json_note>")]
@@ -150,6 +149,9 @@ fn ping() -> String {
     return "Pong!".parse().unwrap();
 }
 
+#[get("/secure-ping")]
+fn secure_ping(token: Token) -> String {return "Pong!".parse().unwrap();}
+
 /// Route used for catching 401 errors e.g. invalid access token
 #[catch(401)]
 fn token_error() -> ApiResponse {
@@ -171,9 +173,8 @@ fn main() {
 // Start webserver
     rocket::ignite()
         .manage(db::connect())
-        .mount("/", routes![new_user, verify_user, login_user, refresh_user, change_user_info, get_user_info, delete_user])
         .mount("/", routes![save_note, update_note, patch_note, delete_note, delete_all_notes, get_notes])
-        .mount("/", routes![ping])
+        .mount("/", routes![ping, secure_ping])
         .register(catchers![token_error])
         .launch();
 }

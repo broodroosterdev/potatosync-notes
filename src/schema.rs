@@ -46,6 +46,14 @@ table! {
 }
 
 table! {
+    session_tokens (account_id) {
+        account_id -> Text,
+        session_token -> Text,
+        expires_at -> Timestamptz,
+    }
+}
+
+table! {
     verification_tokens (account_id) {
         account_id -> Text,
         verification_token -> Text,
@@ -53,13 +61,14 @@ table! {
     }
 }
 
-joinable!(notes -> accounts (account_id));
 joinable!(reset_tokens -> accounts (account_id));
+joinable!(session_tokens -> accounts (account_id));
 joinable!(verification_tokens -> accounts (account_id));
 
 allow_tables_to_appear_in_same_query!(
     accounts,
     notes,
     reset_tokens,
+    session_tokens,
     verification_tokens,
 );

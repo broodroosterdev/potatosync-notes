@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS accounts
 CREATE TABLE IF NOT EXISTS notes
 (
     note_id          text        not null,
-    account_id       text        not null REFERENCES accounts (id) ON DELETE CASCADE,
+    account_id       text        not null,
     title            text        not null,
     content          text        not null,
     style_json       text        not null,

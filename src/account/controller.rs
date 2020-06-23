@@ -1,79 +1,62 @@
 use std::env;
 
-use bcrypt::{hash, verify};
 use chrono::{Duration, Utc};
 use diesel::{ExpressionMethods, PgConnection, RunQueryDsl, select};
 use diesel::expression::exists::exists;
 use diesel::query_dsl::filter_dsl::FilterDsl;
 use diesel::result::Error;
-use rand::distributions::Alphanumeric;
-use rand::Rng;
+use reqwest::blocking::*;
 use rocket_failure::errors::Status;
 use uuid::Uuid;
 
-use crate::account::email::{create_verification_email, send_email};
 use crate::account::model::{Account, InfoResponse, LoginCredentials, NewAccount, password_is_valid, PatchingAccount, TokenAccount, TokenResponse, username_is_valid, VerificationToken};
 use crate::account::repository::{account_from_email, account_from_username, email_exists, insert_account, insert_verification_token, username_exists};
 use crate::account::responses::{INCORRECT_CREDENTIALS, INTERNAL_ERROR, INVALID_EMAIL, INVALID_PASSWORD, INVALID_USERNAME, USER_NOT_VERIFIED};
-use crate::account::token::{RefreshToken, Token};
 use crate::responses::{ApiError, TokenSuccess};
 use crate::schema::accounts;
 use crate::schema::notes;
 use crate::schema::verification_tokens;
 use crate::status_response::{ApiResponse, StatusResponse};
 
+#[derive(Deserialize, Serialize)]
+pub struct LoginResponse{
+    access_token: &'static str,
+    expires_in: u64,
+    refresh_expires_in: u64,
+    refresh_token: &'static str,
+    token_type: &'static str,
+    id_token: &'static str,
+    #[serde(alias = "not-before-policy")]
+    not_before_policy: u64,
+    session_statie: &'static str,
+    scope: &'static str,
+}
+/*
 /// Used to login user using DB and returns Error if credentials are incorrect
 pub(crate) fn login(credentials: LoginCredentials, connection: &PgConnection) -> Result<TokenSuccess, ApiError> {
-    let get_account_result: Result<Account, String>;
-    if credentials.email.is_some() {
-        let email = credentials.email.clone().unwrap().clone();
-        match email_exists(&email, connection) {
-            Err(_error) => {
-                return Err(INCORRECT_CREDENTIALS);
-            }
-            Ok(exists) => {
-                if !exists {
-                    return Err(INCORRECT_CREDENTIALS);
-                }
-                get_account_result = account_from_email(&email, connection);
-                if get_account_result.is_err() {
-                    return Err(INCORRECT_CREDENTIALS);
-                }
-            }
-        }
-    } else if credentials.username.is_some() {
-        let username = credentials.username.clone().unwrap().clone();
-        match username_exists(&username, connection) {
-            Err(_error) => {
-                return Err(INCORRECT_CREDENTIALS);
-            }
-            Ok(exists) => {
-                if !exists {
-                    return Err(INCORRECT_CREDENTIALS);
-                }
-                get_account_result = account_from_username(&username, connection);
-                if get_account_result.is_err() {
-                    return Err(INCORRECT_CREDENTIALS);
-                }
-            }
-        }
+    let parameters = [
+        ("client_id", "notes-api"),
+        ("grant_type", "password"),
+        ("username", credentials.username.as_str()),
+        ("password", credentials.password.as_str()),
+        ("scope", "openid")
+    ];
+    let client = Client::new();
+    let response = client.post("http://localhost:8080/auth/realms/potatosync/protocol/openid-connect/token").form(&parameters).send().unwrap();
+    if response.status().is_success(){
+        let login_response: LoginResponse = response.json().unwrap();
+        Ok(TokenSuccess{
+            description: "",
+            code: 0,
+            access_token: login_response.access_token,
+            refresh_token: login_response.refresh_token,
+            id_token: login_response.id_token
+        })
     } else {
-        return Err(INCORRECT_CREDENTIALS);
+        Err(INCORRECT_CREDENTIALS)
     }
-    let account = get_account_result.unwrap();
-    let hash_result = verify(credentials.password, account.password.clone().as_ref()).unwrap();
-    if hash_result != true {
-        return Err(INCORRECT_CREDENTIALS);
-    }
-    if !account.verified {
-        return Err(USER_NOT_VERIFIED);
-    }
-
-    let access_token = Token::create_access_token(account.id.clone());
-    let refresh_token = RefreshToken::create_refresh_token(account.id.clone(), account.password_identifier.clone());
-    Ok(TokenSuccess::new(TokenAccount::from_account(account, Some(access_token), Some(refresh_token))))
-}
-
+}*/
+/*
 /// Creates random password identifier to check if password has changed
 fn create_password_identifier() -> String {
     rand::thread_rng().sample_iter(&Alphanumeric).take(10).collect()
@@ -556,3 +539,4 @@ mod tests {
         assert_eq!(create_result.json, expected_result.json);
     }
 }
+ */

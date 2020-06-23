@@ -69,15 +69,19 @@ impl<'r> Responder<'r> for ApiSuccess {
 pub struct TokenSuccess {
     pub(crate) description: &'static str,
     pub(crate) code: i32,
-    pub(crate) account: TokenAccount,
+    pub(crate) access_token: &'static str,
+    pub(crate) refresh_token: &'static str,
+    pub(crate) id_token: &'static str,
 }
 
 impl TokenSuccess {
-    pub(crate) fn new(account: TokenAccount) -> Self {
+    pub(crate) fn new(access_token: &'static str, refresh_token: &'static str, id_token: &'static str) -> Self {
         return TokenSuccess{
             description: LOGIN_SUCCESS.description,
             code: LOGIN_SUCCESS.code,
-            account
+            access_token,
+            refresh_token,
+            id_token
         }
     }
 }

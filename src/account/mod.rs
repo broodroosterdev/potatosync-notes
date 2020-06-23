@@ -4,8 +4,6 @@ pub mod model;
 pub mod controller;
 /// Repository to abstract database layer
 pub mod repository;
-/// Utilities for working with email
-pub mod email;
 /// Utilities for working with JWT
 pub mod token;
 /// Response messages
