@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["slugify","Convert any unicode string to an ascii \"slug\" (useful for file names/url components)"]]});

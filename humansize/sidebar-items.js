@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["file_size_opts","Describes the struct that holds the options needed by the `file_size` method. The three most common formats are provided as constants to be used easily"]],"trait":[["FileSize","The trait for the `file_size`method"]]});

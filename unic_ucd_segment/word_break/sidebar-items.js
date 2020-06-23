@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["WordBreak","Represents the Unicode character `Word_Break` property."]],"mod":[["abbr_names","Abbreviated name aliases for the `Word_Break` property."],["long_names","Long name aliases for the `Word_Break` property."]]});

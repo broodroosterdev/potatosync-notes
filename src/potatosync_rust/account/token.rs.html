@@ -156,16 +156,32 @@
 <span id="156">156</span>
 <span id="157">157</span>
 <span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
 
 <span class="kw">use</span> <span class="ident">chrono</span>::<span class="ident">Duration</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">PgConnection</span>;
-<span class="kw">use</span> <span class="ident">jsonwebtokens</span>::{<span class="ident">Algorithm</span>, <span class="ident">AlgorithmID</span>, <span class="ident">encode</span>, <span class="ident">Verifier</span>};
 <span class="kw">use</span> <span class="ident">rocket</span>::{<span class="ident">request</span>, <span class="ident">Request</span>};
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">outcome</span>::<span class="ident">Outcome</span>;
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">request</span>::<span class="ident">FromRequest</span>;
 <span class="kw">use</span> <span class="ident">rocket_failure</span>::<span class="ident">errors</span>::<span class="ident">Status</span>;
+<span class="kw">use</span> <span class="ident">tokkit</span>::<span class="ident">client</span>::<span class="ident">TokenInfoServiceClientBuilder</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">repository</span>::<span class="ident">get_account_by_id</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">db</span>;
@@ -176,26 +192,39 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Token</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">sub</span>: <span class="ident">String</span>,
-    <span class="ident">exp</span>: <span class="ident">i64</span>,
+    <span class="ident">exp</span>: <span class="ident">u64</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IntrospectInfo</span> {
+    <span class="ident">token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    <span class="ident">client_secret</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    <span class="ident">client_id</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
 }
 
 <span class="doccomment">/// Get access_token from header and verify it</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_token</span>(<span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Token</span>, <span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">access_token_secret</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;ACCESS_TOKEN_SECRET&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not find ACCESS_TOKEN_SECRET in .env&quot;</span>);
-    <span class="kw">let</span> <span class="ident">algo</span> <span class="op">=</span> <span class="ident">Algorithm</span>::<span class="ident">new_hmac</span>(<span class="ident">AlgorithmID</span>::<span class="ident">HS256</span>, <span class="ident">access_token_secret</span>).<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">verifier</span> <span class="op">=</span> <span class="ident">Verifier</span>::<span class="ident">create</span>()
-        .<span class="ident">leeway</span>(<span class="number">5</span>)
-        .<span class="ident">build</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">claims</span> <span class="op">=</span> <span class="ident">verifier</span>.<span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">algo</span>);
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">claims</span>.<span class="ident">is_ok</span>() {
-        <span class="kw">let</span> <span class="ident">user</span>: <span class="ident">Token</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_value</span>(<span class="ident">claims</span>.<span class="ident">unwrap</span>()).<span class="ident">unwrap</span>();
-        <span class="prelude-val">Ok</span>(<span class="ident">user</span>)
+    <span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> [
+        (<span class="string">&quot;client_secret&quot;</span>, <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;CLIENT_SECRET&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not find CLIENT_SECRET in .env&quot;</span>)),
+        (<span class="string">&quot;client_id&quot;</span>, <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;CLIENT_ID&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not find CLIENT_ID in .env&quot;</span>)),
+        (<span class="string">&quot;token&quot;</span>, <span class="ident">key</span>.<span class="ident">to_string</span>())
+    ];
+    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">reqwest</span>::<span class="ident">blocking</span>::<span class="ident">Client</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="ident">res</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">post</span>(<span class="kw-2">&amp;</span><span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;INTROSPECT_URL&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not find INTROSPECT_URL in .env&quot;</span>)).<span class="ident">form</span>(<span class="kw-2">&amp;</span><span class="ident">params</span>).<span class="ident">send</span>().<span class="ident">unwrap</span>().<span class="ident">text</span>().<span class="ident">unwrap</span>();
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">res</span>);
+    <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">tokkit</span>::<span class="ident">parsers</span>::<span class="ident">parse</span>(<span class="ident">res</span>.<span class="ident">as_bytes</span>(), <span class="prelude-val">Some</span>(<span class="string">&quot;active&quot;</span>), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>).<span class="ident">ok</span>().<span class="ident">unwrap</span>();
+    <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">info</span>);
+    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">info</span>.<span class="ident">active</span> {
+        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">tokkit</span>::<span class="ident">parsers</span>::<span class="ident">parse</span>(<span class="ident">res</span>.<span class="ident">as_bytes</span>(), <span class="prelude-val">Some</span>(<span class="string">&quot;active&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;sub&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;scope&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;exp&quot;</span>)).<span class="ident">ok</span>().<span class="ident">unwrap</span>();
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">info</span>);
+        <span class="prelude-val">Ok</span>(<span class="ident">Token</span> {
+            <span class="ident">sub</span>: <span class="ident">info</span>.<span class="ident">user_id</span>.<span class="ident">unwrap</span>().<span class="number">0</span>,
+            <span class="ident">exp</span>: <span class="ident">info</span>.<span class="ident">expires_in_seconds</span>.<span class="ident">unwrap</span>()
+        })
     } <span class="kw">else</span> {
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Token Error&quot;</span>);
-        <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">claims</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">error</span>);
-        <span class="prelude-val">Err</span>(<span class="ident">error</span>)
-    };
+        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;TOKEN IS NOT ACTIVE AAAH&quot;</span>);
+        <span class="prelude-val">Err</span>(<span class="string">&quot;Token is not active&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>())
+    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">FromRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Token</span> {
@@ -206,114 +235,116 @@
         <span class="kw">if</span> <span class="ident">keys</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="number">1</span> {
             <span class="kw">return</span> <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">Status</span>::<span class="ident">Unauthorized</span>, <span class="string">&quot;Missing auth token&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()));
         }
-        <span class="kw">return</span> <span class="kw">match</span> <span class="ident">read_token</span>(<span class="ident">keys</span>[<span class="number">0</span>].<span class="ident">replace</span>(<span class="string">&quot;Bearer &quot;</span>, <span class="string">&quot;&quot;</span>).<span class="ident">as_ref</span>()) {
+        <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">keys</span>[<span class="number">0</span>].<span class="ident">replace</span>(<span class="string">&quot;Bearer &quot;</span>, <span class="string">&quot;&quot;</span>);
+        <span class="kw">return</span> <span class="kw">match</span> <span class="ident">read_token</span>(<span class="ident">token</span>.<span class="ident">as_ref</span>()) {
             <span class="prelude-val">Ok</span>(<span class="ident">claim</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">claim</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">Status</span>::<span class="ident">Unauthorized</span>, <span class="ident">err</span>))
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">err</span>);
+                <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">Status</span>::<span class="ident">Unauthorized</span>, <span class="ident">err</span>))
+            },
         };
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Token</span> {
-    <span class="doccomment">/// Create new access_token for certain account_id</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create_access_token</span>(<span class="ident">account_id</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="ident">access_token_secret</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;ACCESS_TOKEN_SECRET&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not find ACCESS_TOKEN_SECRET in .env&quot;</span>);
-        <span class="kw">let</span> <span class="ident">user</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">to_value</span>(<span class="kw-2">&amp;</span><span class="ident">Token</span> {
-            <span class="ident">sub</span>: <span class="ident">account_id</span>,
-            <span class="ident">exp</span>: <span class="ident">chrono</span>::<span class="ident">Utc</span>::<span class="ident">now</span>().<span class="ident">checked_add_signed</span>(<span class="ident">Duration</span>::<span class="ident">minutes</span>(<span class="number">15</span>)).<span class="ident">unwrap</span>().<span class="ident">timestamp</span>(),
-        }).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">algo</span> <span class="op">=</span> <span class="ident">Algorithm</span>::<span class="ident">new_hmac</span>(<span class="ident">AlgorithmID</span>::<span class="ident">HS256</span>, <span class="ident">access_token_secret</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="macro">json</span><span class="macro">!</span>({<span class="string">&quot;alg&quot;</span>: <span class="ident">algo</span>.<span class="ident">name</span>(), <span class="string">&quot;typ&quot;</span>: <span class="string">&quot;JWT&quot;</span>});
-        <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">encode</span>(<span class="kw-2">&amp;</span><span class="ident">header</span>, <span class="kw-2">&amp;</span><span class="ident">user</span>, <span class="kw-2">&amp;</span><span class="ident">algo</span>).<span class="ident">unwrap</span>();
-        <span class="ident">token</span>
-    }
+<span class="comment">/*
+/// Claims of the refresh token
+#[derive(Serialize, Deserialize)]
+pub struct RefreshToken {
+    pub(crate) sub: String,
+    pub(crate) password_id: String
 }
 
-<span class="doccomment">/// Claims of the refresh token</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RefreshToken</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">sub</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">password_id</span>: <span class="ident">String</span>
-}
-
-<span class="kw">impl</span> <span class="ident">RefreshToken</span> {
-    <span class="doccomment">/// Creates new refresh token with account_id and password identifier</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create_refresh_token</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">password_identifier</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-        <span class="kw">let</span> <span class="ident">refresh_token_secret</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;REFRESH_TOKEN_SECRET&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not find REFRESH_TOKEN_SECRET in .env&quot;</span>);
-        <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">RefreshToken</span> {
-            <span class="ident">sub</span>: <span class="ident">account_id</span>.<span class="ident">clone</span>(),
-            <span class="ident">password_id</span>: <span class="ident">password_identifier</span>,
+impl RefreshToken {
+    /// Creates new refresh token with account_id and password identifier
+    pub(crate) fn create_refresh_token(account_id: String, password_identifier: String) -&gt; String {
+        let refresh_token_secret = env::var(&quot;REFRESH_TOKEN_SECRET&quot;).expect(&quot;Could not find REFRESH_TOKEN_SECRET in .env&quot;);
+        let token = RefreshToken {
+            sub: account_id.clone(),
+            password_id: password_identifier,
         };
-        <span class="kw">let</span> <span class="ident">algo</span> <span class="op">=</span> <span class="ident">Algorithm</span>::<span class="ident">new_hmac</span>(<span class="ident">AlgorithmID</span>::<span class="ident">HS256</span>, <span class="ident">refresh_token_secret</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span> <span class="macro">json</span><span class="macro">!</span>({<span class="string">&quot;alg&quot;</span>: <span class="ident">algo</span>.<span class="ident">name</span>()});
-        <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">encode</span>(<span class="kw-2">&amp;</span><span class="ident">header</span>, <span class="kw-2">&amp;</span><span class="ident">token</span>, <span class="kw-2">&amp;</span><span class="ident">algo</span>).<span class="ident">unwrap</span>();
-        <span class="ident">token</span>
+        let algo = Algorithm::new_hmac(AlgorithmID::HS256, refresh_token_secret).unwrap();
+        let header = json!({&quot;alg&quot;: algo.name()});
+        let token = encode(&amp;header, &amp;token, &amp;algo).unwrap();
+        token
     }
 }
 
-<span class="doccomment">/// Struct used for getting refresh_token from client when refreshing</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RefreshTokenJson</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">token</span>: <span class="ident">String</span>
+/// Struct used for getting refresh_token from client when refreshing
+#[derive(Serialize, Deserialize)]
+pub struct RefreshTokenJson {
+    pub(crate) token: String
 }
 
-<span class="doccomment">/// Verify refresh token</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_refresh_token</span>(<span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RefreshToken</span>, <span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">refresh_token_secret</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;REFRESH_TOKEN_SECRET&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not find REFRESH_TOKEN_SECRET in .env&quot;</span>);
-    <span class="kw">let</span> <span class="ident">algo</span> <span class="op">=</span> <span class="ident">Algorithm</span>::<span class="ident">new_hmac</span>(<span class="ident">AlgorithmID</span>::<span class="ident">HS256</span>, <span class="ident">refresh_token_secret</span>).<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">verifier</span> <span class="op">=</span> <span class="ident">Verifier</span>::<span class="ident">create</span>()
-        .<span class="ident">leeway</span>(<span class="number">5</span>)
-        .<span class="ident">build</span>().<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">claims</span> <span class="op">=</span> <span class="ident">verifier</span>.<span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">algo</span>);
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">claims</span>.<span class="ident">is_ok</span>() {
-        <span class="kw">let</span> <span class="ident">refresh_token</span>: <span class="ident">RefreshToken</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_value</span>(<span class="ident">claims</span>.<span class="ident">unwrap</span>()).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">connection</span> <span class="op">=</span> <span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">get_account_by_id</span>(<span class="ident">refresh_token</span>.<span class="ident">sub</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="ident">connection</span>);
-        <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">password_identifier</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">refresh_token</span>.<span class="ident">password_id</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">refresh_token</span>)
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="string">&quot;Password identifier does not match&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>())
+/// Verify refresh token
+pub fn read_refresh_token(key: &amp;str) -&gt; Result&lt;RefreshToken, String&gt; {
+    let refresh_token_secret = env::var(&quot;REFRESH_TOKEN_SECRET&quot;).expect(&quot;Could not find REFRESH_TOKEN_SECRET in .env&quot;);
+    let algo = Algorithm::new_hmac(AlgorithmID::HS256, refresh_token_secret).unwrap();
+    let verifier = Verifier::create()
+        .leeway(5)
+        .build().unwrap();
+    let claims = verifier.verify(&amp;key, &amp;algo);
+    return if claims.is_ok() {
+        let refresh_token: RefreshToken = serde_json::from_value(claims.unwrap()).unwrap();
+        let connection = db::connect().get().unwrap();
+        let account = get_account_by_id(refresh_token.sub.clone(), &amp;connection);
+        if account.password_identifier.eq(&amp;refresh_token.password_id) {
+            Ok(refresh_token)
+        } else {
+            Err(&quot;Password identifier does not match&quot;.parse().unwrap())
         }
-    } <span class="kw">else</span> {
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Token Error&quot;</span>);
-        <span class="prelude-val">Err</span>(<span class="ident">claims</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>())
+    } else {
+        println!(&quot;Token Error&quot;);
+        Err(claims.err().unwrap().to_string())
     };
 }
 
-<span class="doccomment">/// Struct used for sending back a new access_token with status of the request</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RefreshResponse</span> {
-    <span class="ident">message</span>: <span class="ident">String</span>,
-    <span class="ident">status</span>: <span class="ident">bool</span>,
-    <span class="ident">token</span>: <span class="ident">String</span>,
+/// Struct used for sending back a new access_token with status of the request
+#[derive(Serialize, Deserialize)]
+pub struct RefreshResponse {
+    message: String,
+    status: bool,
+    token: String,
 }
 
-<span class="kw">impl</span> <span class="ident">ToString</span> <span class="kw">for</span> <span class="ident">RefreshResponse</span> {
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-        <span class="ident">serde_json</span>::<span class="ident">to_string</span>(<span class="self">self</span>).<span class="ident">unwrap</span>()
+impl ToString for RefreshResponse {
+    fn to_string(&amp;self) -&gt; String {
+        serde_json::to_string(self).unwrap()
     }
 }
 
-<span class="doccomment">/// Refreshes the access token.</span>
-<span class="doccomment">/// Also checks if the password identifier matches with the one in the DB</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">refresh_token</span>(<span class="ident">refresh_token</span>: <span class="ident">RefreshToken</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">get_account_by_id</span>(<span class="ident">refresh_token</span>.<span class="ident">sub</span>.<span class="ident">clone</span>(), <span class="ident">connection</span>);
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">password_identifier</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">refresh_token</span>.<span class="ident">password_id</span>) {
-        <span class="kw">let</span> <span class="ident">refresh_response</span> <span class="op">=</span> <span class="ident">RefreshResponse</span> {
-            <span class="ident">message</span>: <span class="string">&quot;RefreshSuccess&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
-            <span class="ident">status</span>: <span class="bool-val">true</span>,
-            <span class="ident">token</span>: <span class="ident">Token</span>::<span class="ident">create_access_token</span>(<span class="ident">refresh_token</span>.<span class="ident">sub</span>.<span class="ident">clone</span>()),
+/// Refreshes the access token.
+/// Also checks if the password identifier matches with the one in the DB
+pub(crate) fn refresh_token(refresh_token: RefreshToken, connection: &amp;PgConnection) -&gt; ApiResponse {
+    let account = get_account_by_id(refresh_token.sub.clone(), connection);
+    return if account.password_identifier.eq(&amp;refresh_token.password_id) {
+        let refresh_response = RefreshResponse {
+            message: &quot;RefreshSuccess&quot;.parse().unwrap(),
+            status: true,
+            token: &quot;&quot;.to_string(),
         };
-        <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">refresh_response</span>.<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="prelude-val">Ok</span>,
+        ApiResponse {
+            json: refresh_response.to_string(),
+            status: Status::Ok,
         }
-    } <span class="kw">else</span> {
-        <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Password identifier does not match&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+    } else {
+        ApiResponse {
+            json: StatusResponse::new(&quot;Password identifier does not match&quot;.parse().unwrap(), false).to_string(),
+            status: Status::BadRequest,
         }
     }
 }
 
-</pre></div>
+#[cfg(test)]
+mod tests{
+    use crate::account::token::read_token;
+
+    #[test]
+    fn can_introspect_token(){
+        let token = read_token(&quot;eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIweTUyYzVxamh1bmtPUzFEZ3o1OF9UR1JPNWpqNUplVTdQdEVueVhubks4In0.eyJleHAiOjE1OTIzMzYzMDIsImlhdCI6MTU5MjMzMjcwMiwiYXV0aF90aW1lIjoxNTkyMzMxNzMxLCJqdGkiOiIyMDAxOTk0Yi02ZDhlLTQ3ZDUtOTFlOS1iNDI4MDNlMDA0ZmYiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvcG90YXRvc3luYyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI5ZTM3ZDc1Mi1mMDdkLTQ1ODEtODQwNS05MTY4Y2ZhOGIwZDciLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJub3RlcyIsInNlc3Npb25fc3RhdGUiOiJlNGRlNTA1ZS1iMzhlLTQ2NjUtYjVmYS1mMDA3NmU4OGE2YzgiLCJhY3IiOiIwIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJub3RlcyI6eyJyb2xlcyI6WyJub3RlcyJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoiYmFzIn0.bejCtimPVmIje6QL63uXwwFBhJaOj0dwrazBoCmQAfi_bN9PuLMN46m-x50RuSRFpxBpZGcblwHm7jca1OxJnAnU2pPjfiaHRno17qgfYdMW-ZVe_LlAwSaEle3H4ini1DSBxYVP15CJ6Lo2MhVJk8b-MkQqIEoIAYs4_WEpAykIHHbs_O9sBV-5Mhnwo8KuzgDq_vj3nXANCJIDNwFZZGPCA_aIT7goyN4ZRWWv35HjQqhtn8WVc2qVvxJHg4xt_33ZsYP9NMlwLBUgd2p3zCMrwDqS8tD7fdvanFUcY5ZPU77Y9CJoISoc7g3diJWiHf2sC1vdfVrlX7kR2mlkvw&quot;);
+        assert!(token.is_ok());
+        println!(&quot;{}&quot;, token.ok().unwrap().sub);
+    }
+}
+
+*/</span></pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "potatosync_rust";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

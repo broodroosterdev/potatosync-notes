@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/reqwest-0.10.4/src/async_impl/client.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../reqwest/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/reqwest-0.10.6/src/async_impl/client.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>client.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../reqwest/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1455,6 +1455,66 @@
 <span id="1455">1455</span>
 <span id="1456">1456</span>
 <span id="1457">1457</span>
+<span id="1458">1458</span>
+<span id="1459">1459</span>
+<span id="1460">1460</span>
+<span id="1461">1461</span>
+<span id="1462">1462</span>
+<span id="1463">1463</span>
+<span id="1464">1464</span>
+<span id="1465">1465</span>
+<span id="1466">1466</span>
+<span id="1467">1467</span>
+<span id="1468">1468</span>
+<span id="1469">1469</span>
+<span id="1470">1470</span>
+<span id="1471">1471</span>
+<span id="1472">1472</span>
+<span id="1473">1473</span>
+<span id="1474">1474</span>
+<span id="1475">1475</span>
+<span id="1476">1476</span>
+<span id="1477">1477</span>
+<span id="1478">1478</span>
+<span id="1479">1479</span>
+<span id="1480">1480</span>
+<span id="1481">1481</span>
+<span id="1482">1482</span>
+<span id="1483">1483</span>
+<span id="1484">1484</span>
+<span id="1485">1485</span>
+<span id="1486">1486</span>
+<span id="1487">1487</span>
+<span id="1488">1488</span>
+<span id="1489">1489</span>
+<span id="1490">1490</span>
+<span id="1491">1491</span>
+<span id="1492">1492</span>
+<span id="1493">1493</span>
+<span id="1494">1494</span>
+<span id="1495">1495</span>
+<span id="1496">1496</span>
+<span id="1497">1497</span>
+<span id="1498">1498</span>
+<span id="1499">1499</span>
+<span id="1500">1500</span>
+<span id="1501">1501</span>
+<span id="1502">1502</span>
+<span id="1503">1503</span>
+<span id="1504">1504</span>
+<span id="1505">1505</span>
+<span id="1506">1506</span>
+<span id="1507">1507</span>
+<span id="1508">1508</span>
+<span id="1509">1509</span>
+<span id="1510">1510</span>
+<span id="1511">1511</span>
+<span id="1512">1512</span>
+<span id="1513">1513</span>
+<span id="1514">1514</span>
+<span id="1515">1515</span>
+<span id="1516">1516</span>
+<span id="1517">1517</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;native-tls&quot;</span>,
@@ -1493,6 +1553,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">connect</span>::{<span class="ident">Connector</span>, <span class="ident">HttpConnector</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cookie</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">into_url</span>::{<span class="ident">expect_uri</span>, <span class="ident">try_uri</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">redirect</span>::{<span class="self">self</span>, <span class="ident">remove_sensitive_headers</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;__tls&quot;</span>)]</span>
@@ -1509,6 +1570,11 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The `Client` holds a connection pool internally, so it is advised that</span>
 <span class="doccomment">/// you create one and **reuse** it.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// You do **not** have to wrap the `Client` it in an [`Rc`] or [`Arc`] to **reuse** it,</span>
+<span class="doccomment">/// because it already uses an [`Arc`] internally.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// [`Rc`]: std::rc::Rc</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Client</span> {
     <span class="ident">inner</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">ClientRef</span><span class="op">&gt;</span>,
@@ -1529,7 +1595,8 @@
     <span class="ident">certs_verification</span>: <span class="ident">bool</span>,
     <span class="ident">connect_timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
     <span class="ident">connection_verbose</span>: <span class="ident">bool</span>,
-    <span class="ident">max_idle_per_host</span>: <span class="ident">usize</span>,
+    <span class="ident">pool_idle_timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
+    <span class="ident">pool_max_idle_per_host</span>: <span class="ident">usize</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;__tls&quot;</span>)]</span>
     <span class="ident">identity</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Identity</span><span class="op">&gt;</span>,
     <span class="ident">proxies</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Proxy</span><span class="op">&gt;</span>,
@@ -1578,7 +1645,8 @@
                 <span class="ident">certs_verification</span>: <span class="bool-val">true</span>,
                 <span class="ident">connect_timeout</span>: <span class="prelude-val">None</span>,
                 <span class="ident">connection_verbose</span>: <span class="bool-val">false</span>,
-                <span class="ident">max_idle_per_host</span>: <span class="ident">std</span>::<span class="ident">usize</span>::<span class="ident">MAX</span>,
+                <span class="ident">pool_idle_timeout</span>: <span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">90</span>)),
+                <span class="ident">pool_max_idle_per_host</span>: <span class="ident">std</span>::<span class="ident">usize</span>::<span class="ident">MAX</span>,
                 <span class="ident">proxies</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
                 <span class="ident">auto_sys_proxy</span>: <span class="bool-val">true</span>,
                 <span class="ident">redirect_policy</span>: <span class="ident">redirect</span>::<span class="ident">Policy</span>::<span class="ident">default</span>(),
@@ -1595,7 +1663,7 @@
                 <span class="ident">http2_initial_stream_window_size</span>: <span class="prelude-val">None</span>,
                 <span class="ident">http2_initial_connection_window_size</span>: <span class="prelude-val">None</span>,
                 <span class="ident">local_address</span>: <span class="prelude-val">None</span>,
-                <span class="ident">nodelay</span>: <span class="bool-val">false</span>,
+                <span class="ident">nodelay</span>: <span class="bool-val">true</span>,
                 <span class="ident">trust_dns</span>: <span class="macro">cfg</span><span class="macro">!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;trust-dns&quot;</span>),
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cookies&quot;</span>)]</span>
                 <span class="ident">cookie_store</span>: <span class="prelude-val">None</span>,
@@ -1757,7 +1825,8 @@
             <span class="ident">builder</span>.<span class="ident">http2_initial_connection_window_size</span>(<span class="ident">http2_initial_connection_window_size</span>);
         }
 
-        <span class="ident">builder</span>.<span class="ident">pool_max_idle_per_host</span>(<span class="ident">config</span>.<span class="ident">max_idle_per_host</span>);
+        <span class="ident">builder</span>.<span class="ident">pool_idle_timeout</span>(<span class="ident">config</span>.<span class="ident">pool_idle_timeout</span>);
+        <span class="ident">builder</span>.<span class="ident">pool_max_idle_per_host</span>(<span class="ident">config</span>.<span class="ident">pool_max_idle_per_host</span>);
 
         <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">http1_title_case_headers</span> {
             <span class="ident">builder</span>.<span class="ident">http1_title_case_headers</span>(<span class="bool-val">true</span>);
@@ -2049,10 +2118,29 @@
 
     <span class="comment">// HTTP options</span>
 
-    <span class="doccomment">/// Sets the maximum idle connection per host allowed in the pool.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_idle_per_host</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">max</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClientBuilder</span> {
-        <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">max_idle_per_host</span> <span class="op">=</span> <span class="ident">max</span>;
+    <span class="doccomment">/// Set an optional timeout for idle sockets being kept-alive.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Pass `None` to disable timeout.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Default is 90 seconds.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pool_idle_timeout</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClientBuilder</span>
+    <span class="kw">where</span>
+        <span class="ident">D</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    {
+        <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">pool_idle_timeout</span> <span class="op">=</span> <span class="ident">val</span>.<span class="ident">into</span>();
         <span class="self">self</span>
+    }
+
+    <span class="doccomment">/// Sets the maximum idle connection per host allowed in the pool.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pool_max_idle_per_host</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">max</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClientBuilder</span> {
+        <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">pool_max_idle_per_host</span> <span class="op">=</span> <span class="ident">max</span>;
+        <span class="self">self</span>
+    }
+
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;renamed to `pool_max_idle_per_host`&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_idle_per_host</span>(<span class="self">self</span>, <span class="ident">max</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClientBuilder</span> {
+        <span class="self">self</span>.<span class="ident">pool_max_idle_per_host</span>(<span class="ident">max</span>)
     }
 
     <span class="doccomment">/// Enable case sensitive headers.</span>
@@ -2088,9 +2176,23 @@
 
     <span class="comment">// TCP options</span>
 
-    <span class="doccomment">/// Set that all sockets have `SO_NODELAY` set to `true`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tcp_nodelay</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClientBuilder</span> {
-        <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">nodelay</span> <span class="op">=</span> <span class="bool-val">true</span>;
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;tcp_nodelay is enabled by default, use `tcp_nodelay_` to disable&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tcp_nodelay</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClientBuilder</span> {
+        <span class="self">self</span>.<span class="ident">tcp_nodelay_</span>(<span class="bool-val">true</span>)
+    }
+
+    <span class="doccomment">/// Set whether sockets have `SO_NODELAY` enabled.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Default is `true`.</span>
+    <span class="comment">// NOTE: Regarding naming (trailing underscore):</span>
+    <span class="comment">//</span>
+    <span class="comment">// Due to the original `tcp_nodelay()` not taking an argument, changing</span>
+    <span class="comment">// the default means a user has no way of *disabling* this feature.</span>
+    <span class="comment">//</span>
+    <span class="comment">// TODO(v0.11.x): Remove trailing underscore.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tcp_nodelay_</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">enabled</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClientBuilder</span> {
+        <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">nodelay</span> <span class="op">=</span> <span class="ident">enabled</span>;
         <span class="self">self</span>
     }
 
@@ -2412,6 +2514,9 @@
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">execute_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Pending</span> {
         <span class="kw">let</span> (<span class="ident">method</span>, <span class="ident">url</span>, <span class="kw-2">mut</span> <span class="ident">headers</span>, <span class="ident">body</span>, <span class="ident">timeout</span>) <span class="op">=</span> <span class="ident">req</span>.<span class="ident">pieces</span>();
+        <span class="kw">if</span> <span class="ident">url</span>.<span class="ident">scheme</span>() <span class="op">!</span><span class="op">=</span> <span class="string">&quot;http&quot;</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">url</span>.<span class="ident">scheme</span>() <span class="op">!</span><span class="op">=</span> <span class="string">&quot;https&quot;</span> {
+            <span class="kw">return</span> <span class="ident">Pending</span>::<span class="ident">new_err</span>(<span class="ident">error</span>::<span class="ident">url_bad_scheme</span>(<span class="ident">url</span>));
+        }
 
         <span class="comment">// insert default headers in the request headers</span>
         <span class="comment">// without overwriting already appended headers.</span>
@@ -2911,6 +3016,21 @@
             <span class="kw">crate</span>::<span class="ident">header</span>::<span class="ident">COOKIE</span>,
             <span class="ident">HeaderValue</span>::<span class="ident">from_bytes</span>(<span class="ident">header</span>.<span class="ident">as_bytes</span>()).<span class="ident">unwrap</span>(),
         );
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="attribute">#[<span class="ident">tokio</span>::<span class="ident">test</span>]</span>
+    <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">execute_request_rejects_invald_urls</span>() {
+        <span class="kw">let</span> <span class="ident">url_str</span> <span class="op">=</span> <span class="string">&quot;hxxps://www.rust-lang.org/&quot;</span>;
+        <span class="kw">let</span> <span class="ident">url</span> <span class="op">=</span> <span class="ident">url</span>::<span class="ident">Url</span>::<span class="ident">parse</span>(<span class="ident">url_str</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">get</span>(<span class="ident">url</span>.<span class="ident">clone</span>()).<span class="kw">await</span>;
+
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">result</span>.<span class="ident">is_err</span>());
+        <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">err</span>.<span class="ident">is_builder</span>());
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">url_str</span>, <span class="ident">err</span>.<span class="ident">url</span>().<span class="ident">unwrap</span>().<span class="ident">as_str</span>());
     }
 }
 </pre></div>

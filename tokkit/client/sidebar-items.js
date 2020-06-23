@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TokenInfoServiceClient","Introspects an `AccessToken` remotely."],["TokenInfoServiceClientBuilder","A builder for a `TokenInfoServiceClient`"]]});

@@ -63,6 +63,15 @@
 <span id="63">63</span>
 <span id="64">64</span>
 <span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="macro">table</span><span class="macro">!</span> {
     <span class="ident">accounts</span> (<span class="ident">id</span>) {
@@ -112,6 +121,14 @@
 }
 
 <span class="macro">table</span><span class="macro">!</span> {
+    <span class="ident">session_tokens</span> (<span class="ident">account_id</span>) {
+        <span class="ident">account_id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
+        <span class="ident">session_token</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
+        <span class="ident">expires_at</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Timestamptz</span>,
+    }
+}
+
+<span class="macro">table</span><span class="macro">!</span> {
     <span class="ident">verification_tokens</span> (<span class="ident">account_id</span>) {
         <span class="ident">account_id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
         <span class="ident">verification_token</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
@@ -119,14 +136,15 @@
     }
 }
 
-<span class="macro">joinable</span><span class="macro">!</span>(<span class="ident">notes</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">accounts</span> (<span class="ident">account_id</span>));
 <span class="macro">joinable</span><span class="macro">!</span>(<span class="ident">reset_tokens</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">accounts</span> (<span class="ident">account_id</span>));
+<span class="macro">joinable</span><span class="macro">!</span>(<span class="ident">session_tokens</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">accounts</span> (<span class="ident">account_id</span>));
 <span class="macro">joinable</span><span class="macro">!</span>(<span class="ident">verification_tokens</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">accounts</span> (<span class="ident">account_id</span>));
 
 <span class="macro">allow_tables_to_appear_in_same_query</span><span class="macro">!</span>(
     <span class="ident">accounts</span>,
     <span class="ident">notes</span>,
     <span class="ident">reset_tokens</span>,
+    <span class="ident">session_tokens</span>,
     <span class="ident">verification_tokens</span>,
 );
 </pre></div>

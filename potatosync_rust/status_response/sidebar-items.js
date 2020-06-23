@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["_IMPL_SERIALIZE_FOR_StatusResponse",""]],"struct":[["ApiResponse","Struct used for sending the StatusResponse and other json back with a specific http code"],["StatusResponse","Sent back on every request to indicate status and in case it has failed an error of the request"]]});
+initSidebarItems({"struct":[["ApiResponse","Struct used for sending the StatusResponse and other json back with a specific http code"],["StatusResponse","Sent back on every request to indicate status and in case it has failed an error of the request"]]});

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.2/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../cookie/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/cookie-0.11.3/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../cookie/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1103,71 +1103,109 @@
 <span id="1103">1103</span>
 <span id="1104">1104</span>
 <span id="1105">1105</span>
+<span id="1106">1106</span>
+<span id="1107">1107</span>
+<span id="1108">1108</span>
+<span id="1109">1109</span>
+<span id="1110">1110</span>
+<span id="1111">1111</span>
+<span id="1112">1112</span>
+<span id="1113">1113</span>
+<span id="1114">1114</span>
+<span id="1115">1115</span>
+<span id="1116">1116</span>
+<span id="1117">1117</span>
+<span id="1118">1118</span>
+<span id="1119">1119</span>
+<span id="1120">1120</span>
+<span id="1121">1121</span>
+<span id="1122">1122</span>
+<span id="1123">1123</span>
+<span id="1124">1124</span>
+<span id="1125">1125</span>
+<span id="1126">1126</span>
+<span id="1127">1127</span>
+<span id="1128">1128</span>
+<span id="1129">1129</span>
+<span id="1130">1130</span>
+<span id="1131">1131</span>
+<span id="1132">1132</span>
+<span id="1133">1133</span>
+<span id="1134">1134</span>
+<span id="1135">1135</span>
+<span id="1136">1136</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! HTTP cookie parsing and cookie jar management.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This crates provides the [`Cookie`](struct.Cookie.html) type, which directly</span>
-<span class="doccomment">//! maps to an HTTP cookie, and the [`CookieJar`](struct.CookieJar.html) type,</span>
-<span class="doccomment">//! which allows for simple management of many cookies as well as encryption and</span>
-<span class="doccomment">//! signing of cookies for session management.</span>
+<span class="doccomment">//! This crates provides the [`Cookie`] type, representing an HTTP cookie, and</span>
+<span class="doccomment">//! the [`CookieJar`] type, which manages a collection of cookies for session</span>
+<span class="doccomment">//! management, recording changes as they are made, and optional automatic</span>
+<span class="doccomment">//! cookie encryption and signing.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Usage</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Add the following to the `[dependencies]` section of your `Cargo.toml`:</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```ignore</span>
+<span class="doccomment">//! ```toml</span>
 <span class="doccomment">//! cookie = &quot;0.11&quot;</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Then add the following line to your crate root:</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```ignore</span>
+<span class="doccomment">//! ```</span>
 <span class="doccomment">//! extern crate cookie;</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # Features</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! This crates can be configured at compile-time through the following Cargo</span>
-<span class="doccomment">//! features:</span>
+<span class="doccomment">//! This crate exposes several features, all of which are disabled by default:</span>
 <span class="doccomment">//!</span>
+<span class="doccomment">//! * **`percent-encode`**</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! * **secure** (disabled by default)</span>
+<span class="doccomment">//!   Enables _percent encoding and decoding_ of names and values in cookies.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!   Enables signed and private (signed + encrypted) cookie jars.</span>
+<span class="doccomment">//!   When this feature is enabled, the [`Cookie::encoded()`] and</span>
+<span class="doccomment">//!   [`Cookie::parse_encoded()`] methods are available. The `encoded` method</span>
+<span class="doccomment">//!   returns a wrapper around a `Cookie` whose `Display` implementation</span>
+<span class="doccomment">//!   percent-encodes the name and value of the cookie. The `parse_encoded`</span>
+<span class="doccomment">//!   method percent-decodes the name and value of a `Cookie` during parsing.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!   When this feature is enabled, the</span>
-<span class="doccomment">//!   [signed](struct.CookieJar.html#method.signed) and</span>
-<span class="doccomment">//!   [private](struct.CookieJar.html#method.private) method of `CookieJar` and</span>
-<span class="doccomment">//!   [`SignedJar`](struct.SignedJar.html) and</span>
-<span class="doccomment">//!   [`PrivateJar`](struct.PrivateJar.html) structures are available. The jars</span>
-<span class="doccomment">//!   act as &quot;children jars&quot;, allowing for easy retrieval and addition of signed</span>
-<span class="doccomment">//!   and/or encrypted cookies to a cookie jar. When this feature is disabled,</span>
-<span class="doccomment">//!   none of the types are available.</span>
+<span class="doccomment">//! * **`signed`**</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! * **percent-encode** (disabled by default)</span>
+<span class="doccomment">//!   Enables _signed_ cookies via [`CookieJar::signed()`].</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!   Enables percent encoding and decoding of names and values in cookies.</span>
+<span class="doccomment">//!   When this feature is enabled, the [`CookieJar::signed()`] method,</span>
+<span class="doccomment">//!   [`SignedJar`] type, and [`Key`] type are available. The jar acts as &quot;child</span>
+<span class="doccomment">//!   jar&quot;; operations on the jar automatically sign and verify cookies as they</span>
+<span class="doccomment">//!   are added and retrieved from the parent jar.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!   When this feature is enabled, the</span>
-<span class="doccomment">//!   [encoded](struct.Cookie.html#method.encoded) and</span>
-<span class="doccomment">//!   [`parse_encoded`](struct.Cookie.html#method.parse_encoded) methods of</span>
-<span class="doccomment">//!   `Cookie` become available. The `encoded` method returns a wrapper around a</span>
-<span class="doccomment">//!   `Cookie` whose `Display` implementation percent-encodes the name and value</span>
-<span class="doccomment">//!   of the cookie. The `parse_encoded` method percent-decodes the name and</span>
-<span class="doccomment">//!   value of a `Cookie` during parsing. When this feature is disabled, the</span>
-<span class="doccomment">//!   `encoded` and `parse_encoded` methods are not available.</span>
+<span class="doccomment">//! * **`private`**</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! You can enable features via the `Cargo.toml` file:</span>
+<span class="doccomment">//!   Enables _private_ (authenticated, encrypted) cookies via</span>
+<span class="doccomment">//!   [`CookieJar::private()`].</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ```ignore</span>
+<span class="doccomment">//!   When this feature is enabled, the [`CookieJar::private()`] method,</span>
+<span class="doccomment">//!   [`PrivateJar`] type, and [`Key`] type are available. The jar acts as &quot;child</span>
+<span class="doccomment">//!   jar&quot;; operations on the jar automatically encrypt and decrypt/authenticate</span>
+<span class="doccomment">//!   cookies as they are added and retrieved from the parent jar.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! * **`secure`**</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!   A meta-feature that simultaneously enables `signed` and `private`.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! You can enable features via `Cargo.toml`:</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```toml</span>
 <span class="doccomment">//! [dependencies.cookie]</span>
 <span class="doccomment">//! features = [&quot;secure&quot;, &quot;percent-encode&quot;]</span>
 <span class="doccomment">//! ```</span>
 
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">doc</span>, <span class="ident">not</span>(<span class="ident">doctest</span>)), <span class="ident">feature</span>(<span class="ident">doc_cfg</span>))]</span>
+
 <span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_root_url</span> <span class="op">=</span> <span class="string">&quot;https://docs.rs/cookie/0.11&quot;</span>)]</span>
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>)]</span>
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>)]</span> <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">url</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>)]</span> <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">percent_encoding</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">time</span>;
 
 <span class="kw">mod</span> <span class="ident">builder</span>;
@@ -1176,8 +1214,8 @@
 <span class="kw">mod</span> <span class="ident">delta</span>;
 <span class="kw">mod</span> <span class="ident">draft</span>;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;secure&quot;</span>)]</span> <span class="attribute">#[<span class="ident">macro_use</span>]</span> <span class="kw">mod</span> <span class="ident">secure</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;secure&quot;</span>)]</span> <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">secure</span>::<span class="kw-2">*</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;private&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;signed&quot;</span>))]</span> <span class="attribute">#[<span class="ident">macro_use</span>]</span> <span class="kw">mod</span> <span class="ident">secure</span>;
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;private&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;signed&quot;</span>))]</span> <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">secure</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
@@ -1187,14 +1225,14 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ascii</span>::<span class="ident">AsciiExt</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">url</span>::<span class="ident">percent_encoding</span>::{<span class="ident">USERINFO_ENCODE_SET</span>, <span class="ident">percent_encode</span>};
+<span class="kw">use</span> <span class="ident">percent_encoding</span>::{<span class="ident">AsciiSet</span>, <span class="ident">percent_encode</span>};
 <span class="kw">use</span> <span class="ident">time</span>::{<span class="ident">Tm</span>, <span class="ident">Duration</span>};
 
-<span class="kw">use</span> <span class="ident">parse</span>::<span class="ident">parse_cookie</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parse</span>::<span class="ident">ParseError</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">builder</span>::<span class="ident">CookieBuilder</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">jar</span>::{<span class="ident">CookieJar</span>, <span class="ident">Delta</span>, <span class="ident">Iter</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">draft</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parse</span>::<span class="ident">parse_cookie</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parse</span>::<span class="ident">ParseError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">builder</span>::<span class="ident">CookieBuilder</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">jar</span>::{<span class="ident">CookieJar</span>, <span class="ident">Delta</span>, <span class="ident">Iter</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">draft</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">enum</span> <span class="ident">CookieStr</span> {
@@ -1240,8 +1278,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Constructing a `Cookie`</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// To construct a cookie with only a name/value, use the [new](#method.new)</span>
-<span class="doccomment">/// method:</span>
+<span class="doccomment">/// To construct a cookie with only a name/value, use [`Cookie::new()`]:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// use cookie::Cookie;</span>
@@ -1250,8 +1287,8 @@
 <span class="doccomment">/// assert_eq!(&amp;cookie.to_string(), &quot;name=value&quot;);</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// To construct more elaborate cookies, use the [build](#method.build) method</span>
-<span class="doccomment">/// and [`CookieBuilder`](struct.CookieBuilder.html) methods:</span>
+<span class="doccomment">/// To construct more elaborate cookies, use [`Cookie::build()`] and</span>
+<span class="doccomment">/// [`CookieBuilder`] methods:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// use cookie::Cookie;</span>
@@ -1376,9 +1413,6 @@
     <span class="doccomment">/// the name and value fields are percent-encoded. Percent-decodes the</span>
     <span class="doccomment">/// name/value fields.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This API requires the `percent-encode` feature to be enabled on this</span>
-    <span class="doccomment">/// crate.</span>
-    <span class="doccomment">///</span>
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
@@ -1389,6 +1423,7 @@
     <span class="doccomment">/// assert_eq!(c.http_only(), Some(true));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">doc</span>, <span class="ident">not</span>(<span class="ident">doctest</span>)), <span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>))]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_encoded</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cookie</span><span class="op">&lt;</span><span class="lifetime">&#39;c</span><span class="op">&gt;</span>, <span class="ident">ParseError</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;c</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
     {
@@ -1399,9 +1434,6 @@
     <span class="doccomment">/// whose `Display` implementation percent-encodes the name and value of the</span>
     <span class="doccomment">/// wrapped `Cookie`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This method is only available when the `percent-encode` feature is</span>
-    <span class="doccomment">/// enabled.</span>
-    <span class="doccomment">///</span>
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
@@ -1411,6 +1443,7 @@
     <span class="doccomment">/// assert_eq!(&amp;c.encoded().to_string(), &quot;my%20name=this%3B%20value%3F&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">doc</span>, <span class="ident">not</span>(<span class="ident">doctest</span>)), <span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>))]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encoded</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EncodedCookie</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span> {
         <span class="ident">EncodedCookie</span>(<span class="self">self</span>)
     }
@@ -1817,7 +1850,10 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_expires</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">time</span>: <span class="ident">Tm</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_expires</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">time</span>: <span class="ident">Tm</span>) {
+        <span class="comment">// RFC 6265 requires dates not to exceed 9999 years. A `Tm.tm_year` of</span>
+        <span class="comment">// `0` represents year 1900, so `9999 - 1900` is year 9999.</span>
+        <span class="ident">time</span>.<span class="ident">tm_year</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">min</span>(<span class="number">9999</span> <span class="op">-</span> <span class="number">1900</span>, <span class="ident">time</span>.<span class="ident">tm_year</span>);
         <span class="self">self</span>.<span class="ident">expires</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">time</span>);
     }
 
@@ -1887,10 +1923,10 @@
     <span class="doccomment">/// was originally parsed from. If `self` was not originally parsed from a</span>
     <span class="doccomment">/// raw string, returns `None`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This method differs from [name](#method.name) in that it returns a</span>
-    <span class="doccomment">/// string with the same lifetime as the originally parsed string. This</span>
-    <span class="doccomment">/// lifetime may outlive `self`. If a longer lifetime is not required, or</span>
-    <span class="doccomment">/// you&#39;re unsure if you need a longer lifetime, use [name](#method.name).</span>
+    <span class="doccomment">/// This method differs from [`Cookie::name()`] in that it returns a string</span>
+    <span class="doccomment">/// with the same lifetime as the originally parsed string. This lifetime</span>
+    <span class="doccomment">/// may outlive `self`. If a longer lifetime is not required, or you&#39;re</span>
+    <span class="doccomment">/// unsure if you need a longer lifetime, use [`Cookie::name()`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
@@ -1917,10 +1953,10 @@
     <span class="doccomment">/// was originally parsed from. If `self` was not originally parsed from a</span>
     <span class="doccomment">/// raw string, returns `None`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This method differs from [value](#method.value) in that it returns a</span>
+    <span class="doccomment">/// This method differs from [`Cookie::value()`] in that it returns a</span>
     <span class="doccomment">/// string with the same lifetime as the originally parsed string. This</span>
     <span class="doccomment">/// lifetime may outlive `self`. If a longer lifetime is not required, or</span>
-    <span class="doccomment">/// you&#39;re unsure if you need a longer lifetime, use [value](#method.value).</span>
+    <span class="doccomment">/// you&#39;re unsure if you need a longer lifetime, use [`Cookie::value()`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
@@ -1948,10 +1984,10 @@
     <span class="doccomment">/// raw string, or if `self` doesn&#39;t contain a `Path`, or if the `Path` has</span>
     <span class="doccomment">/// changed since parsing, returns `None`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This method differs from [path](#method.path) in that it returns a</span>
+    <span class="doccomment">/// This method differs from [`Cookie::path()`] in that it returns a</span>
     <span class="doccomment">/// string with the same lifetime as the originally parsed string. This</span>
     <span class="doccomment">/// lifetime may outlive `self`. If a longer lifetime is not required, or</span>
-    <span class="doccomment">/// you&#39;re unsure if you need a longer lifetime, use [path](#method.path).</span>
+    <span class="doccomment">/// you&#39;re unsure if you need a longer lifetime, use [`Cookie::path()`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
@@ -1981,11 +2017,11 @@
     <span class="doccomment">/// from a raw string, or if `self` doesn&#39;t contain a `Domain`, or if the</span>
     <span class="doccomment">/// `Domain` has changed since parsing, returns `None`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This method differs from [domain](#method.domain) in that it returns a</span>
+    <span class="doccomment">/// This method differs from [`Cookie::domain()`] in that it returns a</span>
     <span class="doccomment">/// string with the same lifetime as the originally parsed string. This</span>
     <span class="doccomment">/// lifetime may outlive `self` struct. If a longer lifetime is not</span>
     <span class="doccomment">/// required, or you&#39;re unsure if you need a longer lifetime, use</span>
-    <span class="doccomment">/// [domain](#method.domain).</span>
+    <span class="doccomment">/// [`Cookie::domain()`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
@@ -2011,25 +2047,45 @@
     }
 }
 
+<span class="doccomment">/// https://url.spec.whatwg.org/#fragment-percent-encode-set</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>)]</span>
+<span class="kw">const</span> <span class="ident">FRAGMENT_ENCODE_SET</span>: <span class="kw-2">&amp;</span><span class="ident">AsciiSet</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">percent_encoding</span>::<span class="ident">CONTROLS</span>.<span class="ident">add</span>(<span class="string">b&#39; &#39;</span>).<span class="ident">add</span>(<span class="string">b&#39;&quot;&#39;</span>).<span class="ident">add</span>(<span class="string">b&#39;&lt;&#39;</span>).<span class="ident">add</span>(<span class="string">b&#39;&gt;&#39;</span>).<span class="ident">add</span>(<span class="string">b&#39;`&#39;</span>);
+
+<span class="doccomment">/// https://url.spec.whatwg.org/#path-percent-encode-set</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>)]</span>
+<span class="kw">const</span> <span class="ident">PATH_ENCODE_SET</span>: <span class="kw-2">&amp;</span><span class="ident">AsciiSet</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">FRAGMENT_ENCODE_SET</span>.<span class="ident">add</span>(<span class="string">b&#39;#&#39;</span>).<span class="ident">add</span>(<span class="string">b&#39;?&#39;</span>).<span class="ident">add</span>(<span class="string">b&#39;{&#39;</span>).<span class="ident">add</span>(<span class="string">b&#39;}&#39;</span>);
+
+<span class="doccomment">/// https://url.spec.whatwg.org/#userinfo-percent-encode-set</span>
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>)]</span>
+<span class="kw">const</span> <span class="ident">USERINFO_ENCODE_SET</span>: <span class="kw-2">&amp;</span><span class="ident">AsciiSet</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">PATH_ENCODE_SET</span>
+    .<span class="ident">add</span>(<span class="string">b&#39;/&#39;</span>)
+    .<span class="ident">add</span>(<span class="string">b&#39;:&#39;</span>)
+    .<span class="ident">add</span>(<span class="string">b&#39;;&#39;</span>)
+    .<span class="ident">add</span>(<span class="string">b&#39;=&#39;</span>)
+    .<span class="ident">add</span>(<span class="string">b&#39;@&#39;</span>)
+    .<span class="ident">add</span>(<span class="string">b&#39;[&#39;</span>)
+    .<span class="ident">add</span>(<span class="string">b&#39;\\&#39;</span>)
+    .<span class="ident">add</span>(<span class="string">b&#39;]&#39;</span>)
+    .<span class="ident">add</span>(<span class="string">b&#39;^&#39;</span>)
+    .<span class="ident">add</span>(<span class="string">b&#39;|&#39;</span>)
+    .<span class="ident">add</span>(<span class="string">b&#39;%&#39;</span>);
+
 <span class="doccomment">/// Wrapper around `Cookie` whose `Display` implementation percent-encodes the</span>
 <span class="doccomment">/// cookie&#39;s name and value.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// A value of this type can be obtained via the</span>
-<span class="doccomment">/// [encoded](struct.Cookie.html#method.encoded) method on</span>
-<span class="doccomment">/// [Cookie](struct.Cookie.html). This type should only be used for its</span>
-<span class="doccomment">/// `Display` implementation.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This type is only available when the `percent-encode` feature is enabled.</span>
+<span class="doccomment">/// A value of this type can be obtained via [`Cookie::encoded()`]. This type</span>
+<span class="doccomment">/// should only be used for its `Display` implementation.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// use cookie::Cookie;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// let mut c = Cookie::new(&quot;my name&quot;, &quot;this; value?&quot;);</span>
-<span class="doccomment">/// assert_eq!(&amp;c.encoded().to_string(), &quot;my%20name=this%3B%20value%3F&quot;);</span>
+<span class="doccomment">/// let mut c = Cookie::new(&quot;my name&quot;, &quot;this; value%?&quot;);</span>
+<span class="doccomment">/// assert_eq!(&amp;c.encoded().to_string(), &quot;my%20name=this%3B%20value%25%3F&quot;);</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">all</span>(<span class="ident">doc</span>, <span class="ident">not</span>(<span class="ident">doctest</span>)), <span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EncodedCookie</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;c</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Cookie</span><span class="op">&lt;</span><span class="lifetime">&#39;c</span><span class="op">&gt;</span>);
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;percent-encode&quot;</span>)]</span>
@@ -2104,8 +2160,8 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> ::{<span class="ident">Cookie</span>, <span class="ident">SameSite</span>};
-    <span class="kw">use</span> ::<span class="ident">time</span>::{<span class="ident">strptime</span>, <span class="ident">Duration</span>};
+    <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Cookie</span>, <span class="ident">SameSite</span>};
+    <span class="kw">use</span> <span class="ident">time</span>::{<span class="ident">empty_tm</span>, <span class="ident">Duration</span>, <span class="ident">strptime</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">format</span>() {
@@ -2138,6 +2194,12 @@
             .<span class="ident">expires</span>(<span class="ident">expires</span>).<span class="ident">finish</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">cookie</span>.<span class="ident">to_string</span>(),
                    <span class="string">&quot;foo=bar; Expires=Wed, 21 Oct 2015 07:28:00 GMT&quot;</span>);
+
+        <span class="kw">let</span> <span class="ident">expires</span> <span class="op">=</span> <span class="ident">empty_tm</span>() <span class="op">+</span> <span class="ident">Duration</span>::<span class="ident">max_value</span>();
+        <span class="kw">let</span> <span class="ident">cookie</span> <span class="op">=</span> <span class="ident">Cookie</span>::<span class="ident">build</span>(<span class="string">&quot;foo&quot;</span>, <span class="string">&quot;bar&quot;</span>)
+            .<span class="ident">expires</span>(<span class="ident">expires</span>).<span class="ident">finish</span>();
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">cookie</span>.<span class="ident">to_string</span>(),
+                   <span class="string">&quot;foo=bar; Expires=Wed, 16 Aug 9999 07:12:55 GMT&quot;</span>);
 
         <span class="kw">let</span> <span class="ident">cookie</span> <span class="op">=</span> <span class="ident">Cookie</span>::<span class="ident">build</span>(<span class="string">&quot;foo&quot;</span>, <span class="string">&quot;bar&quot;</span>)
             .<span class="ident">same_site</span>(<span class="ident">SameSite</span>::<span class="ident">Strict</span>).<span class="ident">finish</span>();

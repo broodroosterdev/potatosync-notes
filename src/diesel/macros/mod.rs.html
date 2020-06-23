@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/diesel-1.4.3/src/macros/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/diesel-1.4.5/src/macros/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1228,7 +1228,6 @@
 <span id="1228">1228</span>
 <span id="1229">1229</span>
 <span id="1230">1230</span>
-<span id="1231">1231</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">rustfmt</span>, <span class="ident">rustfmt_skip</span>)]</span> <span class="comment">// https://github.com/rust-lang-nursery/rustfmt/issues/2755</span>
 
@@ -1512,8 +1511,7 @@
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">__diesel_invalid_table_syntax</span> {
     () <span class="op">=</span><span class="op">&gt;</span> {
         <span class="macro">compile_error</span><span class="macro">!</span>(
-            <span class="string">&quot;Invalid `table!` syntax. Please see the `table!` macro docs for more info. \
-             `https://docs.diesel.rs/diesel/macro.table.html`&quot;</span>
+            <span class="string">&quot;Invalid `table!` syntax. Please see the `table!` macro docs for more info.&quot;</span>
         );
     };
 }
@@ -1858,7 +1856,7 @@
                             <span class="string">&quot;\&quot;]` to reference the table&#39;s `&quot;</span>,
                             <span class="macro">stringify</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>),
                             <span class="string">&quot;` column. \n \
-                            Docs available at: `https://docs.diesel.rs/diesel/macro.table.html`\n&quot;</span>
+                            See the documentation of the `table!` macro for details`\n&quot;</span>
                         ));
                     } <span class="kw">else</span> {
                         <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">columns</span>::{<span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>};
@@ -2160,13 +2158,13 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// * `child_table` is the Table with the Foreign key.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// So given the Table decaration from [Associations docs](http://docs.diesel.rs/diesel/associations/index.html)</span>
+<span class="doccomment">/// So given the Table decaration from [Associations docs](/associations/index.html)</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// * The parent table would be `User`</span>
 <span class="doccomment">/// * The child table would be `Post`</span>
 <span class="doccomment">/// * and the Foreign key would be `Post.user_id`</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// For joins that do not explicitly use on clauses via [`JoinOnDsl`](http://docs.diesel.rs/diesel/prelude/trait.JoinOnDsl.html)</span>
+<span class="doccomment">/// For joins that do not explicitly use on clauses via [`JoinOnDsl`](/prelude/trait.JoinOnDsl.html)</span>
 <span class="doccomment">/// the following on clause is generated implicitly:</span>
 <span class="doccomment">/// ```sql</span>
 <span class="doccomment">/// post JOIN users ON posts.user_id = users.id</span>

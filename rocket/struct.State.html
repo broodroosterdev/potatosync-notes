@@ -5,7 +5,7 @@ number of handlers. A value for the given type must previously have been
 registered to be managed by Rocket via
 <a href="../rocket/struct.Rocket.html#method.manage"><code>Rocket::manage()</code></a>. The type being managed must be
 thread safe and sendable across thread boundaries. In other words, it must
-implement <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="`Send`"><code>Send</code></a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="`Sync`"><code>Sync</code></a> + 'static`.</p>
+implement <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="`Send`"><code>Send</code></a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="`Sync`"><code>Sync</code></a> + <code>'static</code>.</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
 <p>Imagine you have some configuration struct of the type <code>MyConfig</code> that you'd
 like to initialize at start-up and later access it in several handlers. The

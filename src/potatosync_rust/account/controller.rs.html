@@ -540,579 +540,547 @@
 <span id="540">540</span>
 <span id="541">541</span>
 <span id="542">542</span>
-<span id="543">543</span>
-<span id="544">544</span>
-<span id="545">545</span>
-<span id="546">546</span>
-<span id="547">547</span>
-<span id="548">548</span>
-<span id="549">549</span>
-<span id="550">550</span>
-<span id="551">551</span>
-<span id="552">552</span>
-<span id="553">553</span>
-<span id="554">554</span>
-<span id="555">555</span>
-<span id="556">556</span>
-<span id="557">557</span>
-<span id="558">558</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
 
-<span class="kw">use</span> <span class="ident">bcrypt</span>::{<span class="ident">hash</span>, <span class="ident">verify</span>};
 <span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">Duration</span>, <span class="ident">Utc</span>};
 <span class="kw">use</span> <span class="ident">diesel</span>::{<span class="ident">ExpressionMethods</span>, <span class="ident">PgConnection</span>, <span class="ident">RunQueryDsl</span>, <span class="ident">select</span>};
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">expression</span>::<span class="ident">exists</span>::<span class="ident">exists</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">query_dsl</span>::<span class="ident">filter_dsl</span>::<span class="ident">FilterDsl</span>;
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">distributions</span>::<span class="ident">Alphanumeric</span>;
-<span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">Rng</span>;
+<span class="kw">use</span> <span class="ident">reqwest</span>::<span class="ident">blocking</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">rocket_failure</span>::<span class="ident">errors</span>::<span class="ident">Status</span>;
 <span class="kw">use</span> <span class="ident">uuid</span>::<span class="ident">Uuid</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">email</span>::{<span class="ident">create_verification_email</span>, <span class="ident">send_email</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">model</span>::{<span class="ident">Account</span>, <span class="ident">InfoResponse</span>, <span class="ident">LoginCredentials</span>, <span class="ident">NewAccount</span>, <span class="ident">password_is_valid</span>, <span class="ident">PatchingAccount</span>, <span class="ident">TokenAccount</span>, <span class="ident">TokenResponse</span>, <span class="ident">username_is_valid</span>, <span class="ident">VerificationToken</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">repository</span>::{<span class="ident">account_from_email</span>, <span class="ident">account_from_username</span>, <span class="ident">email_exists</span>, <span class="ident">insert_account</span>, <span class="ident">insert_verification_token</span>, <span class="ident">username_exists</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">responses</span>::{<span class="ident">INCORRECT_CREDENTIALS</span>, <span class="ident">INTERNAL_ERROR</span>, <span class="ident">INVALID_EMAIL</span>, <span class="ident">INVALID_PASSWORD</span>, <span class="ident">INVALID_USERNAME</span>, <span class="ident">USER_NOT_VERIFIED</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">token</span>::{<span class="ident">RefreshToken</span>, <span class="ident">Token</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responses</span>::{<span class="ident">ApiError</span>, <span class="ident">TokenSuccess</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">schema</span>::<span class="ident">accounts</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">schema</span>::<span class="ident">notes</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">schema</span>::<span class="ident">verification_tokens</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">status_response</span>::{<span class="ident">ApiResponse</span>, <span class="ident">StatusResponse</span>};
 
-<span class="doccomment">/// Used to login user using DB and returns Error if credentials are incorrect</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">login</span>(<span class="ident">credentials</span>: <span class="ident">LoginCredentials</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenSuccess</span>, <span class="ident">ApiError</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">get_account_result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Account</span>, <span class="ident">String</span><span class="op">&gt;</span>;
-    <span class="kw">if</span> <span class="ident">credentials</span>.<span class="ident">email</span>.<span class="ident">is_some</span>() {
-        <span class="kw">let</span> <span class="ident">email</span> <span class="op">=</span> <span class="ident">credentials</span>.<span class="ident">email</span>.<span class="ident">clone</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>();
-        <span class="kw">match</span> <span class="ident">email_exists</span>(<span class="kw-2">&amp;</span><span class="ident">email</span>, <span class="ident">connection</span>) {
-            <span class="prelude-val">Err</span>(<span class="ident">_error</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INCORRECT_CREDENTIALS</span>);
-            }
-            <span class="prelude-val">Ok</span>(<span class="ident">exists</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">exists</span> {
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INCORRECT_CREDENTIALS</span>);
-                }
-                <span class="ident">get_account_result</span> <span class="op">=</span> <span class="ident">account_from_email</span>(<span class="kw-2">&amp;</span><span class="ident">email</span>, <span class="ident">connection</span>);
-                <span class="kw">if</span> <span class="ident">get_account_result</span>.<span class="ident">is_err</span>() {
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INCORRECT_CREDENTIALS</span>);
-                }
-            }
-        }
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">credentials</span>.<span class="ident">username</span>.<span class="ident">is_some</span>() {
-        <span class="kw">let</span> <span class="ident">username</span> <span class="op">=</span> <span class="ident">credentials</span>.<span class="ident">username</span>.<span class="ident">clone</span>().<span class="ident">unwrap</span>().<span class="ident">clone</span>();
-        <span class="kw">match</span> <span class="ident">username_exists</span>(<span class="kw-2">&amp;</span><span class="ident">username</span>, <span class="ident">connection</span>) {
-            <span class="prelude-val">Err</span>(<span class="ident">_error</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INCORRECT_CREDENTIALS</span>);
-            }
-            <span class="prelude-val">Ok</span>(<span class="ident">exists</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="op">!</span><span class="ident">exists</span> {
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INCORRECT_CREDENTIALS</span>);
-                }
-                <span class="ident">get_account_result</span> <span class="op">=</span> <span class="ident">account_from_username</span>(<span class="kw-2">&amp;</span><span class="ident">username</span>, <span class="ident">connection</span>);
-                <span class="kw">if</span> <span class="ident">get_account_result</span>.<span class="ident">is_err</span>() {
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INCORRECT_CREDENTIALS</span>);
-                }
-            }
-        }
-    } <span class="kw">else</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INCORRECT_CREDENTIALS</span>);
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LoginResponse</span>{
+    <span class="ident">access_token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    <span class="ident">expires_in</span>: <span class="ident">u64</span>,
+    <span class="ident">refresh_expires_in</span>: <span class="ident">u64</span>,
+    <span class="ident">refresh_token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    <span class="ident">token_type</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    <span class="ident">id_token</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;not-before-policy&quot;</span>)]</span>
+    <span class="ident">not_before_policy</span>: <span class="ident">u64</span>,
+    <span class="ident">session_statie</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+    <span class="ident">scope</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
+}
+<span class="comment">/*
+/// Used to login user using DB and returns Error if credentials are incorrect
+pub(crate) fn login(credentials: LoginCredentials, connection: &amp;PgConnection) -&gt; Result&lt;TokenSuccess, ApiError&gt; {
+    let parameters = [
+        (&quot;client_id&quot;, &quot;notes-api&quot;),
+        (&quot;grant_type&quot;, &quot;password&quot;),
+        (&quot;username&quot;, credentials.username.as_str()),
+        (&quot;password&quot;, credentials.password.as_str()),
+        (&quot;scope&quot;, &quot;openid&quot;)
+    ];
+    let client = Client::new();
+    let response = client.post(&quot;http://localhost:8080/auth/realms/potatosync/protocol/openid-connect/token&quot;).form(&amp;parameters).send().unwrap();
+    if response.status().is_success(){
+        let login_response: LoginResponse = response.json().unwrap();
+        Ok(TokenSuccess{
+            description: &quot;&quot;,
+            code: 0,
+            access_token: login_response.access_token,
+            refresh_token: login_response.refresh_token,
+            id_token: login_response.id_token
+        })
+    } else {
+        Err(INCORRECT_CREDENTIALS)
     }
-    <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">get_account_result</span>.<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">hash_result</span> <span class="op">=</span> <span class="ident">verify</span>(<span class="ident">credentials</span>.<span class="ident">password</span>, <span class="ident">account</span>.<span class="ident">password</span>.<span class="ident">clone</span>().<span class="ident">as_ref</span>()).<span class="ident">unwrap</span>();
-    <span class="kw">if</span> <span class="ident">hash_result</span> <span class="op">!</span><span class="op">=</span> <span class="bool-val">true</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INCORRECT_CREDENTIALS</span>);
-    }
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">account</span>.<span class="ident">verified</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">USER_NOT_VERIFIED</span>);
-    }
-
-    <span class="kw">let</span> <span class="ident">access_token</span> <span class="op">=</span> <span class="ident">Token</span>::<span class="ident">create_access_token</span>(<span class="ident">account</span>.<span class="ident">id</span>.<span class="ident">clone</span>());
-    <span class="kw">let</span> <span class="ident">refresh_token</span> <span class="op">=</span> <span class="ident">RefreshToken</span>::<span class="ident">create_refresh_token</span>(<span class="ident">account</span>.<span class="ident">id</span>.<span class="ident">clone</span>(), <span class="ident">account</span>.<span class="ident">password_identifier</span>.<span class="ident">clone</span>());
-    <span class="prelude-val">Ok</span>(<span class="ident">TokenSuccess</span>::<span class="ident">new</span>(<span class="ident">TokenAccount</span>::<span class="ident">from_account</span>(<span class="ident">account</span>, <span class="prelude-val">Some</span>(<span class="ident">access_token</span>), <span class="prelude-val">Some</span>(<span class="ident">refresh_token</span>))))
+}*/</span>
+<span class="comment">/*
+/// Creates random password identifier to check if password has changed
+fn create_password_identifier() -&gt; String {
+    rand::thread_rng().sample_iter(&amp;Alphanumeric).take(10).collect()
 }
 
-<span class="doccomment">/// Creates random password identifier to check if password has changed</span>
-<span class="kw">fn</span> <span class="ident">create_password_identifier</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="ident">rand</span>::<span class="ident">thread_rng</span>().<span class="ident">sample_iter</span>(<span class="kw-2">&amp;</span><span class="ident">Alphanumeric</span>).<span class="ident">take</span>(<span class="number">10</span>).<span class="ident">collect</span>()
+/// Creates random verification token for email verification
+fn create_verification_token() -&gt; String {
+    rand::thread_rng().sample_iter(&amp;Alphanumeric).take(6).collect()
 }
 
-<span class="doccomment">/// Creates random verification token for email verification</span>
-<span class="kw">fn</span> <span class="ident">create_verification_token</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="ident">rand</span>::<span class="ident">thread_rng</span>().<span class="ident">sample_iter</span>(<span class="kw-2">&amp;</span><span class="ident">Alphanumeric</span>).<span class="ident">take</span>(<span class="number">6</span>).<span class="ident">collect</span>()
-}
-
-<span class="doccomment">/// Registers account using DB</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create</span>(<span class="ident">account</span>: <span class="ident">NewAccount</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="kw">let</span> <span class="ident">validation_result</span> <span class="op">=</span> <span class="ident">account</span>.<span class="ident">is_valid</span>(<span class="ident">connection</span>);
-    <span class="kw">if</span> <span class="ident">validation_result</span>.<span class="ident">is_err</span>(){
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Invalid&quot;</span>);
-        <span class="kw">return</span> <span class="ident">validation_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_response</span>();
+/// Registers account using DB
+pub(crate) fn create(account: NewAccount, connection: &amp;PgConnection) -&gt; ApiResponse {
+    let validation_result = account.is_valid(connection);
+    if validation_result.is_err(){
+        println!(&quot;Invalid&quot;);
+        return validation_result.err().unwrap().to_response();
     }
 
-    <span class="kw">match</span> <span class="ident">email_exists</span>(<span class="kw-2">&amp;</span><span class="ident">account</span>.<span class="ident">email</span>, <span class="ident">connection</span>) {
-        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;exists&quot;</span>);
-            <span class="kw">return</span> <span class="ident">INVALID_EMAIL</span>.<span class="ident">to_response</span>();
+    match email_exists(&amp;account.email, connection) {
+        Err(error) =&gt; {
+            println!(&quot;exists&quot;);
+            return INVALID_EMAIL.to_response();
         },
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        _ =&gt; {}
     }
-    <span class="kw">match</span> <span class="ident">username_exists</span>(<span class="kw-2">&amp;</span><span class="ident">account</span>.<span class="ident">username</span>, <span class="ident">connection</span>) {
-        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;exists&quot;</span>);
-            <span class="kw">return</span> <span class="ident">INVALID_USERNAME</span>.<span class="ident">to_response</span>();
+    match username_exists(&amp;account.username, connection) {
+        Err(error) =&gt; {
+            println!(&quot;exists&quot;);
+            return INVALID_USERNAME.to_response();
         },
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        _ =&gt; {}
     }
-    <span class="kw">let</span> <span class="ident">hashed_password</span> <span class="op">=</span> <span class="ident">hash</span>(<span class="ident">account</span>.<span class="ident">password</span>.<span class="ident">clone</span>(), <span class="number">12</span>).<span class="ident">expect</span>(<span class="string">&quot;Error hashing password: &quot;</span>);
-    <span class="kw">let</span> <span class="ident">password_identifier</span> <span class="op">=</span> <span class="ident">create_password_identifier</span>();
-    <span class="kw">let</span> <span class="ident">verification_token</span> <span class="op">=</span> <span class="ident">create_verification_token</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">Account</span> {
-        <span class="ident">id</span>: <span class="ident">Uuid</span>::<span class="ident">new_v4</span>().<span class="ident">to_string</span>(),
-        <span class="ident">created_at</span>: <span class="ident">Utc</span>::<span class="ident">now</span>(),
-        <span class="ident">updated_at</span>: <span class="prelude-val">Some</span>(<span class="ident">Utc</span>::<span class="ident">now</span>()),
-        <span class="ident">deleted_at</span>: <span class="prelude-val">None</span>,
-        <span class="ident">email</span>: <span class="ident">account</span>.<span class="ident">email</span>.<span class="ident">clone</span>(),
-        <span class="ident">username</span>: <span class="ident">account</span>.<span class="ident">username</span>.<span class="ident">clone</span>(),
-        <span class="ident">password</span>: <span class="ident">hashed_password</span>,
-        <span class="ident">image_url</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">password_identifier</span>: <span class="ident">password_identifier</span>.<span class="ident">clone</span>(),
-        <span class="ident">verified</span>: <span class="bool-val">false</span>,
-        <span class="ident">shared_prefs</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
+    let hashed_password = hash(account.password.clone(), 12).expect(&quot;Error hashing password: &quot;);
+    let password_identifier = create_password_identifier();
+    let verification_token = create_verification_token();
+    let mut account = Account {
+        id: Uuid::new_v4().to_string(),
+        created_at: Utc::now(),
+        updated_at: Some(Utc::now()),
+        deleted_at: None,
+        email: account.email.clone(),
+        username: account.username.clone(),
+        password: hashed_password,
+        image_url: &quot;&quot;.to_string(),
+        password_identifier: password_identifier.clone(),
+        verified: false,
+        shared_prefs: &quot;&quot;.to_string(),
     };
-    <span class="kw">if</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;DISABLE_EMAIL_VERIFICATION&quot;</span>).<span class="ident">is_ok</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;DISABLE_EMAIL_VERIFICATION&quot;</span>).<span class="ident">unwrap</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;true&quot;</span> {
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;IMPORTANT: Automatically verifying user. If you did not intend this behaviour please kill the program and check your settings&quot;</span>);
-        <span class="ident">account</span>.<span class="ident">verified</span> <span class="op">=</span> <span class="bool-val">true</span>;
+    if env::var(&quot;DISABLE_EMAIL_VERIFICATION&quot;).is_ok() &amp;&amp; env::var(&quot;DISABLE_EMAIL_VERIFICATION&quot;).unwrap() == &quot;true&quot; {
+        println!(&quot;IMPORTANT: Automatically verifying user. If you did not intend this behaviour please kill the program and check your settings&quot;);
+        account.verified = true;
     }
-    <span class="kw">return</span> <span class="kw">match</span> <span class="ident">insert_account</span>(<span class="kw-2">&amp;</span><span class="ident">account</span>, <span class="ident">connection</span>) {
-        <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">INTERNAL_ERROR</span>.<span class="ident">to_response</span>(),
-        <span class="prelude-val">Ok</span>(<span class="ident">account</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">if</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;DISABLE_EMAIL_VERIFICATION&quot;</span>).<span class="ident">is_err</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;DISABLE_EMAIL_VERIFICATION&quot;</span>).<span class="ident">unwrap</span>() <span class="op">!</span><span class="op">=</span> <span class="string">&quot;true&quot;</span> {
-                <span class="kw">let</span> <span class="ident">token_db</span> <span class="op">=</span> <span class="ident">VerificationToken</span> {
-                    <span class="ident">account_id</span>: <span class="ident">account</span>.<span class="ident">id</span>.<span class="ident">clone</span>(),
-                    <span class="ident">verification_token</span>,
-                    <span class="ident">expires_at</span>: <span class="ident">Utc</span>::<span class="ident">now</span>() <span class="op">+</span> <span class="ident">Duration</span>::<span class="ident">days</span>(<span class="number">1</span>),
+    return match insert_account(&amp;account, connection) {
+        Err(_) =&gt; INTERNAL_ERROR.to_response(),
+        Ok(account) =&gt; {
+            if env::var(&quot;DISABLE_EMAIL_VERIFICATION&quot;).is_err() || env::var(&quot;DISABLE_EMAIL_VERIFICATION&quot;).unwrap() != &quot;true&quot; {
+                let token_db = VerificationToken {
+                    account_id: account.id.clone(),
+                    verification_token,
+                    expires_at: Utc::now() + Duration::days(1),
                 };
-                <span class="kw">match</span> <span class="ident">insert_verification_token</span>(<span class="kw-2">&amp;</span><span class="ident">token_db</span>, <span class="ident">connection</span>) {
-                    <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Could not save verification token in database: {}&quot;</span>, <span class="ident">error</span>);
-                        <span class="kw">return</span> <span class="ident">INTERNAL_ERROR</span>.<span class="ident">to_response</span>()
+                match insert_verification_token(&amp;token_db, connection) {
+                    Err(error) =&gt; {
+                        println!(&quot;Could not save verification token in database: {}&quot;, error);
+                        return INTERNAL_ERROR.to_response()
                     },
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+                    _ =&gt; {}
                 }
-                <span class="kw">let</span> <span class="ident">domain</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;DOMAIN&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not find DOMAIN in .env&quot;</span>);
-                <span class="kw">let</span> <span class="ident">email</span> <span class="op">=</span> <span class="ident">create_verification_email</span>(<span class="ident">account</span>.<span class="ident">username</span>.<span class="ident">clone</span>(), <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}/api/users/verify/{}/{}&quot;</span>, <span class="ident">domain</span>, <span class="ident">token_db</span>.<span class="ident">account_id</span>, <span class="ident">token_db</span>.<span class="ident">verification_token</span>));
-                <span class="ident">send_email</span>(<span class="ident">email</span>, <span class="string">&quot;Confirming your new Potatosync account&quot;</span>, <span class="ident">account</span>.<span class="ident">email</span>.<span class="ident">clone</span>());
+                let domain = env::var(&quot;DOMAIN&quot;).expect(&quot;Could not find DOMAIN in .env&quot;);
+                let email = create_verification_email(account.username.clone(), format!(&quot;{}/api/users/verify/{}/{}&quot;, domain, token_db.account_id, token_db.verification_token));
+                send_email(email, &quot;Confirming your new Potatosync account&quot;, account.email.clone());
             }
-            <span class="kw">let</span> <span class="ident">json</span> <span class="op">=</span> <span class="ident">TokenResponse</span> {
-                <span class="ident">message</span>: <span class="string">&quot;AccCreationSuccess&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
-                <span class="ident">status</span>: <span class="bool-val">true</span>,
-                <span class="ident">account</span>: <span class="ident">TokenAccount</span>::<span class="ident">from_account</span>(<span class="ident">account</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>),
-            }.<span class="ident">to_string</span>();
-            <span class="ident">ApiResponse</span> {
-                <span class="ident">json</span>,
-                <span class="ident">status</span>: <span class="ident">Status</span>::<span class="prelude-val">Ok</span>,
+            let json = TokenResponse {
+                message: &quot;AccCreationSuccess&quot;.parse().unwrap(),
+                status: true,
+                account: TokenAccount::from_account(account, None, None),
+            }.to_string();
+            ApiResponse {
+                json,
+                status: Status::Ok,
             }
         }
     }
 
 }
 
-<span class="doccomment">/// Verifies email token and verifies user in DB</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">verify_email</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">used_token</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusResponse</span> {
-    <span class="kw">let</span> <span class="ident">id_exists</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="ident">select</span>(<span class="ident">exists</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>)))).<span class="ident">get_result</span>(<span class="ident">connection</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not check if account exists&quot;</span>);
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">id_exists</span> {
-        <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UserNotFoundError&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>);
+/// Verifies email token and verifies user in DB
+pub(crate) fn verify_email(account_id: String, used_token: String, connection: &amp;PgConnection) -&gt; StatusResponse {
+    let id_exists: bool = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(&amp;account_id)))).get_result(connection).expect(&quot;Could not check if account exists&quot;);
+    if !id_exists {
+        return StatusResponse::new(&quot;UserNotFoundError&quot;.parse().unwrap(), false);
     }
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>)).<span class="ident">first</span>::<span class="op">&lt;</span><span class="ident">Account</span><span class="op">&gt;</span>(<span class="ident">connection</span>).<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">token_exists</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="ident">select</span>(<span class="ident">exists</span>(<span class="ident">verification_tokens</span>::<span class="ident">dsl</span>::<span class="ident">verification_tokens</span>.<span class="ident">filter</span>(<span class="ident">verification_tokens</span>::<span class="ident">account_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>)))).<span class="ident">get_result</span>(<span class="ident">connection</span>).<span class="ident">expect</span>(<span class="string">&quot;Could not check if token exists&quot;</span>);
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">token_exists</span> {
-        <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;TokenNotFoundError&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>);
+    let mut account = accounts::dsl::accounts.filter(accounts::id.eq(&amp;account_id)).first::&lt;Account&gt;(connection).unwrap();
+    let token_exists: bool = select(exists(verification_tokens::dsl::verification_tokens.filter(verification_tokens::account_id.eq(&amp;account_id)))).get_result(connection).expect(&quot;Could not check if token exists&quot;);
+    if !token_exists {
+        return StatusResponse::new(&quot;TokenNotFoundError&quot;.parse().unwrap(), false);
     }
-    <span class="kw">let</span> <span class="ident">saved_token</span> <span class="op">=</span> <span class="ident">verification_tokens</span>::<span class="ident">dsl</span>::<span class="ident">verification_tokens</span>.<span class="ident">filter</span>(<span class="ident">verification_tokens</span>::<span class="ident">account_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>)).<span class="ident">first</span>::<span class="op">&lt;</span><span class="ident">VerificationToken</span><span class="op">&gt;</span>(<span class="ident">connection</span>).<span class="ident">unwrap</span>();
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">saved_token</span>.<span class="ident">verification_token</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">used_token</span>) {
-        <span class="ident">account</span>.<span class="ident">verified</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        <span class="kw">let</span> <span class="ident">update_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">update</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>)))
-            .<span class="ident">set</span>(<span class="ident">accounts</span>::<span class="ident">verified</span>.<span class="ident">eq</span>(<span class="bool-val">true</span>))
-            .<span class="ident">execute</span>(<span class="ident">connection</span>);
-        <span class="kw">if</span> <span class="ident">update_result</span>.<span class="ident">is_err</span>() {
-            <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Can not update status of account&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>);
+    let saved_token = verification_tokens::dsl::verification_tokens.filter(verification_tokens::account_id.eq(&amp;account_id)).first::&lt;VerificationToken&gt;(connection).unwrap();
+    return if saved_token.verification_token.eq(&amp;used_token) {
+        account.verified = true;
+        let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(&amp;account_id)))
+            .set(accounts::verified.eq(true))
+            .execute(connection);
+        if update_result.is_err() {
+            return StatusResponse::new(&quot;Can not update status of account&quot;.parse().unwrap(), false);
         }
-        <span class="kw">let</span> <span class="ident">delete_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">delete</span>(<span class="ident">verification_tokens</span>::<span class="ident">dsl</span>::<span class="ident">verification_tokens</span>.<span class="ident">filter</span>(<span class="ident">verification_tokens</span>::<span class="ident">account_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>))).<span class="ident">execute</span>(<span class="ident">connection</span>);
-        <span class="kw">if</span> <span class="ident">delete_result</span>.<span class="ident">is_err</span>() {
-            <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Can not remove token&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>);
+        let delete_result = diesel::delete(verification_tokens::dsl::verification_tokens.filter(verification_tokens::account_id.eq(&amp;account_id))).execute(connection);
+        if delete_result.is_err() {
+            return StatusResponse::new(&quot;Can not remove token&quot;.parse().unwrap(), false);
         }
-        <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;VerificationSucces&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">true</span>)
-    } <span class="kw">else</span> {
-        <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Token does not match&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>)
+        StatusResponse::new(&quot;VerificationSucces&quot;.parse().unwrap(), true)
+    } else {
+        StatusResponse::new(&quot;Token does not match&quot;.parse().unwrap(), false)
     };
 }
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_info</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">account</span>: <span class="ident">PatchingAccount</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="kw">let</span> <span class="ident">id_exists</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">select</span>(<span class="ident">exists</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>)))).<span class="ident">get_result</span>(<span class="ident">connection</span>);
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">id_exists</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>() {
-        <span class="kw">return</span> <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UserNotFoundError&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+pub(crate) fn change_info(account_id: String, account: PatchingAccount, connection: &amp;PgConnection) -&gt; ApiResponse {
+    let id_exists: Result&lt;bool, diesel::result::Error&gt; = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(&amp;account_id)))).get_result(connection);
+    if !id_exists.ok().unwrap() {
+        return ApiResponse {
+            json: StatusResponse::new(&quot;UserNotFoundError&quot;.parse().unwrap(), false).to_string(),
+            status: Status::BadRequest,
         };
     }
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">has_changes</span> <span class="op">=</span> <span class="bool-val">false</span>;
-    <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">shared_prefs</span>.<span class="ident">is_some</span>() {
-        <span class="ident">has_changes</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        <span class="kw">let</span> <span class="ident">change_result</span> <span class="op">=</span> <span class="ident">change_shared_prefs</span>(<span class="ident">account_id</span>.<span class="ident">clone</span>(), <span class="ident">account</span>.<span class="ident">shared_prefs</span>.<span class="ident">unwrap</span>(), <span class="ident">connection</span>);
-        <span class="kw">if</span> <span class="ident">change_result</span>.<span class="ident">is_err</span>() {
-            <span class="kw">return</span> <span class="ident">change_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
+    let mut has_changes = false;
+    if account.shared_prefs.is_some() {
+        has_changes = true;
+        let change_result = change_shared_prefs(account_id.clone(), account.shared_prefs.unwrap(), connection);
+        if change_result.is_err() {
+            return change_result.err().unwrap();
         }
     }
-    <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">username</span>.<span class="ident">is_some</span>() {
-        <span class="ident">has_changes</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        <span class="kw">let</span> <span class="ident">change_result</span> <span class="op">=</span> <span class="ident">change_username</span>(<span class="ident">account_id</span>.<span class="ident">clone</span>(), <span class="ident">account</span>.<span class="ident">username</span>.<span class="ident">unwrap</span>(), <span class="ident">connection</span>);
-        <span class="kw">if</span> <span class="ident">change_result</span>.<span class="ident">is_err</span>() {
-            <span class="kw">return</span> <span class="ident">change_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
+    if account.username.is_some() {
+        has_changes = true;
+        let change_result = change_username(account_id.clone(), account.username.unwrap(), connection);
+        if change_result.is_err() {
+            return change_result.err().unwrap();
         }
     }
-    <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">password</span>.<span class="ident">is_some</span>() {
-        <span class="ident">has_changes</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        <span class="kw">let</span> <span class="ident">change_result</span> <span class="op">=</span> <span class="ident">change_password</span>(<span class="ident">account_id</span>.<span class="ident">clone</span>(), <span class="ident">account</span>.<span class="ident">password</span>.<span class="ident">unwrap</span>(), <span class="ident">connection</span>);
-        <span class="kw">if</span> <span class="ident">change_result</span>.<span class="ident">is_err</span>() {
-            <span class="kw">return</span> <span class="ident">change_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
+    if account.password.is_some() {
+        has_changes = true;
+        let change_result = change_password(account_id.clone(), account.password.unwrap(), connection);
+        if change_result.is_err() {
+            return change_result.err().unwrap();
         }
     }
-    <span class="kw">if</span> <span class="ident">account</span>.<span class="ident">image_url</span>.<span class="ident">is_some</span>() {
-        <span class="ident">has_changes</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        <span class="kw">let</span> <span class="ident">change_result</span> <span class="op">=</span> <span class="ident">change_image_url</span>(<span class="ident">account_id</span>.<span class="ident">clone</span>(), <span class="ident">account</span>.<span class="ident">image_url</span>.<span class="ident">unwrap</span>(), <span class="ident">connection</span>);
-        <span class="kw">if</span> <span class="ident">change_result</span>.<span class="ident">is_err</span>() {
-            <span class="kw">return</span> <span class="ident">change_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
+    if account.image_url.is_some() {
+        has_changes = true;
+        let change_result = change_image_url(account_id.clone(), account.image_url.unwrap(), connection);
+        if change_result.is_err() {
+            return change_result.err().unwrap();
         }
     }
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">has_changes</span> {
-        <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UpdateSuccess&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">true</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="prelude-val">Ok</span>,
+    return if has_changes {
+        ApiResponse {
+            json: StatusResponse::new(&quot;UpdateSuccess&quot;.parse().unwrap(), true).to_string(),
+            status: Status::Ok,
         }
-    } <span class="kw">else</span> {
-        <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;No changes&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+    } else {
+        ApiResponse {
+            json: StatusResponse::new(&quot;No changes&quot;.parse().unwrap(), false).to_string(),
+            status: Status::BadRequest,
         }
     };
 }
 
-<span class="doccomment">/// Changes shared preferences of user</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_shared_prefs</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">new_shared_prefs</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ApiResponse</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">update_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">update</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))
-        .<span class="ident">set</span>(<span class="ident">accounts</span>::<span class="ident">shared_prefs</span>.<span class="ident">eq</span>(<span class="ident">new_shared_prefs</span>))
-        .<span class="ident">execute</span>(<span class="ident">connection</span>);
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">update_result</span>.<span class="ident">is_err</span>() {
-        <span class="prelude-val">Err</span>(<span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">update_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+/// Changes shared preferences of user
+pub(crate) fn change_shared_prefs(account_id: String, new_shared_prefs: String, connection: &amp;PgConnection) -&gt; Result&lt;(), ApiResponse&gt; {
+    let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))
+        .set(accounts::shared_prefs.eq(new_shared_prefs))
+        .execute(connection);
+    return if update_result.is_err() {
+        Err(ApiResponse {
+            json: StatusResponse::new(update_result.err().unwrap().to_string(), false).to_string(),
+            status: Status::BadRequest,
         })
-    } <span class="kw">else</span> {
-        <span class="prelude-val">Ok</span>(())
+    } else {
+        Ok(())
     };
 }
 
-<span class="doccomment">/// Changes username of user</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_username</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">new_username</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ApiResponse</span><span class="op">&gt;</span> {
-    <span class="kw">match</span> <span class="ident">username_exists</span>(<span class="kw-2">&amp;</span><span class="ident">new_username</span>, <span class="ident">connection</span>){
-        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;Could not check if username exists: {}&quot;</span>, <span class="ident">error</span>);
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INVALID_USERNAME</span>.<span class="ident">to_response</span>())
+/// Changes username of user
+pub(crate) fn change_username(account_id: String, new_username: String, connection: &amp;PgConnection) -&gt; Result&lt;(), ApiResponse&gt; {
+    match username_exists(&amp;new_username, connection){
+        Err(error) =&gt; {
+            println!(&quot;Could not check if username exists: {}&quot;, error);
+            return Err(INVALID_USERNAME.to_response())
         }
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        _ =&gt; {}
     }
-    <span class="kw">match</span> <span class="ident">username_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">new_username</span>){
-        <span class="bool-val">false</span> <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INVALID_USERNAME</span>.<span class="ident">to_response</span>())
+    match username_is_valid(&amp;new_username){
+        false =&gt; {
+            return Err(INVALID_USERNAME.to_response())
         }
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        _ =&gt; {}
     }
-    <span class="kw">let</span> <span class="ident">update_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">update</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))
-        .<span class="ident">set</span>(<span class="ident">accounts</span>::<span class="ident">username</span>.<span class="ident">eq</span>(<span class="ident">new_username</span>))
-        .<span class="ident">execute</span>(<span class="ident">connection</span>);
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">update_result</span>.<span class="ident">is_err</span>() {
-        <span class="prelude-val">Err</span>(<span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">update_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+    let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))
+        .set(accounts::username.eq(new_username))
+        .execute(connection);
+    return if update_result.is_err() {
+        Err(ApiResponse {
+            json: StatusResponse::new(update_result.err().unwrap().to_string(), false).to_string(),
+            status: Status::BadRequest,
         })
-    } <span class="kw">else</span> {
-        <span class="prelude-val">Ok</span>(())
+    } else {
+        Ok(())
     };
 }
 
-<span class="doccomment">/// Changes password of user</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_password</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">new_password</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ApiResponse</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">password_valid</span> <span class="op">=</span> <span class="ident">password_is_valid</span>(<span class="kw-2">&amp;</span><span class="ident">new_password</span>);
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">password_valid</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">INVALID_PASSWORD</span>.<span class="ident">to_response</span>());
+/// Changes password of user
+pub(crate) fn change_password(account_id: String, new_password: String, connection: &amp;PgConnection) -&gt; Result&lt;(), ApiResponse&gt; {
+    let password_valid = password_is_valid(&amp;new_password);
+    if !password_valid {
+        return Err(INVALID_PASSWORD.to_response());
     }
-    <span class="kw">let</span> <span class="ident">password_identifier</span> <span class="op">=</span> <span class="ident">create_password_identifier</span>();
-    <span class="kw">let</span> <span class="ident">hashed_password</span> <span class="op">=</span> <span class="ident">hash</span>(<span class="ident">new_password</span>.<span class="ident">clone</span>(), <span class="number">10</span>).<span class="ident">unwrap</span>();
-    <span class="kw">let</span> <span class="ident">update_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">update</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))
-        .<span class="ident">set</span>((<span class="ident">accounts</span>::<span class="ident">password</span>.<span class="ident">eq</span>(<span class="ident">hashed_password</span>),
-              <span class="ident">accounts</span>::<span class="ident">password_identifier</span>.<span class="ident">eq</span>(<span class="ident">password_identifier</span>)))
-        .<span class="ident">execute</span>(<span class="ident">connection</span>);
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">update_result</span>.<span class="ident">is_err</span>() {
-        <span class="prelude-val">Err</span>(<span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">update_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+    let password_identifier = create_password_identifier();
+    let hashed_password = hash(new_password.clone(), 10).unwrap();
+    let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))
+        .set((accounts::password.eq(hashed_password),
+              accounts::password_identifier.eq(password_identifier)))
+        .execute(connection);
+    return if update_result.is_err() {
+        Err(ApiResponse {
+            json: StatusResponse::new(update_result.err().unwrap().to_string(), false).to_string(),
+            status: Status::BadRequest,
         })
-    } <span class="kw">else</span> {
-        <span class="prelude-val">Ok</span>(())
+    } else {
+        Ok(())
     };
 }
 
-<span class="doccomment">/// Changes image url of user</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">change_image_url</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">new_image_url</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">ApiResponse</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">update_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">update</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="ident">account_id</span>)))
-        .<span class="ident">set</span>(<span class="ident">accounts</span>::<span class="ident">image_url</span>.<span class="ident">eq</span>(<span class="ident">new_image_url</span>))
-        .<span class="ident">execute</span>(<span class="ident">connection</span>);
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">update_result</span>.<span class="ident">is_err</span>() {
-        <span class="prelude-val">Err</span>(<span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">update_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+/// Changes image url of user
+pub(crate) fn change_image_url(account_id: String, new_image_url: String, connection: &amp;PgConnection) -&gt; Result&lt;(), ApiResponse&gt; {
+    let update_result = diesel::update(accounts::dsl::accounts.filter(accounts::id.eq(account_id)))
+        .set(accounts::image_url.eq(new_image_url))
+        .execute(connection);
+    return if update_result.is_err() {
+        Err(ApiResponse {
+            json: StatusResponse::new(update_result.err().unwrap().to_string(), false).to_string(),
+            status: Status::BadRequest,
         })
-    } <span class="kw">else</span> {
-        <span class="prelude-val">Ok</span>(())
+    } else {
+        Ok(())
     };
 }
 
 
-<span class="doccomment">/// Gets info of user identified by account id</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">get_info</span>(<span class="ident">account_id</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="kw">let</span> <span class="ident">id_exists</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">select</span>(<span class="ident">exists</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>)))).<span class="ident">get_result</span>(<span class="ident">connection</span>);
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">id_exists</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>() {
-        <span class="kw">return</span> <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UserNotFoundError&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>();
+/// Gets info of user identified by account id
+pub(crate) fn get_info(account_id: String, connection: &amp;PgConnection) -&gt; String {
+    let id_exists: Result&lt;bool, diesel::result::Error&gt; = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(&amp;account_id)))).get_result(connection);
+    if !id_exists.ok().unwrap() {
+        return StatusResponse::new(&quot;UserNotFoundError&quot;.parse().unwrap(), false).to_string();
     }
-    <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">account_id</span>)).<span class="ident">first</span>::<span class="op">&lt;</span><span class="ident">Account</span><span class="op">&gt;</span>(<span class="ident">connection</span>).<span class="ident">unwrap</span>();
-    <span class="kw">return</span> <span class="ident">InfoResponse</span>::<span class="ident">new</span>(<span class="ident">account</span>).<span class="ident">to_string</span>();
+    let account = accounts::dsl::accounts.filter(accounts::id.eq(&amp;account_id)).first::&lt;Account&gt;(connection).unwrap();
+    return InfoResponse::new(account).to_string();
 }
 
-<span class="doccomment">/// Delete user</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">delete_user</span>(<span class="ident">refresh_token</span>: <span class="ident">RefreshToken</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="kw">let</span> <span class="ident">id_exists</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">diesel</span>::<span class="ident">result</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">select</span>(<span class="ident">exists</span>(<span class="ident">accounts</span>::<span class="ident">dsl</span>::<span class="ident">accounts</span>.<span class="ident">filter</span>(<span class="ident">accounts</span>::<span class="ident">id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">refresh_token</span>.<span class="ident">sub</span>)))).<span class="ident">get_result</span>(<span class="ident">connection</span>);
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">id_exists</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>() {
-        <span class="kw">return</span> <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;UserNotFoundError&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">NotFound</span>,
+/// Delete user
+pub(crate) fn delete_user(refresh_token: RefreshToken, connection: &amp;PgConnection) -&gt; ApiResponse {
+    let id_exists: Result&lt;bool, diesel::result::Error&gt; = select(exists(accounts::dsl::accounts.filter(accounts::id.eq(&amp;refresh_token.sub)))).get_result(connection);
+    if !id_exists.ok().unwrap() {
+        return ApiResponse {
+            json: StatusResponse::new(&quot;UserNotFoundError&quot;.parse().unwrap(), false).to_string(),
+            status: Status::NotFound,
         };
     }
-    <span class="kw">let</span> <span class="ident">delete_result</span> <span class="op">=</span> <span class="ident">diesel</span>::<span class="ident">delete</span>(<span class="ident">notes</span>::<span class="ident">table</span>)
-        .<span class="ident">filter</span>(<span class="ident">notes</span>::<span class="ident">dsl</span>::<span class="ident">account_id</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">refresh_token</span>.<span class="ident">sub</span>))
-        .<span class="ident">execute</span>(<span class="ident">connection</span>);
-    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">delete_result</span>.<span class="ident">is_err</span>() {
-        <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;Error while removing account&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+    let delete_result = diesel::delete(notes::table)
+        .filter(notes::dsl::account_id.eq(&amp;refresh_token.sub))
+        .execute(connection);
+    return if delete_result.is_err() {
+        ApiResponse {
+            json: StatusResponse::new(&quot;Error while removing account&quot;.parse().unwrap(), false).to_string(),
+            status: Status::BadRequest,
         }
-    } <span class="kw">else</span> {
-        <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="string">&quot;DeletionSuccess&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="bool-val">true</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="prelude-val">Ok</span>,
+    } else {
+        ApiResponse {
+            json: StatusResponse::new(&quot;DeletionSuccess&quot;.parse().unwrap(), true).to_string(),
+            status: Status::Ok,
         }
     };
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">bcrypt</span>::<span class="ident">DEFAULT_COST</span>;
-    <span class="kw">use</span> <span class="ident">mocktopus</span>::<span class="ident">mocking</span>::<span class="kw-2">*</span>;
+#[cfg(test)]
+mod tests {
+    use bcrypt::DEFAULT_COST;
+    use mocktopus::mocking::*;
 
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">db</span>;
+    use crate::db;
 
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+    use super::*;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">success_response_when_login_successful</span>() {
-        <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
-        <span class="ident">email_exists</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)));
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">Account</span>::<span class="ident">mock_empty</span>();
-        <span class="ident">account</span>.<span class="ident">password</span> <span class="op">=</span> <span class="ident">hash</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">DEFAULT_COST</span>).<span class="ident">unwrap</span>();
-        <span class="ident">account</span>.<span class="ident">verified</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        <span class="ident">account_from_email</span>.<span class="ident">mock_safe</span>(<span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="ident">account</span>.<span class="ident">clone</span>())));
-        <span class="kw">let</span> <span class="ident">credentials</span> <span class="op">=</span> <span class="ident">LoginCredentials</span> {
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;test@example.com&quot;</span>.<span class="ident">to_string</span>()),
-            <span class="ident">username</span>: <span class="prelude-val">None</span>,
-            <span class="ident">password</span>: <span class="string">&quot;test&quot;</span>.<span class="ident">to_string</span>(),
+    #[test]
+    fn success_response_when_login_successful() {
+        dotenv::dotenv().ok();
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(true)));
+        let mut account = Account::mock_empty();
+        account.password = hash(&quot;test&quot;, DEFAULT_COST).unwrap();
+        account.verified = true;
+        account_from_email.mock_safe(move |_, _| MockResult::Return(Ok(account.clone())));
+        let credentials = LoginCredentials {
+            email: Some(&quot;test@example.com&quot;.to_string()),
+            username: None,
+            password: &quot;test&quot;.to_string(),
         };
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login</span>(<span class="ident">credentials</span>, <span class="kw-2">&amp;</span><span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>());
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">is_ok</span>());
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">login_result</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>().<span class="ident">to_string</span>());
+        let login_result = login(credentials, &amp;db::connect().get().unwrap());
+        assert!(login_result.is_ok());
+        println!(&quot;{}&quot;, login_result.ok().unwrap().to_string());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">invalid_on_missing_username_and_password_on_login</span>() {
-        <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
-        <span class="kw">let</span> <span class="ident">credentials</span> <span class="op">=</span> <span class="ident">LoginCredentials</span> {
-            <span class="ident">email</span>: <span class="prelude-val">None</span>,
-            <span class="ident">username</span>: <span class="prelude-val">None</span>,
-            <span class="ident">password</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
+    #[test]
+    fn invalid_on_missing_username_and_password_on_login() {
+        dotenv::dotenv().ok();
+        let credentials = LoginCredentials {
+            email: None,
+            username: None,
+            password: &quot;&quot;.to_string(),
         };
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login</span>(<span class="ident">credentials</span>, <span class="kw-2">&amp;</span><span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>());
-        <span class="kw">let</span> <span class="ident">expected_result</span> <span class="op">=</span> <span class="ident">INCORRECT_CREDENTIALS</span>;
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">is_err</span>());
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">login_result</span>.<span class="ident">to_string</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">code</span>, <span class="ident">expected_result</span>.<span class="ident">code</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">description</span>, <span class="ident">expected_result</span>.<span class="ident">description</span>);
+        let login_result = login(credentials, &amp;db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!(&quot;{}&quot;, login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">invalid_on_non_existing_email_on_login</span>() {
-        <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
-        <span class="ident">email_exists</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="bool-val">false</span>)));
-        <span class="kw">let</span> <span class="ident">credentials</span> <span class="op">=</span> <span class="ident">LoginCredentials</span> {
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;test@example.com&quot;</span>.<span class="ident">to_string</span>()),
-            <span class="ident">username</span>: <span class="prelude-val">None</span>,
-            <span class="ident">password</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
+    #[test]
+    fn invalid_on_non_existing_email_on_login() {
+        dotenv::dotenv().ok();
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(false)));
+        let credentials = LoginCredentials {
+            email: Some(&quot;test@example.com&quot;.to_string()),
+            username: None,
+            password: &quot;&quot;.to_string(),
         };
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login</span>(<span class="ident">credentials</span>, <span class="kw-2">&amp;</span><span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>());
-        <span class="kw">let</span> <span class="ident">expected_result</span> <span class="op">=</span> <span class="ident">INCORRECT_CREDENTIALS</span>;
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">is_err</span>());
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">login_result</span>.<span class="ident">to_string</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">code</span>, <span class="ident">expected_result</span>.<span class="ident">code</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">description</span>, <span class="ident">expected_result</span>.<span class="ident">description</span>);
+        let login_result = login(credentials, &amp;db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!(&quot;{}&quot;, login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">invalid_on_non_existing_username_on_login</span>() {
-        <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
-        <span class="ident">username_exists</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="bool-val">false</span>)));
-        <span class="kw">let</span> <span class="ident">credentials</span> <span class="op">=</span> <span class="ident">LoginCredentials</span> {
-            <span class="ident">email</span>: <span class="prelude-val">None</span>,
-            <span class="ident">username</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;test&quot;</span>.<span class="ident">to_string</span>()),
-            <span class="ident">password</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
+    #[test]
+    fn invalid_on_non_existing_username_on_login() {
+        dotenv::dotenv().ok();
+        username_exists.mock_safe(|_, _| MockResult::Return(Ok(false)));
+        let credentials = LoginCredentials {
+            email: None,
+            username: Some(&quot;test&quot;.to_string()),
+            password: &quot;&quot;.to_string(),
         };
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login</span>(<span class="ident">credentials</span>, <span class="kw-2">&amp;</span><span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>());
-        <span class="kw">let</span> <span class="ident">expected_result</span> <span class="op">=</span> <span class="ident">INCORRECT_CREDENTIALS</span>;
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">is_err</span>());
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">login_result</span>.<span class="ident">to_string</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">code</span>, <span class="ident">expected_result</span>.<span class="ident">code</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">description</span>, <span class="ident">expected_result</span>.<span class="ident">description</span>);
+        let login_result = login(credentials, &amp;db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!(&quot;{}&quot;, login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">invalid_when_error_account_from_email_on_login</span>() {
-        <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
-        <span class="ident">email_exists</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)));
-        <span class="ident">account_from_email</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Err</span>(<span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;Error&quot;</span>))));
-        <span class="kw">let</span> <span class="ident">credentials</span> <span class="op">=</span> <span class="ident">LoginCredentials</span> {
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;test@example.com&quot;</span>.<span class="ident">to_string</span>()),
-            <span class="ident">username</span>: <span class="prelude-val">None</span>,
-            <span class="ident">password</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
+    #[test]
+    fn invalid_when_error_account_from_email_on_login() {
+        dotenv::dotenv().ok();
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(true)));
+        account_from_email.mock_safe(|_, _| MockResult::Return(Err(String::from(&quot;Error&quot;))));
+        let credentials = LoginCredentials {
+            email: Some(&quot;test@example.com&quot;.to_string()),
+            username: None,
+            password: &quot;&quot;.to_string(),
         };
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login</span>(<span class="ident">credentials</span>, <span class="kw-2">&amp;</span><span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>());
-        <span class="kw">let</span> <span class="ident">expected_result</span> <span class="op">=</span> <span class="ident">INCORRECT_CREDENTIALS</span>;
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">is_err</span>());
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">login_result</span>.<span class="ident">to_string</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">code</span>, <span class="ident">expected_result</span>.<span class="ident">code</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">description</span>, <span class="ident">expected_result</span>.<span class="ident">description</span>);
+        let login_result = login(credentials, &amp;db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!(&quot;{}&quot;, login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">invalid_when_error_account_from_username_on_login</span>() {
-        <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
-        <span class="ident">username_exists</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)));
-        <span class="ident">account_from_username</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Err</span>(<span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;Error&quot;</span>))));
-        <span class="kw">let</span> <span class="ident">credentials</span> <span class="op">=</span> <span class="ident">LoginCredentials</span> {
-            <span class="ident">email</span>: <span class="prelude-val">None</span>,
-            <span class="ident">username</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;test&quot;</span>.<span class="ident">to_string</span>()),
-            <span class="ident">password</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
+    #[test]
+    fn invalid_when_error_account_from_username_on_login() {
+        dotenv::dotenv().ok();
+        username_exists.mock_safe(|_, _| MockResult::Return(Ok(true)));
+        account_from_username.mock_safe(|_, _| MockResult::Return(Err(String::from(&quot;Error&quot;))));
+        let credentials = LoginCredentials {
+            email: None,
+            username: Some(&quot;test&quot;.to_string()),
+            password: &quot;&quot;.to_string(),
         };
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login</span>(<span class="ident">credentials</span>, <span class="kw-2">&amp;</span><span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>());
-        <span class="kw">let</span> <span class="ident">expected_result</span> <span class="op">=</span> <span class="ident">INCORRECT_CREDENTIALS</span>;
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">is_err</span>());
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">login_result</span>.<span class="ident">to_string</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">code</span>, <span class="ident">expected_result</span>.<span class="ident">code</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">description</span>, <span class="ident">expected_result</span>.<span class="ident">description</span>);
+        let login_result = login(credentials, &amp;db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!(&quot;{}&quot;, login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">invalid_when_password_not_matching</span>() {
-        <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
-        <span class="ident">email_exists</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)));
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">Account</span>::<span class="ident">mock_empty</span>();
-        <span class="ident">account</span>.<span class="ident">password</span> <span class="op">=</span> <span class="ident">hash</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">DEFAULT_COST</span>).<span class="ident">unwrap</span>();
-        <span class="ident">account_from_email</span>.<span class="ident">mock_safe</span>(<span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="ident">account</span>.<span class="ident">clone</span>())));
-        <span class="kw">let</span> <span class="ident">credentials</span> <span class="op">=</span> <span class="ident">LoginCredentials</span> {
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;test@example.com&quot;</span>.<span class="ident">to_string</span>()),
-            <span class="ident">username</span>: <span class="prelude-val">None</span>,
-            <span class="ident">password</span>: <span class="string">&quot;not test&quot;</span>.<span class="ident">to_string</span>(),
+    #[test]
+    fn invalid_when_password_not_matching() {
+        dotenv::dotenv().ok();
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(true)));
+        let mut account = Account::mock_empty();
+        account.password = hash(&quot;test&quot;, DEFAULT_COST).unwrap();
+        account_from_email.mock_safe(move |_, _| MockResult::Return(Ok(account.clone())));
+        let credentials = LoginCredentials {
+            email: Some(&quot;test@example.com&quot;.to_string()),
+            username: None,
+            password: &quot;not test&quot;.to_string(),
         };
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login</span>(<span class="ident">credentials</span>, <span class="kw-2">&amp;</span><span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>());
-        <span class="kw">let</span> <span class="ident">expected_result</span> <span class="op">=</span> <span class="ident">INCORRECT_CREDENTIALS</span>;
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">is_err</span>());
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">login_result</span>.<span class="ident">to_string</span>());
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">code</span>, <span class="ident">expected_result</span>.<span class="ident">code</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">description</span>, <span class="ident">expected_result</span>.<span class="ident">description</span>);
+        let login_result = login(credentials, &amp;db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!(&quot;{}&quot;, login_result.to_string());
+        assert_eq!(login_result.code, expected_result.code);
+        assert_eq!(login_result.description, expected_result.description);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">not_verified_error_when_not_verified_on_login</span>() {
-        <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
-        <span class="ident">email_exists</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="bool-val">true</span>)));
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">Account</span>::<span class="ident">mock_empty</span>();
-        <span class="ident">account</span>.<span class="ident">password</span> <span class="op">=</span> <span class="ident">hash</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">DEFAULT_COST</span>).<span class="ident">unwrap</span>();
-        <span class="ident">account_from_email</span>.<span class="ident">mock_safe</span>(<span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="ident">account</span>.<span class="ident">clone</span>())));
-        <span class="kw">let</span> <span class="ident">credentials</span> <span class="op">=</span> <span class="ident">LoginCredentials</span> {
-            <span class="ident">email</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;test@example.com&quot;</span>.<span class="ident">to_string</span>()),
-            <span class="ident">username</span>: <span class="prelude-val">None</span>,
-            <span class="ident">password</span>: <span class="string">&quot;not test&quot;</span>.<span class="ident">to_string</span>(),
+    #[test]
+    fn not_verified_error_when_not_verified_on_login() {
+        dotenv::dotenv().ok();
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(true)));
+        let mut account = Account::mock_empty();
+        account.password = hash(&quot;test&quot;, DEFAULT_COST).unwrap();
+        account_from_email.mock_safe(move |_, _| MockResult::Return(Ok(account.clone())));
+        let credentials = LoginCredentials {
+            email: Some(&quot;test@example.com&quot;.to_string()),
+            username: None,
+            password: &quot;not test&quot;.to_string(),
         };
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login</span>(<span class="ident">credentials</span>, <span class="kw-2">&amp;</span><span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>());
-        <span class="kw">let</span> <span class="ident">expected_result</span> <span class="op">=</span> <span class="ident">INCORRECT_CREDENTIALS</span>;
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">is_err</span>());
-        <span class="kw">let</span> <span class="ident">login_result</span> <span class="op">=</span> <span class="ident">login_result</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>();
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">login_result</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">description</span>, <span class="ident">expected_result</span>.<span class="ident">description</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">login_result</span>.<span class="ident">code</span>, <span class="ident">expected_result</span>.<span class="ident">code</span>);
+        let login_result = login(credentials, &amp;db::connect().get().unwrap());
+        let expected_result = INCORRECT_CREDENTIALS;
+        assert!(login_result.is_err());
+        let login_result = login_result.err().unwrap();
+        println!(&quot;{}&quot;, login_result);
+        assert_eq!(login_result.description, expected_result.description);
+        assert_eq!(login_result.code, expected_result.code);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">success_response_when_create_successful</span>() {
-        <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
-        <span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;DISABLE_EMAIL_VERIFICATION&quot;</span>, <span class="string">&quot;true&quot;</span>);
-        <span class="ident">email_exists</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="bool-val">false</span>)));
-        <span class="ident">username_exists</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="bool-val">false</span>)));
-        <span class="kw">let</span> <span class="ident">account</span> <span class="op">=</span> <span class="ident">Account</span> {
-            <span class="ident">id</span>: <span class="ident">Uuid</span>::<span class="ident">new_v4</span>().<span class="ident">to_string</span>(),
-            <span class="ident">created_at</span>: <span class="ident">Utc</span>::<span class="ident">now</span>(),
-            <span class="ident">updated_at</span>: <span class="prelude-val">Some</span>(<span class="ident">Utc</span>::<span class="ident">now</span>()),
-            <span class="ident">deleted_at</span>: <span class="prelude-val">None</span>,
-            <span class="ident">email</span>: <span class="string">&quot;test@example.com&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">username</span>: <span class="string">&quot;test123&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="ident">hash</span>(<span class="string">&quot;strongEnoughPassword&quot;</span>.<span class="ident">to_string</span>(), <span class="number">12</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">image_url</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password_identifier</span>: <span class="ident">create_password_identifier</span>(),
-            <span class="ident">verified</span>: <span class="bool-val">false</span>,
-            <span class="ident">shared_prefs</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
+    #[test]
+    fn success_response_when_create_successful() {
+        dotenv::dotenv().ok();
+        env::set_var(&quot;DISABLE_EMAIL_VERIFICATION&quot;, &quot;true&quot;);
+        email_exists.mock_safe(|_, _| MockResult::Return(Ok(false)));
+        username_exists.mock_safe(|_, _| MockResult::Return(Ok(false)));
+        let account = Account {
+            id: Uuid::new_v4().to_string(),
+            created_at: Utc::now(),
+            updated_at: Some(Utc::now()),
+            deleted_at: None,
+            email: &quot;test@example.com&quot;.to_string(),
+            username: &quot;test123&quot;.to_string(),
+            password: hash(&quot;strongEnoughPassword&quot;.to_string(), 12).unwrap(),
+            image_url: &quot;&quot;.to_string(),
+            password_identifier: create_password_identifier(),
+            verified: false,
+            shared_prefs: &quot;&quot;.to_string(),
         };
-        <span class="kw">let</span> <span class="ident">account_copy</span> <span class="op">=</span> <span class="ident">account</span>.<span class="ident">clone</span>();
-        <span class="ident">insert_account</span>.<span class="ident">mock_safe</span>(<span class="kw">move</span> <span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="ident">account_copy</span>.<span class="ident">clone</span>())));
-        <span class="kw">let</span> <span class="ident">new_account</span> <span class="op">=</span> <span class="ident">NewAccount</span> {
-            <span class="ident">email</span>: <span class="string">&quot;test@example.com&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">username</span>: <span class="string">&quot;test123&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">password</span>: <span class="string">&quot;strongEnoughPassword&quot;</span>.<span class="ident">to_string</span>(),
+        let account_copy = account.clone();
+        insert_account.mock_safe(move |_, _| MockResult::Return(Ok(account_copy.clone())));
+        let new_account = NewAccount {
+            email: &quot;test@example.com&quot;.to_string(),
+            username: &quot;test123&quot;.to_string(),
+            password: &quot;strongEnoughPassword&quot;.to_string(),
         };
-        <span class="kw">let</span> <span class="ident">create_result</span> <span class="op">=</span> <span class="ident">create</span>(<span class="ident">new_account</span>, <span class="kw-2">&amp;</span><span class="ident">db</span>::<span class="ident">connect</span>().<span class="ident">get</span>().<span class="ident">unwrap</span>());
-        <span class="kw">let</span> <span class="ident">expected_result</span> <span class="op">=</span> <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">TokenResponse</span> {
-                <span class="ident">message</span>: <span class="string">&quot;AccCreationSuccess&quot;</span>.<span class="ident">to_string</span>(),
-                <span class="ident">status</span>: <span class="bool-val">true</span>,
-                <span class="ident">account</span>: <span class="ident">TokenAccount</span>::<span class="ident">from_account</span>(<span class="ident">account</span>.<span class="ident">clone</span>(), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>),
-            }.<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="prelude-val">Ok</span>,
+        let create_result = create(new_account, &amp;db::connect().get().unwrap());
+        let expected_result = ApiResponse {
+            json: TokenResponse {
+                message: &quot;AccCreationSuccess&quot;.to_string(),
+                status: true,
+                account: TokenAccount::from_account(account.clone(), None, None),
+            }.to_string(),
+            status: Status::Ok,
         };
-        <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{} : {}&quot;</span>, <span class="ident">create_result</span>.<span class="ident">status</span>, <span class="ident">create_result</span>.<span class="ident">json</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">create_result</span>.<span class="ident">status</span>, <span class="ident">expected_result</span>.<span class="ident">status</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">create_result</span>.<span class="ident">json</span>, <span class="ident">expected_result</span>.<span class="ident">json</span>);
+        println!(&quot;{} : {}&quot;, create_result.status, create_result.json);
+        assert_eq!(create_result.status, expected_result.status);
+        assert_eq!(create_result.json, expected_result.json);
     }
-}</pre></div>
+}
+ */</span></pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "potatosync_rust";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

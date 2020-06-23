@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rayon-core-1.7.0/src/registry.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>registry.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../rayon_core/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rayon-core-1.7.1/src/registry.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>registry.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../rayon_core/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -843,6 +843,10 @@
 <span id="843">843</span>
 <span id="844">844</span>
 <span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">job</span>::{<span class="ident">JobFifo</span>, <span class="ident">JobRef</span>, <span class="ident">StackJob</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">latch</span>::{<span class="ident">CountLatch</span>, <span class="ident">Latch</span>, <span class="ident">LatchProbe</span>, <span class="ident">LockLatch</span>, <span class="ident">SpinLatch</span>, <span class="ident">TickleLatch</span>};
@@ -881,22 +885,22 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ThreadBuilder</span> {
-    <span class="doccomment">/// Get the index of this thread in the pool, within `0..num_threads`.</span>
+    <span class="doccomment">/// Gets the index of this thread in the pool, within `0..num_threads`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">index</span>
     }
 
-    <span class="doccomment">/// Get the string that was specified by `ThreadPoolBuilder::name()`.</span>
+    <span class="doccomment">/// Gets the string that was specified by `ThreadPoolBuilder::name()`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">name</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="ident">String</span>::<span class="ident">as_str</span>)
     }
 
-    <span class="doccomment">/// Get the value that was specified by `ThreadPoolBuilder::stack_size()`.</span>
+    <span class="doccomment">/// Gets the value that was specified by `ThreadPoolBuilder::stack_size()`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stack_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">stack_size</span>
     }
 
-    <span class="doccomment">/// Execute the main loop for this thread. This will not return until the</span>
+    <span class="doccomment">/// Executes the main loop for this thread. This will not return until the</span>
     <span class="doccomment">/// thread pool is dropped.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>(<span class="self">self</span>) {
         <span class="kw">unsafe</span> { <span class="ident">main_loop</span>(<span class="self">self</span>.<span class="ident">worker</span>, <span class="self">self</span>.<span class="ident">registry</span>, <span class="self">self</span>.<span class="ident">index</span>) }
@@ -1309,7 +1313,7 @@
         <span class="comment">// This thread is a member of a different pool, so let it process</span>
         <span class="comment">// other work while waiting for this `op` to complete.</span>
         <span class="macro">debug_assert</span><span class="macro">!</span>(<span class="ident">current_thread</span>.<span class="ident">registry</span>().<span class="ident">id</span>() <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">id</span>());
-        <span class="kw">let</span> <span class="ident">latch</span> <span class="op">=</span> <span class="ident">TickleLatch</span>::<span class="ident">new</span>(<span class="ident">SpinLatch</span>::<span class="ident">new</span>(), <span class="kw-2">&amp;</span><span class="ident">current_thread</span>.<span class="ident">registry</span>().<span class="ident">sleep</span>);
+        <span class="kw">let</span> <span class="ident">latch</span> <span class="op">=</span> <span class="ident">TickleLatch</span>::<span class="ident">new</span>(<span class="ident">SpinLatch</span>::<span class="ident">new</span>(), <span class="ident">current_thread</span>.<span class="ident">registry</span>());
         <span class="kw">let</span> <span class="ident">job</span> <span class="op">=</span> <span class="ident">StackJob</span>::<span class="ident">new</span>(
             <span class="op">|</span><span class="ident">injected</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">worker_thread</span> <span class="op">=</span> <span class="ident">WorkerThread</span>::<span class="ident">current</span>();
@@ -1323,7 +1327,7 @@
         <span class="ident">job</span>.<span class="ident">into_result</span>()
     }
 
-    <span class="doccomment">/// Increment the terminate counter. This increment should be</span>
+    <span class="doccomment">/// Increments the terminate counter. This increment should be</span>
     <span class="doccomment">/// balanced by a call to `terminate`, which will decrement. This</span>
     <span class="doccomment">/// is used when spawning asynchronous work, which needs to</span>
     <span class="doccomment">/// prevent the registry from terminating so long as it is active.</span>
@@ -1352,6 +1356,10 @@
     <span class="doccomment">/// extant work is completed.</span>
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">terminate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">terminate_latch</span>.<span class="ident">set</span>();
+        <span class="self">self</span>.<span class="ident">sleep</span>.<span class="ident">tickle</span>(<span class="ident">usize</span>::<span class="ident">MAX</span>);
+    }
+
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">tickle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="self">self</span>.<span class="ident">sleep</span>.<span class="ident">tickle</span>(<span class="ident">usize</span>::<span class="ident">MAX</span>);
     }
 }

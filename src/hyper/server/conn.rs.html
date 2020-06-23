@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.13.4/src/server/conn.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>conn.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../hyper/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.13.6/src/server/conn.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>conn.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../hyper/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1016,6 +1016,35 @@
 <span id="1016">1016</span>
 <span id="1017">1017</span>
 <span id="1018">1018</span>
+<span id="1019">1019</span>
+<span id="1020">1020</span>
+<span id="1021">1021</span>
+<span id="1022">1022</span>
+<span id="1023">1023</span>
+<span id="1024">1024</span>
+<span id="1025">1025</span>
+<span id="1026">1026</span>
+<span id="1027">1027</span>
+<span id="1028">1028</span>
+<span id="1029">1029</span>
+<span id="1030">1030</span>
+<span id="1031">1031</span>
+<span id="1032">1032</span>
+<span id="1033">1033</span>
+<span id="1034">1034</span>
+<span id="1035">1035</span>
+<span id="1036">1036</span>
+<span id="1037">1037</span>
+<span id="1038">1038</span>
+<span id="1039">1039</span>
+<span id="1040">1040</span>
+<span id="1041">1041</span>
+<span id="1042">1042</span>
+<span id="1043">1043</span>
+<span id="1044">1044</span>
+<span id="1045">1045</span>
+<span id="1046">1046</span>
+<span id="1047">1047</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Lower-level Server connection API.</span>
 <span class="doccomment">//!</span>
@@ -1040,7 +1069,7 @@
 <span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">io</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>};
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">Accept</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">body</span>::{<span class="ident">Body</span>, <span class="ident">Payload</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">body</span>::{<span class="ident">Body</span>, <span class="ident">HttpBody</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::<span class="ident">exec</span>::{<span class="ident">Exec</span>, <span class="ident">H2Exec</span>, <span class="ident">NewSvcExec</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::<span class="ident">io</span>::<span class="ident">Rewind</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::{<span class="ident">task</span>, <span class="ident">Future</span>, <span class="ident">Pin</span>, <span class="ident">Poll</span>, <span class="ident">Unpin</span>};
@@ -1141,7 +1170,7 @@
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">enum</span> <span class="ident">ProtoServer</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span>, <span class="ident">S</span>, <span class="ident">E</span> <span class="op">=</span> <span class="ident">Exec</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">S</span>: <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>: <span class="ident">Payload</span>,
+    <span class="ident">B</span>: <span class="ident">HttpBody</span>,
 {
     <span class="ident">H1</span>(
         <span class="attribute">#[<span class="ident">pin</span>]</span>
@@ -1328,6 +1357,18 @@
         <span class="self">self</span>
     }
 
+    <span class="doccomment">/// Sets the maximum frame size to use for HTTP2.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Passing `None` will do nothing.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If not set, hyper will use a default.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http2_max_frame_size</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sz</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">sz</span>) <span class="op">=</span> <span class="ident">sz</span>.<span class="ident">into</span>() {
+            <span class="self">self</span>.<span class="ident">h2_builder</span>.<span class="ident">max_frame_size</span> <span class="op">=</span> <span class="ident">sz</span>;
+        }
+        <span class="self">self</span>
+    }
+
     <span class="doccomment">/// Sets the [`SETTINGS_MAX_CONCURRENT_STREAMS`][spec] option for HTTP2</span>
     <span class="doccomment">/// connections.</span>
     <span class="doccomment">///</span>
@@ -1448,7 +1489,8 @@
     <span class="kw">where</span>
         <span class="ident">S</span>: <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">Bd</span><span class="op">&gt;</span>,
         <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">Bd</span>: <span class="ident">Payload</span>,
+        <span class="ident">Bd</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">Bd</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">I</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span>,
         <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">Bd</span><span class="op">&gt;</span>,
     {
@@ -1496,7 +1538,7 @@
         <span class="ident">IO</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span>,
         <span class="ident">S</span>: <span class="ident">MakeServiceRef</span><span class="op">&lt;</span><span class="ident">IO</span>, <span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">Bd</span><span class="op">&gt;</span>,
         <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">Bd</span>: <span class="ident">Payload</span>,
+        <span class="ident">Bd</span>: <span class="ident">HttpBody</span>,
         <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>, <span class="ident">Bd</span><span class="op">&gt;</span>,
     {
         <span class="ident">Serve</span> {
@@ -1514,21 +1556,29 @@
     <span class="ident">S</span>: <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
     <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">I</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span>,
-    <span class="ident">B</span>: <span class="ident">Payload</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">B</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">B</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
 {
     <span class="doccomment">/// Start a graceful shutdown process for this connection.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This `Connection` should continue to be polled until shutdown</span>
     <span class="doccomment">/// can finish.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Note</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// This should only be called while the `Connection` future is still</span>
+    <span class="doccomment">/// pending. If called after `Connection::poll` has resolved, this does</span>
+    <span class="doccomment">/// nothing.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">graceful_shutdown</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>) {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">project</span>().<span class="ident">conn</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>() {
-            <span class="ident">ProtoServer</span>::<span class="ident">H1</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">h1</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">project</span>().<span class="ident">conn</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">ProtoServer</span>::<span class="ident">H1</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">h1</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">h1</span>.<span class="ident">disable_keep_alive</span>();
             }
-            <span class="ident">ProtoServer</span>::<span class="ident">H2</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">h2</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">ProtoServer</span>::<span class="ident">H2</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">h2</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">h2</span>.<span class="ident">graceful_shutdown</span>();
             }
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> (),
         }
     }
 
@@ -1652,7 +1702,8 @@
     <span class="ident">S</span>: <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
     <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">I</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">B</span>: <span class="ident">Payload</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">B</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">B</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
@@ -1719,7 +1770,7 @@
     <span class="ident">IO</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span>,
     <span class="ident">IE</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">S</span>: <span class="ident">MakeServiceRef</span><span class="op">&lt;</span><span class="ident">IO</span>, <span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>: <span class="ident">Payload</span>,
+    <span class="ident">B</span>: <span class="ident">HttpBody</span>,
     <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
 {
     <span class="kw">fn</span> <span class="ident">poll_next_</span>(
@@ -1756,7 +1807,8 @@
     <span class="ident">I</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span>,
     <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">FE</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">S</span>: <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>: <span class="ident">Payload</span>,
+    <span class="ident">B</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">B</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Connection</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span>, <span class="ident">FE</span><span class="op">&gt;</span>;
@@ -1790,7 +1842,7 @@
     <span class="ident">IE</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">IO</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     <span class="ident">S</span>: <span class="ident">MakeServiceRef</span><span class="op">&lt;</span><span class="ident">IO</span>, <span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>: <span class="ident">Payload</span>,
+    <span class="ident">B</span>: <span class="ident">HttpBody</span>,
     <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
 {
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">poll_watch</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span>(
@@ -1826,7 +1878,8 @@
     <span class="ident">T</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span>,
     <span class="ident">S</span>: <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
     <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>: <span class="ident">Payload</span>,
+    <span class="ident">B</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    <span class="ident">B</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">proto</span>::<span class="ident">Dispatched</span><span class="op">&gt;</span>;
@@ -1846,7 +1899,7 @@
     <span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">io</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>};
 
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Connecting</span>, <span class="ident">UpgradeableConnection</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">body</span>::{<span class="ident">Body</span>, <span class="ident">Payload</span>};
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">body</span>::{<span class="ident">Body</span>, <span class="ident">HttpBody</span>};
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::<span class="ident">exec</span>::<span class="ident">H2Exec</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::{<span class="ident">task</span>, <span class="ident">Future</span>, <span class="ident">Pin</span>, <span class="ident">Poll</span>, <span class="ident">Unpin</span>};
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">service</span>::<span class="ident">HttpService</span>;
@@ -1875,6 +1928,8 @@
         <span class="ident">I</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">S</span>: <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span>,
         <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">S</span>::<span class="ident">ResBody</span><span class="op">&gt;</span>,
+        <span class="ident">S</span>::<span class="ident">ResBody</span>: <span class="lifetime">&#39;static</span>,
+        <span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">ResBody</span> <span class="kw">as</span> <span class="ident">HttpBody</span><span class="op">&gt;</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     {
         <span class="kw">type</span> <span class="ident">Future</span> <span class="op">=</span> <span class="ident">UpgradeableConnection</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span>;
 
@@ -1920,7 +1975,8 @@
         <span class="ident">N</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">NE</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">NE</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">S</span>: <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-        <span class="ident">B</span>: <span class="ident">Payload</span>,
+        <span class="ident">B</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">B</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
         <span class="ident">W</span>: <span class="ident">Watcher</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span>,
     {
@@ -1987,7 +2043,8 @@
         <span class="ident">S</span>: <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
         <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">I</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span>,
-        <span class="ident">B</span>: <span class="ident">Payload</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">B</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">B</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
     {
         <span class="doccomment">/// Start a graceful shutdown process for this connection.</span>
@@ -2004,7 +2061,8 @@
         <span class="ident">S</span>: <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
         <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">I</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="ident">B</span>: <span class="ident">Payload</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">B</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">B</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">E</span>: <span class="kw">super</span>::<span class="ident">H2Exec</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
     {
         <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;

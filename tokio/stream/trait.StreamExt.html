@@ -178,7 +178,7 @@ them to a different type according to the provided closure.</p>
 <p>As values of this stream are made available, the provided function will
 be run on them. If the predicate <code>f</code> resolves to
 <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#Some.v"><code>Some(item)</code></a> then the stream will yield the value <code>item</code>, but if
-it resolves to <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#None.v" title="`None`"><code>None</code></a> then the next value will be produced.</p>
+it resolves to <a href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html#None.v" title="`None`"><code>None</code></a>, then the value value will be skipped.</p>
 <p>Note that this function consumes the stream passed into it and returns a
 wrapped version of it, similar to <a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#method.filter_map" title="`Iterator::filter_map`"><code>Iterator::filter_map</code></a> method in the
 standard library.</p>

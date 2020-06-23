@@ -177,6 +177,7 @@
 <span id="177">177</span>
 <span id="178">178</span>
 <span id="179">179</span>
+<span id="180">180</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">proc_macro_hygiene</span>, <span class="ident">decl_macro</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">in_band_lifetimes</span>)]</span>
@@ -188,15 +189,15 @@
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">lazy_static</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">openssl</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rand</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">regex</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">reqwest</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rocket</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_json</span>;
-<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">tera</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">tokkit</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">validator</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">validator_derive</span>;
 
@@ -208,9 +209,8 @@
 <span class="kw">use</span> <span class="ident">rocket_contrib</span>::<span class="ident">json</span>::<span class="ident">Json</span>;
 <span class="kw">use</span> <span class="ident">rocket_failure</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">controller</span>::{<span class="ident">create</span>, <span class="ident">get_info</span>, <span class="ident">login</span>, <span class="ident">verify_email</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">model</span>::{<span class="ident">LoginCredentials</span>, <span class="ident">NewAccount</span>, <span class="ident">PatchingAccount</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">token</span>::{<span class="ident">read_refresh_token</span>, <span class="ident">refresh_token</span>, <span class="ident">RefreshTokenJson</span>, <span class="ident">Token</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">token</span>::<span class="ident">Token</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">note</span>::<span class="ident">controller</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">note</span>::<span class="ident">model</span>::{<span class="ident">PatchingNote</span>, <span class="ident">SavingNote</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responses</span>::{<span class="ident">ApiError</span>, <span class="ident">TokenSuccess</span>};
@@ -223,68 +223,68 @@
 <span class="kw">mod</span> <span class="ident">db</span>;
 <span class="kw">mod</span> <span class="ident">status_response</span>;
 <span class="kw">mod</span> <span class="ident">responses</span>;
-
-<span class="doccomment">/// Route for registering user</span>
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/users/new&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;json_creds&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">new_user</span>(<span class="ident">json_creds</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">NewAccount</span><span class="op">&gt;</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="ident">create</span>(<span class="ident">json_creds</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>)
+<span class="comment">/*
+/// Route for registering user
+#[post(&quot;/api/users/new&quot;, data = &quot;&lt;json_creds&gt;&quot;)]
+fn new_user(json_creds: Json&lt;NewAccount&gt;, connection: db::Connection) -&gt; ApiResponse {
+    create(json_creds.0, &amp;connection)
 }
 
-<span class="doccomment">/// Route for verifying email token</span>
-<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/api/users/verify/&lt;id&gt;/&lt;token&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">verify_user</span>(<span class="ident">id</span>: <span class="ident">String</span>, <span class="ident">token</span>: <span class="ident">String</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Redirect</span> {
-    <span class="kw">let</span> <span class="ident">verify_result</span> <span class="op">=</span> <span class="ident">verify_email</span>(<span class="ident">id</span>, <span class="ident">token</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>);
-    <span class="ident">Redirect</span>::<span class="ident">to</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;/api/users/verify?successful={}&amp;message={}&quot;</span>, <span class="ident">verify_result</span>.<span class="ident">status</span>, <span class="ident">verify_result</span>.<span class="ident">message</span>))
+/*/// Route for verifying email token
+#[get(&quot;/api/users/verify/&lt;id&gt;/&lt;token&gt;&quot;)]
+fn verify_user(id: String, token: String, connection: db::Connection) -&gt; Redirect {
+    let verify_result = verify_email(id, token, &amp;connection);
+    Redirect::to(format!(&quot;/api/users/verify?successful={}&amp;message={}&quot;, verify_result.status, verify_result.message))
 }
 
-<span class="doccomment">/// Route for logging in user</span>
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/users/login&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;json_credentials&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">login_user</span>(<span class="ident">json_credentials</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">LoginCredentials</span><span class="op">&gt;</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenSuccess</span>, <span class="ident">ApiError</span><span class="op">&gt;</span> {
-    <span class="ident">login</span>(<span class="ident">json_credentials</span>.<span class="number">0</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="ident">connection</span>)
+/// Route for logging in user
+#[post(&quot;/api/users/login&quot;, data = &quot;&lt;json_credentials&gt;&quot;)]
+fn login_user(json_credentials: Json&lt;LoginCredentials&gt;, connection: db::Connection) -&gt; Result&lt;TokenSuccess, ApiError&gt; {
+    login(json_credentials.0.clone(), &amp;connection)
 }
 
-<span class="doccomment">/// Route for logging out and deleting refresh_token to disable refreshing</span>
-<span class="comment">/*#[post(&quot;/api/tokens/delete&quot;, data = &quot;&lt;token&gt;&quot;)]
+/// Route for logging out and deleting refresh_token to disable refreshing
+/*#[post(&quot;/api/tokens/delete&quot;, data = &quot;&lt;token&gt;&quot;)]
 fn delete_token(token: Data, token: token) {
 
-}*/</span>
+}*/
 
-<span class="doccomment">/// Route for refreshing access_token with refresh_token</span>
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/users/refresh&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;json_token&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">refresh_user</span>(<span class="ident">json_token</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">RefreshTokenJson</span><span class="op">&gt;</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="kw">return</span> <span class="kw">match</span> <span class="ident">read_refresh_token</span>(<span class="ident">json_token</span>.<span class="ident">token</span>.<span class="ident">as_str</span>()) {
-        <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">error</span>, <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+/// Route for refreshing access_token with refresh_token
+#[post(&quot;/api/users/refresh&quot;, data = &quot;&lt;json_token&gt;&quot;)]
+fn refresh_user(json_token: Json&lt;RefreshTokenJson&gt;, connection: db::Connection) -&gt; ApiResponse {
+    return match read_refresh_token(json_token.token.as_str()) {
+        Err(error) =&gt; ApiResponse {
+            json: StatusResponse::new(error, false).to_string(),
+            status: Status::BadRequest,
         },
-        <span class="prelude-val">Ok</span>(<span class="ident">token</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">refresh_token</span>(<span class="ident">token</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>)
+        Ok(token) =&gt; refresh_token(token, &amp;connection)
     }
+}*/
+
+/// Route for changing password of user
+#[patch(&quot;/api/users/info&quot;, data = &quot;&lt;json_patch&gt;&quot;)]
+fn change_user_info(json_patch: Json&lt;PatchingAccount&gt;, token: Token, connection: db::Connection) -&gt; ApiResponse {
+    account::controller::change_info(token.sub.parse().unwrap(), json_patch.0, &amp;connection)
 }
 
-<span class="doccomment">/// Route for changing password of user</span>
-<span class="attribute">#[<span class="ident">patch</span>(<span class="string">&quot;/api/users/info&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;json_patch&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">change_user_info</span>(<span class="ident">json_patch</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">PatchingAccount</span><span class="op">&gt;</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="ident">account</span>::<span class="ident">controller</span>::<span class="ident">change_info</span>(<span class="ident">token</span>.<span class="ident">sub</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="ident">json_patch</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>)
+/// Route for getting user info
+#[get(&quot;/api/users/info&quot;)]
+fn get_user_info(token: Token, connection: db::Connection) -&gt; content::Json&lt;String&gt; {
+    content::Json(get_info(token.sub.parse().unwrap(), &amp;connection))
 }
 
-<span class="doccomment">/// Route for getting user info</span>
-<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/api/users/info&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">get_user_info</span>(<span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">content</span>::<span class="ident">Json</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-    <span class="ident">content</span>::<span class="ident">Json</span>(<span class="ident">get_info</span>(<span class="ident">token</span>.<span class="ident">sub</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(), <span class="kw-2">&amp;</span><span class="ident">connection</span>))
-}
-
-<span class="doccomment">/// Route for deleting account and notes</span>
-<span class="attribute">#[<span class="ident">delete</span>(<span class="string">&quot;/api/users&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;json_token&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">delete_user</span>(<span class="ident">json_token</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">RefreshTokenJson</span><span class="op">&gt;</span>, <span class="ident">_token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">read_refresh_token</span>(<span class="ident">json_token</span>.<span class="ident">token</span>.<span class="ident">as_str</span>());
-    <span class="kw">if</span> <span class="ident">token</span>.<span class="ident">is_err</span>() {
-        <span class="kw">return</span> <span class="ident">ApiResponse</span> {
-            <span class="ident">json</span>: <span class="ident">StatusResponse</span>::<span class="ident">new</span>(<span class="ident">token</span>.<span class="ident">err</span>().<span class="ident">unwrap</span>(), <span class="bool-val">false</span>).<span class="ident">to_string</span>(),
-            <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+/// Route for deleting account and notes
+#[delete(&quot;/api/users&quot;, data = &quot;&lt;json_token&gt;&quot;)]
+fn delete_user(json_token: Json&lt;RefreshTokenJson&gt;, _token: Token, connection: db::Connection) -&gt; ApiResponse {
+    let token = read_refresh_token(json_token.token.as_str());
+    if token.is_err() {
+        return ApiResponse {
+            json: StatusResponse::new(token.err().unwrap(), false).to_string(),
+            status: Status::BadRequest,
         };
     }
-    <span class="ident">account</span>::<span class="ident">controller</span>::<span class="ident">delete_user</span>(<span class="ident">token</span>.<span class="ident">unwrap</span>(), <span class="kw-2">&amp;</span><span class="ident">connection</span>)
-}
+    account::controller::delete_user(token.unwrap(), &amp;connection)
+}*/</span>
 
 <span class="doccomment">/// Route for saving note</span>
 <span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/api/notes&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;json_note&gt;&quot;</span>)]</span>
@@ -330,6 +330,9 @@ fn delete_token(token: Data, token: token) {
     <span class="kw">return</span> <span class="string">&quot;Pong!&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>();
 }
 
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/secure-ping&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">secure_ping</span>(<span class="ident">token</span>: <span class="ident">Token</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {<span class="kw">return</span> <span class="string">&quot;Pong!&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>();}
+
 <span class="doccomment">/// Route used for catching 401 errors e.g. invalid access token</span>
 <span class="attribute">#[<span class="ident">catch</span>(<span class="number">401</span>)]</span>
 <span class="kw">fn</span> <span class="ident">token_error</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApiResponse</span> {
@@ -351,9 +354,8 @@ fn delete_token(token: Data, token: token) {
 <span class="comment">// Start webserver</span>
     <span class="ident">rocket</span>::<span class="ident">ignite</span>()
         .<span class="ident">manage</span>(<span class="ident">db</span>::<span class="ident">connect</span>())
-        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">new_user</span>, <span class="ident">verify_user</span>, <span class="ident">login_user</span>, <span class="ident">refresh_user</span>, <span class="ident">change_user_info</span>, <span class="ident">get_user_info</span>, <span class="ident">delete_user</span>])
         .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">save_note</span>, <span class="ident">update_note</span>, <span class="ident">patch_note</span>, <span class="ident">delete_note</span>, <span class="ident">delete_all_notes</span>, <span class="ident">get_notes</span>])
-        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">ping</span>])
+        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">ping</span>, <span class="ident">secure_ping</span>])
         .<span class="ident">register</span>(<span class="macro">catchers</span><span class="macro">!</span>[<span class="ident">token_error</span>])
         .<span class="ident">launch</span>();
 }

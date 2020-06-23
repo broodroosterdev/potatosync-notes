@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["_IMPL_SERIALIZE_FOR_ApiError",""],["_IMPL_SERIALIZE_FOR_ApiSuccess",""],["_IMPL_SERIALIZE_FOR_TokenSuccess",""]],"struct":[["ApiError",""],["ApiSuccess",""],["TokenSuccess",""]]});
+initSidebarItems({"struct":[["ApiError",""],["ApiSuccess",""],["TokenSuccess",""]]});

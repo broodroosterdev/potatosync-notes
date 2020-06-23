@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/reqwest-0.10.4/src/proxy.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>proxy.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../reqwest/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/reqwest-0.10.6/src/proxy.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>proxy.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../reqwest/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -866,6 +866,36 @@
 <span id="866">866</span>
 <span id="867">867</span>
 <span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;socks&quot;</span>)]</span>
@@ -1560,6 +1590,8 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Mutex</span>;
+    <span class="kw">use</span> <span class="ident">lazy_static</span>::<span class="ident">lazy_static</span>;
 
     <span class="kw">impl</span> <span class="ident">Dst</span> <span class="kw">for</span> <span class="ident">Url</span> {
         <span class="kw">fn</span> <span class="ident">scheme</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
@@ -1668,47 +1700,75 @@
         }
     }
 
+    <span class="comment">// Smallest possible content for a mutex</span>
+    <span class="kw">struct</span> <span class="ident">MutexInner</span>;
+
+    <span class="macro">lazy_static</span><span class="macro">!</span> {
+        <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">ENVLOCK</span>: <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">MutexInner</span><span class="op">&gt;</span> <span class="op">=</span> {
+            <span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">MutexInner</span>)
+        };
+    }
+
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_get_sys_proxies_parsing</span>() {
+        <span class="comment">// Stop other threads from modifying process-global ENV while we are.</span>
+        <span class="kw">let</span> <span class="ident">_lock</span> <span class="op">=</span> <span class="ident">ENVLOCK</span>.<span class="ident">lock</span>();
         <span class="comment">// save system setting first.</span>
         <span class="kw">let</span> <span class="ident">_g1</span> <span class="op">=</span> <span class="ident">env_guard</span>(<span class="string">&quot;HTTP_PROXY&quot;</span>);
         <span class="kw">let</span> <span class="ident">_g2</span> <span class="op">=</span> <span class="ident">env_guard</span>(<span class="string">&quot;http_proxy&quot;</span>);
 
-        <span class="comment">// empty</span>
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get_sys_proxies</span>().<span class="ident">contains_key</span>(<span class="string">&quot;http&quot;</span>), <span class="bool-val">false</span>);
-
+        <span class="comment">// Mock ENV, get the results, before doing assertions</span>
+        <span class="comment">// to avoid assert! -&gt; panic! -&gt; Mutex Poisoned.</span>
+        <span class="kw">let</span> <span class="ident">baseline_proxies</span> <span class="op">=</span> <span class="ident">get_sys_proxies</span>();
         <span class="comment">// the system proxy setting url is invalid.</span>
         <span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;http_proxy&quot;</span>, <span class="string">&quot;123465&quot;</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get_sys_proxies</span>().<span class="ident">contains_key</span>(<span class="string">&quot;http&quot;</span>), <span class="bool-val">false</span>);
-
+        <span class="kw">let</span> <span class="ident">invalid_proxies</span> <span class="op">=</span> <span class="ident">get_sys_proxies</span>();
         <span class="comment">// set valid proxy</span>
         <span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;http_proxy&quot;</span>, <span class="string">&quot;http://127.0.0.1/&quot;</span>);
-        <span class="kw">let</span> <span class="ident">proxies</span> <span class="op">=</span> <span class="ident">get_sys_proxies</span>();
-
-        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">proxies</span>[<span class="string">&quot;http&quot;</span>];
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">scheme</span>(), <span class="string">&quot;http&quot;</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">host</span>(), <span class="string">&quot;127.0.0.1&quot;</span>);
+        <span class="kw">let</span> <span class="ident">valid_proxies</span> <span class="op">=</span> <span class="ident">get_sys_proxies</span>();
 
         <span class="comment">// reset user setting when guards drop</span>
+        <span class="ident">drop</span>(<span class="ident">_g1</span>);
+        <span class="ident">drop</span>(<span class="ident">_g2</span>);
+        <span class="comment">// Let other threads run now</span>
+        <span class="ident">drop</span>(<span class="ident">_lock</span>);
+
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">baseline_proxies</span>.<span class="ident">contains_key</span>(<span class="string">&quot;http&quot;</span>), <span class="bool-val">false</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">invalid_proxies</span>.<span class="ident">contains_key</span>(<span class="string">&quot;http&quot;</span>), <span class="bool-val">false</span>);
+
+        <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">valid_proxies</span>[<span class="string">&quot;http&quot;</span>];
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">scheme</span>(), <span class="string">&quot;http&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">p</span>.<span class="ident">host</span>(), <span class="string">&quot;127.0.0.1&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_get_sys_proxies_in_cgi</span>() {
+        <span class="comment">// Stop other threads from modifying process-global ENV while we are.</span>
+        <span class="kw">let</span> <span class="ident">_lock</span> <span class="op">=</span> <span class="ident">ENVLOCK</span>.<span class="ident">lock</span>();
         <span class="comment">// save system setting first.</span>
         <span class="kw">let</span> <span class="ident">_g1</span> <span class="op">=</span> <span class="ident">env_guard</span>(<span class="string">&quot;REQUEST_METHOD&quot;</span>);
         <span class="kw">let</span> <span class="ident">_g2</span> <span class="op">=</span> <span class="ident">env_guard</span>(<span class="string">&quot;HTTP_PROXY&quot;</span>);
 
-
+        <span class="comment">// Mock ENV, get the results, before doing assertions</span>
+        <span class="comment">// to avoid assert! -&gt; panic! -&gt; Mutex Poisoned.</span>
         <span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;HTTP_PROXY&quot;</span>, <span class="string">&quot;http://evil/&quot;</span>);
 
-        <span class="comment">// not in CGI yet</span>
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">get_sys_proxies</span>()[<span class="string">&quot;http&quot;</span>].<span class="ident">host</span>(), <span class="string">&quot;evil&quot;</span>);
-
+        <span class="kw">let</span> <span class="ident">baseline_proxies</span> <span class="op">=</span> <span class="ident">get_sys_proxies</span>();
         <span class="comment">// set like we&#39;re in CGI</span>
         <span class="ident">env</span>::<span class="ident">set_var</span>(<span class="string">&quot;REQUEST_METHOD&quot;</span>, <span class="string">&quot;GET&quot;</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">get_sys_proxies</span>().<span class="ident">contains_key</span>(<span class="string">&quot;http&quot;</span>));
+
+        <span class="kw">let</span> <span class="ident">cgi_proxies</span> <span class="op">=</span> <span class="ident">get_sys_proxies</span>();
 
         <span class="comment">// reset user setting when guards drop</span>
+        <span class="ident">drop</span>(<span class="ident">_g1</span>);
+        <span class="ident">drop</span>(<span class="ident">_g2</span>);
+        <span class="comment">// Let other threads run now</span>
+        <span class="ident">drop</span>(<span class="ident">_lock</span>);
+
+        <span class="comment">// not in CGI yet</span>
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">baseline_proxies</span>[<span class="string">&quot;http&quot;</span>].<span class="ident">host</span>(), <span class="string">&quot;evil&quot;</span>);
+        <span class="comment">// In CGI</span>
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">cgi_proxies</span>.<span class="ident">contains_key</span>(<span class="string">&quot;http&quot;</span>));
     }
 
     <span class="doccomment">/// Guard an environment variable, resetting it to the original value</span>

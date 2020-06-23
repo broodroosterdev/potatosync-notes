@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["create_verification_email","Creates email with provided verification url and username"],["send_email","Sends created email to provided address using SendGrid"]],"struct":[["TERA",""]]});
