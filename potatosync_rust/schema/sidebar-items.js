@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["accounts",""],["notes",""],["reset_tokens",""],["session_tokens",""],["verification_tokens",""]]});
+initSidebarItems({"mod":[["notes",""]]});

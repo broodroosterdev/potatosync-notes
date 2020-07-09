@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["account_from_email",""],["account_from_username",""],["email_exists",""],["get_account_by_id","Gets account by account_id from DB"],["insert_account",""],["insert_verification_token",""],["username_exists",""]]});

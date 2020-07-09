@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Constant","Contant is a backoff policy which always returns a constant duration."],["Stop","The operation should never be retried."],["Zero","Immediately retry the operation."]],"trait":[["Backoff","`Backoff` is a backoff policy for retrying an operation."]]});

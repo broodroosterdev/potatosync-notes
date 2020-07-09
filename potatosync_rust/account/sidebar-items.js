@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["controller","Controller for handling Accounts"],["model","Models for handling Accounts"],["repository","Repository to abstract database layer"],["responses","Response messages"],["token","Utilities for working with JWT"]]});

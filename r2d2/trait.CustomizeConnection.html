@@ -3,12 +3,12 @@
 <div class='item-spacer'></div>    fn <a href='#method.on_release' class='fnname'>on_release</a>(&amp;self, conn: C) { ... }
 }</pre></div><div class='docblock'><p>A trait which allows for customization of connections.</p>
 </div>
-            <h2 id='provided-methods' class='small-section-header'>Provided methods<a href='#provided-methods' class='anchor'></a></h2><div class='methods'><h3 id='method.on_acquire' class='method'><code id='on_acquire.v'>fn <a href='#method.on_acquire' class='fnname'>on_acquire</a>(&amp;self, conn: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>C) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, E&gt;</code></h3><div class='docblock'><p>Called with connections immediately after they are returned from
+            <h2 id='provided-methods' class='small-section-header'>Provided methods<a href='#provided-methods' class='anchor'></a></h2><div class='methods'><h3 id='method.on_acquire' class='method'><code>fn <a href='#method.on_acquire' class='fnname'>on_acquire</a>(&amp;self, conn: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>C) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, E&gt;</code></h3><div class='docblock'><p>Called with connections immediately after they are returned from
 <code>ManageConnection::connect</code>.</p>
 <p>The default implementation simply returns <code>Ok(())</code>.</p>
 <h1 id="errors" class="section-header"><a href="#errors">Errors</a></h1>
 <p>If this method returns an error, the connection will be discarded.</p>
-</div><h3 id='method.on_release' class='method'><code id='on_release.v'>fn <a href='#method.on_release' class='fnname'>on_release</a>(&amp;self, conn: C)</code></h3><div class='docblock'><p>Called with connections when they are removed from the pool.</p>
+</div><h3 id='method.on_release' class='method'><code>fn <a href='#method.on_release' class='fnname'>on_release</a>(&amp;self, conn: C)</code></h3><div class='docblock'><p>Called with connections when they are removed from the pool.</p>
 <p>The connections may be broken (as reported by <code>is_valid</code> or
 <code>has_broken</code>), or have simply timed out.</p>
 <p>The default implementation does nothing.</p>

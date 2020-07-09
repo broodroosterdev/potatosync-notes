@@ -205,13 +205,49 @@
 <span id="205">205</span>
 <span id="206">206</span>
 <span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">Utc</span>};
+<span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">Utc</span>, <span class="ident">TimeZone</span>};
 <span class="kw">use</span> <span class="ident">chrono</span>::<span class="ident">serde</span>::<span class="ident">ts_milliseconds</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">serde_derive</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">account</span>::<span class="ident">model</span>::{<span class="ident">deserialize_option</span>, <span class="ident">serialize_option</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">schema</span>::<span class="ident">notes</span>;
+<span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Serializer</span>, <span class="ident">Deserializer</span>, <span class="ident">Deserialize</span>};
+
+<span class="doccomment">/// Special function to serialize Option&lt;DateTime&lt;Utc&gt;&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize_option</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="ident">dt</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="prelude-val">Ok</span>, <span class="ident">S</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">where</span> <span class="ident">S</span>: <span class="ident">Serializer</span>
+{
+    <span class="kw">return</span> <span class="kw">if</span> <span class="ident">dt</span>.<span class="ident">is_some</span>() {
+        <span class="ident">serializer</span>.<span class="ident">serialize_i64</span>(<span class="ident">dt</span>.<span class="ident">unwrap</span>().<span class="ident">timestamp</span>())
+    } <span class="kw">else</span> {
+        <span class="ident">serializer</span>.<span class="ident">serialize_none</span>()
+    }
+}
+
+<span class="doccomment">/// Special function to deserialize Option&lt;DateTime&lt;Utc&gt;&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize_option</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">d</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">D</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">where</span> <span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>
+{
+    <span class="kw">let</span> <span class="ident">dt</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-ty">Option</span>::<span class="ident">deserialize</span>(<span class="ident">d</span>)<span class="question-mark">?</span>;
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">dt</span>) <span class="op">=</span> <span class="ident">dt</span> {
+        <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(
+            <span class="ident">Utc</span>.<span class="ident">timestamp_opt</span>(<span class="ident">dt</span> <span class="op">/</span> <span class="number">1000</span>,
+                              ((<span class="ident">dt</span> <span class="op">%</span> <span class="number">1000</span>) <span class="op">*</span> <span class="number">1_000_000</span>) <span class="kw">as</span> <span class="ident">u32</span>).<span class="ident">unwrap</span>()
+        ));
+    }
+    <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
+}
 
 <span class="doccomment">/// General Note struct used for retrieving from db and updating notes</span>
 <span class="attribute">#[<span class="ident">table_name</span> <span class="op">=</span> <span class="string">&quot;notes&quot;</span>]</span>
@@ -302,7 +338,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_note</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Note</span> {
         <span class="ident">Note</span> {
             <span class="ident">note_id</span>: <span class="self">self</span>.<span class="ident">note_id</span>.<span class="ident">clone</span>(),
-            <span class="ident">account_id</span>,
+            <span class="ident">account_id</span>: <span class="ident">account_id</span>.<span class="ident">clone</span>(),
             <span class="ident">title</span>: <span class="self">self</span>.<span class="ident">title</span>.<span class="ident">clone</span>(),
             <span class="ident">content</span>: <span class="self">self</span>.<span class="ident">content</span>.<span class="ident">clone</span>(),
             <span class="ident">style_json</span>: <span class="self">self</span>.<span class="ident">style_json</span>.<span class="ident">clone</span>(),
@@ -398,20 +434,6 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoteLastUpdated</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">last_updated</span>: <span class="ident">String</span>
-}
-
-<span class="doccomment">/// Struct used when server needs to return list of notes along with status of request</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoteResponse</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">message</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">status</span>: <span class="ident">bool</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">notes</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Note</span><span class="op">&gt;</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">ToString</span> <span class="kw">for</span> <span class="ident">NoteResponse</span> {
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-        <span class="ident">serde_json</span>::<span class="ident">to_string</span>(<span class="self">self</span>).<span class="ident">unwrap</span>()
-    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "potatosync_rust";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

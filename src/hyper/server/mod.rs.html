@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.13.6/src/server/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../hyper/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.10.16/src/server/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../hyper/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -481,488 +481,510 @@
 <span id="481">481</span>
 <span id="482">482</span>
 <span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! HTTP Server</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! A `Server` is created to listen on a port, parse HTTP requests, and hand</span>
-<span class="doccomment">//! them off to a `Service`.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! There are two levels of APIs provide for constructing HTTP servers:</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! - The higher-level [`Server`](Server) type.</span>
-<span class="doccomment">//! - The lower-level [`conn`](conn) module.</span>
-<span class="doccomment">//!</span>
 <span class="doccomment">//! # Server</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! The [`Server`](Server) is main way to start listening for HTTP requests.</span>
-<span class="doccomment">//! It wraps a listener with a [`MakeService`](crate::service), and then should</span>
-<span class="doccomment">//! be executed to start serving requests.</span>
+<span class="doccomment">//! A `Server` is created to listen on port, parse HTTP requests, and hand</span>
+<span class="doccomment">//! them off to a `Handler`. By default, the Server will listen across multiple</span>
+<span class="doccomment">//! threads, but that can be configured to a single thread if preferred.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! [`Server`](Server) accepts connections in both HTTP1 and HTTP2 by default.</span>
+<span class="doccomment">//! # Handling requests</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! ## Example</span>
+<span class="doccomment">//! You must pass a `Handler` to the Server that will handle requests. There is</span>
+<span class="doccomment">//! a default implementation for `fn`s and closures, allowing you pass one of</span>
+<span class="doccomment">//! those easily.</span>
+<span class="doccomment">//!</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```no_run</span>
-<span class="doccomment">//! use std::convert::Infallible;</span>
-<span class="doccomment">//! use std::net::SocketAddr;</span>
-<span class="doccomment">//! use hyper::{Body, Request, Response, Server};</span>
-<span class="doccomment">//! use hyper::service::{make_service_fn, service_fn};</span>
+<span class="doccomment">//! use hyper::server::{Server, Request, Response};</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! async fn handle(_req: Request&lt;Body&gt;) -&gt; Result&lt;Response&lt;Body&gt;, Infallible&gt; {</span>
-<span class="doccomment">//!     Ok(Response::new(Body::from(&quot;Hello World&quot;)))</span>
+<span class="doccomment">//! fn hello(req: Request, res: Response) {</span>
+<span class="doccomment">//!     // handle things here</span>
 <span class="doccomment">//! }</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! # #[cfg(feature = &quot;runtime&quot;)]</span>
-<span class="doccomment">//! #[tokio::main]</span>
-<span class="doccomment">//! async fn main() {</span>
-<span class="doccomment">//!     // Construct our SocketAddr to listen on...</span>
-<span class="doccomment">//!     let addr = SocketAddr::from(([127, 0, 0, 1], 3000));</span>
+<span class="doccomment">//! Server::http(&quot;0.0.0.0:0&quot;).unwrap().handle(hello).unwrap();</span>
+<span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!     // And a MakeService to handle each connection...</span>
-<span class="doccomment">//!     let make_service = make_service_fn(|_conn| async {</span>
-<span class="doccomment">//!         Ok::&lt;_, Infallible&gt;(service_fn(handle))</span>
-<span class="doccomment">//!     });</span>
+<span class="doccomment">//! As with any trait, you can also define a struct and implement `Handler`</span>
+<span class="doccomment">//! directly on your own type, and pass that to the `Server` instead.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!     // Then bind and serve...</span>
-<span class="doccomment">//!     let server = Server::bind(&amp;addr).serve(make_service);</span>
+<span class="doccomment">//! ```no_run</span>
+<span class="doccomment">//! use std::sync::Mutex;</span>
+<span class="doccomment">//! use std::sync::mpsc::{channel, Sender};</span>
+<span class="doccomment">//! use hyper::server::{Handler, Server, Request, Response};</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//!     // And run forever...</span>
-<span class="doccomment">//!     if let Err(e) = server.await {</span>
-<span class="doccomment">//!         eprintln!(&quot;server error: {}&quot;, e);</span>
+<span class="doccomment">//! struct SenderHandler {</span>
+<span class="doccomment">//!     sender: Mutex&lt;Sender&lt;&amp;&#39;static str&gt;&gt;</span>
+<span class="doccomment">//! }</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! impl Handler for SenderHandler {</span>
+<span class="doccomment">//!     fn handle(&amp;self, req: Request, res: Response) {</span>
+<span class="doccomment">//!         self.sender.lock().unwrap().send(&quot;start&quot;).unwrap();</span>
 <span class="doccomment">//!     }</span>
 <span class="doccomment">//! }</span>
-<span class="doccomment">//! # #[cfg(not(feature = &quot;runtime&quot;))]</span>
-<span class="doccomment">//! # fn main() {}</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! let (tx, rx) = channel();</span>
+<span class="doccomment">//! Server::http(&quot;0.0.0.0:0&quot;).unwrap().handle(SenderHandler {</span>
+<span class="doccomment">//!     sender: Mutex::new(tx)</span>
+<span class="doccomment">//! }).unwrap();</span>
 <span class="doccomment">//! ```</span>
-
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">accept</span>;
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">conn</span>;
-<span class="kw">mod</span> <span class="ident">shutdown</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tcp&quot;</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tcp</span>;
-
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Since the `Server` will be listening on multiple threads, the `Handler`</span>
+<span class="doccomment">//! must implement `Sync`: any mutable state must be synchronized.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```no_run</span>
+<span class="doccomment">//! use std::sync::atomic::{AtomicUsize, Ordering};</span>
+<span class="doccomment">//! use hyper::server::{Server, Request, Response};</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! let counter = AtomicUsize::new(0);</span>
+<span class="doccomment">//! Server::http(&quot;0.0.0.0:0&quot;).unwrap().handle(move |req: Request, res: Response| {</span>
+<span class="doccomment">//!     counter.fetch_add(1, Ordering::Relaxed);</span>
+<span class="doccomment">//! }).unwrap();</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # The `Request` and `Response` pair</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! A `Handler` receives a pair of arguments, a `Request` and a `Response`. The</span>
+<span class="doccomment">//! `Request` includes access to the `method`, `uri`, and `headers` of the</span>
+<span class="doccomment">//! incoming HTTP request. It also implements `std::io::Read`, in order to</span>
+<span class="doccomment">//! read any body, such as with `POST` or `PUT` messages.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Likewise, the `Response` includes ways to set the `status` and `headers`,</span>
+<span class="doccomment">//! and implements `std::io::Write` to allow writing the response body.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```no_run</span>
+<span class="doccomment">//! use std::io;</span>
+<span class="doccomment">//! use hyper::server::{Server, Request, Response};</span>
+<span class="doccomment">//! use hyper::status::StatusCode;</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Server::http(&quot;0.0.0.0:0&quot;).unwrap().handle(|mut req: Request, mut res: Response| {</span>
+<span class="doccomment">//!     match req.method {</span>
+<span class="doccomment">//!         hyper::Post =&gt; {</span>
+<span class="doccomment">//!             io::copy(&amp;mut req, &amp;mut res.start().unwrap()).unwrap();</span>
+<span class="doccomment">//!         },</span>
+<span class="doccomment">//!         _ =&gt; *res.status_mut() = StatusCode::MethodNotAllowed</span>
+<span class="doccomment">//!     }</span>
+<span class="doccomment">//! }).unwrap();</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## An aside: Write Status</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! The `Response` uses a phantom type parameter to determine its write status.</span>
+<span class="doccomment">//! What does that mean? In short, it ensures you never write a body before</span>
+<span class="doccomment">//! adding all headers, and never add a header after writing some of the body.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This is often done in most implementations by include a boolean property</span>
+<span class="doccomment">//! on the response, such as `headers_written`, checking that each time the</span>
+<span class="doccomment">//! body has something to write, so as to make sure the headers are sent once,</span>
+<span class="doccomment">//! and only once. But this has 2 downsides:</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! 1. You are typically never notified that your late header is doing nothing.</span>
+<span class="doccomment">//! 2. There&#39;s a runtime cost to checking on every write.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! Instead, hyper handles this statically, or at compile-time. A</span>
+<span class="doccomment">//! `Response&lt;Fresh&gt;` includes a `headers_mut()` method, allowing you add more</span>
+<span class="doccomment">//! headers. It also does not implement `Write`, so you can&#39;t accidentally</span>
+<span class="doccomment">//! write early. Once the &quot;head&quot; of the response is correct, you can &quot;send&quot; it</span>
+<span class="doccomment">//! out by calling `start` on the `Response&lt;Fresh&gt;`. This will return a new</span>
+<span class="doccomment">//! `Response&lt;Streaming&gt;` object, that no longer has `headers_mut()`, but does</span>
+<span class="doccomment">//! implement `Write`.</span>
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tcp&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::{<span class="ident">SocketAddr</span>, <span class="ident">TcpListener</span> <span class="kw">as</span> <span class="ident">StdTcpListener</span>};
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tcp&quot;</span>)]</span>
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="self">self</span>, <span class="ident">ErrorKind</span>, <span class="ident">BufWriter</span>, <span class="ident">Write</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">net</span>::{<span class="ident">SocketAddr</span>, <span class="ident">ToSocketAddrs</span>, <span class="ident">Shutdown</span>};
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>::{<span class="self">self</span>, <span class="ident">JoinHandle</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Duration</span>;
 
-<span class="kw">use</span> <span class="ident">pin_project</span>::<span class="ident">pin_project</span>;
-<span class="kw">use</span> <span class="ident">tokio</span>::<span class="ident">io</span>::{<span class="ident">AsyncRead</span>, <span class="ident">AsyncWrite</span>};
+<span class="kw">use</span> <span class="ident">num_cpus</span>;
 
-<span class="kw">use</span> <span class="self">self</span>::<span class="ident">accept</span>::<span class="ident">Accept</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">body</span>::{<span class="ident">Body</span>, <span class="ident">HttpBody</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::<span class="ident">exec</span>::{<span class="ident">Exec</span>, <span class="ident">H2Exec</span>, <span class="ident">NewSvcExec</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::{<span class="ident">task</span>, <span class="ident">Future</span>, <span class="ident">Pin</span>, <span class="ident">Poll</span>, <span class="ident">Unpin</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">service</span>::{<span class="ident">HttpService</span>, <span class="ident">MakeServiceRef</span>};
-<span class="comment">// Renamed `Http` as `Http_` for now so that people upgrading don&#39;t see an</span>
-<span class="comment">// error that `hyper::server::Http` is private...</span>
-<span class="kw">use</span> <span class="self">self</span>::<span class="ident">conn</span>::{<span class="ident">Http</span> <span class="kw">as</span> <span class="ident">Http_</span>, <span class="ident">NoopWatcher</span>, <span class="ident">SpawnAll</span>};
-<span class="kw">use</span> <span class="self">self</span>::<span class="ident">shutdown</span>::{<span class="ident">Graceful</span>, <span class="ident">GracefulWatcher</span>};
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tcp&quot;</span>)]</span>
-<span class="kw">use</span> <span class="self">self</span>::<span class="ident">tcp</span>::<span class="ident">AddrIncoming</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">request</span>::<span class="ident">Request</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">response</span>::<span class="ident">Response</span>;
 
-<span class="doccomment">/// A listening HTTP server that accepts connections in both HTTP1 and HTTP2 by default.</span>
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">net</span>::{<span class="ident">Fresh</span>, <span class="ident">Streaming</span>};
+
+<span class="kw">use</span> <span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">buffer</span>::<span class="ident">BufReader</span>;
+<span class="kw">use</span> <span class="ident">header</span>::{<span class="ident">Headers</span>, <span class="ident">Expect</span>, <span class="ident">Connection</span>};
+<span class="kw">use</span> <span class="ident">http</span>;
+<span class="kw">use</span> <span class="ident">method</span>::<span class="ident">Method</span>;
+<span class="kw">use</span> <span class="ident">net</span>::{<span class="ident">NetworkListener</span>, <span class="ident">NetworkStream</span>, <span class="ident">HttpListener</span>, <span class="ident">HttpsListener</span>, <span class="ident">SslServer</span>};
+<span class="kw">use</span> <span class="ident">status</span>::<span class="ident">StatusCode</span>;
+<span class="kw">use</span> <span class="ident">uri</span>::<span class="ident">RequestUri</span>;
+<span class="kw">use</span> <span class="ident">version</span>::<span class="ident">HttpVersion</span>::<span class="ident">Http11</span>;
+
+<span class="kw">use</span> <span class="self">self</span>::<span class="ident">listener</span>::<span class="ident">ListenerPool</span>;
+
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">request</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">response</span>;
+
+<span class="kw">mod</span> <span class="ident">listener</span>;
+
+<span class="doccomment">/// A server can listen on a TCP socket.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// `Server` is a `Future` mapping a bound listener with a set of service</span>
-<span class="doccomment">/// handlers. It is built using the [`Builder`](Builder), and the future</span>
-<span class="doccomment">/// completes when the server has been shutdown. It should be run by an</span>
-<span class="doccomment">/// `Executor`.</span>
-<span class="attribute">#[<span class="ident">pin_project</span>]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">E</span> <span class="op">=</span> <span class="ident">Exec</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">pin</span>]</span>
-    <span class="ident">spawn_all</span>: <span class="ident">SpawnAll</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span>,
-}
-
-<span class="doccomment">/// A builder for a [`Server`](Server).</span>
+<span class="doccomment">/// Once listening, it will create a `Request`/`Response` pair for each</span>
+<span class="doccomment">/// incoming connection, and hand them to the provided handler.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Builder</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">E</span> <span class="op">=</span> <span class="ident">Exec</span><span class="op">&gt;</span> {
-    <span class="ident">incoming</span>: <span class="ident">I</span>,
-    <span class="ident">protocol</span>: <span class="ident">Http_</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>,
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">L</span> <span class="op">=</span> <span class="ident">HttpListener</span><span class="op">&gt;</span> {
+    <span class="ident">listener</span>: <span class="ident">L</span>,
+    <span class="ident">timeouts</span>: <span class="ident">Timeouts</span>,
 }
 
-<span class="comment">// ===== impl Server =====</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">struct</span> <span class="ident">Timeouts</span> {
+    <span class="ident">read</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
+    <span class="ident">keep_alive</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
+}
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">I</span>, ()<span class="op">&gt;</span> {
-    <span class="doccomment">/// Starts a [`Builder`](Builder) with the provided incoming stream.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">builder</span>(<span class="ident">incoming</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Builder</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> {
-        <span class="ident">Builder</span> {
-            <span class="ident">incoming</span>,
-            <span class="ident">protocol</span>: <span class="ident">Http_</span>::<span class="ident">new</span>(),
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Timeouts</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Timeouts</span> {
+        <span class="ident">Timeouts</span> {
+            <span class="ident">read</span>: <span class="prelude-val">None</span>,
+            <span class="ident">keep_alive</span>: <span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">5</span>))
         }
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tcp&quot;</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">AddrIncoming</span>, ()<span class="op">&gt;</span> {
-    <span class="doccomment">/// Binds to the provided address, and returns a [`Builder`](Builder).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This method will panic if binding to the address fails. For a method</span>
-    <span class="doccomment">/// to bind to an address and return a `Result`, see `Server::try_bind`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Builder</span><span class="op">&lt;</span><span class="ident">AddrIncoming</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">incoming</span> <span class="op">=</span> <span class="ident">AddrIncoming</span>::<span class="ident">new</span>(<span class="ident">addr</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
-            <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;error binding to {}: {}&quot;</span>, <span class="ident">addr</span>, <span class="ident">e</span>);
-        });
-        <span class="ident">Server</span>::<span class="ident">builder</span>(<span class="ident">incoming</span>)
-    }
-
-    <span class="doccomment">/// Tries to bind to the provided address, and returns a [`Builder`](Builder).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_bind</span>(<span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">SocketAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Builder</span><span class="op">&lt;</span><span class="ident">AddrIncoming</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="ident">AddrIncoming</span>::<span class="ident">new</span>(<span class="ident">addr</span>).<span class="ident">map</span>(<span class="ident">Server</span>::<span class="ident">builder</span>)
-    }
-
-    <span class="doccomment">/// Create a new instance from a `std::net::TcpListener` instance.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_tcp</span>(<span class="ident">listener</span>: <span class="ident">StdTcpListener</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Builder</span><span class="op">&lt;</span><span class="ident">AddrIncoming</span><span class="op">&gt;</span>, <span class="kw">crate</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">AddrIncoming</span>::<span class="ident">from_std</span>(<span class="ident">listener</span>).<span class="ident">map</span>(<span class="ident">Server</span>::<span class="ident">builder</span>)
-    }
-}
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tcp&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">AddrIncoming</span>, <span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Returns the local address that this server is bound to.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_addr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SocketAddr</span> {
-        <span class="self">self</span>.<span class="ident">spawn_all</span>.<span class="ident">local_addr</span>()
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">IO</span>, <span class="ident">IE</span>, <span class="ident">S</span>, <span class="ident">E</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">I</span>: <span class="ident">Accept</span><span class="op">&lt;</span><span class="ident">Conn</span> <span class="op">=</span> <span class="ident">IO</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">IE</span><span class="op">&gt;</span>,
-    <span class="ident">IE</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">IO</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">S</span>: <span class="ident">MakeServiceRef</span><span class="op">&lt;</span><span class="ident">IO</span>, <span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">B</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">NewSvcExec</span><span class="op">&lt;</span><span class="ident">IO</span>, <span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">S</span>::<span class="ident">Service</span>, <span class="ident">E</span>, <span class="ident">GracefulWatcher</span><span class="op">&gt;</span>,
-{
-    <span class="doccomment">/// Prepares a server to handle graceful shutdown when the provided future</span>
-    <span class="doccomment">/// completes.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Example</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # fn main() {}</span>
-    <span class="doccomment">/// # #[cfg(feature = &quot;tcp&quot;)]</span>
-    <span class="doccomment">/// # async fn run() {</span>
-    <span class="doccomment">/// # use hyper::{Body, Response, Server, Error};</span>
-    <span class="doccomment">/// # use hyper::service::{make_service_fn, service_fn};</span>
-    <span class="doccomment">/// # let make_service = make_service_fn(|_| async {</span>
-    <span class="doccomment">/// #     Ok::&lt;_, Error&gt;(service_fn(|_req| async {</span>
-    <span class="doccomment">/// #         Ok::&lt;_, Error&gt;(Response::new(Body::from(&quot;Hello World&quot;)))</span>
-    <span class="doccomment">/// #     }))</span>
-    <span class="doccomment">/// # });</span>
-    <span class="doccomment">/// // Make a server from the previous examples...</span>
-    <span class="doccomment">/// let server = Server::bind(&amp;([127, 0, 0, 1], 3000).into())</span>
-    <span class="doccomment">///     .serve(make_service);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // Prepare some signal for when the server should start shutting down...</span>
-    <span class="doccomment">/// let (tx, rx) = tokio::sync::oneshot::channel::&lt;()&gt;();</span>
-    <span class="doccomment">/// let graceful = server</span>
-    <span class="doccomment">///     .with_graceful_shutdown(async {</span>
-    <span class="doccomment">///         rx.await.ok();</span>
-    <span class="doccomment">///     });</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // Await the `server` receiving the signal...</span>
-    <span class="doccomment">/// if let Err(e) = graceful.await {</span>
-    <span class="doccomment">///     eprintln!(&quot;server error: {}&quot;, e);</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // And later, trigger the signal by calling `tx.send(())`.</span>
-    <span class="doccomment">/// let _ = tx.send(());</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_graceful_shutdown</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">signal</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Graceful</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">F</span>, <span class="ident">E</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> ()<span class="op">&gt;</span>,
-    {
-        <span class="ident">Graceful</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">spawn_all</span>, <span class="ident">signal</span>)
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">IO</span>, <span class="ident">IE</span>, <span class="ident">S</span>, <span class="ident">B</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">Future</span> <span class="kw">for</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">I</span>: <span class="ident">Accept</span><span class="op">&lt;</span><span class="ident">Conn</span> <span class="op">=</span> <span class="ident">IO</span>, <span class="ident">Error</span> <span class="op">=</span> <span class="ident">IE</span><span class="op">&gt;</span>,
-    <span class="ident">IE</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">IO</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">S</span>: <span class="ident">MakeServiceRef</span><span class="op">&lt;</span><span class="ident">IO</span>, <span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-    <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">B</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="ident">B</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
-    <span class="ident">E</span>: <span class="ident">NewSvcExec</span><span class="op">&lt;</span><span class="ident">IO</span>, <span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">S</span>::<span class="ident">Service</span>, <span class="ident">E</span>, <span class="ident">NoopWatcher</span><span class="op">&gt;</span>,
-{
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
-
-    <span class="kw">fn</span> <span class="ident">poll</span>(<span class="self">self</span>: <span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>, <span class="ident">cx</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">task</span>::<span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Output</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">project</span>().<span class="ident">spawn_all</span>.<span class="ident">poll_watch</span>(<span class="ident">cx</span>, <span class="kw-2">&amp;</span><span class="ident">NoopWatcher</span>)
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>, <span class="ident">S</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Server&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;listener&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">spawn_all</span>.<span class="ident">incoming_ref</span>())
-            .<span class="ident">finish</span>()
-    }
-}
-
-<span class="comment">// ===== impl Builder =====</span>
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">E</span><span class="op">&gt;</span> <span class="ident">Builder</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Start a new builder, wrapping an incoming stream and low-level options.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// For a more convenient constructor, see [`Server::bind`](Server::bind).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">incoming</span>: <span class="ident">I</span>, <span class="ident">protocol</span>: <span class="ident">Http_</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Builder</span> { <span class="ident">incoming</span>, <span class="ident">protocol</span> }
-    }
-
-    <span class="doccomment">/// Sets whether to use keep-alive for HTTP/1 connections.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Default is `true`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http1_keepalive</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">http1_keep_alive</span>(<span class="ident">val</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Set whether HTTP/1 connections should support half-closures.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Clients can chose to shutdown their write-side while waiting</span>
-    <span class="doccomment">/// for the server to respond. Setting this to `true` will</span>
-    <span class="doccomment">/// prevent closing the connection immediately if `read`</span>
-    <span class="doccomment">/// detects an EOF in the middle of a request.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Default is `false`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http1_half_close</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">http1_half_close</span>(<span class="ident">val</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Set the maximum buffer size.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Default is ~ 400kb.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http1_max_buf_size</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">max_buf_size</span>(<span class="ident">val</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="comment">// Sets whether to bunch up HTTP/1 writes until the read buffer is empty.</span>
-    <span class="comment">//</span>
-    <span class="comment">// This isn&#39;t really desirable in most cases, only really being useful in</span>
-    <span class="comment">// silly pipeline benchmarks.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http1_pipeline_flush</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">pipeline_flush</span>(<span class="ident">val</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Set whether HTTP/1 connections should try to use vectored writes,</span>
-    <span class="doccomment">/// or always flatten into a single buffer.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Note</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Setting this to `false` may mean more copies of body data,</span>
-    <span class="doccomment">/// but may also improve performance when an IO transport doesn&#39;t</span>
-    <span class="doccomment">/// support vectored writes well, such as most TLS implementations.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Default is `true`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http1_writev</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">http1_writev</span>(<span class="ident">val</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Sets whether HTTP/1 is required.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Default is `false`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http1_only</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">http1_only</span>(<span class="ident">val</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Sets whether HTTP/2 is required.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Default is `false`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http2_only</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">http2_only</span>(<span class="ident">val</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Sets the [`SETTINGS_INITIAL_WINDOW_SIZE`][spec] option for HTTP2</span>
-    <span class="doccomment">/// stream-level flow control.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Passing `None` will do nothing.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If not set, hyper will use a default.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [spec]: https://http2.github.io/http2-spec/#SETTINGS_INITIAL_WINDOW_SIZE</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http2_initial_stream_window_size</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sz</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">http2_initial_stream_window_size</span>(<span class="ident">sz</span>.<span class="ident">into</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Sets the max connection-level flow control for HTTP2</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Passing `None` will do nothing.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If not set, hyper will use a default.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http2_initial_connection_window_size</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">sz</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>
-            .<span class="ident">http2_initial_connection_window_size</span>(<span class="ident">sz</span>.<span class="ident">into</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Sets whether to use an adaptive flow control.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Enabling this will override the limits set in</span>
-    <span class="doccomment">/// `http2_initial_stream_window_size` and</span>
-    <span class="doccomment">/// `http2_initial_connection_window_size`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http2_adaptive_window</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">enabled</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">http2_adaptive_window</span>(<span class="ident">enabled</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Sets the [`SETTINGS_MAX_CONCURRENT_STREAMS`][spec] option for HTTP2</span>
-    <span class="doccomment">/// connections.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Default is no limit (`std::u32::MAX`). Passing `None` will do nothing.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [spec]: https://http2.github.io/http2-spec/#SETTINGS_MAX_CONCURRENT_STREAMS</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http2_max_concurrent_streams</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">max</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">http2_max_concurrent_streams</span>(<span class="ident">max</span>.<span class="ident">into</span>());
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Sets an interval for HTTP2 Ping frames should be sent to keep a</span>
-    <span class="doccomment">/// connection alive.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Pass `None` to disable HTTP2 keep-alive.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Default is currently disabled.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Cargo Feature</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Requires the `runtime` cargo feature to be enabled.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http2_keep_alive_interval</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">interval</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">http2_keep_alive_interval</span>(<span class="ident">interval</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Sets a timeout for receiving an acknowledgement of the keep-alive ping.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the ping is not acknowledged within the timeout, the connection will</span>
-    <span class="doccomment">/// be closed. Does nothing if `http2_keep_alive_interval` is disabled.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Default is 20 seconds.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Cargo Feature</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Requires the `runtime` cargo feature to be enabled.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;runtime&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http2_keep_alive_timeout</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">timeout</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">http2_keep_alive_timeout</span>(<span class="ident">timeout</span>);
-        <span class="self">self</span>
-    }
-
-    <span class="doccomment">/// Sets the `Executor` to deal with connection tasks.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Default is `tokio::spawn`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">executor</span><span class="op">&lt;</span><span class="ident">E2</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">executor</span>: <span class="ident">E2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Builder</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">E2</span><span class="op">&gt;</span> {
-        <span class="ident">Builder</span> {
-            <span class="ident">incoming</span>: <span class="self">self</span>.<span class="ident">incoming</span>,
-            <span class="ident">protocol</span>: <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">with_executor</span>(<span class="ident">executor</span>),
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">L</span>: <span class="ident">NetworkListener</span><span class="op">&gt;</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">L</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Creates a new server with the provided handler.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">listener</span>: <span class="ident">L</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">L</span><span class="op">&gt;</span> {
+        <span class="ident">Server</span> {
+            <span class="ident">listener</span>: <span class="ident">listener</span>,
+            <span class="ident">timeouts</span>: <span class="ident">Timeouts</span>::<span class="ident">default</span>()
         }
     }
 
-    <span class="doccomment">/// Consume this `Builder`, creating a [`Server`](Server).</span>
+    <span class="doccomment">/// Controls keep-alive for this server.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # Example</span>
+    <span class="doccomment">/// The timeout duration passed will be used to determine how long</span>
+    <span class="doccomment">/// to keep the connection alive before dropping it.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # #[cfg(feature = &quot;tcp&quot;)]</span>
-    <span class="doccomment">/// # async fn run() {</span>
-    <span class="doccomment">/// use hyper::{Body, Error, Response, Server};</span>
-    <span class="doccomment">/// use hyper::service::{make_service_fn, service_fn};</span>
+    <span class="doccomment">/// Passing `None` will disable keep-alive.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// // Construct our SocketAddr to listen on...</span>
-    <span class="doccomment">/// let addr = ([127, 0, 0, 1], 3000).into();</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // And a MakeService to handle each connection...</span>
-    <span class="doccomment">/// let make_svc = make_service_fn(|_| async {</span>
-    <span class="doccomment">///     Ok::&lt;_, Error&gt;(service_fn(|_req| async {</span>
-    <span class="doccomment">///         Ok::&lt;_, Error&gt;(Response::new(Body::from(&quot;Hello World&quot;)))</span>
-    <span class="doccomment">///     }))</span>
-    <span class="doccomment">/// });</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // Then bind and serve...</span>
-    <span class="doccomment">/// let server = Server::bind(&amp;addr)</span>
-    <span class="doccomment">///     .serve(make_svc);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // Run forever-ish...</span>
-    <span class="doccomment">/// if let Err(err) = server.await {</span>
-    <span class="doccomment">///     eprintln!(&quot;server error: {}&quot;, err);</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serve</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">B</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">new_service</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">I</span>: <span class="ident">Accept</span>,
-        <span class="ident">I</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">I</span>::<span class="ident">Conn</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="ident">S</span>: <span class="ident">MakeServiceRef</span><span class="op">&lt;</span><span class="ident">I</span>::<span class="ident">Conn</span>, <span class="ident">Body</span>, <span class="ident">ResBody</span> <span class="op">=</span> <span class="ident">B</span><span class="op">&gt;</span>,
-        <span class="ident">S</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">B</span>: <span class="ident">HttpBody</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="ident">B</span>::<span class="ident">Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">StdError</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">E</span>: <span class="ident">NewSvcExec</span><span class="op">&lt;</span><span class="ident">I</span>::<span class="ident">Conn</span>, <span class="ident">S</span>::<span class="ident">Future</span>, <span class="ident">S</span>::<span class="ident">Service</span>, <span class="ident">E</span>, <span class="ident">NoopWatcher</span><span class="op">&gt;</span>,
-        <span class="ident">E</span>: <span class="ident">H2Exec</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="ident">Service</span> <span class="kw">as</span> <span class="ident">HttpService</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Future</span>, <span class="ident">B</span><span class="op">&gt;</span>,
-    {
-        <span class="kw">let</span> <span class="ident">serve</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">protocol</span>.<span class="ident">serve</span>(<span class="self">self</span>.<span class="ident">incoming</span>, <span class="ident">new_service</span>);
-        <span class="kw">let</span> <span class="ident">spawn_all</span> <span class="op">=</span> <span class="ident">serve</span>.<span class="ident">spawn_all</span>();
-        <span class="ident">Server</span> { <span class="ident">spawn_all</span> }
+    <span class="doccomment">/// Default is enabled with a 5 second timeout.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">keep_alive</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) {
+        <span class="self">self</span>.<span class="ident">timeouts</span>.<span class="ident">keep_alive</span> <span class="op">=</span> <span class="ident">timeout</span>;
+    }
+
+    <span class="doccomment">/// Sets the read timeout for all Request reads.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_read_timeout</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dur</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) {
+        <span class="self">self</span>.<span class="ident">listener</span>.<span class="ident">set_read_timeout</span>(<span class="ident">dur</span>);
+        <span class="self">self</span>.<span class="ident">timeouts</span>.<span class="ident">read</span> <span class="op">=</span> <span class="ident">dur</span>;
+    }
+
+    <span class="doccomment">/// Sets the write timeout for all Response writes.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_write_timeout</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dur</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) {
+        <span class="self">self</span>.<span class="ident">listener</span>.<span class="ident">set_write_timeout</span>(<span class="ident">dur</span>);
+    }
+
+    <span class="doccomment">/// Get the address that the server is listening on.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_addr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SocketAddr</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">listener</span>.<span class="ident">local_addr</span>()
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tcp&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> <span class="ident">Builder</span><span class="op">&lt;</span><span class="ident">AddrIncoming</span>, <span class="ident">E</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// Set whether TCP keepalive messages are enabled on accepted connections.</span>
+<span class="kw">impl</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">HttpListener</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Creates a new server that will handle `HttpStream`s.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">http</span><span class="op">&lt;</span><span class="ident">To</span>: <span class="ident">ToSocketAddrs</span><span class="op">&gt;</span>(<span class="ident">addr</span>: <span class="ident">To</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Server</span><span class="op">&lt;</span><span class="ident">HttpListener</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="ident">HttpListener</span>::<span class="ident">new</span>(<span class="ident">addr</span>).<span class="ident">map</span>(<span class="ident">Server</span>::<span class="ident">new</span>)
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">SslServer</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">HttpsListener</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Creates a new server that will handle `HttpStream`s over SSL.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If `None` is specified, keepalive is disabled, otherwise the duration</span>
-    <span class="doccomment">/// specified will be the time to remain idle before sending TCP keepalive</span>
-    <span class="doccomment">/// probes.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tcp_keepalive</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">keepalive</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">incoming</span>.<span class="ident">set_keepalive</span>(<span class="ident">keepalive</span>);
-        <span class="self">self</span>
+    <span class="doccomment">/// You can use any SSL implementation, as long as implements `hyper::net::Ssl`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">https</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">ToSocketAddrs</span><span class="op">&gt;</span>(<span class="ident">addr</span>: <span class="ident">A</span>, <span class="ident">ssl</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Server</span><span class="op">&lt;</span><span class="ident">HttpsListener</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="ident">HttpsListener</span>::<span class="ident">new</span>(<span class="ident">addr</span>, <span class="ident">ssl</span>).<span class="ident">map</span>(<span class="ident">Server</span>::<span class="ident">new</span>)
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">L</span>: <span class="ident">NetworkListener</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">L</span><span class="op">&gt;</span> {
+    <span class="doccomment">/// Binds to a socket and starts handling connections.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Handler</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">H</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Listening</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">handle_threads</span>(<span class="ident">handler</span>, <span class="ident">num_cpus</span>::<span class="ident">get</span>() <span class="op">*</span> <span class="number">5</span> <span class="op">/</span> <span class="number">4</span>)
     }
 
-    <span class="doccomment">/// Set the value of `TCP_NODELAY` option for accepted connections.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tcp_nodelay</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">enabled</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">incoming</span>.<span class="ident">set_nodelay</span>(<span class="ident">enabled</span>);
-        <span class="self">self</span>
+    <span class="doccomment">/// Binds to a socket and starts handling connections with the provided</span>
+    <span class="doccomment">/// number of threads.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">handle_threads</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Handler</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">H</span>,
+            <span class="ident">threads</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Listening</span><span class="op">&gt;</span> {
+        <span class="ident">handle</span>(<span class="self">self</span>, <span class="ident">handler</span>, <span class="ident">threads</span>)
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">handle</span><span class="op">&lt;</span><span class="ident">H</span>, <span class="ident">L</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">server</span>: <span class="ident">Server</span><span class="op">&lt;</span><span class="ident">L</span><span class="op">&gt;</span>, <span class="ident">handler</span>: <span class="ident">H</span>, <span class="ident">threads</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Listening</span><span class="op">&gt;</span>
+<span class="kw">where</span> <span class="ident">H</span>: <span class="ident">Handler</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>, <span class="ident">L</span>: <span class="ident">NetworkListener</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> {
+    <span class="kw">let</span> <span class="ident">socket</span> <span class="op">=</span> <span class="macro">try</span><span class="macro">!</span>(<span class="ident">server</span>.<span class="ident">listener</span>.<span class="ident">local_addr</span>());
+
+    <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;threads = {:?}&quot;</span>, <span class="ident">threads</span>);
+    <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="ident">ListenerPool</span>::<span class="ident">new</span>(<span class="ident">server</span>.<span class="ident">listener</span>);
+    <span class="kw">let</span> <span class="ident">worker</span> <span class="op">=</span> <span class="ident">Worker</span>::<span class="ident">new</span>(<span class="ident">handler</span>, <span class="ident">server</span>.<span class="ident">timeouts</span>);
+    <span class="kw">let</span> <span class="ident">work</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="kw-2">mut</span> <span class="ident">stream</span><span class="op">|</span> <span class="ident">worker</span>.<span class="ident">handle_connection</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stream</span>);
+
+    <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="ident">pool</span>.<span class="ident">accept</span>(<span class="ident">work</span>, <span class="ident">threads</span>));
+
+    <span class="prelude-val">Ok</span>(<span class="ident">Listening</span> {
+        <span class="ident">_guard</span>: <span class="prelude-val">Some</span>(<span class="ident">guard</span>),
+        <span class="ident">socket</span>: <span class="ident">socket</span>,
+    })
+}
+
+<span class="kw">struct</span> <span class="ident">Worker</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Handler</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+    <span class="ident">handler</span>: <span class="ident">H</span>,
+    <span class="ident">timeouts</span>: <span class="ident">Timeouts</span>,
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">Handler</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">Worker</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">handler</span>: <span class="ident">H</span>, <span class="ident">timeouts</span>: <span class="ident">Timeouts</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Worker</span><span class="op">&lt;</span><span class="ident">H</span><span class="op">&gt;</span> {
+        <span class="ident">Worker</span> {
+            <span class="ident">handler</span>: <span class="ident">handler</span>,
+            <span class="ident">timeouts</span>: <span class="ident">timeouts</span>,
+        }
     }
 
-    <span class="doccomment">/// Set whether to sleep on accept errors.</span>
+    <span class="kw">fn</span> <span class="ident">handle_connection</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">stream</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">S</span>) <span class="kw">where</span> <span class="ident">S</span>: <span class="ident">NetworkStream</span> <span class="op">+</span> <span class="ident">Clone</span> {
+        <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;Incoming stream&quot;</span>);
+
+        <span class="self">self</span>.<span class="ident">handler</span>.<span class="ident">on_connection_start</span>();
+
+        <span class="kw">let</span> <span class="ident">addr</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">stream</span>.<span class="ident">peer_addr</span>() {
+            <span class="prelude-val">Ok</span>(<span class="ident">addr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">addr</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Peer Name error: {:?}&quot;</span>, <span class="ident">e</span>);
+                <span class="kw">return</span>;
+            }
+        };
+
+        <span class="kw">let</span> <span class="ident">stream2</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">NetworkStream</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stream</span>.<span class="ident">clone</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rdr</span> <span class="op">=</span> <span class="ident">BufReader</span>::<span class="ident">new</span>(<span class="ident">stream2</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">wrt</span> <span class="op">=</span> <span class="ident">BufWriter</span>::<span class="ident">new</span>(<span class="ident">stream</span>);
+
+        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">keep_alive_loop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rdr</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">wrt</span>, <span class="ident">addr</span>) {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">set_read_timeout</span>(<span class="kw-2">*</span><span class="ident">rdr</span>.<span class="ident">get_ref</span>(), <span class="self">self</span>.<span class="ident">timeouts</span>.<span class="ident">keep_alive</span>) {
+                <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;set_read_timeout keep_alive {:?}&quot;</span>, <span class="ident">e</span>);
+                <span class="kw">break</span>;
+            }
+        }
+
+        <span class="self">self</span>.<span class="ident">handler</span>.<span class="ident">on_connection_end</span>();
+
+        <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;keep_alive loop ending for {}&quot;</span>, <span class="ident">addr</span>);
+
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">rdr</span>.<span class="ident">get_mut</span>().<span class="ident">close</span>(<span class="ident">Shutdown</span>::<span class="ident">Both</span>) {
+            <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;failed to close stream: {}&quot;</span>, <span class="ident">e</span>);
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">set_read_timeout</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">NetworkStream</span>, <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="ident">s</span>.<span class="ident">set_read_timeout</span>(<span class="ident">timeout</span>)
+    }
+
+    <span class="kw">fn</span> <span class="ident">keep_alive_loop</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rdr</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BufReader</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">NetworkStream</span><span class="op">&gt;</span>,
+            <span class="ident">wrt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span>, <span class="ident">addr</span>: <span class="ident">SocketAddr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">Request</span>::<span class="ident">new</span>(<span class="ident">rdr</span>, <span class="ident">addr</span>) {
+            <span class="prelude-val">Ok</span>(<span class="ident">req</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">req</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Io</span>(<span class="kw-2">ref</span> <span class="ident">e</span>)) <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">kind</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">ErrorKind</span>::<span class="ident">ConnectionAborted</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;tcp closed, cancelling keep-alive loop&quot;</span>);
+                <span class="kw">return</span> <span class="bool-val">false</span>;
+            }
+            <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Io</span>(<span class="ident">e</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;ioerror in keepalive loop = {:?}&quot;</span>, <span class="ident">e</span>);
+                <span class="kw">return</span> <span class="bool-val">false</span>;
+            }
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="comment">//TODO: send a 400 response</span>
+                <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;request error = {:?}&quot;</span>, <span class="ident">e</span>);
+                <span class="kw">return</span> <span class="bool-val">false</span>;
+            }
+        };
+
+        <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">handle_expect</span>(<span class="kw-2">&amp;</span><span class="ident">req</span>, <span class="ident">wrt</span>) {
+            <span class="kw">return</span> <span class="bool-val">false</span>;
+        }
+
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">req</span>.<span class="ident">set_read_timeout</span>(<span class="self">self</span>.<span class="ident">timeouts</span>.<span class="ident">read</span>) {
+            <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;set_read_timeout {:?}&quot;</span>, <span class="ident">e</span>);
+            <span class="kw">return</span> <span class="bool-val">false</span>;
+        }
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">keep_alive</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">timeouts</span>.<span class="ident">keep_alive</span>.<span class="ident">is_some</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span>
+            <span class="ident">http</span>::<span class="ident">should_keep_alive</span>(<span class="ident">req</span>.<span class="ident">version</span>, <span class="kw-2">&amp;</span><span class="ident">req</span>.<span class="ident">headers</span>);
+        <span class="kw">let</span> <span class="ident">version</span> <span class="op">=</span> <span class="ident">req</span>.<span class="ident">version</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res_headers</span> <span class="op">=</span> <span class="ident">Headers</span>::<span class="ident">new</span>();
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">keep_alive</span> {
+            <span class="ident">res_headers</span>.<span class="ident">set</span>(<span class="ident">Connection</span>::<span class="ident">close</span>());
+        }
+        {
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Response</span>::<span class="ident">new</span>(<span class="ident">wrt</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">res_headers</span>);
+            <span class="ident">res</span>.<span class="ident">version</span> <span class="op">=</span> <span class="ident">version</span>;
+            <span class="self">self</span>.<span class="ident">handler</span>.<span class="ident">handle</span>(<span class="ident">req</span>, <span class="ident">res</span>);
+        }
+
+        <span class="comment">// if the request was keep-alive, we need to check that the server agrees</span>
+        <span class="comment">// if it wasn&#39;t, then the server cannot force it to be true anyways</span>
+        <span class="kw">if</span> <span class="ident">keep_alive</span> {
+            <span class="ident">keep_alive</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">should_keep_alive</span>(<span class="ident">version</span>, <span class="kw-2">&amp;</span><span class="ident">res_headers</span>);
+        }
+
+        <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;keep_alive = {:?} for {}&quot;</span>, <span class="ident">keep_alive</span>, <span class="ident">addr</span>);
+        <span class="ident">keep_alive</span>
+    }
+
+    <span class="kw">fn</span> <span class="ident">handle_expect</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>, <span class="ident">wrt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+         <span class="kw">if</span> <span class="ident">req</span>.<span class="ident">version</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Http11</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">req</span>.<span class="ident">headers</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">Expect</span>::<span class="ident">Continue</span>) {
+            <span class="kw">let</span> <span class="ident">status</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">handler</span>.<span class="ident">check_continue</span>((<span class="kw-2">&amp;</span><span class="ident">req</span>.<span class="ident">method</span>, <span class="kw-2">&amp;</span><span class="ident">req</span>.<span class="ident">uri</span>, <span class="kw-2">&amp;</span><span class="ident">req</span>.<span class="ident">headers</span>));
+            <span class="kw">match</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">wrt</span>, <span class="string">&quot;{} {}\r\n\r\n&quot;</span>, <span class="ident">Http11</span>, <span class="ident">status</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">wrt</span>.<span class="ident">flush</span>()) {
+                <span class="prelude-val">Ok</span>(..) <span class="op">=</span><span class="op">&gt;</span> (),
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;error writing 100-continue: {:?}&quot;</span>, <span class="ident">e</span>);
+                    <span class="kw">return</span> <span class="bool-val">false</span>;
+                }
+            }
+
+            <span class="kw">if</span> <span class="ident">status</span> <span class="op">!</span><span class="op">=</span> <span class="ident">StatusCode</span>::<span class="ident">Continue</span> {
+                <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;non-100 status ({}) for Expect 100 request&quot;</span>, <span class="ident">status</span>);
+                <span class="kw">return</span> <span class="bool-val">false</span>;
+            }
+        }
+
+        <span class="bool-val">true</span>
+    }
+}
+
+<span class="doccomment">/// A listening server, which can later be closed.</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Listening</span> {
+    <span class="ident">_guard</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">JoinHandle</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The socket addresses that the server is bound to.</span>
+    <span class="kw">pub</span> <span class="ident">socket</span>: <span class="ident">SocketAddr</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Listening</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Listening {{ socket: {:?} }}&quot;</span>, <span class="self">self</span>.<span class="ident">socket</span>)
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Listening</span> {
+    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">_guard</span>.<span class="ident">take</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">g</span><span class="op">|</span> <span class="ident">g</span>.<span class="ident">join</span>());
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Listening</span> {
+    <span class="doccomment">/// Warning: This function doesn&#39;t work. The server remains listening after you called</span>
+    <span class="doccomment">/// it. See https://github.com/hyperium/hyper/issues/338 for more details.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// A possible scenario is that the process has hit the max open files</span>
-    <span class="doccomment">/// allowed, and so trying to accept a new connection will fail with</span>
-    <span class="doccomment">/// EMFILE. In some cases, it&#39;s preferable to just wait for some time, if</span>
-    <span class="doccomment">/// the application will likely close some files (or connections), and try</span>
-    <span class="doccomment">/// to accept the connection again. If this option is true, the error will</span>
-    <span class="doccomment">/// be logged at the error level, since it is still a big deal, and then</span>
-    <span class="doccomment">/// the listener will sleep for 1 second.</span>
+    <span class="doccomment">/// Stop the server from listening to its socket address.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">close</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">_guard</span>.<span class="ident">take</span>();
+        <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;closing server&quot;</span>);
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="doccomment">/// A handler that can handle incoming requests for a server.</span>
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Handler</span>: <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Send</span> {
+    <span class="doccomment">/// Receives a `Request`/`Response` pair, and should perform some action on them.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// In other cases, hitting the max open files should be treat similarly</span>
-    <span class="doccomment">/// to being out-of-memory, and simply error (and shutdown). Setting this</span>
-    <span class="doccomment">/// option to false will allow that.</span>
+    <span class="doccomment">/// This could reading from the request, and writing to the response.</span>
+    <span class="kw">fn</span> <span class="ident">handle</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;k</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;k</span><span class="op">&gt;</span>, <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Fresh</span><span class="op">&gt;</span>);
+
+    <span class="doccomment">/// Called when a Request includes a `Expect: 100-continue` header.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// For more details see [`AddrIncoming::set_sleep_on_errors`]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tcp_sleep_on_accept_errors</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">incoming</span>.<span class="ident">set_sleep_on_errors</span>(<span class="ident">val</span>);
-        <span class="self">self</span>
+    <span class="doccomment">/// By default, this will always immediately response with a `StatusCode::Continue`,</span>
+    <span class="doccomment">/// but can be overridden with custom behavior.</span>
+    <span class="kw">fn</span> <span class="ident">check_continue</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: (<span class="kw-2">&amp;</span><span class="ident">Method</span>, <span class="kw-2">&amp;</span><span class="ident">RequestUri</span>, <span class="kw-2">&amp;</span><span class="ident">Headers</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusCode</span> {
+        <span class="ident">StatusCode</span>::<span class="ident">Continue</span>
+    }
+
+    <span class="doccomment">/// This is run after a connection is received, on a per-connection basis (not a</span>
+    <span class="doccomment">/// per-request basis, as a connection with keep-alive may handle multiple</span>
+    <span class="doccomment">/// requests)</span>
+    <span class="kw">fn</span> <span class="ident">on_connection_start</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) { }
+
+    <span class="doccomment">/// This is run before a connection is closed, on a per-connection basis (not a</span>
+    <span class="doccomment">/// per-request basis, as a connection with keep-alive may handle multiple</span>
+    <span class="doccomment">/// requests)</span>
+    <span class="kw">fn</span> <span class="ident">on_connection_end</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) { }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="ident">Handler</span> <span class="kw">for</span> <span class="ident">F</span> <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">Request</span>, <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Fresh</span><span class="op">&gt;</span>), <span class="ident">F</span>: <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Send</span> {
+    <span class="kw">fn</span> <span class="ident">handle</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;k</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">req</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;k</span><span class="op">&gt;</span>, <span class="ident">res</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Fresh</span><span class="op">&gt;</span>) {
+        <span class="self">self</span>(<span class="ident">req</span>, <span class="ident">res</span>)
+    }
+}
+
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
+<span class="kw">mod</span> <span class="ident">tests</span> {
+    <span class="kw">use</span> <span class="ident">header</span>::<span class="ident">Headers</span>;
+    <span class="kw">use</span> <span class="ident">method</span>::<span class="ident">Method</span>;
+    <span class="kw">use</span> <span class="ident">mock</span>::<span class="ident">MockStream</span>;
+    <span class="kw">use</span> <span class="ident">status</span>::<span class="ident">StatusCode</span>;
+    <span class="kw">use</span> <span class="ident">uri</span>::<span class="ident">RequestUri</span>;
+
+    <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Request</span>, <span class="ident">Response</span>, <span class="ident">Fresh</span>, <span class="ident">Handler</span>, <span class="ident">Worker</span>};
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_check_continue_default</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mock</span> <span class="op">=</span> <span class="ident">MockStream</span>::<span class="ident">with_input</span>(<span class="string">b&quot;\
+            POST /upload HTTP/1.1\r\n\
+            Host: example.domain\r\n\
+            Expect: 100-continue\r\n\
+            Content-Length: 10\r\n\
+            \r\n\
+            1234567890\
+        &quot;</span>);
+
+        <span class="kw">fn</span> <span class="ident">handle</span>(<span class="kw">_</span>: <span class="ident">Request</span>, <span class="ident">res</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="ident">Fresh</span><span class="op">&gt;</span>) {
+            <span class="ident">res</span>.<span class="ident">start</span>().<span class="ident">unwrap</span>().<span class="ident">end</span>().<span class="ident">unwrap</span>();
+        }
+
+        <span class="ident">Worker</span>::<span class="ident">new</span>(<span class="ident">handle</span>, <span class="ident">Default</span>::<span class="ident">default</span>()).<span class="ident">handle_connection</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">mock</span>);
+        <span class="kw">let</span> <span class="ident">cont</span> <span class="op">=</span> <span class="string">b&quot;HTTP/1.1 100 Continue\r\n\r\n&quot;</span>;
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">mock</span>.<span class="ident">write</span>[..<span class="ident">cont</span>.<span class="ident">len</span>()], <span class="ident">cont</span>);
+        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="string">b&quot;HTTP/1.1 200 OK\r\n&quot;</span>;
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="kw-2">&amp;</span><span class="ident">mock</span>.<span class="ident">write</span>[<span class="ident">cont</span>.<span class="ident">len</span>()..<span class="ident">cont</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="ident">res</span>.<span class="ident">len</span>()], <span class="ident">res</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_check_continue_reject</span>() {
+        <span class="kw">struct</span> <span class="ident">Reject</span>;
+        <span class="kw">impl</span> <span class="ident">Handler</span> <span class="kw">for</span> <span class="ident">Reject</span> {
+            <span class="kw">fn</span> <span class="ident">handle</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;k</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;k</span><span class="op">&gt;</span>, <span class="ident">res</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Fresh</span><span class="op">&gt;</span>) {
+                <span class="ident">res</span>.<span class="ident">start</span>().<span class="ident">unwrap</span>().<span class="ident">end</span>().<span class="ident">unwrap</span>();
+            }
+
+            <span class="kw">fn</span> <span class="ident">check_continue</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: (<span class="kw-2">&amp;</span><span class="ident">Method</span>, <span class="kw-2">&amp;</span><span class="ident">RequestUri</span>, <span class="kw-2">&amp;</span><span class="ident">Headers</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusCode</span> {
+                <span class="ident">StatusCode</span>::<span class="ident">ExpectationFailed</span>
+            }
+        }
+
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mock</span> <span class="op">=</span> <span class="ident">MockStream</span>::<span class="ident">with_input</span>(<span class="string">b&quot;\
+            POST /upload HTTP/1.1\r\n\
+            Host: example.domain\r\n\
+            Expect: 100-continue\r\n\
+            Content-Length: 10\r\n\
+            \r\n\
+            1234567890\
+        &quot;</span>);
+
+        <span class="ident">Worker</span>::<span class="ident">new</span>(<span class="ident">Reject</span>, <span class="ident">Default</span>::<span class="ident">default</span>()).<span class="ident">handle_connection</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">mock</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mock</span>.<span class="ident">write</span>, <span class="kw-2">&amp;</span><span class="string">b&quot;HTTP/1.1 417 Expectation Failed\r\n\r\n&quot;</span>[..]);
     }
 }
 </pre></div>

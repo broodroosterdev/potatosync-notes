@@ -42,7 +42,7 @@ locks, see <a href="#extension-traits">extension traits</a> below for details)</
             .<span class="ident">is_ok</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">unlock</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">unlock</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">store</span>(<span class="bool-val">false</span>, <span class="ident">Ordering</span>::<span class="ident">Release</span>);
     }
 }
@@ -84,6 +84,7 @@ subfield of the protected data.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Mutex.html" title='lock_api::Mutex struct'>Mutex</a></td><td class='docblock-short'><p>A mutual exclusion primitive useful for protecting shared data</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.MutexGuard.html" title='lock_api::MutexGuard struct'>MutexGuard</a></td><td class='docblock-short'><p>An RAII implementation of a &quot;scoped lock&quot; of a mutex. When this structure is
 dropped (falls out of scope), the lock will be unlocked.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.RawReentrantMutex.html" title='lock_api::RawReentrantMutex struct'>RawReentrantMutex</a></td><td class='docblock-short'><p>A raw mutex type that wraps another raw mutex to provide reentrancy.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.ReentrantMutex.html" title='lock_api::ReentrantMutex struct'>ReentrantMutex</a></td><td class='docblock-short'><p>A mutex which can be recursively locked by a single thread.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.ReentrantMutexGuard.html" title='lock_api::ReentrantMutexGuard struct'>ReentrantMutexGuard</a></td><td class='docblock-short'><p>An RAII implementation of a &quot;scoped lock&quot; of a reentrant mutex. When this structure
 is dropped (falls out of scope), the lock will be unlocked.</p>

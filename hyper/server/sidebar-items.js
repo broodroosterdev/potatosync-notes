@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["accept","The `Accept` trait and supporting types."],["conn","Lower-level Server connection API."]],"struct":[["Builder","A builder for a `Server`."],["Server","A listening HTTP server that accepts connections in both HTTP1 and HTTP2 by default."]]});
+initSidebarItems({"mod":[["request","Server Requests"],["response","Server Responses"]],"struct":[["Listening","A listening server, which can later be closed."],["Server","A server can listen on a TCP socket."]],"trait":[["Handler","A handler that can handle incoming requests for a server."]]});

@@ -6,7 +6,7 @@
 implicit if no order is given, you will need to call <code>.asc()</code> explicitly in
 order to call these methods.</p>
 </div>
-            <h2 id='provided-methods' class='small-section-header'>Provided methods<a href='#provided-methods' class='anchor'></a></h2><div class='methods'><h3 id='method.nulls_first' class='method'><code id='nulls_first.v'>fn <a href='#method.nulls_first' class='fnname'>nulls_first</a>(self) -&gt; NullsFirst&lt;Self&gt;</code></h3><div class='docblock'><p>Specify that nulls should come before other values in this ordering.</p>
+            <h2 id='provided-methods' class='small-section-header'>Provided methods<a href='#provided-methods' class='anchor'></a></h2><div class='methods'><h3 id='method.nulls_first' class='method'><code>fn <a href='#method.nulls_first' class='fnname'>nulls_first</a>(self) -&gt; NullsFirst&lt;Self&gt;</code></h3><div class='docblock'><p>Specify that nulls should come before other values in this ordering.</p>
 <p>Normally, nulls come last when sorting in ascending order and first
 when sorting in descending order.</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
@@ -28,7 +28,7 @@ when sorting in descending order.</p>
     .<span class="ident">order</span>(<span class="ident">nullable_number</span>.<span class="ident">asc</span>().<span class="ident">nulls_first</span>())
     .<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">connection</span>)<span class="question-mark">?</span>;
 <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="number">2</span>)], <span class="ident">asc_nulls_first</span>);</pre></div>
-</div><h3 id='method.nulls_last' class='method'><code id='nulls_last.v'>fn <a href='#method.nulls_last' class='fnname'>nulls_last</a>(self) -&gt; NullsLast&lt;Self&gt;</code></h3><div class='docblock'><p>Specify that nulls should come after other values in this ordering.</p>
+</div><h3 id='method.nulls_last' class='method'><code>fn <a href='#method.nulls_last' class='fnname'>nulls_last</a>(self) -&gt; NullsLast&lt;Self&gt;</code></h3><div class='docblock'><p>Specify that nulls should come after other values in this ordering.</p>
 <p>Normally, nulls come last when sorting in ascending order and first
 when sorting in descending order.</p>
 <h1 id="example-1" class="section-header"><a href="#example-1">Example</a></h1>

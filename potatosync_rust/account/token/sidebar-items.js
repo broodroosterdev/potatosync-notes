@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["read_token","Get access_token from header and verify it"]],"struct":[["IntrospectInfo",""],["Token","Claims for access_token"]]});

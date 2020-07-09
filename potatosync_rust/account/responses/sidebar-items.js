@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["INCORRECT_CREDENTIALS",""],["INTERNAL_ERROR",""],["INVALID_EMAIL",""],["INVALID_PASSWORD",""],["INVALID_USERNAME",""],["LOGIN_SUCCESS",""],["USER_NOT_VERIFIED",""]]});
