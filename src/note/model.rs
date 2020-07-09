@@ -1,9 +1,34 @@
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, Utc, TimeZone};
 use chrono::serde::ts_milliseconds::*;
 use serde_derive::*;
 
-use crate::account::model::{deserialize_option, serialize_option};
 use crate::schema::notes;
+use serde::{Serializer, Deserializer, Deserialize};
+
+/// Special function to serialize Option<DateTime<Utc>>
+pub fn serialize_option<S>(dt: &Option<DateTime<Utc>>, serializer: S) -> Result<S::Ok, S::Error>
+    where S: Serializer
+{
+    return if dt.is_some() {
+        serializer.serialize_i64(dt.unwrap().timestamp())
+    } else {
+        serializer.serialize_none()
+    }
+}
+
+/// Special function to deserialize Option<DateTime<Utc>>
+pub fn deserialize_option<'de, D>(d: D) -> Result<Option<DateTime<Utc>>, D::Error>
+    where D: Deserializer<'de>
+{
+    let dt: Option<i64> = Option::deserialize(d)?;
+    if let Some(dt) = dt {
+        return Ok(Some(
+            Utc.timestamp_opt(dt / 1000,
+                              ((dt % 1000) * 1_000_000) as u32).unwrap()
+        ));
+    }
+    Ok(None)
+}
 
 /// General Note struct used for retrieving from db and updating notes
 #[table_name = "notes"]
@@ -94,7 +119,7 @@ impl SavingNote {
     pub fn to_note(&self, account_id: String) -> Note {
         Note {
             note_id: self.note_id.clone(),
-            account_id,
+            account_id: account_id.clone(),
             title: self.title.clone(),
             content: self.content.clone(),
             style_json: self.style_json.clone(),
@@ -190,18 +215,4 @@ pub struct NoteId {
 #[derive(Serialize, Deserialize)]
 pub struct NoteLastUpdated {
     pub(crate) last_updated: String
-}
-
-/// Struct used when server needs to return list of notes along with status of request
-#[derive(Serialize, Deserialize)]
-pub struct NoteResponse {
-    pub(crate) message: String,
-    pub(crate) status: bool,
-    pub(crate) notes: Vec<Note>,
-}
-
-impl ToString for NoteResponse {
-    fn to_string(&self) -> String {
-        serde_json::to_string(self).unwrap()
-    }
 }

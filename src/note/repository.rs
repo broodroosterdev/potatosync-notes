@@ -11,11 +11,7 @@ pub fn note_exists(account_id: &String, note_id: &String, connection: &PgConnect
         .filter(notes::note_id.eq(note_id))
         .filter(notes::account_id.eq(account_id))
         .first::<String>(connection);
-    return if note_exists.is_ok() {
-        true
-    } else {
-        false
-    };
+    return note_exists.is_ok();
 }
 
 #[cfg_attr(test, mockable)]
@@ -84,8 +80,8 @@ pub fn note_delete_all(account_id: String, connection: &PgConnection) -> Result<
 }
 
 #[cfg_attr(test, mockable)]
-pub fn notes_get_all(account_id: String, connection: &PgConnection) -> Result<Vec<Note>, String> {
-    let get_result: Result<Vec<Note>, diesel::result::Error> = notes::dsl::notes.filter(notes::account_id.eq(&account_id)).load::<Note>(connection);
+pub fn notes_get_all(account_id: &str, connection: &PgConnection) -> Result<Vec<Note>, String> {
+    let get_result: Result<Vec<Note>, diesel::result::Error> = notes::dsl::notes.filter(notes::account_id.eq(account_id)).load::<Note>(connection);
     return match get_result {
         Err(error) => Err(error.to_string()),
         Ok(notes) => Ok(notes)

@@ -1,19 +1,4 @@
 -- Your SQL goes here
-CREATE TABLE IF NOT EXISTS accounts
-(
-    id                  text primary key,
-    created_at          timestamptz not null,
-    updated_at          timestamptz,
-    deleted_at          timestamptz,
-    email               text        not null,
-    username            text        not null,
-    password            text        not null,
-    image_url           text        not null,
-    password_identifier text        not null,
-    verified            boolean     not null,
-    shared_prefs        text        not null
-);
-
 CREATE TABLE IF NOT EXISTS notes
 (
     note_id          text        not null,
@@ -35,27 +20,4 @@ CREATE TABLE IF NOT EXISTS notes
     deleted          bool        not null,
     archived         bool        not null,
     PRIMARY KEY (note_id, account_id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_accounts_deleted_at ON accounts (deleted_at);
-
-CREATE TABLE IF NOT EXISTS reset_tokens
-(
-    account_id  text not null PRIMARY KEY REFERENCES accounts (id) ON DELETE CASCADE,
-    reset_token text not null,
-    expires_at  timestamptz not null
-);
-
-CREATE TABLE IF NOT EXISTS verification_tokens
-(
-    account_id  text not null PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE,
-    verification_token       text not null,
-    expires_at  timestamptz  not null
-);
-
-CREATE TABLE IF NOT EXISTS session_tokens
-(
-    account_id  text not null PRIMARY KEY REFERENCES accounts(id) ON DELETE CASCADE,
-    session_token  text not null,
-    expires_at  timestamptz not null
 );
