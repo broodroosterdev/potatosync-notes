@@ -1,83 +1,81 @@
 use chrono::{TimeZone, Utc};
 use diesel::prelude::*;
-use rocket_failure::errors::Status;
-
 use crate::note::model::{Note, PatchingNote};
 use crate::note::repository::{note_delete, note_delete_all, note_exists, note_insert_if_empty, note_patch_if_exists, note_update_if_exists, notes_get_all};
 use crate::note::responses::*;
-use crate::responders::{ApiSuccess, ApiError};
+use crate::responders::{ApiSuccess, ApiError, ApiResponse};
 use rocket::response::Responder;
 use rocket::{Response, Request, response};
 use rocket::http::ContentType;
-
+use rocket_failure::errors::Status;
 
 ///Adds note and if they already exist, it will do nothing
-pub(crate) fn add(note: Note, connection: &PgConnection) -> Result<ApiSuccess, ApiError> {
+pub(crate) fn add(note: Note, connection: &PgConnection) -> ApiResponse {
     if note_exists(&note.account_id, &note.note_id, connection) {
-        return Err(NOTE_EXISTS);
+        return NOTE_ALREADY_EXISTS;
     }
     return match note_insert_if_empty(note, connection) {
         Err(error) => {
             println!("Unable to insert note: {}", error);
-            Err(INTERNAL_DB_ERROR)
+            INTERNAL_DB_ERROR
         }
-        Ok(_changed) => Ok(NOTE_ADD_SUCCESS)
+        Ok(_changed) => NOTE_ADD_SUCCESS
     };
 }
 
 ///Updates note, it will create a new note if it doesnt exist
-pub(crate) fn update(note: Note, account_id: String, connection: &PgConnection) -> Result<ApiSuccess, ApiError> {
+pub(crate) fn update(note: Note, account_id: String, connection: &PgConnection) -> ApiResponse {
     if !note_exists(&account_id, &note.note_id, connection) {
-        return Err(NOTE_NOT_EXISTS);
+        return NOTE_NOT_EXISTS
     }
     return match note_update_if_exists(note, connection) {
         Err(error) => {
             println!("Unable to update note: {}", error);
-            Err(INTERNAL_DB_ERROR)
+            INTERNAL_DB_ERROR
         }
-        Ok(_changed) => Ok(NOTE_UPDATE_SUCCESS)
+        Ok(_changed) => NOTE_UPDATE_SUCCESS
     };
 }
 
 /// Patches note in database. It will only change the fields provided
-pub(crate) fn patch(note: PatchingNote, note_id: String, account_id: String, connection: &PgConnection) -> Result<ApiSuccess, ApiError> {
+pub(crate) fn patch(note: PatchingNote, note_id: String, account_id: String, connection: &PgConnection) -> ApiResponse {
     if note.last_modify_date.is_none() {
-        return Err(NOTE_MISSING_LAST_MODIFY);
+        return NOTE_MISSING_LAST_MODIFY;
     }
     if !note_exists(&account_id, &note_id, connection) {
-        return Err(NOTE_NOT_EXISTS);
+        return NOTE_NOT_EXISTS;
     }
     return match note_patch_if_exists(account_id, note_id, note, connection) {
         Err(error) => {
             println!("Unable to patch note: {}", error);
-            Err(INTERNAL_DB_ERROR)
+            INTERNAL_DB_ERROR
         }
-        Ok(_changed) => Ok(NOTE_PATCH_SUCCESS)
+        Ok(_changed) => NOTE_PATCH_SUCCESS
     };
 }
 
 /// Delete single note in DB
-pub(crate) fn delete(note_id: String, account_id: String, connection: &PgConnection) -> Result<ApiSuccess, ApiError> {
+pub(crate) fn delete(note_id: String, account_id: String, connection: &PgConnection) -> ApiResponse {
     if !note_exists(&account_id, &note_id, connection) {
-        return Err(NOTE_NOT_EXISTS);
+        return NOTE_NOT_EXISTS
     }
     return match note_delete(account_id, note_id, connection) {
         Err(error) => {
             println!("Unable to delete note: {}", error);
-            Err(INTERNAL_DB_ERROR)
+            INTERNAL_DB_ERROR
         }
-        Ok(_changed) => Ok(NOTE_DELETE_SUCCESS)
+        Ok(_changed) => NOTE_DELETE_SUCCESS
     };
 }
 
 /// Delete all notes of an user
-pub(crate) fn delete_all(account_id: String, connection: &PgConnection) -> Result<ApiSuccess, ApiError> {
+pub(crate) fn delete_all(account_id: String, connection: &PgConnection) -> ApiResponse {
     return match note_delete_all(account_id, connection) {
         Err(error) => {
             println!("Unable to delete all notes: {}", error);
-            Err(INTERNAL_DB_ERROR)
+            INTERNAL_DB_ERROR
         }
-        Ok(_) => Ok(NOTES_DELETE_SUCCESS)
+        Ok(_) => NOTES_DELETE_SUCCESS
     };
 }
 
@@ -98,7 +96,7 @@ impl<'r> Responder<'r> for NoteResponse {
 }
 
 /// Get list of notes updated after provided timestamp
-pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: i64, connection: &PgConnection) -> Result<NoteResponse, ApiError> {
+pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: i64, connection: &PgConnection) -> Result<NoteResponse, ApiResponse> {
     return match notes_get_all(&account_id, connection) {
         Err(error) => {
             println!("Unable to get notes: {}", error);
@@ -113,14 +111,14 @@ pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: i
                 }
             }
             Ok(NoteResponse {
-                message: NOTE_LIST_SUCCESS.description,
+                message: NOTE_LIST_SUCCESS.body,
                 notes: updated_notes,
             })
         }
     };
 }
 
-
+/*
 #[cfg(test)]
 mod tests {
     use std::borrow::Borrow;
@@ -137,6 +135,7 @@ mod tests {
 
     #[test]
     fn success_when_adding_nonexisting() {
+
         dotenv::dotenv().ok();
         note_exists.mock_safe(|_, _, _| MockResult::Return(false));
         note_insert_if_empty.mock_safe(|_, _| MockResult::Return(Ok(1)));
@@ -158,7 +157,7 @@ mod tests {
         let note: Note = Note::mock_empty();
         let result = add(note, &db::connect().get().unwrap());
         let correct_result = ApiResponse {
-            json: StatusResponse::new(NOTE_EXISTS.to_string(), false).to_string(),
+            json: StatusResponse::new(NoteExists.to_string(), false).to_string(),
             status: Status::BadRequest,
         };
         println!("{} : {}", result.status, result.json);
@@ -324,4 +323,4 @@ mod tests {
         assert_eq!(result.json, correct_result.json);
         assert_eq!(result.status, correct_result.status);
     }
-}
+}*/

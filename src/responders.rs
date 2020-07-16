@@ -4,24 +4,23 @@ use std::fmt::Display;
 use rocket::{Request, response, Response};
 use rocket::http::ContentType;
 use rocket::response::Responder;
-use rocket_failure::errors::Status;
+use rocket::http::Status;
 use serde::export::Formatter;
 
 
 /// Struct used for sending the StatusResponse and other json back with a specific http code
 #[derive(Debug)]
 pub(crate) struct ApiResponse {
-    /// The json to be sent back in serialized form
-    pub(crate) json: String,
+    /// The body to be sent back
+    pub(crate) body: &'static str,
     /// The statuscode to be used for the response (Status::Ok,Status::NotFound etc.)
     pub(crate) status: Status,
 }
 
 impl<'r> Responder<'r> for ApiResponse {
     fn respond_to(self, req: &Request) -> response::Result<'r> {
-        Response::build_from(self.json.respond_to(&req).unwrap())
+        Response::build_from(self.body.respond_to(&req).unwrap())
             .status(self.status)
-            .header(ContentType::JSON)
             .ok()
     }
 }

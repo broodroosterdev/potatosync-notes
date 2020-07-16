@@ -5,19 +5,21 @@ use rocket::request::FromRequest;
 use rocket_failure::errors::Status;
 use jsonwebtoken::{Validation, decode, DecodingKey};
 use serde::Deserialize;
-
+#[cfg(test)]
+use mocktopus::macros::*;
 /// Claims for access_token
 #[derive(Deserialize)]
 pub struct Token {
     pub(crate) sub: String,
-    role: String,
+    pub(crate) role: String,
     #[serde(rename = "type")]
-    token_type: String,
-    iat: u64,
-    exp: u64,
+    pub(crate) token_type: String,
+    pub(crate) iat: u64,
+    pub(crate) exp: u64,
 }
 
 /// Get access_token from header and verify it
+#[cfg_attr(test, mockable)]
 pub fn read_token(token: &str) -> Result<Token, String> {
     let secret = env::var("JWT_SECRET").expect("Could not find JWT_SECRET");
     let validation = Validation::default();

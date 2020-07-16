@@ -4,6 +4,7 @@ use serde_derive::*;
 
 use crate::schema::notes;
 use serde::{Serializer, Deserializer, Deserialize};
+use diesel::*;
 
 /// Special function to serialize Option<DateTime<Utc>>
 pub fn serialize_option<S>(dt: &Option<DateTime<Utc>>, serializer: S) -> Result<S::Ok, S::Error>
@@ -31,8 +32,8 @@ pub fn deserialize_option<'de, D>(d: D) -> Result<Option<DateTime<Utc>>, D::Erro
 }
 
 /// General Note struct used for retrieving from db and updating notes
-#[table_name = "notes"]
 #[derive(Queryable, Serialize, Deserialize, Insertable, AsChangeset, PartialEq, Clone)]
+#[table_name = "notes"]
 #[primary_key(note_id, account_id)]
 #[changeset_options(treat_none_as_null = "true")]
 // {"note_id": 1, "title": "Test", "content": "Test", "is_starred": false, "date": "2020-03-19T14:21:06.275Z", "color": 0, "image_url":null, "is_list": false, "list_parse_string":null, "reminders":null, "hide_content": false, "pin":null, "password":null, "is_deleted": false, "is_archived": false}

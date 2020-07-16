@@ -1,11 +1,11 @@
 use std::env;
 use std::ops::Deref;
 
-use diesel::pg::PgConnection;
 use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
 use rocket::{Outcome, Request, State};
 use rocket::http::Status;
 use rocket::request::{self, FromRequest};
+use diesel::PgConnection;
 
 /// An alias to the type for a pool of Diesel Postgres Connection
 pub type PgPool = Pool<ConnectionManager<PgConnection>>;
