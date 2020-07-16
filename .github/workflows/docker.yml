@@ -25,4 +25,7 @@ jobs:
           docker buildx inspect --bootstrap
           docker buildx ls
           echo Building Containers and Publishing them
-          docker buildx build --platform linux/arm,linux/arm64,linux/amd64 --progress plain --pull -t "basmakes/potatosync-rust" --push .
+          docker pull potatosync-rust:arm || true
+          docker buildx build --cache-from basmakes/potatosync-rust:arm --platform linux/arm --progress plain --pull -t "basmakes/potatosync-rust:arm" -f rpi.Dockerfile --push .
+          docker pull potatosync-rust:amd64 || true
+          docker buildx build --cache-from basmakes/potatosync-rust:amd64 --platform linux/amd64 --progress plain --pull -t "basmakes/potatosync-rust:amd64" -f amd64.Dockerfile --push .
