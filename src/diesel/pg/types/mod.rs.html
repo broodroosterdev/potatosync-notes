@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/diesel-1.4.5/src/pg/types/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../diesel/index.html'><div class='logo-container'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/pg/types/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../diesel/index.html'><div class='logo-container'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -490,23 +490,6 @@
 <span id="490">490</span>
 <span id="491">491</span>
 <span id="492">492</span>
-<span id="493">493</span>
-<span id="494">494</span>
-<span id="495">495</span>
-<span id="496">496</span>
-<span id="497">497</span>
-<span id="498">498</span>
-<span id="499">499</span>
-<span id="500">500</span>
-<span id="501">501</span>
-<span id="502">502</span>
-<span id="503">503</span>
-<span id="504">504</span>
-<span id="505">505</span>
-<span id="506">506</span>
-<span id="507">507</span>
-<span id="508">508</span>
-<span id="509">509</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! PostgreSQL specific types</span>
 
@@ -518,6 +501,7 @@
 <span class="kw">mod</span> <span class="ident">integers</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde_json&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">json</span>;
+<span class="kw">mod</span> <span class="ident">mac_addr</span>;
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">money</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;network-address&quot;</span>)]</span>
@@ -528,13 +512,14 @@
 <span class="kw">mod</span> <span class="ident">record</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;uuid&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">uuid</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;uuidv07&quot;</span>)]</span>
-<span class="kw">mod</span> <span class="ident">uuid_v0_7</span>;
 
 <span class="doccomment">/// PostgreSQL specific SQL types</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Note: All types in this module can be accessed through `diesel::sql_types`</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sql_types</span> {
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">query_builder</span>::<span class="ident">QueryId</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">SqlType</span>;
+
     <span class="doccomment">/// The `OID` SQL type. This is a PostgreSQL specific type.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ### [`ToSql`] impls</span>
@@ -617,17 +602,17 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Range</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span>(<span class="ident">ST</span>);
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Int4range</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span>::<span class="ident">sql_types</span>::<span class="ident">Int4</span><span class="op">&gt;</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Int4range</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">Int4</span><span class="op">&gt;</span>;
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Int8range</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span>::<span class="ident">sql_types</span>::<span class="ident">Int8</span><span class="op">&gt;</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Int8range</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">Int8</span><span class="op">&gt;</span>;
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Daterange</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span>::<span class="ident">sql_types</span>::<span class="ident">Date</span><span class="op">&gt;</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Daterange</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">Date</span><span class="op">&gt;</span>;
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Numrange</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span>::<span class="ident">sql_types</span>::<span class="ident">Numeric</span><span class="op">&gt;</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Numrange</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">Numeric</span><span class="op">&gt;</span>;
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Tsrange</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span>::<span class="ident">sql_types</span>::<span class="ident">Timestamp</span><span class="op">&gt;</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Tsrange</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">Timestamp</span><span class="op">&gt;</span>;
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Tstzrange</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span>::<span class="ident">sql_types</span>::<span class="ident">Timestamptz</span><span class="op">&gt;</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Tstzrange</span> <span class="op">=</span> <span class="ident">Range</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">Timestamptz</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// The `Record` (a.k.a. tuple) SQL type.</span>
     <span class="doccomment">///</span>
@@ -671,15 +656,16 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Record</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span>(<span class="ident">ST</span>);
 
     <span class="doccomment">/// Alias for `SmallInt`</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SmallSerial</span> <span class="op">=</span> ::<span class="ident">sql_types</span>::<span class="ident">SmallInt</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SmallSerial</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">SmallInt</span>;
 
     <span class="doccomment">/// Alias for `Integer`</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Serial</span> <span class="op">=</span> ::<span class="ident">sql_types</span>::<span class="ident">Integer</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Serial</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">Integer</span>;
 
     <span class="doccomment">/// Alias for `BigInt`</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BigSerial</span> <span class="op">=</span> ::<span class="ident">sql_types</span>::<span class="ident">BigInt</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">BigSerial</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">BigInt</span>;
 
     <span class="doccomment">/// The `UUID` SQL type. This type can only be used with `feature = &quot;uuid&quot;`</span>
+    <span class="doccomment">/// (uuid &lt;=0.6) or `feature = &quot;uuidv07&quot;` (uuid = 0.7)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ### [`ToSql`] impls</span>
     <span class="doccomment">///</span>
@@ -691,38 +677,17 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`ToSql`]: ../../../serialize/trait.ToSql.html</span>
     <span class="doccomment">/// [`FromSql`]: ../../../deserialize/trait.FromSql.html</span>
-    <span class="doccomment">/// [Uuid]: https://doc.rust-lang.org/uuid/uuid/struct.Uuid.html</span>
+    <span class="doccomment">/// [Uuid]: https://docs.rs/uuid/*/uuid/struct.Uuid.html</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Default</span>, <span class="ident">QueryId</span>, <span class="ident">SqlType</span>)]</span>
     <span class="attribute">#[<span class="ident">postgres</span>(<span class="ident">oid</span> <span class="op">=</span> <span class="string">&quot;2950&quot;</span>, <span class="ident">array_oid</span> <span class="op">=</span> <span class="string">&quot;2951&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Uuid</span>;
 
     <span class="doccomment">/// Alias for `Binary`, to ensure `infer_schema!` works</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Bytea</span> <span class="op">=</span> ::<span class="ident">sql_types</span>::<span class="ident">Binary</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Bytea</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">Binary</span>;
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Bpchar</span> <span class="op">=</span> ::<span class="ident">sql_types</span>::<span class="ident">VarChar</span>;
-
-    <span class="doccomment">/// The JSON SQL type.  This type can only be used with `feature =</span>
-    <span class="doccomment">/// &quot;serde_json&quot;`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Normally you should prefer [`Jsonb`](struct.Jsonb.html) instead, for the reasons</span>
-    <span class="doccomment">/// discussed there.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ### [`ToSql`] impls</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// - [`serde_json::Value`]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ### [`FromSql`] impls</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// - [`serde_json::Value`]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`ToSql`]: ../../../serialize/trait.ToSql.html</span>
-    <span class="doccomment">/// [`FromSql`]: ../../../deserialize/trait.FromSql.html</span>
-    <span class="doccomment">/// [`serde_json::Value`]: ../../../../serde_json/value/enum.Value.html</span>
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Default</span>, <span class="ident">QueryId</span>, <span class="ident">SqlType</span>)]</span>
-    <span class="attribute">#[<span class="ident">postgres</span>(<span class="ident">oid</span> <span class="op">=</span> <span class="string">&quot;114&quot;</span>, <span class="ident">array_oid</span> <span class="op">=</span> <span class="string">&quot;199&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Json</span>;
+    <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">Bpchar</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">VarChar</span>;
 
     <span class="doccomment">/// The `jsonb` SQL type.  This type can only be used with `feature =</span>
     <span class="doccomment">/// &quot;serde_json&quot;`</span>
@@ -761,8 +726,6 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
     <span class="doccomment">/// # #![allow(dead_code)]</span>
-    <span class="doccomment">/// extern crate serde_json;</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// table! {</span>
@@ -773,27 +736,31 @@
     <span class="doccomment">///     }</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// # #[cfg(feature = &quot;serde_json&quot;)]</span>
+    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
     <span class="doccomment">/// #     use diesel::insert_into;</span>
-    <span class="doccomment">/// #     use contacts::dsl::*;</span>
+    <span class="doccomment">/// #     use self::contacts::dsl::*;</span>
     <span class="doccomment">/// #     let connection = connection_no_data();</span>
-    <span class="doccomment">/// #     connection.execute(&quot;CREATE TABLE contacts (</span>
+    <span class="doccomment">/// #     diesel::sql_query(&quot;CREATE TABLE contacts (</span>
     <span class="doccomment">/// #         id SERIAL PRIMARY KEY,</span>
     <span class="doccomment">/// #         name VARCHAR NOT NULL,</span>
     <span class="doccomment">/// #         address JSONB NOT NULL</span>
-    <span class="doccomment">/// #     )&quot;).unwrap();</span>
+    <span class="doccomment">/// #     )&quot;).execute(&amp;connection)?;</span>
     <span class="doccomment">/// let santas_address: serde_json::Value = serde_json::from_str(r#&quot;{</span>
     <span class="doccomment">///     &quot;street&quot;: &quot;Article Circle Expressway 1&quot;,</span>
     <span class="doccomment">///     &quot;city&quot;: &quot;North Pole&quot;,</span>
     <span class="doccomment">///     &quot;postcode&quot;: &quot;99705&quot;,</span>
     <span class="doccomment">///     &quot;state&quot;: &quot;Alaska&quot;</span>
-    <span class="doccomment">/// }&quot;#).unwrap();</span>
+    <span class="doccomment">/// }&quot;#)?;</span>
     <span class="doccomment">/// let inserted_address = insert_into(contacts)</span>
     <span class="doccomment">///     .values((name.eq(&quot;Claus&quot;), address.eq(&amp;santas_address)))</span>
     <span class="doccomment">///     .returning(address)</span>
-    <span class="doccomment">///     .get_result(&amp;connection);</span>
-    <span class="doccomment">/// assert_eq!(Ok(santas_address), inserted_address);</span>
+    <span class="doccomment">///     .get_result::&lt;serde_json::Value&gt;(&amp;connection)?;</span>
+    <span class="doccomment">/// assert_eq!(santas_address, inserted_address);</span>
+    <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// # #[cfg(not(feature = &quot;serde_json&quot;))]</span>
+    <span class="doccomment">/// # fn main() {}</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Default</span>, <span class="ident">QueryId</span>, <span class="ident">SqlType</span>)]</span>
     <span class="attribute">#[<span class="ident">postgres</span>(<span class="ident">oid</span> <span class="op">=</span> <span class="string">&quot;3802&quot;</span>, <span class="ident">array_oid</span> <span class="op">=</span> <span class="string">&quot;3807&quot;</span>)]</span>
@@ -816,8 +783,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #![allow(dead_code)]</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// use diesel::data_types::Cents;</span>
     <span class="doccomment">///</span>
@@ -831,7 +796,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # fn main() {</span>
     <span class="doccomment">/// #     use diesel::insert_into;</span>
-    <span class="doccomment">/// #     use items::dsl::*;</span>
+    <span class="doccomment">/// #     use self::items::dsl::*;</span>
     <span class="doccomment">/// #     let connection = connection_no_data();</span>
     <span class="doccomment">/// #     connection.execute(&quot;CREATE TABLE items (</span>
     <span class="doccomment">/// #         id SERIAL PRIMARY KEY,</span>
@@ -849,7 +814,7 @@
     <span class="attribute">#[<span class="ident">postgres</span>(<span class="ident">oid</span> <span class="op">=</span> <span class="string">&quot;790&quot;</span>, <span class="ident">array_oid</span> <span class="op">=</span> <span class="string">&quot;791&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Money</span>;
 
-    <span class="doccomment">/// The [`MACADDR`](https://www.postgresql.org/docs/9.6/static/datatype-net-types.html) SQL type. This type can only be used with `feature = &quot;network-address&quot;`</span>
+    <span class="doccomment">/// The [`MACADDR`](https://www.postgresql.org/docs/9.6/static/datatype-net-types.html) SQL type.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ### [`ToSql`] impls</span>
     <span class="doccomment">///</span>
@@ -865,8 +830,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #![allow(dead_code)]</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// table! {</span>
     <span class="doccomment">///     devices {</span>
@@ -875,19 +838,20 @@
     <span class="doccomment">///     }</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
     <span class="doccomment">/// #     use diesel::insert_into;</span>
-    <span class="doccomment">/// #     use devices::dsl::*;</span>
+    <span class="doccomment">/// #     use self::devices::dsl::*;</span>
     <span class="doccomment">/// #     let connection = connection_no_data();</span>
-    <span class="doccomment">/// #     connection.execute(&quot;CREATE TABLE devices (</span>
+    <span class="doccomment">/// #     diesel::sql_query(&quot;CREATE TABLE devices (</span>
     <span class="doccomment">/// #         id SERIAL PRIMARY KEY,</span>
     <span class="doccomment">/// #         macaddr MACADDR NOT NULL</span>
-    <span class="doccomment">/// #     )&quot;).unwrap();</span>
+    <span class="doccomment">/// #     )&quot;).execute(&amp;connection)?;</span>
     <span class="doccomment">/// let inserted_macaddr = insert_into(devices)</span>
     <span class="doccomment">///     .values(macaddr.eq([0x08, 0x00, 0x2b, 0x01, 0x02, 0x03]))</span>
     <span class="doccomment">///     .returning(macaddr)</span>
-    <span class="doccomment">///     .get_result(&amp;connection);</span>
-    <span class="doccomment">/// assert_eq!(Ok([0x08, 0x00, 0x2b, 0x01, 0x02, 0x03]), inserted_macaddr);</span>
+    <span class="doccomment">///     .get_result::&lt;[u8; 6]&gt;(&amp;connection)?;</span>
+    <span class="doccomment">/// assert_eq!([0x08, 0x00, 0x2b, 0x01, 0x02, 0x03], inserted_macaddr);</span>
+    <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Default</span>, <span class="ident">QueryId</span>, <span class="ident">SqlType</span>)]</span>
@@ -915,13 +879,8 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #![allow(dead_code)]</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
-    <span class="doccomment">/// extern crate ipnetwork;</span>
-    <span class="doccomment">/// use ipnetwork::IpNetwork;</span>
-    <span class="doccomment">///</span>
     <span class="doccomment">/// table! {</span>
     <span class="doccomment">///     clients {</span>
     <span class="doccomment">///         id -&gt; Integer,</span>
@@ -929,22 +888,28 @@
     <span class="doccomment">///     }</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// # #[cfg(feature = &quot;network-address&quot;)]</span>
+    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
+    <span class="doccomment">/// use ipnetwork::IpNetwork;</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// #     use diesel::insert_into;</span>
-    <span class="doccomment">/// #     use clients::dsl::*;</span>
-    <span class="doccomment">/// #     use std::str::FromStr;</span>
+    <span class="doccomment">/// #     use self::clients::dsl::*;</span>
     <span class="doccomment">/// #     let connection = connection_no_data();</span>
-    <span class="doccomment">/// #     connection.execute(&quot;CREATE TABLE clients (</span>
+    <span class="doccomment">/// #     diesel::sql_query(&quot;CREATE TABLE clients (</span>
     <span class="doccomment">/// #         id SERIAL PRIMARY KEY,</span>
     <span class="doccomment">/// #         ip_address INET NOT NULL</span>
-    <span class="doccomment">/// #     )&quot;).unwrap();</span>
-    <span class="doccomment">/// let addr = IpNetwork::from_str(&quot;10.1.9.32/32&quot;).unwrap();</span>
+    <span class="doccomment">/// #     )&quot;).execute(&amp;connection)?;</span>
+    <span class="doccomment">/// let addr = &quot;10.1.9.32/32&quot;.parse::&lt;IpNetwork&gt;()?;</span>
     <span class="doccomment">/// let inserted_address = insert_into(clients)</span>
     <span class="doccomment">///     .values(ip_address.eq(&amp;addr))</span>
     <span class="doccomment">///     .returning(ip_address)</span>
-    <span class="doccomment">///     .get_result(&amp;connection);</span>
-    <span class="doccomment">/// assert_eq!(Ok(addr), inserted_address);</span>
+    <span class="doccomment">///     .get_result(&amp;connection)?;</span>
+    <span class="doccomment">/// assert_eq!(addr, inserted_address);</span>
+    <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// #</span>
+    <span class="doccomment">/// # #[cfg(not(feature = &quot;network-address&quot;))]</span>
+    <span class="doccomment">/// # fn main() {}</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Default</span>, <span class="ident">QueryId</span>, <span class="ident">SqlType</span>)]</span>
     <span class="attribute">#[<span class="ident">postgres</span>(<span class="ident">oid</span> <span class="op">=</span> <span class="string">&quot;869&quot;</span>, <span class="ident">array_oid</span> <span class="op">=</span> <span class="string">&quot;1041&quot;</span>)]</span>
@@ -968,11 +933,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
     <span class="doccomment">/// # #![allow(dead_code)]</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../../doctest_setup.rs&quot;);</span>
-    <span class="doccomment">/// extern crate ipnetwork;</span>
-    <span class="doccomment">/// use ipnetwork::IpNetwork;</span>
-    <span class="doccomment">///</span>
     <span class="doccomment">/// table! {</span>
     <span class="doccomment">///     clients {</span>
     <span class="doccomment">///         id -&gt; Integer,</span>
@@ -980,22 +941,27 @@
     <span class="doccomment">///     }</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// # #[cfg(feature = &quot;network-address&quot;)]</span>
+    <span class="doccomment">/// # fn main() -&gt; Result&lt;(), Box&lt;dyn std::error::Error&gt;&gt; {</span>
+    <span class="doccomment">/// use ipnetwork::IpNetwork;</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// #     use diesel::insert_into;</span>
-    <span class="doccomment">/// #     use clients::dsl::*;</span>
-    <span class="doccomment">/// #     use std::str::FromStr;</span>
+    <span class="doccomment">/// #     use self::clients::dsl::*;</span>
     <span class="doccomment">/// #     let connection = connection_no_data();</span>
-    <span class="doccomment">/// #     connection.execute(&quot;CREATE TABLE clients (</span>
+    <span class="doccomment">/// #     diesel::sql_query(&quot;CREATE TABLE clients (</span>
     <span class="doccomment">/// #         id SERIAL PRIMARY KEY,</span>
     <span class="doccomment">/// #         ip_address CIDR NOT NULL</span>
-    <span class="doccomment">/// #     )&quot;).unwrap();</span>
-    <span class="doccomment">/// let addr = IpNetwork::from_str(&quot;10.1.9.32/32&quot;).unwrap();</span>
+    <span class="doccomment">/// #     )&quot;).execute(&amp;connection)?;</span>
+    <span class="doccomment">/// let addr = &quot;10.1.9.32/32&quot;.parse::&lt;IpNetwork&gt;()?;</span>
     <span class="doccomment">/// let inserted_addr = insert_into(clients)</span>
     <span class="doccomment">///     .values(ip_address.eq(&amp;addr))</span>
     <span class="doccomment">///     .returning(ip_address)</span>
-    <span class="doccomment">///     .get_result(&amp;connection);</span>
-    <span class="doccomment">/// assert_eq!(Ok(addr), inserted_addr);</span>
+    <span class="doccomment">///     .get_result(&amp;connection)?;</span>
+    <span class="doccomment">/// assert_eq!(addr, inserted_addr);</span>
+    <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// # #[cfg(not(feature = &quot;network-address&quot;))]</span>
+    <span class="doccomment">/// # fn main() {}</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Default</span>, <span class="ident">QueryId</span>, <span class="ident">SqlType</span>)]</span>
     <span class="attribute">#[<span class="ident">postgres</span>(<span class="ident">oid</span> <span class="op">=</span> <span class="string">&quot;650&quot;</span>, <span class="ident">array_oid</span> <span class="op">=</span> <span class="string">&quot;651&quot;</span>)]</span>
@@ -1004,8 +970,8 @@
 
 <span class="kw">mod</span> <span class="ident">ops</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">sql_types</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">sql_types</span>::<span class="ident">ops</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">sql_types</span>::<span class="ident">Interval</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">ops</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">Interval</span>;
 
     <span class="kw">impl</span> <span class="ident">Add</span> <span class="kw">for</span> <span class="ident">Timestamptz</span> {
         <span class="kw">type</span> <span class="ident">Rhs</span> <span class="op">=</span> <span class="ident">Interval</span>;

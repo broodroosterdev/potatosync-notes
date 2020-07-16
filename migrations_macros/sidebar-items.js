@@ -1,1 +1,1 @@
-initSidebarItems({"derive":[["EmbedMigrations",""]]});
+initSidebarItems({"macro":[["embed_migrations","This macro will read your migrations at compile time, and embed a module you can use to execute them at runtime without the migration files being present on the file system. This is useful if you would like to use Diesel's migration infrastructure, but want to ship a single executable file (such as for embedded applications). It can also be used to apply migrations to an in memory database (Diesel does this for its own test suite)."]]});

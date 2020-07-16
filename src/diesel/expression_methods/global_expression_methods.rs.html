@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/diesel-1.4.5/src/expression_methods/global_expression_methods.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>global_expression_methods.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/expression_methods/global_expression_methods.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>global_expression_methods.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -431,57 +431,11 @@
 <span id="431">431</span>
 <span id="432">432</span>
 <span id="433">433</span>
-<span id="434">434</span>
-<span id="435">435</span>
-<span id="436">436</span>
-<span id="437">437</span>
-<span id="438">438</span>
-<span id="439">439</span>
-<span id="440">440</span>
-<span id="441">441</span>
-<span id="442">442</span>
-<span id="443">443</span>
-<span id="444">444</span>
-<span id="445">445</span>
-<span id="446">446</span>
-<span id="447">447</span>
-<span id="448">448</span>
-<span id="449">449</span>
-<span id="450">450</span>
-<span id="451">451</span>
-<span id="452">452</span>
-<span id="453">453</span>
-<span id="454">454</span>
-<span id="455">455</span>
-<span id="456">456</span>
-<span id="457">457</span>
-<span id="458">458</span>
-<span id="459">459</span>
-<span id="460">460</span>
-<span id="461">461</span>
-<span id="462">462</span>
-<span id="463">463</span>
-<span id="464">464</span>
-<span id="465">465</span>
-<span id="466">466</span>
-<span id="467">467</span>
-<span id="468">468</span>
-<span id="469">469</span>
-<span id="470">470</span>
-<span id="471">471</span>
-<span id="472">472</span>
-<span id="473">473</span>
-<span id="474">474</span>
-<span id="475">475</span>
-<span id="476">476</span>
-<span id="477">477</span>
-<span id="478">478</span>
-<span id="479">479</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">expression</span>::<span class="ident">array_comparison</span>::{<span class="ident">AsInExpression</span>, <span class="ident">In</span>, <span class="ident">NotIn</span>};
-<span class="kw">use</span> <span class="ident">expression</span>::<span class="ident">operators</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">expression</span>::{<span class="ident">nullable</span>, <span class="ident">AsExpression</span>, <span class="ident">Expression</span>};
-<span class="kw">use</span> <span class="ident">sql_types</span>::<span class="ident">SingleValue</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">expression</span>::<span class="ident">array_comparison</span>::{<span class="ident">AsInExpression</span>, <span class="ident">In</span>, <span class="ident">NotIn</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">expression</span>::<span class="ident">operators</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">expression</span>::{<span class="ident">nullable</span>, <span class="ident">AsExpression</span>, <span class="ident">Expression</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">SingleValue</span>;
 
 <span class="doccomment">/// Methods present on all expressions, except tuples</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ExpressionMethods</span>: <span class="ident">Expression</span> <span class="op">+</span> <span class="ident">Sized</span> {
@@ -490,7 +444,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -509,7 +462,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -533,7 +485,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -556,37 +507,6 @@
         <span class="ident">In</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">values</span>.<span class="ident">as_in_expression</span>())
     }
 
-    <span class="doccomment">/// Deprecated alias for `ne_all`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
-    <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
-    <span class="doccomment">/// #</span>
-    <span class="doccomment">/// # fn main() {</span>
-    <span class="doccomment">/// #     use schema::users::dsl::*;</span>
-    <span class="doccomment">/// #     let connection = establish_connection();</span>
-    <span class="doccomment">/// #     connection.execute(&quot;INSERT INTO users (name) VALUES</span>
-    <span class="doccomment">/// #         (&#39;Jim&#39;)&quot;).unwrap();</span>
-    <span class="doccomment">/// let data = users.select(id).filter(name.ne_any(vec![&quot;Sean&quot;, &quot;Jim&quot;]));</span>
-    <span class="doccomment">/// assert_eq!(Ok(vec![2]), data.load(&amp;connection));</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let data = users.select(id).filter(name.ne_any(vec![&quot;Tess&quot;]));</span>
-    <span class="doccomment">/// assert_eq!(Ok(vec![1, 3]), data.load(&amp;connection));</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // Calling `ne_any` with an empty array is the same as doing `WHERE 1=1`</span>
-    <span class="doccomment">/// let data = users.select(id).filter(name.ne_any(Vec::&lt;String&gt;::new()));</span>
-    <span class="doccomment">/// assert_eq!(Ok(vec![1, 2, 3]), data.load(&amp;connection));</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;with-deprecated&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;1.2.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use `ne_all` instead&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">ne_any</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">values</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NotIn</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">InExpression</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">T</span>: <span class="ident">AsInExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span>,
-    {
-        <span class="ident">NotIn</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">values</span>.<span class="ident">as_in_expression</span>())
-    }
-
     <span class="doccomment">/// Creates a SQL `NOT IN` statement.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Queries using this method will not be</span>
@@ -597,7 +517,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -628,7 +547,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -655,7 +573,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -682,7 +599,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -709,7 +625,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -736,7 +651,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -763,7 +677,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -790,7 +703,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -819,7 +731,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -855,7 +766,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -888,7 +798,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -923,7 +832,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">/// ```no_run</span>
     <span class="doccomment">/// # #![allow(dead_code)]</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # use diesel::sql_types::*;</span>
     <span class="doccomment">/// # use schema::users;</span>

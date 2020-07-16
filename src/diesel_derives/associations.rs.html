@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/diesel_derives-1.4.1/src/associations.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>associations.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../diesel_derives/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel_derives/src/associations.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>associations.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../diesel_derives/index.html'><div class='logo-container'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -191,6 +191,19 @@
 <span id="191">191</span>
 <span id="192">192</span>
 <span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">proc_macro2</span>;
 <span class="kw">use</span> <span class="ident">proc_macro2</span>::<span class="ident">Span</span>;
@@ -217,10 +230,7 @@
             },
         );
 
-    <span class="prelude-val">Ok</span>(<span class="ident">wrap_in_dummy_mod</span>(
-        <span class="ident">model</span>.<span class="ident">dummy_mod_name</span>(<span class="string">&quot;associations&quot;</span>),
-        <span class="macro">quote</span><span class="macro">!</span>(#(#<span class="ident">tokens</span>)<span class="kw-2">*</span>),
-    ))
+    <span class="prelude-val">Ok</span>(<span class="ident">wrap_in_dummy_mod</span>(<span class="macro">quote</span><span class="macro">!</span>(#(#<span class="ident">tokens</span>)<span class="kw-2">*</span>)))
 }
 
 <span class="kw">fn</span> <span class="ident">derive_belongs_to</span>(
@@ -237,7 +247,7 @@
     <span class="kw">let</span> <span class="ident">foreign_key_field</span> <span class="op">=</span> <span class="ident">model</span>.<span class="ident">find_column</span>(<span class="kw-2">&amp;</span><span class="ident">foreign_key</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">struct_name</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">model</span>.<span class="ident">name</span>;
     <span class="kw">let</span> <span class="ident">foreign_key_access</span> <span class="op">=</span> <span class="ident">foreign_key_field</span>.<span class="ident">name</span>.<span class="ident">access</span>();
-    <span class="kw">let</span> <span class="ident">foreign_key_ty</span> <span class="op">=</span> <span class="ident">inner_of_option_ty</span>(<span class="kw-2">&amp;</span><span class="ident">foreign_key_field</span>.<span class="ident">ty</span>);
+    <span class="kw">let</span> <span class="ident">foreign_key_ty</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">foreign_key_field</span>.<span class="ident">ty</span>;
     <span class="kw">let</span> <span class="ident">table_name</span> <span class="op">=</span> <span class="ident">model</span>.<span class="ident">table_name</span>();
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">generics</span> <span class="op">=</span> <span class="ident">generics</span>.<span class="ident">clone</span>();
@@ -250,34 +260,22 @@
     })
     .<span class="ident">fold_type_path</span>(<span class="ident">parent_struct</span>);
 
-    <span class="comment">// TODO: Remove this special casing as soon as we bump our minimal supported</span>
-    <span class="comment">// rust version to &gt;= 1.30.0 because this version will add</span>
-    <span class="comment">// `impl&lt;&#39;a, T&gt; From&lt;&amp;&#39;a Option&lt;T&gt;&gt; for Option&lt;&amp;&#39;a T&gt;` to the std-lib</span>
-    <span class="kw">let</span> (<span class="ident">foreign_key_expr</span>, <span class="ident">foreign_key_ty</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">is_option_ty</span>(<span class="kw-2">&amp;</span><span class="ident">foreign_key_field</span>.<span class="ident">ty</span>) {
-        (
-            <span class="macro">quote</span><span class="macro">!</span>(<span class="self">self</span>#<span class="ident">foreign_key_access</span>.<span class="ident">as_ref</span>()),
-            <span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">foreign_key_ty</span>),
-        )
-    } <span class="kw">else</span> {
-        <span class="ident">generics</span>.<span class="ident">params</span>.<span class="ident">push</span>(<span class="macro">parse_quote</span><span class="macro">!</span>(<span class="ident">__FK</span>));
-        {
-            <span class="kw">let</span> <span class="ident">where_clause</span> <span class="op">=</span> <span class="ident">generics</span>.<span class="ident">where_clause</span>.<span class="ident">get_or_insert</span>(<span class="macro">parse_quote</span><span class="macro">!</span>(<span class="kw">where</span>));
-            <span class="ident">where_clause</span>
-                .<span class="ident">predicates</span>
-                .<span class="ident">push</span>(<span class="macro">parse_quote</span><span class="macro">!</span>(<span class="ident">__FK</span>: <span class="ident">std</span>::<span class="ident">hash</span>::<span class="ident">Hash</span> <span class="op">+</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">Eq</span>));
-            <span class="ident">where_clause</span>.<span class="ident">predicates</span>.<span class="ident">push</span>(
+    <span class="ident">generics</span>.<span class="ident">params</span>.<span class="ident">push</span>(<span class="macro">parse_quote</span><span class="macro">!</span>(<span class="ident">__FK</span>));
+    {
+        <span class="kw">let</span> <span class="ident">where_clause</span> <span class="op">=</span> <span class="ident">generics</span>.<span class="ident">where_clause</span>.<span class="ident">get_or_insert</span>(<span class="macro">parse_quote</span><span class="macro">!</span>(<span class="kw">where</span>));
+        <span class="ident">where_clause</span>
+            .<span class="ident">predicates</span>
+            .<span class="ident">push</span>(<span class="macro">parse_quote</span><span class="macro">!</span>(<span class="ident">__FK</span>: <span class="ident">std</span>::<span class="ident">hash</span>::<span class="ident">Hash</span> <span class="op">+</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">Eq</span>));
+        <span class="ident">where_clause</span>.<span class="ident">predicates</span>.<span class="ident">push</span>(
                 <span class="macro">parse_quote</span><span class="macro">!</span>(<span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;__a</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;__a</span> #<span class="ident">foreign_key_ty</span>: <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">Into</span><span class="op">&lt;</span>::<span class="ident">std</span>::<span class="ident">option</span>::<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;__a</span> <span class="ident">__FK</span><span class="op">&gt;</span><span class="op">&gt;</span>),
             );
-            <span class="ident">where_clause</span>.<span class="ident">predicates</span>.<span class="ident">push</span>(
+        <span class="ident">where_clause</span>.<span class="ident">predicates</span>.<span class="ident">push</span>(
                 <span class="macro">parse_quote</span><span class="macro">!</span>(<span class="kw">for</span><span class="op">&lt;</span><span class="lifetime">&#39;__a</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;__a</span> #<span class="ident">parent_struct</span>: <span class="ident">diesel</span>::<span class="ident">associations</span>::<span class="ident">Identifiable</span><span class="op">&lt;</span><span class="ident">Id</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;__a</span> <span class="ident">__FK</span><span class="op">&gt;</span>),
             );
-        }
+    }
 
-        (
-            <span class="macro">quote</span><span class="macro">!</span>(<span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">Into</span>::<span class="ident">into</span>(<span class="kw-2">&amp;</span><span class="self">self</span>#<span class="ident">foreign_key_access</span>)),
-            <span class="macro">quote</span><span class="macro">!</span>(<span class="ident">__FK</span>),
-        )
-    };
+    <span class="kw">let</span> <span class="ident">foreign_key_expr</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>(<span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">Into</span>::<span class="ident">into</span>(<span class="kw-2">&amp;</span><span class="self">self</span>#<span class="ident">foreign_key_access</span>));
+    <span class="kw">let</span> <span class="ident">foreign_key_ty</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>(<span class="ident">__FK</span>);
 
     <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="kw">_</span>, <span class="ident">where_clause</span>) <span class="op">=</span> <span class="ident">generics</span>.<span class="ident">split_for_impl</span>();
 
@@ -336,10 +334,38 @@
                 .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">infer_foreign_key</span>(<span class="kw-2">&amp;</span><span class="ident">parent_struct_name</span>.<span class="ident">ident</span>)))<span class="question-mark">?</span>
         };
 
-        <span class="kw">let</span> <span class="ident">unrecognized_options</span> <span class="op">=</span> <span class="ident">meta</span>
+        <span class="kw">let</span> (<span class="ident">unrecognized_paths</span>, <span class="ident">unrecognized_options</span>): (<span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>) <span class="op">=</span> <span class="ident">meta</span>
             .<span class="ident">nested</span>()<span class="question-mark">?</span>
             .<span class="ident">skip</span>(<span class="number">1</span>)
-            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> <span class="op">!</span><span class="ident">n</span>.<span class="ident">name</span>().<span class="ident">is_ident</span>(<span class="string">&quot;foreign_key&quot;</span>));
+            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">n</span><span class="op">|</span> <span class="op">!</span><span class="ident">n</span>.<span class="ident">name</span>().<span class="ident">is_ident</span>(<span class="string">&quot;foreign_key&quot;</span>))
+            .<span class="ident">partition</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="ident">path</span>().<span class="ident">is_ok</span>());
+
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">unrecognized_paths</span>.<span class="ident">is_empty</span>() {
+            <span class="kw">let</span> <span class="ident">parent_path_string</span> <span class="op">=</span> <span class="ident">path_to_string</span>(<span class="kw-2">&amp;</span><span class="ident">parent_struct</span>.<span class="ident">path</span>);
+            <span class="kw">let</span> <span class="ident">unrecognized_path_strings</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">unrecognized_paths</span>
+                .<span class="ident">iter</span>()
+                .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="ident">path</span>().<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="ident">path_to_string</span>).<span class="ident">ok</span>())
+                .<span class="ident">collect</span>();
+
+            <span class="ident">meta</span>.<span class="ident">span</span>()
+                .<span class="ident">warning</span>(<span class="macro">format</span><span class="macro">!</span>(
+                    <span class="string">&quot;belongs_to takes a single parent. Change\n\
+                     \tbelongs_to({}, {})\n\
+                     to\n\
+                     \tbelongs_to({})\n\
+                     {}&quot;</span>,
+                    <span class="ident">parent_path_string</span>,
+                    <span class="ident">unrecognized_path_strings</span>.<span class="ident">join</span>(<span class="string">&quot;,&quot;</span>),
+                    <span class="ident">parent_path_string</span>,
+                    <span class="ident">unrecognized_path_strings</span>
+                        .<span class="ident">iter</span>()
+                        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;\tbelongs_to({})&quot;</span>, <span class="ident">path</span>))
+                        .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>()
+                        .<span class="ident">join</span>(<span class="string">&quot;\n&quot;</span>)
+                ))
+                .<span class="ident">emit</span>();
+        }
+
         <span class="kw">for</span> <span class="ident">ignored</span> <span class="kw">in</span> <span class="ident">unrecognized_options</span> {
             <span class="ident">ignored</span>
                 .<span class="ident">span</span>()

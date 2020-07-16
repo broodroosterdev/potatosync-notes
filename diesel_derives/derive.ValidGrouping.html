@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `ValidGrouping` derive in crate `diesel_derives`."><meta name="keywords" content="rust, rustlang, rust-lang, ValidGrouping"><title>diesel_derives::ValidGrouping - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc derive"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../diesel_derives/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><div class="sidebar-elems"><p class='location'><a href='index.html'>diesel_derives</a></p><script>window.sidebarCurrent = {name: 'ValidGrouping', ty: 'derive', relpath: ''};</script><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/diesel_derives/lib.rs.html#478-480' title='goto source code'>[src]</a></span><span class='in-band'>Derive Macro <a href='index.html'>diesel_derives</a>::<wbr><a class="derive" href=''>ValidGrouping</a></span></h1><pre class='rust derive'>#[derive(ValidGrouping)]
+{
+    // Attributes available to this derive:
+    #[diesel]
+}</pre><div class='docblock'><p>Implements <code>ValidGrouping</code></p>
+<p>This trait can be automatically derived for structs with no type parameters
+which are never aggregate, as well as for structs which are <code>NonAggregate</code>
+when all type parameters are <code>NonAggregate</code>. For example:</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ<span class='tooltiptext'>This example is not tested</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">ValidGrouping</span>)]</span>
+<span class="kw">struct</span> <span class="ident">LiteralOne</span>;
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">ValidGrouping</span>)]</span>
+<span class="kw">struct</span> <span class="ident">Plus</span><span class="op">&lt;</span><span class="ident">Lhs</span>, <span class="ident">Rhs</span><span class="op">&gt;</span>(<span class="ident">Lhs</span>, <span class="ident">Rhs</span>);
+
+<span class="comment">// The following impl will be generated:</span>
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">GroupByClause</span><span class="op">&gt;</span> <span class="ident">ValidGrouping</span><span class="op">&lt;</span><span class="ident">GroupByClause</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LiteralOne</span> {
+    <span class="kw">type</span> <span class="ident">IsAggregate</span> <span class="op">=</span> <span class="ident">is_aggregate</span>::<span class="ident">Never</span>;
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Lhs</span>, <span class="ident">Rhs</span>, <span class="ident">GroupByClause</span><span class="op">&gt;</span> <span class="ident">ValidGrouping</span><span class="op">&lt;</span><span class="ident">GroupByClause</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Plus</span><span class="op">&lt;</span><span class="ident">Lhs</span>, <span class="ident">Rhs</span><span class="op">&gt;</span>
+<span class="kw">where</span>
+    <span class="ident">Lhs</span>: <span class="ident">ValidGrouping</span><span class="op">&lt;</span><span class="ident">GroupByClause</span><span class="op">&gt;</span>,
+    <span class="ident">Rhs</span>: <span class="ident">ValidGrouping</span><span class="op">&lt;</span><span class="ident">GroupByClause</span><span class="op">&gt;</span>,
+    <span class="ident">Lhs</span>::<span class="ident">IsAggregate</span>: <span class="ident">MixedAggregates</span><span class="op">&lt;</span><span class="ident">Rhs</span>::<span class="ident">IsAggregate</span><span class="op">&gt;</span>,
+{
+    <span class="kw">type</span> <span class="ident">IsAggregate</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Lhs</span>::<span class="ident">IsAggregate</span> <span class="kw">as</span> <span class="ident">MixedAggregates</span><span class="op">&lt;</span><span class="ident">Rhs</span>::<span class="ident">IsAggregate</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Output</span>;
+}</pre></div>
+<p>For types which are always considered aggregate (such as an aggregate
+function), annotate your struct with <code>#[diesel(aggregate)]</code> to set <code>IsAggregate</code>
+explicitly to <code>is_aggregate::Yes</code>.</p>
+<h1 id="attributes" class="section-header"><a href="#attributes">Attributes</a></h1><h2 id="optional-type-attributes" class="section-header"><a href="#optional-type-attributes">Optional type attributes</a></h2>
+<ul>
+<li><code>#[diesel(aggregate)]</code> for cases where the type represents an aggregating
+SQL expression</li>
+</ul>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../";window.currentCrate = "diesel_derives";</script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

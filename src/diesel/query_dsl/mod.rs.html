@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/diesel-1.4.5/src/query_dsl/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/query_dsl/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1301,58 +1301,6 @@
 <span id="1301">1301</span>
 <span id="1302">1302</span>
 <span id="1303">1303</span>
-<span id="1304">1304</span>
-<span id="1305">1305</span>
-<span id="1306">1306</span>
-<span id="1307">1307</span>
-<span id="1308">1308</span>
-<span id="1309">1309</span>
-<span id="1310">1310</span>
-<span id="1311">1311</span>
-<span id="1312">1312</span>
-<span id="1313">1313</span>
-<span id="1314">1314</span>
-<span id="1315">1315</span>
-<span id="1316">1316</span>
-<span id="1317">1317</span>
-<span id="1318">1318</span>
-<span id="1319">1319</span>
-<span id="1320">1320</span>
-<span id="1321">1321</span>
-<span id="1322">1322</span>
-<span id="1323">1323</span>
-<span id="1324">1324</span>
-<span id="1325">1325</span>
-<span id="1326">1326</span>
-<span id="1327">1327</span>
-<span id="1328">1328</span>
-<span id="1329">1329</span>
-<span id="1330">1330</span>
-<span id="1331">1331</span>
-<span id="1332">1332</span>
-<span id="1333">1333</span>
-<span id="1334">1334</span>
-<span id="1335">1335</span>
-<span id="1336">1336</span>
-<span id="1337">1337</span>
-<span id="1338">1338</span>
-<span id="1339">1339</span>
-<span id="1340">1340</span>
-<span id="1341">1341</span>
-<span id="1342">1342</span>
-<span id="1343">1343</span>
-<span id="1344">1344</span>
-<span id="1345">1345</span>
-<span id="1346">1346</span>
-<span id="1347">1347</span>
-<span id="1348">1348</span>
-<span id="1349">1349</span>
-<span id="1350">1350</span>
-<span id="1351">1351</span>
-<span id="1352">1352</span>
-<span id="1353">1353</span>
-<span id="1354">1354</span>
-<span id="1355">1355</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Traits that construct SELECT statements</span>
 <span class="doccomment">//!</span>
@@ -1369,14 +1317,14 @@
 <span class="doccomment">//! [`QueryDsl`]: trait.QueryDsl.html</span>
 <span class="doccomment">//! [`RunQueryDsl`]: trait.RunQueryDsl.html</span>
 
-<span class="kw">use</span> <span class="ident">backend</span>::<span class="ident">Backend</span>;
-<span class="kw">use</span> <span class="ident">connection</span>::<span class="ident">Connection</span>;
-<span class="kw">use</span> <span class="ident">expression</span>::<span class="ident">count</span>::<span class="ident">CountStar</span>;
-<span class="kw">use</span> <span class="ident">expression</span>::<span class="ident">Expression</span>;
-<span class="kw">use</span> <span class="ident">helper_types</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">query_builder</span>::<span class="ident">locking_clause</span> <span class="kw">as</span> <span class="ident">lock</span>;
-<span class="kw">use</span> <span class="ident">query_source</span>::{<span class="ident">joins</span>, <span class="ident">Table</span>};
-<span class="kw">use</span> <span class="ident">result</span>::{<span class="ident">first_or_not_found</span>, <span class="ident">QueryResult</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">backend</span>::<span class="ident">Backend</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">connection</span>::<span class="ident">Connection</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">expression</span>::<span class="ident">count</span>::<span class="ident">CountStar</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">expression</span>::<span class="ident">Expression</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helper_types</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">query_builder</span>::<span class="ident">locking_clause</span> <span class="kw">as</span> <span class="ident">lock</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">query_source</span>::{<span class="ident">joins</span>, <span class="ident">Table</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">result</span>::{<span class="ident">first_or_not_found</span>, <span class="ident">QueryResult</span>};
 
 <span class="kw">mod</span> <span class="ident">belonging_to_dsl</span>;
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -1420,9 +1368,6 @@
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">filter_dsl</span>::<span class="kw-2">*</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">limit_dsl</span>::<span class="ident">LimitDsl</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">load_dsl</span>::{<span class="ident">ExecuteDsl</span>, <span class="ident">LoadQuery</span>};
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;with-deprecated&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">locking_dsl</span>::<span class="ident">ForUpdateDsl</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">locking_dsl</span>::{<span class="ident">LockingDsl</span>, <span class="ident">ModifyLockDsl</span>};
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">nullable_select_dsl</span>::<span class="ident">SelectNullableDsl</span>;
     <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">offset_dsl</span>::<span class="ident">OffsetDsl</span>;
@@ -1442,7 +1387,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -1476,7 +1420,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # use schema::animals;</span>
     <span class="doccomment">/// #</span>
@@ -1548,7 +1491,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # use schema::users;</span>
     <span class="doccomment">/// #</span>
@@ -1572,7 +1514,6 @@
     <span class="doccomment">/// ### When used with a left join</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # use schema::{users, posts};</span>
     <span class="doccomment">/// #</span>
@@ -1655,7 +1596,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -1669,7 +1609,7 @@
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">SelectDsl</span><span class="op">&lt;</span><span class="ident">CountStar</span><span class="op">&gt;</span>,
     {
-        <span class="kw">use</span> <span class="ident">dsl</span>::<span class="ident">count_star</span>;
+        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dsl</span>::<span class="ident">count_star</span>;
 
         <span class="ident">QueryDsl</span>::<span class="ident">select</span>(<span class="self">self</span>, <span class="ident">count_star</span>())
     }
@@ -1690,7 +1630,7 @@
     <span class="doccomment">/// aliases.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// You will also need to call [`allow_tables_to_appear_in_same_query!`].</span>
-    <span class="doccomment">/// If you are using `infer_schema!` or `diesel print-schema`, this will</span>
+    <span class="doccomment">/// If you are using `diesel print-schema`, this will</span>
     <span class="doccomment">/// have been generated for you.</span>
     <span class="doccomment">/// See the documentation for [`allow_tables_to_appear_in_same_query!`] for</span>
     <span class="doccomment">/// details.</span>
@@ -1724,7 +1664,6 @@
     <span class="doccomment">/// ### With implicit `ON` clause</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # use schema::{users, posts};</span>
     <span class="doccomment">/// # /*</span>
@@ -1752,7 +1691,6 @@
     <span class="doccomment">/// ### With explicit `ON` clause</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # use schema::{users, posts};</span>
     <span class="doccomment">/// #</span>
@@ -1820,7 +1758,6 @@
     <span class="doccomment">/// # Example:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -1851,7 +1788,6 @@
     <span class="doccomment">/// # Example:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -1895,7 +1831,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -1932,7 +1867,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -2000,7 +1934,6 @@
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -2048,7 +1981,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # use schema::users;</span>
     <span class="doccomment">/// #</span>
@@ -2057,7 +1989,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn run_test() -&gt; QueryResult&lt;()&gt; {</span>
-    <span class="doccomment">/// #     use users::dsl::*;</span>
+    <span class="doccomment">/// #     use self::users::dsl::*;</span>
     <span class="doccomment">/// #     let connection = establish_connection();</span>
     <span class="doccomment">/// #     diesel::delete(users).execute(&amp;connection)?;</span>
     <span class="doccomment">/// #     diesel::insert_into(users)</span>
@@ -2098,7 +2030,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # use schema::users;</span>
     <span class="doccomment">/// #</span>
@@ -2107,7 +2038,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn run_test() -&gt; QueryResult&lt;()&gt; {</span>
-    <span class="doccomment">/// #     use users::dsl::*;</span>
+    <span class="doccomment">/// #     use self::users::dsl::*;</span>
     <span class="doccomment">/// #     let connection = establish_connection();</span>
     <span class="doccomment">/// #     diesel::delete(users).execute(&amp;connection)?;</span>
     <span class="doccomment">/// #     diesel::insert_into(users)</span>
@@ -2158,31 +2089,6 @@
     <span class="doccomment">/// // Executes `SELECT * FROM users FOR UPDATE`</span>
     <span class="doccomment">/// users.for_update().load(&amp;connection)</span>
     <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;with-deprecated&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">for_update</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ForUpdate</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">ForUpdateDsl</span>,
-    {
-        <span class="ident">methods</span>::<span class="ident">ForUpdateDsl</span>::<span class="ident">for_update</span>(<span class="self">self</span>)
-    }
-
-    <span class="doccomment">/// Adds `FOR UPDATE` to the end of the select statement.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This method is only available for MySQL and PostgreSQL. SQLite does not</span>
-    <span class="doccomment">/// provide any form of row locking.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Additionally, `.for_update` cannot be used on queries with a distinct</span>
-    <span class="doccomment">/// clause, group by clause, having clause, or any unions. Queries with</span>
-    <span class="doccomment">/// a `FOR UPDATE` clause cannot be boxed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Example</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```ignore</span>
-    <span class="doccomment">/// // Executes `SELECT * FROM users FOR UPDATE`</span>
-    <span class="doccomment">/// users.for_update().load(&amp;connection)</span>
-    <span class="doccomment">/// ```</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;with-deprecated&quot;</span>))]</span>
     <span class="kw">fn</span> <span class="ident">for_update</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ForUpdate</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">LockingDsl</span><span class="op">&lt;</span><span class="ident">lock</span>::<span class="ident">ForUpdate</span><span class="op">&gt;</span>,
@@ -2306,7 +2212,6 @@
     <span class="doccomment">/// ### Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # use schema::users;</span>
     <span class="doccomment">/// #</span>
@@ -2337,13 +2242,12 @@
     <span class="doccomment">/// ### Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # use schema::users;</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
     <span class="doccomment">/// #     let connection = establish_connection();</span>
-    <span class="doccomment">/// fn users_by_name&lt;&#39;a&gt;(name: &amp;&#39;a str) -&gt; users::BoxedQuery&lt;&#39;a, DB&gt; {</span>
+    <span class="doccomment">/// fn users_by_name(name: &amp;str) -&gt; users::BoxedQuery&lt;DB&gt; {</span>
     <span class="doccomment">///     users::table.filter(users::name.eq(name)).into_boxed()</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">///</span>
@@ -2373,7 +2277,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -2409,7 +2312,6 @@
     <span class="doccomment">/// This is use full for writing queries that contain subselects on non null</span>
     <span class="doccomment">/// fields comparing them to nullable fields.</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -2462,7 +2364,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -2516,7 +2417,6 @@
     <span class="doccomment">/// ## Returning a single field</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -2537,7 +2437,6 @@
     <span class="doccomment">/// ## Returning a tuple</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -2562,7 +2461,6 @@
     <span class="doccomment">/// ## Returning a struct</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// #[derive(Queryable, PartialEq, Debug)]</span>
@@ -2609,7 +2507,6 @@
     <span class="doccomment">/// # Example</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// #</span>
     <span class="doccomment">/// # fn main() {</span>
@@ -2670,7 +2567,6 @@
     <span class="doccomment">/// # Example:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
     <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
     <span class="doccomment">/// # fn main() {</span>
     <span class="doccomment">/// #     run_test();</span>
