@@ -83,12 +83,19 @@ fn get_notes(last_updated: i64, token: Token, connection: db::Connection) -> Res
     get_notes_by_account(token.sub, last_updated, &connection)
 }
 
+/// Route for getting a list of deleted notes based on a provided list of id's
+#[post("/api/notes/deleted", data="<id_list>")]
+fn get_deleted(id_list: Json<Vec<String>>, token: Token, connection: db::Connection) -> Result<DeletedResponse, ApiResponse> {
+    get_deleted_by_account(token.sub.clone(), id_list.0, &connection)
+}
+
 /// Route for checking connectivity
 #[get("/ping")]
 fn ping() -> String {
     return "Pong!".parse().unwrap();
 }
 
+/// Route for checking if the user is logged in
 #[get("/secure-ping")]
 fn secure_ping(_token: Token) -> String {return "Pong!".parse().unwrap();}
 
@@ -121,7 +128,7 @@ fn main() {
 // Start webserver
     rocket::ignite()
         .manage(db::connect())
-        .mount("/", routes![save_note, update_note, patch_note, delete_note, delete_all_notes, get_notes])
+        .mount("/", routes![save_note, update_note, patch_note, delete_note, delete_all_notes, get_notes, get_deleted])
         .mount("/", routes![ping, secure_ping])
         .register(catchers![token_error, invalid_json])
         .launch();

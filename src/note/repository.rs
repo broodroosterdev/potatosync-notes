@@ -88,4 +88,11 @@ pub fn notes_get_all(account_id: &str, connection: &PgConnection) -> Result<Vec<
     }
 }
 
-
+#[cfg_attr(test, mockable)]
+pub fn notes_get_existing(account_id: &str, id_list: Vec<String>, connection: &PgConnection) -> Result<Vec<String>, String> {
+    let get_result = notes::dsl::notes.select(notes::note_id).filter(notes::account_id.eq(account_id)).filter(notes::note_id.eq_any(id_list)).load::<String>(connection);
+    return match get_result{
+        Err(error) => Err(error.to_string()),
+        Ok(existing_list) => Ok(existing_list)
+    }
+}

@@ -1,7 +1,7 @@
 use chrono::{TimeZone, Utc};
 use diesel::prelude::*;
 use crate::note::model::{Note, PatchingNote};
-use crate::note::repository::{note_delete, note_delete_all, note_exists, note_insert_if_empty, note_patch_if_exists, note_update_if_exists, notes_get_all};
+use crate::note::repository::{note_delete, note_delete_all, note_exists, note_insert_if_empty, note_patch_if_exists, note_update_if_exists, notes_get_all, notes_get_existing};
 use crate::note::responses::*;
 use crate::responders::{ApiSuccess, ApiError, ApiResponse};
 use rocket::response::Responder;
@@ -26,7 +26,7 @@ pub(crate) fn add(note: Note, connection: &PgConnection) -> ApiResponse {
 ///Updates note, it will create a new note if it doesnt exist
 pub(crate) fn update(note: Note, account_id: String, connection: &PgConnection) -> ApiResponse {
     if !note_exists(&account_id, &note.note_id, connection) {
-        return NOTE_NOT_EXISTS
+        return NOTE_NOT_EXISTS;
     }
     return match note_update_if_exists(note, connection) {
         Err(error) => {
@@ -57,7 +57,7 @@ pub(crate) fn patch(note: PatchingNote, note_id: String, account_id: String, con
 /// Delete single note in DB
 pub(crate) fn delete(note_id: String, account_id: String, connection: &PgConnection) -> ApiResponse {
     if !note_exists(&account_id, &note_id, connection) {
-        return NOTE_NOT_EXISTS
+        return NOTE_NOT_EXISTS;
     }
     return match note_delete(account_id, note_id, connection) {
         Err(error) => {
@@ -96,7 +96,8 @@ impl<'r> Responder<'r> for NoteResponse {
 }
 
 /// Get list of notes updated after provided timestamp
-pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: i64, connection: &PgConnection) -> Result<NoteResponse, ApiResponse> {
+pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: i64, connection: &PgConnection)
+                                   -> Result<NoteResponse, ApiResponse> {
     return match notes_get_all(&account_id, connection) {
         Err(error) => {
             println!("Unable to get notes: {}", error);
@@ -113,6 +114,39 @@ pub(crate) fn get_notes_by_account(account_id: String, timestamp_last_updated: i
             Ok(NoteResponse {
                 message: NOTE_LIST_SUCCESS.body,
                 notes: updated_notes,
+            })
+        }
+    };
+}
+
+/// Struct used when server needs to return list of notes along with status of request
+#[derive(Serialize, Deserialize)]
+pub struct DeletedResponse {
+    pub(crate) deleted: Vec<String>,
+}
+
+impl<'r> Responder<'r> for DeletedResponse {
+    fn respond_to(self, req: &Request) -> response::Result<'r> {
+        Response::build_from(serde_json::to_string(&self).unwrap().respond_to(&req).unwrap())
+            .status(Status::Ok)
+            .header(ContentType::JSON)
+            .ok()
+    }
+}
+
+pub(crate) fn get_deleted_by_account(account_id: String, id_list: Vec<String>, connection: &PgConnection) -> Result<DeletedResponse, ApiResponse> {
+    return match notes_get_existing(&account_id, id_list.clone(), connection) {
+        Err(error) => {
+            println!("Unable to get deleted id's: {}", error);
+            Err(INTERNAL_DB_ERROR)
+        }
+        Ok(existing_list) => {
+            // Since the repository method can only find what note_id's exist,
+            // we need to convert it into a list of non-existing id's
+            let deleted_list = id_list.into_iter()
+                .filter(|id| !existing_list.contains(id)).collect();
+            Ok(DeletedResponse {
+                deleted: deleted_list
             })
         }
     };
