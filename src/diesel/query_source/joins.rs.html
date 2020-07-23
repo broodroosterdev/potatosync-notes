@@ -340,7 +340,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span> <span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">left</span>: <span class="ident">Left</span>, <span class="ident">right</span>: <span class="ident">Right</span>, <span class="ident">kind</span>: <span class="ident">Kind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">left</span>: <span class="ident">Left</span>, <span class="ident">right</span>: <span class="ident">Right</span>, <span class="ident">kind</span>: <span class="ident">Kind</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">Join</span> {
             <span class="ident">left</span>: <span class="ident">left</span>,
             <span class="ident">right</span>: <span class="ident">right</span>,
@@ -349,7 +349,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on</span><span class="op">&lt;</span><span class="ident">On</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">on</span>: <span class="ident">On</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">JoinOn</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">On</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">on</span><span class="op">&lt;</span><span class="ident">On</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">on</span>: <span class="ident">On</span>) <span class="op">-&gt;</span> <span class="ident">JoinOn</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">On</span><span class="op">&gt;</span> {
         <span class="ident">JoinOn</span> { <span class="ident">join</span>: <span class="self">self</span>, <span class="ident">on</span>: <span class="ident">on</span> }
     }
 }
@@ -364,18 +364,18 @@
     <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="kw">type</span> <span class="ident">DefaultSelection</span> <span class="op">=</span> <span class="ident">Left</span>::<span class="ident">Output</span>;
 
-    <span class="kw">fn</span> <span class="ident">from_clause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">FromClause</span> {
+    <span class="kw">fn</span> <span class="ident">from_clause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">FromClause</span> {
         <span class="self">self</span>.<span class="ident">clone</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">default_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">DefaultSelection</span> {
+    <span class="kw">fn</span> <span class="ident">default_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">DefaultSelection</span> {
         <span class="self">self</span>.<span class="ident">left</span>.<span class="ident">append_selection</span>(<span class="self">self</span>.<span class="ident">right</span>.<span class="ident">default_selection</span>())
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span><span class="op">&gt;</span> <span class="ident">QuerySource</span> <span class="kw">for</span> <span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">LeftOuter</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">Left</span>: <span class="ident">QuerySource</span> <span class="op">+</span> <span class="ident">AppendSelection</span><span class="op">&lt;</span><span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">Right</span>::<span class="ident">DefaultSelection</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">Left</span>: <span class="ident">QuerySource</span> <span class="op">+</span> <span class="ident">AppendSelection</span><span class="op">&lt;</span><span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">Right</span>::<span class="ident">DefaultSelection</span><span class="op">&gt;&gt;</span>,
     <span class="ident">Right</span>: <span class="ident">QuerySource</span>,
     <span class="ident">Left</span>::<span class="ident">Output</span>: <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
     <span class="self">Self</span>: <span class="ident">Clone</span>,
@@ -383,11 +383,11 @@
     <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="self">Self</span>;
     <span class="kw">type</span> <span class="ident">DefaultSelection</span> <span class="op">=</span> <span class="ident">Left</span>::<span class="ident">Output</span>;
 
-    <span class="kw">fn</span> <span class="ident">from_clause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">FromClause</span> {
+    <span class="kw">fn</span> <span class="ident">from_clause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">FromClause</span> {
         <span class="self">self</span>.<span class="ident">clone</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">default_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">DefaultSelection</span> {
+    <span class="kw">fn</span> <span class="ident">default_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">DefaultSelection</span> {
         <span class="self">self</span>.<span class="ident">left</span>
             .<span class="ident">append_selection</span>(<span class="self">self</span>.<span class="ident">right</span>.<span class="ident">default_selection</span>().<span class="ident">nullable</span>())
     }
@@ -399,10 +399,10 @@
     <span class="ident">On</span>: <span class="ident">AppearsOnTable</span><span class="op">&lt;</span><span class="ident">Join</span>::<span class="ident">FromClause</span>, <span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Bool</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span>,
     <span class="ident">Join</span>::<span class="ident">DefaultSelection</span>: <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">Grouped</span><span class="op">&lt;</span><span class="ident">nodes</span>::<span class="ident">InfixNode</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">Join</span>::<span class="ident">FromClause</span>, <span class="ident">On</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">Grouped</span><span class="op">&lt;</span><span class="ident">nodes</span>::<span class="ident">InfixNode</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">Join</span>::<span class="ident">FromClause</span>, <span class="ident">On</span><span class="op">&gt;&gt;</span>;
     <span class="kw">type</span> <span class="ident">DefaultSelection</span> <span class="op">=</span> <span class="ident">Join</span>::<span class="ident">DefaultSelection</span>;
 
-    <span class="kw">fn</span> <span class="ident">from_clause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">FromClause</span> {
+    <span class="kw">fn</span> <span class="ident">from_clause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">FromClause</span> {
         <span class="ident">Grouped</span>(<span class="ident">nodes</span>::<span class="ident">InfixNode</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">join</span>.<span class="ident">from_clause</span>(),
             <span class="self">self</span>.<span class="ident">on</span>.<span class="ident">clone</span>(),
@@ -410,7 +410,7 @@
         ))
     }
 
-    <span class="kw">fn</span> <span class="ident">default_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">DefaultSelection</span> {
+    <span class="kw">fn</span> <span class="ident">default_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">DefaultSelection</span> {
         <span class="self">self</span>.<span class="ident">join</span>.<span class="ident">default_selection</span>()
     }
 }
@@ -424,7 +424,7 @@
     <span class="ident">Right</span>::<span class="ident">FromClause</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
     <span class="ident">Kind</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">left</span>.<span class="ident">from_clause</span>().<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">kind</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; JOIN &quot;</span>);
@@ -452,7 +452,7 @@
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="kw">type</span> <span class="ident">OnClause</span>;
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>);
+    <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>);
 }
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -463,13 +463,13 @@
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AppendSelection</span><span class="op">&lt;</span><span class="ident">Selection</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span>;
 
-    <span class="kw">fn</span> <span class="ident">append_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
+    <span class="kw">fn</span> <span class="ident">append_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Table</span>, <span class="ident">Selection</span><span class="op">&gt;</span> <span class="ident">AppendSelection</span><span class="op">&lt;</span><span class="ident">Selection</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> (<span class="ident">T</span>::<span class="ident">AllColumns</span>, <span class="ident">Selection</span>);
 
-    <span class="kw">fn</span> <span class="ident">append_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">append_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         (<span class="ident">T</span>::<span class="ident">all_columns</span>(), <span class="ident">selection</span>)
     }
 }
@@ -479,9 +479,9 @@
     <span class="self">Self</span>: <span class="ident">QuerySource</span>,
     <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">QuerySource</span><span class="op">&gt;</span>::<span class="ident">DefaultSelection</span>: <span class="ident">TupleAppend</span><span class="op">&lt;</span><span class="ident">Selection</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">QuerySource</span><span class="op">&gt;</span>::<span class="ident">DefaultSelection</span> <span class="kw">as</span> <span class="ident">TupleAppend</span><span class="op">&lt;</span><span class="ident">Selection</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Output</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="op">&lt;&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">QuerySource</span><span class="op">&gt;</span>::<span class="ident">DefaultSelection</span> <span class="kw">as</span> <span class="ident">TupleAppend</span><span class="op">&lt;</span><span class="ident">Selection</span><span class="op">&gt;&gt;</span>::<span class="ident">Output</span>;
 
-    <span class="kw">fn</span> <span class="ident">append_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">append_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">self</span>.<span class="ident">default_selection</span>().<span class="ident">tuple_append</span>(<span class="ident">selection</span>)
     }
 }
@@ -492,7 +492,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Join</span>::<span class="ident">Output</span>;
 
-    <span class="kw">fn</span> <span class="ident">append_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">append_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">self</span>.<span class="ident">join</span>.<span class="ident">append_selection</span>(<span class="ident">selection</span>)
     }
 }
@@ -502,7 +502,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Inner</span>;
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">DB</span>: <span class="ident">Backend</span><span class="op">&gt;</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Inner</span> {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; INNER&quot;</span>);
         <span class="prelude-val">Ok</span>(())
     }
@@ -513,7 +513,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LeftOuter</span>;
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">DB</span>: <span class="ident">Backend</span><span class="op">&gt;</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LeftOuter</span> {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; LEFT OUTER&quot;</span>);
         <span class="prelude-val">Ok</span>(())
     }
@@ -526,7 +526,7 @@
     <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">Left</span>::<span class="ident">FromClause</span>;
     <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="ident">Left</span>::<span class="ident">OnClause</span>;
 
-    <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">Right</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
+    <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">Right</span>) <span class="op">-&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
         <span class="ident">Left</span>::<span class="ident">join_target</span>(<span class="ident">rhs</span>)
     }
 }
@@ -538,7 +538,7 @@
     <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">Join</span>::<span class="ident">FromClause</span>;
     <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="ident">Join</span>::<span class="ident">OnClause</span>;
 
-    <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">Right</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
+    <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">Right</span>) <span class="op">-&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
         <span class="ident">Join</span>::<span class="ident">join_target</span>(<span class="ident">rhs</span>)
     }
 }
@@ -549,7 +549,7 @@
     <span class="ident">Right</span>: <span class="ident">AppearsInFromClause</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
     <span class="ident">Left</span>::<span class="ident">Count</span>: <span class="ident">Plus</span><span class="op">&lt;</span><span class="ident">Right</span>::<span class="ident">Count</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Count</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Left</span>::<span class="ident">Count</span> <span class="kw">as</span> <span class="ident">Plus</span><span class="op">&lt;</span><span class="ident">Right</span>::<span class="ident">Count</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Output</span>;
+    <span class="kw">type</span> <span class="ident">Count</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Left</span>::<span class="ident">Count</span> <span class="kw">as</span> <span class="ident">Plus</span><span class="op">&lt;</span><span class="ident">Right</span>::<span class="ident">Count</span><span class="op">&gt;&gt;</span>::<span class="ident">Output</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span> <span class="ident">AppearsInFromClause</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span>
@@ -567,19 +567,19 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Source</span>, <span class="ident">On</span><span class="op">&gt;</span> <span class="ident">OnClauseWrapper</span><span class="op">&lt;</span><span class="ident">Source</span>, <span class="ident">On</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">source</span>: <span class="ident">Source</span>, <span class="ident">on</span>: <span class="ident">On</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">source</span>: <span class="ident">Source</span>, <span class="ident">on</span>: <span class="ident">On</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">OnClauseWrapper</span> { <span class="ident">source</span>, <span class="ident">on</span> }
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Lhs</span>, <span class="ident">Rhs</span>, <span class="ident">On</span><span class="op">&gt;</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">OnClauseWrapper</span><span class="op">&lt;</span><span class="ident">Rhs</span>, <span class="ident">On</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Lhs</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Lhs</span>, <span class="ident">Rhs</span>, <span class="ident">On</span><span class="op">&gt;</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">OnClauseWrapper</span><span class="op">&lt;</span><span class="ident">Rhs</span>, <span class="ident">On</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">Lhs</span>
 <span class="kw">where</span>
     <span class="ident">Lhs</span>: <span class="ident">Table</span>,
 {
     <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">Rhs</span>;
     <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="ident">On</span>;
 
-    <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">OnClauseWrapper</span><span class="op">&lt;</span><span class="ident">Rhs</span>, <span class="ident">On</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
+    <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">OnClauseWrapper</span><span class="op">&lt;</span><span class="ident">Rhs</span>, <span class="ident">On</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
         (<span class="ident">rhs</span>.<span class="ident">source</span>, <span class="ident">rhs</span>.<span class="ident">on</span>)
     }
 }

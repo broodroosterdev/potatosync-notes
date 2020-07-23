@@ -362,7 +362,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">language_tags</span>::<span class="ident">LanguageTag</span>;
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">todo</span>(
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="kw">if</span> <span class="macro">cfg</span><span class="macro">!</span>(<span class="ident">not</span>(<span class="ident">ndebug</span>)) {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=&gt;</span> (<span class="kw">if</span> <span class="macro">cfg</span><span class="macro">!</span>(<span class="ident">not</span>(<span class="ident">ndebug</span>)) {
         <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;TODO: {:?}&quot;</span>, <span class="macro">format_args</span><span class="macro">!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>))
     })
 );
@@ -394,14 +394,14 @@
     <span class="kw">fn</span> <span class="ident">_assert_sync</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Sync</span><span class="op">&gt;</span>() {}
 
     <span class="ident">_assert_send</span>::<span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span>();
-    <span class="ident">_assert_send</span>::<span class="op">&lt;</span><span class="ident">client</span>::<span class="ident">Request</span><span class="op">&lt;</span><span class="ident">net</span>::<span class="ident">Fresh</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+    <span class="ident">_assert_send</span>::<span class="op">&lt;</span><span class="ident">client</span>::<span class="ident">Request</span><span class="op">&lt;</span><span class="ident">net</span>::<span class="ident">Fresh</span><span class="op">&gt;&gt;</span>();
     <span class="ident">_assert_send</span>::<span class="op">&lt;</span><span class="ident">client</span>::<span class="ident">Response</span><span class="op">&gt;</span>();
     <span class="ident">_assert_send</span>::<span class="op">&lt;</span><span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span>();
-    <span class="ident">_assert_send</span>::<span class="op">&lt;</span>::<span class="ident">client</span>::<span class="ident">pool</span>::<span class="ident">Pool</span><span class="op">&lt;</span>::<span class="ident">net</span>::<span class="ident">DefaultConnector</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+    <span class="ident">_assert_send</span>::<span class="op">&lt;</span>::<span class="ident">client</span>::<span class="ident">pool</span>::<span class="ident">Pool</span><span class="op">&lt;</span>::<span class="ident">net</span>::<span class="ident">DefaultConnector</span><span class="op">&gt;&gt;</span>();
 
     <span class="ident">_assert_sync</span>::<span class="op">&lt;</span><span class="ident">Client</span><span class="op">&gt;</span>();
     <span class="ident">_assert_sync</span>::<span class="op">&lt;</span><span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span>();
-    <span class="ident">_assert_sync</span>::<span class="op">&lt;</span>::<span class="ident">client</span>::<span class="ident">pool</span>::<span class="ident">Pool</span><span class="op">&lt;</span>::<span class="ident">net</span>::<span class="ident">DefaultConnector</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+    <span class="ident">_assert_sync</span>::<span class="op">&lt;</span>::<span class="ident">client</span>::<span class="ident">pool</span>::<span class="ident">Pool</span><span class="op">&lt;</span>::<span class="ident">net</span>::<span class="ident">DefaultConnector</span><span class="op">&gt;&gt;</span>();
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "hyper";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

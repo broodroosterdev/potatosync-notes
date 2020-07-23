@@ -75,7 +75,7 @@
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">EscapeExpressionMethods</span>: <span class="ident">Sized</span> {
     <span class="doccomment">/// See the trait documentation.</span>
-    <span class="kw">fn</span> <span class="ident">escape</span>(<span class="self">self</span>, <span class="ident">character</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Escape</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">AsExprOf</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">VarChar</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">escape</span>(<span class="self">self</span>, <span class="ident">character</span>: <span class="ident">char</span>) <span class="op">-&gt;</span> <span class="ident">Escape</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">AsExprOf</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">VarChar</span><span class="op">&gt;&gt;</span> {
         <span class="ident">Escape</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">character</span>.<span class="ident">to_string</span>().<span class="ident">into_sql</span>::<span class="op">&lt;</span><span class="ident">VarChar</span><span class="op">&gt;</span>())
     }
 }

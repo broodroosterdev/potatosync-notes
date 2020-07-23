@@ -111,7 +111,7 @@
 
 <span class="doccomment">/// The actual HS signing + encoding</span>
 <span class="doccomment">/// Could be in its own file to match RSA/EC but it&#39;s 2 lines...</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">sign_hmac</span>(<span class="ident">alg</span>: <span class="ident">hmac</span>::<span class="ident">Algorithm</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">sign_hmac</span>(<span class="ident">alg</span>: <span class="ident">hmac</span>::<span class="ident">Algorithm</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">digest</span> <span class="op">=</span> <span class="ident">hmac</span>::<span class="ident">sign</span>(<span class="kw-2">&amp;</span><span class="ident">hmac</span>::<span class="ident">Key</span>::<span class="ident">new</span>(<span class="ident">alg</span>, <span class="ident">key</span>), <span class="ident">message</span>.<span class="ident">as_bytes</span>());
     <span class="prelude-val">Ok</span>(<span class="ident">b64_encode</span>(<span class="ident">digest</span>.<span class="ident">as_ref</span>()))
 }
@@ -120,13 +120,13 @@
 <span class="doccomment">/// the base64 url safe encoded of the result.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// If you just want to encode a JWT, use `encode` instead.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sign</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">EncodingKey</span>, <span class="ident">algorithm</span>: <span class="ident">Algorithm</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sign</span>(<span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">EncodingKey</span>, <span class="ident">algorithm</span>: <span class="ident">Algorithm</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">algorithm</span> {
-        <span class="ident">Algorithm</span>::<span class="ident">HS256</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">sign_hmac</span>(<span class="ident">hmac</span>::<span class="ident">HMAC_SHA256</span>, <span class="ident">key</span>.<span class="ident">inner</span>(), <span class="ident">message</span>),
-        <span class="ident">Algorithm</span>::<span class="ident">HS384</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">sign_hmac</span>(<span class="ident">hmac</span>::<span class="ident">HMAC_SHA384</span>, <span class="ident">key</span>.<span class="ident">inner</span>(), <span class="ident">message</span>),
-        <span class="ident">Algorithm</span>::<span class="ident">HS512</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">sign_hmac</span>(<span class="ident">hmac</span>::<span class="ident">HMAC_SHA512</span>, <span class="ident">key</span>.<span class="ident">inner</span>(), <span class="ident">message</span>),
+        <span class="ident">Algorithm</span>::<span class="ident">HS256</span> <span class="op">=&gt;</span> <span class="ident">sign_hmac</span>(<span class="ident">hmac</span>::<span class="ident">HMAC_SHA256</span>, <span class="ident">key</span>.<span class="ident">inner</span>(), <span class="ident">message</span>),
+        <span class="ident">Algorithm</span>::<span class="ident">HS384</span> <span class="op">=&gt;</span> <span class="ident">sign_hmac</span>(<span class="ident">hmac</span>::<span class="ident">HMAC_SHA384</span>, <span class="ident">key</span>.<span class="ident">inner</span>(), <span class="ident">message</span>),
+        <span class="ident">Algorithm</span>::<span class="ident">HS512</span> <span class="op">=&gt;</span> <span class="ident">sign_hmac</span>(<span class="ident">hmac</span>::<span class="ident">HMAC_SHA512</span>, <span class="ident">key</span>.<span class="ident">inner</span>(), <span class="ident">message</span>),
 
-        <span class="ident">Algorithm</span>::<span class="ident">ES256</span> <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">ES384</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Algorithm</span>::<span class="ident">ES256</span> <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">ES384</span> <span class="op">=&gt;</span> {
             <span class="ident">ecdsa</span>::<span class="ident">sign</span>(<span class="ident">ecdsa</span>::<span class="ident">alg_to_ec_signing</span>(<span class="ident">algorithm</span>), <span class="ident">key</span>.<span class="ident">inner</span>(), <span class="ident">message</span>)
         }
 
@@ -135,7 +135,7 @@
         <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">RS512</span>
         <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">PS256</span>
         <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">PS384</span>
-        <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">PS512</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">rsa</span>::<span class="ident">sign</span>(<span class="ident">rsa</span>::<span class="ident">alg_to_rsa_signing</span>(<span class="ident">algorithm</span>), <span class="ident">key</span>.<span class="ident">inner</span>(), <span class="ident">message</span>),
+        <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">PS512</span> <span class="op">=&gt;</span> <span class="ident">rsa</span>::<span class="ident">sign</span>(<span class="ident">rsa</span>::<span class="ident">alg_to_rsa_signing</span>(<span class="ident">algorithm</span>), <span class="ident">key</span>.<span class="ident">inner</span>(), <span class="ident">message</span>),
     }
 }
 
@@ -145,7 +145,7 @@
     <span class="ident">signature</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     <span class="ident">key</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">signature_bytes</span> <span class="op">=</span> <span class="ident">b64_decode</span>(<span class="ident">signature</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">public_key</span> <span class="op">=</span> <span class="ident">signature</span>::<span class="ident">UnparsedPublicKey</span>::<span class="ident">new</span>(<span class="ident">alg</span>, <span class="ident">key</span>);
     <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">public_key</span>.<span class="ident">verify</span>(<span class="ident">message</span>.<span class="ident">as_bytes</span>(), <span class="kw-2">&amp;</span><span class="ident">signature_bytes</span>);
@@ -166,14 +166,14 @@
     <span class="ident">message</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">DecodingKey</span>,
     <span class="ident">algorithm</span>: <span class="ident">Algorithm</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">algorithm</span> {
-        <span class="ident">Algorithm</span>::<span class="ident">HS256</span> <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">HS384</span> <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">HS512</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Algorithm</span>::<span class="ident">HS256</span> <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">HS384</span> <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">HS512</span> <span class="op">=&gt;</span> {
             <span class="comment">// we just re-sign the message with the key and compare if they are equal</span>
             <span class="kw">let</span> <span class="ident">signed</span> <span class="op">=</span> <span class="ident">sign</span>(<span class="ident">message</span>, <span class="kw-2">&amp;</span><span class="ident">EncodingKey</span>::<span class="ident">from_secret</span>(<span class="ident">key</span>.<span class="ident">as_bytes</span>()), <span class="ident">algorithm</span>)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">verify_slices_are_equal</span>(<span class="ident">signature</span>.<span class="ident">as_ref</span>(), <span class="ident">signed</span>.<span class="ident">as_ref</span>()).<span class="ident">is_ok</span>())
         }
-        <span class="ident">Algorithm</span>::<span class="ident">ES256</span> <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">ES384</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">verify_ring</span>(
+        <span class="ident">Algorithm</span>::<span class="ident">ES256</span> <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">ES384</span> <span class="op">=&gt;</span> <span class="ident">verify_ring</span>(
             <span class="ident">ecdsa</span>::<span class="ident">alg_to_ec_verification</span>(<span class="ident">algorithm</span>),
             <span class="ident">signature</span>,
             <span class="ident">message</span>,
@@ -184,11 +184,11 @@
         <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">RS512</span>
         <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">PS256</span>
         <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">PS384</span>
-        <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">PS512</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="op">|</span> <span class="ident">Algorithm</span>::<span class="ident">PS512</span> <span class="op">=&gt;</span> {
             <span class="kw">let</span> <span class="ident">alg</span> <span class="op">=</span> <span class="ident">rsa</span>::<span class="ident">alg_to_rsa_parameters</span>(<span class="ident">algorithm</span>);
             <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">key</span>.<span class="ident">kind</span> {
-                <span class="ident">DecodingKeyKind</span>::<span class="ident">SecretOrDer</span>(<span class="ident">bytes</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">verify_ring</span>(<span class="ident">alg</span>, <span class="ident">signature</span>, <span class="ident">message</span>, <span class="ident">bytes</span>),
-                <span class="ident">DecodingKeyKind</span>::<span class="ident">RsaModulusExponent</span> { <span class="ident">n</span>, <span class="ident">e</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">DecodingKeyKind</span>::<span class="ident">SecretOrDer</span>(<span class="ident">bytes</span>) <span class="op">=&gt;</span> <span class="ident">verify_ring</span>(<span class="ident">alg</span>, <span class="ident">signature</span>, <span class="ident">message</span>, <span class="ident">bytes</span>),
+                <span class="ident">DecodingKeyKind</span>::<span class="ident">RsaModulusExponent</span> { <span class="ident">n</span>, <span class="ident">e</span> } <span class="op">=&gt;</span> {
                     <span class="ident">rsa</span>::<span class="ident">verify_from_components</span>(<span class="ident">alg</span>, <span class="ident">signature</span>, <span class="ident">message</span>, (<span class="ident">n</span>, <span class="ident">e</span>))
                 }
             }

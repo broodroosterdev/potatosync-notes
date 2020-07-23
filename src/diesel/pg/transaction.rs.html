@@ -428,7 +428,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">TransactionBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PgConnection</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">connection</span>,
             <span class="ident">isolation_level</span>: <span class="prelude-val">None</span>,
@@ -481,7 +481,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_only</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_only</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">read_mode</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">ReadMode</span>::<span class="ident">ReadOnly</span>);
         <span class="self">self</span>
     }
@@ -527,7 +527,7 @@
     <span class="doccomment">///     })</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_write</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_write</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">read_mode</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">ReadMode</span>::<span class="ident">ReadWrite</span>);
         <span class="self">self</span>
     }
@@ -551,7 +551,7 @@
     <span class="doccomment">///     .run(|| Ok(()))</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deferrable</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deferrable</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">deferrable</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Deferrable</span>::<span class="ident">Deferrable</span>);
         <span class="self">self</span>
     }
@@ -578,7 +578,7 @@
     <span class="doccomment">///     .run(|| Ok(()))</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">not_deferrable</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">not_deferrable</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">deferrable</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Deferrable</span>::<span class="ident">NotDeferrable</span>);
         <span class="self">self</span>
     }
@@ -605,7 +605,7 @@
     <span class="doccomment">///     .run(|| Ok(()))</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_committed</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_committed</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">isolation_level</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">IsolationLevel</span>::<span class="ident">ReadCommitted</span>);
         <span class="self">self</span>
     }
@@ -629,7 +629,7 @@
     <span class="doccomment">///     .run(|| Ok(()))</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">repeatable_read</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">repeatable_read</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">isolation_level</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">IsolationLevel</span>::<span class="ident">RepeatableRead</span>);
         <span class="self">self</span>
     }
@@ -653,7 +653,7 @@
     <span class="doccomment">///     .run(|| Ok(()))</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serializable</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serializable</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">isolation_level</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">IsolationLevel</span>::<span class="ident">Serializable</span>);
         <span class="self">self</span>
     }
@@ -669,9 +669,9 @@
     <span class="doccomment">/// the original error will be returned, otherwise the error generated by the rollback</span>
     <span class="doccomment">/// will be returned. In the second case the connection should be considered broken</span>
     <span class="doccomment">/// as it contains a uncommitted unabortable open transaction.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>() <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>,
         <span class="ident">E</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">query_builder</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Pg</span> <span class="kw">as</span> <span class="ident">Backend</span><span class="op">&gt;</span>::<span class="ident">QueryBuilder</span>::<span class="ident">default</span>();
@@ -681,11 +681,11 @@
 
         <span class="ident">transaction_manager</span>.<span class="ident">begin_transaction_sql</span>(<span class="self">self</span>.<span class="ident">connection</span>, <span class="kw-2">&amp;</span><span class="ident">sql</span>)<span class="question-mark">?</span>;
         <span class="kw">match</span> <span class="ident">f</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">value</span>) <span class="op">=&gt;</span> {
                 <span class="ident">transaction_manager</span>.<span class="ident">commit_transaction</span>(<span class="self">self</span>.<span class="ident">connection</span>)<span class="question-mark">?</span>;
                 <span class="prelude-val">Ok</span>(<span class="ident">value</span>)
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> {
                 <span class="ident">transaction_manager</span>.<span class="ident">rollback_transaction</span>(<span class="self">self</span>.<span class="ident">connection</span>)<span class="question-mark">?</span>;
                 <span class="prelude-val">Err</span>(<span class="ident">e</span>)
             }
@@ -694,7 +694,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">TransactionBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;BEGIN TRANSACTION&quot;</span>);
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">isolation_level</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">isolation_level</span> {
             <span class="ident">isolation_level</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
@@ -717,12 +717,12 @@
 }
 
 <span class="kw">impl</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IsolationLevel</span> {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; ISOLATION LEVEL &quot;</span>);
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">IsolationLevel</span>::<span class="ident">ReadCommitted</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;READ COMMITTED&quot;</span>),
-            <span class="ident">IsolationLevel</span>::<span class="ident">RepeatableRead</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;REPEATABLE READ&quot;</span>),
-            <span class="ident">IsolationLevel</span>::<span class="ident">Serializable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;SERIALIZABLE&quot;</span>),
+            <span class="ident">IsolationLevel</span>::<span class="ident">ReadCommitted</span> <span class="op">=&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;READ COMMITTED&quot;</span>),
+            <span class="ident">IsolationLevel</span>::<span class="ident">RepeatableRead</span> <span class="op">=&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;REPEATABLE READ&quot;</span>),
+            <span class="ident">IsolationLevel</span>::<span class="ident">Serializable</span> <span class="op">=&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;SERIALIZABLE&quot;</span>),
         }
         <span class="prelude-val">Ok</span>(())
     }
@@ -735,10 +735,10 @@
 }
 
 <span class="kw">impl</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ReadMode</span> {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">ReadMode</span>::<span class="ident">ReadOnly</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; READ ONLY&quot;</span>),
-            <span class="ident">ReadMode</span>::<span class="ident">ReadWrite</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; READ WRITE&quot;</span>),
+            <span class="ident">ReadMode</span>::<span class="ident">ReadOnly</span> <span class="op">=&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; READ ONLY&quot;</span>),
+            <span class="ident">ReadMode</span>::<span class="ident">ReadWrite</span> <span class="op">=&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; READ WRITE&quot;</span>),
         }
         <span class="prelude-val">Ok</span>(())
     }
@@ -751,10 +751,10 @@
 }
 
 <span class="kw">impl</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Deferrable</span> {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Deferrable</span>::<span class="ident">Deferrable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; DEFERRABLE&quot;</span>),
-            <span class="ident">Deferrable</span>::<span class="ident">NotDeferrable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; NOT DEFERRABLE&quot;</span>),
+            <span class="ident">Deferrable</span>::<span class="ident">Deferrable</span> <span class="op">=&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; DEFERRABLE&quot;</span>),
+            <span class="ident">Deferrable</span>::<span class="ident">NotDeferrable</span> <span class="op">=&gt;</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; NOT DEFERRABLE&quot;</span>),
         }
         <span class="prelude-val">Ok</span>(())
     }
@@ -765,7 +765,7 @@
     <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">dotenv</span>;
 
     <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">assert_sql</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">query</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sql</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">query</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sql</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">query_builder</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Pg</span> <span class="kw">as</span> <span class="ident">Backend</span><span class="op">&gt;</span>::<span class="ident">QueryBuilder</span>::<span class="ident">default</span>();
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">query</span>.<span class="ident">to_sql</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">query_builder</span>).<span class="ident">unwrap</span>();
             <span class="kw">let</span> <span class="ident">sql</span> <span class="op">=</span> <span class="ident">query_builder</span>.<span class="ident">finish</span>();

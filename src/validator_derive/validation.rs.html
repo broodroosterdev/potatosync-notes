@@ -318,7 +318,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">FieldValidation</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">validator</span>: <span class="ident">Validator</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FieldValidation</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">validator</span>: <span class="ident">Validator</span>) <span class="op">-&gt;</span> <span class="ident">FieldValidation</span> {
         <span class="ident">FieldValidation</span> { <span class="ident">code</span>: <span class="ident">validator</span>.<span class="ident">code</span>().<span class="ident">to_string</span>(), <span class="ident">validator</span>, <span class="ident">message</span>: <span class="prelude-val">None</span> }
     }
 }
@@ -326,14 +326,14 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_length_validation</span>(
     <span class="ident">field</span>: <span class="ident">String</span>,
     <span class="ident">meta_items</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">syn</span>::<span class="ident">NestedMeta</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FieldValidation</span> {
+) <span class="op">-&gt;</span> <span class="ident">FieldValidation</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">equal</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
     <span class="kw">let</span> (<span class="ident">message</span>, <span class="ident">code</span>) <span class="op">=</span> <span class="ident">extract_message_and_code</span>(<span class="string">&quot;length&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">field</span>, <span class="ident">meta_items</span>);
 
-    <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="op">|</span><span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="op">|</span><span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">|</span> <span class="op">-&gt;</span> <span class="op">!</span> {
         <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Invalid attribute #[validate] on field `{}`: {}&quot;</span>, <span class="ident">field</span>, <span class="ident">msg</span>);
     };
 
@@ -342,26 +342,26 @@
             <span class="kw">if</span> <span class="kw">let</span> <span class="ident">syn</span>::<span class="ident">Meta</span>::<span class="ident">NameValue</span>(<span class="ident">syn</span>::<span class="ident">MetaNameValue</span> { <span class="kw-2">ref</span> <span class="ident">path</span>, <span class="kw-2">ref</span> <span class="ident">lit</span>, .. }) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">item</span> {
                 <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">get_ident</span>().<span class="ident">unwrap</span>();
                 <span class="kw">match</span> <span class="ident">ident</span>.<span class="ident">to_string</span>().<span class="ident">as_ref</span>() {
-                        <span class="string">&quot;message&quot;</span> <span class="op">|</span> <span class="string">&quot;code&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
-                        <span class="string">&quot;min&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="string">&quot;message&quot;</span> <span class="op">|</span> <span class="string">&quot;code&quot;</span> <span class="op">=&gt;</span> <span class="kw">continue</span>,
+                        <span class="string">&quot;min&quot;</span> <span class="op">=&gt;</span> {
                             <span class="ident">min</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">lit_to_int</span>(<span class="ident">lit</span>) {
-                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
-                                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">error</span>(<span class="string">&quot;invalid argument type for `min` of `length` validator: only integers are allowed&quot;</span>),
+                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+                                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">error</span>(<span class="string">&quot;invalid argument type for `min` of `length` validator: only integers are allowed&quot;</span>),
                             };
                         },
-                        <span class="string">&quot;max&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="string">&quot;max&quot;</span> <span class="op">=&gt;</span> {
                             <span class="ident">max</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">lit_to_int</span>(<span class="ident">lit</span>) {
-                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
-                                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">error</span>(<span class="string">&quot;invalid argument type for `max` of `length` validator: only integers are allowed&quot;</span>),
+                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+                                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">error</span>(<span class="string">&quot;invalid argument type for `max` of `length` validator: only integers are allowed&quot;</span>),
                             };
                         },
-                        <span class="string">&quot;equal&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="string">&quot;equal&quot;</span> <span class="op">=&gt;</span> {
                             <span class="ident">equal</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">lit_to_int</span>(<span class="ident">lit</span>) {
-                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
-                                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">error</span>(<span class="string">&quot;invalid argument type for `equal` of `length` validator: only integers are allowed&quot;</span>),
+                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+                                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">error</span>(<span class="string">&quot;invalid argument type for `equal` of `length` validator: only integers are allowed&quot;</span>),
                             };
                         },
-                        <span class="ident">v</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">error</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
+                        <span class="ident">v</span> <span class="op">=&gt;</span> <span class="ident">error</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
                             <span class="string">&quot;unknown argument `{}` for validator `length` (it only has `min`, `max`, `equal`)&quot;</span>,
                             <span class="ident">v</span>
                         ))
@@ -375,17 +375,17 @@
         }
     }
 
-    <span class="kw">if</span> <span class="ident">equal</span>.<span class="ident">is_some</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> (<span class="ident">min</span>.<span class="ident">is_some</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">max</span>.<span class="ident">is_some</span>()) {
+    <span class="kw">if</span> <span class="ident">equal</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> (<span class="ident">min</span>.<span class="ident">is_some</span>() <span class="op">||</span> <span class="ident">max</span>.<span class="ident">is_some</span>()) {
         <span class="ident">error</span>(<span class="string">&quot;both `equal` and `min` or `max` have been set in `length` validator: probably a mistake&quot;</span>);
     }
-    <span class="kw">if</span> <span class="ident">min</span>.<span class="ident">is_none</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">max</span>.<span class="ident">is_none</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">equal</span>.<span class="ident">is_none</span>() {
+    <span class="kw">if</span> <span class="ident">min</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="ident">max</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="ident">equal</span>.<span class="ident">is_none</span>() {
         <span class="ident">error</span>(<span class="string">&quot;Validator `length` requires at least 1 argument out of `min`, `max` and `equal`&quot;</span>);
     }
 
     <span class="kw">let</span> <span class="ident">validator</span> <span class="op">=</span> <span class="ident">Validator</span>::<span class="ident">Length</span> { <span class="ident">min</span>, <span class="ident">max</span>, <span class="ident">equal</span> };
     <span class="ident">FieldValidation</span> {
         <span class="ident">message</span>,
-        <span class="ident">code</span>: <span class="ident">code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">validator</span>.<span class="ident">code</span>().<span class="ident">to_string</span>()),
+        <span class="ident">code</span>: <span class="ident">code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">||</span> <span class="ident">validator</span>.<span class="ident">code</span>().<span class="ident">to_string</span>()),
         <span class="ident">validator</span>,
     }
 }
@@ -393,55 +393,55 @@
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_range_validation</span>(
     <span class="ident">field</span>: <span class="ident">String</span>,
     <span class="ident">meta_items</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">syn</span>::<span class="ident">NestedMeta</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FieldValidation</span> {
+) <span class="op">-&gt;</span> <span class="ident">FieldValidation</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
     <span class="kw">let</span> (<span class="ident">message</span>, <span class="ident">code</span>) <span class="op">=</span> <span class="ident">extract_message_and_code</span>(<span class="string">&quot;range&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">field</span>, <span class="ident">meta_items</span>);
 
-    <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="op">|</span><span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="op">|</span><span class="ident">msg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">|</span> <span class="op">-&gt;</span> <span class="op">!</span> {
         <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Invalid attribute #[validate] on field `{}`: {}&quot;</span>, <span class="ident">field</span>, <span class="ident">msg</span>);
     };
 
     <span class="kw">for</span> <span class="ident">meta_item</span> <span class="kw">in</span> <span class="ident">meta_items</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">meta_item</span> {
-            <span class="ident">syn</span>::<span class="ident">NestedMeta</span>::<span class="ident">Meta</span>(<span class="kw-2">ref</span> <span class="ident">item</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">item</span> {
-                <span class="ident">syn</span>::<span class="ident">Meta</span>::<span class="ident">NameValue</span>(<span class="ident">syn</span>::<span class="ident">MetaNameValue</span> { <span class="kw-2">ref</span> <span class="ident">path</span>, <span class="kw-2">ref</span> <span class="ident">lit</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">syn</span>::<span class="ident">NestedMeta</span>::<span class="ident">Meta</span>(<span class="kw-2">ref</span> <span class="ident">item</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">item</span> {
+                <span class="ident">syn</span>::<span class="ident">Meta</span>::<span class="ident">NameValue</span>(<span class="ident">syn</span>::<span class="ident">MetaNameValue</span> { <span class="kw-2">ref</span> <span class="ident">path</span>, <span class="kw-2">ref</span> <span class="ident">lit</span>, .. }) <span class="op">=&gt;</span> {
                     <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">get_ident</span>().<span class="ident">unwrap</span>();
                     <span class="kw">match</span> <span class="ident">ident</span>.<span class="ident">to_string</span>().<span class="ident">as_ref</span>() {
-                        <span class="string">&quot;message&quot;</span> <span class="op">|</span> <span class="string">&quot;code&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
-                        <span class="string">&quot;min&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="string">&quot;message&quot;</span> <span class="op">|</span> <span class="string">&quot;code&quot;</span> <span class="op">=&gt;</span> <span class="kw">continue</span>,
+                        <span class="string">&quot;min&quot;</span> <span class="op">=&gt;</span> {
                             <span class="ident">min</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">lit_to_float</span>(<span class="ident">lit</span>) {
-                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
-                                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">error</span>(<span class="string">&quot;invalid argument type for `min` of `range` validator: only integers are allowed&quot;</span>)
+                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+                                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">error</span>(<span class="string">&quot;invalid argument type for `min` of `range` validator: only integers are allowed&quot;</span>)
                             };
                         }
-                        <span class="string">&quot;max&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="string">&quot;max&quot;</span> <span class="op">=&gt;</span> {
                             <span class="ident">max</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">lit_to_float</span>(<span class="ident">lit</span>) {
-                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
-                                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">error</span>(<span class="string">&quot;invalid argument type for `max` of `range` validator: only integers are allowed&quot;</span>)
+                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+                                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">error</span>(<span class="string">&quot;invalid argument type for `max` of `range` validator: only integers are allowed&quot;</span>)
                             };
                         }
-                        <span class="ident">v</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">error</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
+                        <span class="ident">v</span> <span class="op">=&gt;</span> <span class="ident">error</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
                             <span class="string">&quot;unknown argument `{}` for validator `range` (it only has `min`, `max`)&quot;</span>,
                             <span class="ident">v</span>
                         )),
                     }
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;unexpected item {:?} while parsing `range` validator&quot;</span>, <span class="ident">item</span>),
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;unexpected item {:?} while parsing `range` validator&quot;</span>, <span class="ident">item</span>),
             },
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
         }
     }
 
-    <span class="kw">if</span> <span class="ident">min</span>.<span class="ident">is_none</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">max</span>.<span class="ident">is_none</span>() {
+    <span class="kw">if</span> <span class="ident">min</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="ident">max</span>.<span class="ident">is_none</span>() {
         <span class="ident">error</span>(<span class="string">&quot;Validator `range` requires at least 1 argument out of `min` and `max`&quot;</span>);
     }
 
     <span class="kw">let</span> <span class="ident">validator</span> <span class="op">=</span> <span class="ident">Validator</span>::<span class="ident">Range</span> { <span class="ident">min</span>, <span class="ident">max</span> };
     <span class="ident">FieldValidation</span> {
         <span class="ident">message</span>,
-        <span class="ident">code</span>: <span class="ident">code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">validator</span>.<span class="ident">code</span>().<span class="ident">to_string</span>()),
+        <span class="ident">code</span>: <span class="ident">code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">||</span> <span class="ident">validator</span>.<span class="ident">code</span>().<span class="ident">to_string</span>()),
         <span class="ident">validator</span>,
     }
 }
@@ -451,42 +451,42 @@
     <span class="ident">validator_name</span>: <span class="ident">String</span>,
     <span class="ident">field</span>: <span class="ident">String</span>,
     <span class="ident">meta_items</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">syn</span>::<span class="ident">NestedMeta</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FieldValidation</span> {
+) <span class="op">-&gt;</span> <span class="ident">FieldValidation</span> {
     <span class="kw">let</span> (<span class="ident">message</span>, <span class="ident">code</span>) <span class="op">=</span> <span class="ident">extract_message_and_code</span>(<span class="kw-2">&amp;</span><span class="ident">validator_name</span>, <span class="kw-2">&amp;</span><span class="ident">field</span>, <span class="ident">meta_items</span>);
 
     <span class="kw">for</span> <span class="ident">meta_item</span> <span class="kw">in</span> <span class="ident">meta_items</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">meta_item</span> {
-            <span class="ident">syn</span>::<span class="ident">NestedMeta</span>::<span class="ident">Meta</span>(<span class="kw-2">ref</span> <span class="ident">item</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">item</span> {
-                <span class="ident">syn</span>::<span class="ident">Meta</span>::<span class="ident">NameValue</span>(<span class="ident">syn</span>::<span class="ident">MetaNameValue</span> { <span class="kw-2">ref</span> <span class="ident">path</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">syn</span>::<span class="ident">NestedMeta</span>::<span class="ident">Meta</span>(<span class="kw-2">ref</span> <span class="ident">item</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">item</span> {
+                <span class="ident">syn</span>::<span class="ident">Meta</span>::<span class="ident">NameValue</span>(<span class="ident">syn</span>::<span class="ident">MetaNameValue</span> { <span class="kw-2">ref</span> <span class="ident">path</span>, .. }) <span class="op">=&gt;</span> {
                     <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">get_ident</span>().<span class="ident">unwrap</span>();
                     <span class="kw">match</span> <span class="ident">ident</span>.<span class="ident">to_string</span>().<span class="ident">as_ref</span>() {
-                        <span class="string">&quot;message&quot;</span> <span class="op">|</span> <span class="string">&quot;code&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
-                        <span class="ident">v</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
+                        <span class="string">&quot;message&quot;</span> <span class="op">|</span> <span class="string">&quot;code&quot;</span> <span class="op">=&gt;</span> <span class="kw">continue</span>,
+                        <span class="ident">v</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
                             <span class="string">&quot;Unknown argument `{}` for validator `{}` on field `{}`&quot;</span>,
                             <span class="ident">v</span>, <span class="ident">validator_name</span>, <span class="ident">field</span>
                         ),
                     }
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;unexpected item {:?} while parsing `range` validator&quot;</span>, <span class="ident">item</span>),
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;unexpected item {:?} while parsing `range` validator&quot;</span>, <span class="ident">item</span>),
             },
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
         }
     }
 
     <span class="kw">let</span> <span class="ident">validator</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">validator_name</span>.<span class="ident">as_ref</span>() {
-        <span class="string">&quot;email&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Validator</span>::<span class="ident">Email</span>,
+        <span class="string">&quot;email&quot;</span> <span class="op">=&gt;</span> <span class="ident">Validator</span>::<span class="ident">Email</span>,
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;card&quot;</span>)]</span>
-        <span class="string">&quot;credit_card&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Validator</span>::<span class="ident">CreditCard</span>,
+        <span class="string">&quot;credit_card&quot;</span> <span class="op">=&gt;</span> <span class="ident">Validator</span>::<span class="ident">CreditCard</span>,
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;phone&quot;</span>)]</span>
-        <span class="string">&quot;phone&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Validator</span>::<span class="ident">Phone</span>,
+        <span class="string">&quot;phone&quot;</span> <span class="op">=&gt;</span> <span class="ident">Validator</span>::<span class="ident">Phone</span>,
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unic&quot;</span>)]</span>
-        <span class="string">&quot;non_control_character&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Validator</span>::<span class="ident">NonControlCharacter</span>,
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Validator</span>::<span class="ident">Url</span>,
+        <span class="string">&quot;non_control_character&quot;</span> <span class="op">=&gt;</span> <span class="ident">Validator</span>::<span class="ident">NonControlCharacter</span>,
+        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="ident">Validator</span>::<span class="ident">Url</span>,
     };
 
     <span class="ident">FieldValidation</span> {
         <span class="ident">message</span>,
-        <span class="ident">code</span>: <span class="ident">code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">validator</span>.<span class="ident">code</span>().<span class="ident">to_string</span>()),
+        <span class="ident">code</span>: <span class="ident">code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">||</span> <span class="ident">validator</span>.<span class="ident">code</span>().<span class="ident">to_string</span>()),
         <span class="ident">validator</span>,
     }
 }
@@ -497,35 +497,35 @@
     <span class="ident">validator_name</span>: <span class="ident">String</span>,
     <span class="ident">field</span>: <span class="ident">String</span>,
     <span class="ident">meta_items</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">syn</span>::<span class="ident">NestedMeta</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FieldValidation</span> {
+) <span class="op">-&gt;</span> <span class="ident">FieldValidation</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">let</span> (<span class="ident">message</span>, <span class="ident">code</span>) <span class="op">=</span> <span class="ident">extract_message_and_code</span>(<span class="kw-2">&amp;</span><span class="ident">validator_name</span>, <span class="kw-2">&amp;</span><span class="ident">field</span>, <span class="ident">meta_items</span>);
 
     <span class="kw">for</span> <span class="ident">meta_item</span> <span class="kw">in</span> <span class="ident">meta_items</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">meta_item</span> {
-            <span class="ident">syn</span>::<span class="ident">NestedMeta</span>::<span class="ident">Meta</span>(<span class="kw-2">ref</span> <span class="ident">item</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">item</span> {
-                <span class="ident">syn</span>::<span class="ident">Meta</span>::<span class="ident">NameValue</span>(<span class="ident">syn</span>::<span class="ident">MetaNameValue</span> { <span class="kw-2">ref</span> <span class="ident">path</span>, <span class="kw-2">ref</span> <span class="ident">lit</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">syn</span>::<span class="ident">NestedMeta</span>::<span class="ident">Meta</span>(<span class="kw-2">ref</span> <span class="ident">item</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">item</span> {
+                <span class="ident">syn</span>::<span class="ident">Meta</span>::<span class="ident">NameValue</span>(<span class="ident">syn</span>::<span class="ident">MetaNameValue</span> { <span class="kw-2">ref</span> <span class="ident">path</span>, <span class="kw-2">ref</span> <span class="ident">lit</span>, .. }) <span class="op">=&gt;</span> {
                     <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">get_ident</span>().<span class="ident">unwrap</span>();
                     <span class="kw">match</span> <span class="ident">ident</span>.<span class="ident">to_string</span>().<span class="ident">as_ref</span>() {
-                        <span class="string">&quot;message&quot;</span> <span class="op">|</span> <span class="string">&quot;code&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
-                        <span class="ident">v</span> <span class="kw">if</span> <span class="ident">v</span> <span class="op">=</span><span class="op">=</span> <span class="ident">val_name</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="string">&quot;message&quot;</span> <span class="op">|</span> <span class="string">&quot;code&quot;</span> <span class="op">=&gt;</span> <span class="kw">continue</span>,
+                        <span class="ident">v</span> <span class="kw">if</span> <span class="ident">v</span> <span class="op">==</span> <span class="ident">val_name</span> <span class="op">=&gt;</span> {
                             <span class="ident">value</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">lit_to_string</span>(<span class="ident">lit</span>) {
-                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
-                                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
+                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+                                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
                                     <span class="string">&quot;Invalid argument type for `{}` for validator `{}` on field `{}`: only a string is allowed&quot;</span>,
                                     <span class="ident">val_name</span>, <span class="ident">validator_name</span>, <span class="ident">field</span>
                                 ),
                             };
                         }
-                        <span class="ident">v</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
+                        <span class="ident">v</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
                             <span class="string">&quot;Unknown argument `{}` for validator `{}` on field `{}`&quot;</span>,
                             <span class="ident">v</span>, <span class="ident">validator_name</span>, <span class="ident">field</span>
                         ),
                     }
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;unexpected item {:?} while parsing `range` validator&quot;</span>, <span class="ident">item</span>),
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;unexpected item {:?} while parsing `range` validator&quot;</span>, <span class="ident">item</span>),
             },
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
         }
     }
 
@@ -537,16 +537,16 @@
     }
 
     <span class="kw">let</span> <span class="ident">validator</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">validator_name</span>.<span class="ident">as_ref</span>() {
-        <span class="string">&quot;custom&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Validator</span>::<span class="ident">Custom</span>(<span class="ident">value</span>.<span class="ident">unwrap</span>()),
-        <span class="string">&quot;contains&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Validator</span>::<span class="ident">Contains</span>(<span class="ident">value</span>.<span class="ident">unwrap</span>()),
-        <span class="string">&quot;must_match&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Validator</span>::<span class="ident">MustMatch</span>(<span class="ident">value</span>.<span class="ident">unwrap</span>()),
-        <span class="string">&quot;regex&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Validator</span>::<span class="ident">Regex</span>(<span class="ident">value</span>.<span class="ident">unwrap</span>()),
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+        <span class="string">&quot;custom&quot;</span> <span class="op">=&gt;</span> <span class="ident">Validator</span>::<span class="ident">Custom</span>(<span class="ident">value</span>.<span class="ident">unwrap</span>()),
+        <span class="string">&quot;contains&quot;</span> <span class="op">=&gt;</span> <span class="ident">Validator</span>::<span class="ident">Contains</span>(<span class="ident">value</span>.<span class="ident">unwrap</span>()),
+        <span class="string">&quot;must_match&quot;</span> <span class="op">=&gt;</span> <span class="ident">Validator</span>::<span class="ident">MustMatch</span>(<span class="ident">value</span>.<span class="ident">unwrap</span>()),
+        <span class="string">&quot;regex&quot;</span> <span class="op">=&gt;</span> <span class="ident">Validator</span>::<span class="ident">Regex</span>(<span class="ident">value</span>.<span class="ident">unwrap</span>()),
+        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
     };
 
     <span class="ident">FieldValidation</span> {
         <span class="ident">message</span>,
-        <span class="ident">code</span>: <span class="ident">code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">validator</span>.<span class="ident">code</span>().<span class="ident">to_string</span>()),
+        <span class="ident">code</span>: <span class="ident">code</span>.<span class="ident">unwrap_or_else</span>(<span class="op">||</span> <span class="ident">validator</span>.<span class="ident">code</span>().<span class="ident">to_string</span>()),
         <span class="ident">validator</span>,
     }
 }
@@ -555,7 +555,7 @@
     <span class="ident">validator_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     <span class="ident">field</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     <span class="ident">meta_items</span>: <span class="kw-2">&amp;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">syn</span>::<span class="ident">NestedMeta</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> (<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) {
+) <span class="op">-&gt;</span> (<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">message</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">code</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
@@ -568,25 +568,25 @@
         {
             <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">get_ident</span>().<span class="ident">unwrap</span>();
             <span class="kw">match</span> <span class="ident">ident</span>.<span class="ident">to_string</span>().<span class="ident">as_ref</span>() {
-                <span class="string">&quot;code&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="string">&quot;code&quot;</span> <span class="op">=&gt;</span> {
                     <span class="ident">code</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">lit_to_string</span>(<span class="ident">lit</span>) {
-                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
-                                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
+                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+                                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
                                     <span class="string">&quot;Invalid argument type for `code` for validator `{}` on field `{}`: only a string is allowed&quot;</span>,
                                     <span class="ident">validator_name</span>, <span class="ident">field</span>
                                 ),
                             };
                 }
-                <span class="string">&quot;message&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="string">&quot;message&quot;</span> <span class="op">=&gt;</span> {
                     <span class="ident">message</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">lit_to_string</span>(<span class="ident">lit</span>) {
-                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
-                                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
+                                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+                                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(
                                     <span class="string">&quot;Invalid argument type for `message` for validator `{}` on field `{}`: only a string is allowed&quot;</span>,
                                     <span class="ident">validator_name</span>, <span class="ident">field</span>
                                 ),
                             };
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="kw">continue</span>,
             }
         }
     }

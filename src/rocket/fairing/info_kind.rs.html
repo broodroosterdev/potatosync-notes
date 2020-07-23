@@ -190,8 +190,8 @@
     <span class="doccomment">/// assert!(!launch_and_req.is(Kind::Launch | Kind::Request | Kind::Response));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Kind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        (<span class="ident">other</span>.<span class="number">0</span> <span class="op">&amp;</span> <span class="self">self</span>.<span class="number">0</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="number">0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Kind</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        (<span class="ident">other</span>.<span class="number">0</span> <span class="op">&amp;</span> <span class="self">self</span>.<span class="number">0</span>) <span class="op">==</span> <span class="ident">other</span>.<span class="number">0</span>
     }
 
     <span class="doccomment">/// Returns `true` if `self` is exactly `other`.</span>
@@ -210,8 +210,8 @@
     <span class="doccomment">/// assert!(!launch_and_req.is_exactly(Kind::Launch | Kind::Response));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_exactly</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Kind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="number">0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_exactly</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Kind</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">==</span> <span class="ident">other</span>.<span class="number">0</span>
     }
 }
 
@@ -219,7 +219,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">bitor</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">bitor</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">Kind</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">|</span> <span class="ident">rhs</span>.<span class="number">0</span>)
     }
 }

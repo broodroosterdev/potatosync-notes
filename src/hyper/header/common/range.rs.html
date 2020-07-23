@@ -367,44 +367,44 @@
 
 <span class="kw">impl</span> <span class="ident">Range</span> {
     <span class="doccomment">/// Get the most common byte range header (&quot;bytes=from-to&quot;)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes</span>(<span class="ident">from</span>: <span class="ident">u64</span>, <span class="ident">to</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Range</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes</span>(<span class="ident">from</span>: <span class="ident">u64</span>, <span class="ident">to</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="ident">Range</span> {
         <span class="ident">Range</span>::<span class="ident">Bytes</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">ByteRangeSpec</span>::<span class="ident">FromTo</span>(<span class="ident">from</span>, <span class="ident">to</span>)])
     }
 
     <span class="doccomment">/// Get byte range header with multiple subranges</span>
     <span class="doccomment">/// (&quot;bytes=from1-to1,from2-to2,fromX-toX&quot;)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes_multi</span>(<span class="ident">ranges</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">u64</span>, <span class="ident">u64</span>)<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Range</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes_multi</span>(<span class="ident">ranges</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">u64</span>, <span class="ident">u64</span>)<span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">Range</span> {
         <span class="ident">Range</span>::<span class="ident">Bytes</span>(<span class="ident">ranges</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">ByteRangeSpec</span>::<span class="ident">FromTo</span>(<span class="ident">r</span>.<span class="number">0</span>, <span class="ident">r</span>.<span class="number">1</span>)).<span class="ident">collect</span>())
     }
 }
 
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">ByteRangeSpec</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">ByteRangeSpec</span>::<span class="ident">FromTo</span>(<span class="ident">from</span>, <span class="ident">to</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}-{}&quot;</span>, <span class="ident">from</span>, <span class="ident">to</span>),
-            <span class="ident">ByteRangeSpec</span>::<span class="ident">Last</span>(<span class="ident">pos</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;-{}&quot;</span>, <span class="ident">pos</span>),
-            <span class="ident">ByteRangeSpec</span>::<span class="ident">AllFrom</span>(<span class="ident">pos</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}-&quot;</span>, <span class="ident">pos</span>),
+            <span class="ident">ByteRangeSpec</span>::<span class="ident">FromTo</span>(<span class="ident">from</span>, <span class="ident">to</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}-{}&quot;</span>, <span class="ident">from</span>, <span class="ident">to</span>),
+            <span class="ident">ByteRangeSpec</span>::<span class="ident">Last</span>(<span class="ident">pos</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;-{}&quot;</span>, <span class="ident">pos</span>),
+            <span class="ident">ByteRangeSpec</span>::<span class="ident">AllFrom</span>(<span class="ident">pos</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}-&quot;</span>, <span class="ident">pos</span>),
         }
     }
 }
 
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Range</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Range</span>::<span class="ident">Bytes</span>(<span class="kw-2">ref</span> <span class="ident">ranges</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Range</span>::<span class="ident">Bytes</span>(<span class="kw-2">ref</span> <span class="ident">ranges</span>) <span class="op">=&gt;</span> {
                 <span class="macro">try</span><span class="macro">!</span>(<span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;bytes=&quot;</span>));
 
                 <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">range</span>) <span class="kw">in</span> <span class="ident">ranges</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-                    <span class="kw">if</span> <span class="ident">i</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
+                    <span class="kw">if</span> <span class="ident">i</span> <span class="op">!=</span> <span class="number">0</span> {
                         <span class="macro">try</span><span class="macro">!</span>(<span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;,&quot;</span>));
                     }
                     <span class="macro">try</span><span class="macro">!</span>(<span class="ident">Display</span>::<span class="ident">fmt</span>(<span class="ident">range</span>, <span class="ident">f</span>));
                 }
                 <span class="prelude-val">Ok</span>(())
             },
-            <span class="ident">Range</span>::<span class="ident">Unregistered</span>(<span class="kw-2">ref</span> <span class="ident">unit</span>, <span class="kw-2">ref</span> <span class="ident">range_str</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Range</span>::<span class="ident">Unregistered</span>(<span class="kw-2">ref</span> <span class="ident">unit</span>, <span class="kw-2">ref</span> <span class="ident">range_str</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}={}&quot;</span>, <span class="ident">unit</span>, <span class="ident">range_str</span>)
             },
         }
@@ -414,26 +414,26 @@
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">Range</span> {
     <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> ::<span class="ident">Error</span>;
 
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Range</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Range</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">splitn</span>(<span class="number">2</span>, <span class="string">&quot;=&quot;</span>);
 
         <span class="kw">match</span> (<span class="ident">iter</span>.<span class="ident">next</span>(), <span class="ident">iter</span>.<span class="ident">next</span>()) {
-            (<span class="prelude-val">Some</span>(<span class="string">&quot;bytes&quot;</span>), <span class="prelude-val">Some</span>(<span class="ident">ranges</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="prelude-val">Some</span>(<span class="string">&quot;bytes&quot;</span>), <span class="prelude-val">Some</span>(<span class="ident">ranges</span>)) <span class="op">=&gt;</span> {
                 <span class="kw">match</span> <span class="ident">from_comma_delimited</span>(<span class="kw-2">&amp;</span>[<span class="ident">ranges</span>]) {
-                    <span class="prelude-val">Ok</span>(<span class="ident">ranges</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">ranges</span>) <span class="op">=&gt;</span> {
                         <span class="kw">if</span> <span class="ident">ranges</span>.<span class="ident">is_empty</span>() {
                             <span class="kw">return</span> <span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>);
                         }
                         <span class="prelude-val">Ok</span>(<span class="ident">Range</span>::<span class="ident">Bytes</span>(<span class="ident">ranges</span>))
                     },
-                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>)
+                    <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>)
                 }
             }
-            (<span class="prelude-val">Some</span>(<span class="ident">unit</span>), <span class="prelude-val">Some</span>(<span class="ident">range_str</span>)) <span class="kw">if</span> <span class="ident">unit</span> <span class="op">!</span><span class="op">=</span> <span class="string">&quot;&quot;</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">range_str</span> <span class="op">!</span><span class="op">=</span> <span class="string">&quot;&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="prelude-val">Some</span>(<span class="ident">unit</span>), <span class="prelude-val">Some</span>(<span class="ident">range_str</span>)) <span class="kw">if</span> <span class="ident">unit</span> <span class="op">!=</span> <span class="string">&quot;&quot;</span> <span class="op">&amp;&amp;</span> <span class="ident">range_str</span> <span class="op">!=</span> <span class="string">&quot;&quot;</span> <span class="op">=&gt;</span> {
                 <span class="prelude-val">Ok</span>(<span class="ident">Range</span>::<span class="ident">Unregistered</span>(<span class="ident">unit</span>.<span class="ident">to_owned</span>(), <span class="ident">range_str</span>.<span class="ident">to_owned</span>()))
 
             },
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>)
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>)
         }
     }
 }
@@ -441,41 +441,41 @@
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">ByteRangeSpec</span> {
     <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> ::<span class="ident">Error</span>;
 
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ByteRangeSpec</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ByteRangeSpec</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">splitn</span>(<span class="number">2</span>, <span class="string">&quot;-&quot;</span>);
 
         <span class="kw">match</span> (<span class="ident">parts</span>.<span class="ident">next</span>(), <span class="ident">parts</span>.<span class="ident">next</span>()) {
-            (<span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>), <span class="prelude-val">Some</span>(<span class="ident">end</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>), <span class="prelude-val">Some</span>(<span class="ident">end</span>)) <span class="op">=&gt;</span> {
                 <span class="ident">end</span>.<span class="ident">parse</span>().<span class="ident">or</span>(<span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>)).<span class="ident">map</span>(<span class="ident">ByteRangeSpec</span>::<span class="ident">Last</span>)
             },
-            (<span class="prelude-val">Some</span>(<span class="ident">start</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="prelude-val">Some</span>(<span class="ident">start</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>)) <span class="op">=&gt;</span> {
                 <span class="ident">start</span>.<span class="ident">parse</span>().<span class="ident">or</span>(<span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>)).<span class="ident">map</span>(<span class="ident">ByteRangeSpec</span>::<span class="ident">AllFrom</span>)
             },
-            (<span class="prelude-val">Some</span>(<span class="ident">start</span>), <span class="prelude-val">Some</span>(<span class="ident">end</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            (<span class="prelude-val">Some</span>(<span class="ident">start</span>), <span class="prelude-val">Some</span>(<span class="ident">end</span>)) <span class="op">=&gt;</span> {
                 <span class="kw">match</span> (<span class="ident">start</span>.<span class="ident">parse</span>(), <span class="ident">end</span>.<span class="ident">parse</span>()) {
-                    (<span class="prelude-val">Ok</span>(<span class="ident">start</span>), <span class="prelude-val">Ok</span>(<span class="ident">end</span>)) <span class="kw">if</span> <span class="ident">start</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">end</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">ByteRangeSpec</span>::<span class="ident">FromTo</span>(<span class="ident">start</span>, <span class="ident">end</span>)),
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>)
+                    (<span class="prelude-val">Ok</span>(<span class="ident">start</span>), <span class="prelude-val">Ok</span>(<span class="ident">end</span>)) <span class="kw">if</span> <span class="ident">start</span> <span class="op">&lt;=</span> <span class="ident">end</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">ByteRangeSpec</span>::<span class="ident">FromTo</span>(<span class="ident">start</span>, <span class="ident">end</span>)),
+                    <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>)
                 }
             },
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>)
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(::<span class="ident">Error</span>::<span class="ident">Header</span>)
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Header</span> <span class="kw">for</span> <span class="ident">Range</span> {
 
-    <span class="kw">fn</span> <span class="ident">header_name</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">header_name</span>() <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="string">&quot;Range&quot;</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">parse_header</span>(<span class="ident">raw</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Range</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse_header</span>(<span class="ident">raw</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>]) <span class="op">-&gt;</span> ::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Range</span><span class="op">&gt;</span> {
         <span class="ident">from_one_raw_str</span>(<span class="ident">raw</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">HeaderFormat</span> <span class="kw">for</span> <span class="ident">Range</span> {
 
-    <span class="kw">fn</span> <span class="ident">fmt_header</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt_header</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="ident">Display</span>::<span class="ident">fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
     }
 

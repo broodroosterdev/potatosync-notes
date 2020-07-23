@@ -908,7 +908,7 @@
 <span class="doccomment">/// [pin-project]: https://github.com/taiki-e/pin-project</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">pin_project</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__pin_project_internal</span><span class="op">!</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="op">*</span> }
     };
 }
@@ -951,7 +951,7 @@
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_vis</span>:<span class="ident">vis</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span>
             ),<span class="op">+</span> $(,)<span class="question-mark">?</span>
         }
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__pin_project_internal</span><span class="op">!</span> { @<span class="ident">internal</span> (<span class="kw">pub</span>(<span class="kw">crate</span>))
             $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attrs</span>]</span>)<span class="op">*</span>
             <span class="kw">pub</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ident</span> $(<span class="op">&lt;</span>
@@ -1002,7 +1002,7 @@
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_vis</span>:<span class="ident">vis</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span>
             ),<span class="op">+</span> $(,)<span class="question-mark">?</span>
         }
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__pin_project_internal</span><span class="op">!</span> { @<span class="ident">internal</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">vis</span>)
             $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attrs</span>]</span>)<span class="op">*</span>
             <span class="macro-nonterminal">$</span><span class="macro-nonterminal">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ident</span> $(<span class="op">&lt;</span>
@@ -1054,7 +1054,7 @@
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_vis</span>:<span class="ident">vis</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span>
             ),<span class="op">+</span>
         }
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         $(<span class="attribute">#[<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attrs</span>]</span>)<span class="op">*</span>
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">vis</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ident</span> $(<span class="op">&lt;</span>
             $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">lifetime</span> $(: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">lifetime_bound</span>)<span class="question-mark">?</span> ,)<span class="op">*</span>
@@ -1125,7 +1125,7 @@
             {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proj_vis</span> <span class="kw">fn</span> <span class="ident">project</span><span class="op">&lt;</span><span class="lifetime">&#39;__pin</span><span class="op">&gt;</span>(
                     <span class="self">self</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__private</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;__pin</span> <span class="kw-2">mut</span> <span class="self">Self</span><span class="op">&gt;</span>,
-                ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Projection</span><span class="op">&lt;</span><span class="lifetime">&#39;__pin</span> $(, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">lifetime</span>,)<span class="op">*</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="op">*</span> )<span class="question-mark">?</span><span class="op">&gt;</span> {
+                ) <span class="op">-&gt;</span> <span class="ident">Projection</span><span class="op">&lt;</span><span class="lifetime">&#39;__pin</span> $(, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">lifetime</span>,)<span class="op">*</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="op">*</span> )<span class="question-mark">?</span><span class="op">&gt;</span> {
                     <span class="kw">unsafe</span> {
                         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_unchecked_mut</span>();
                         <span class="ident">Projection</span> {
@@ -1139,7 +1139,7 @@
                 }
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">proj_vis</span> <span class="kw">fn</span> <span class="ident">project_ref</span><span class="op">&lt;</span><span class="lifetime">&#39;__pin</span><span class="op">&gt;</span>(
                     <span class="self">self</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__private</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;__pin</span> <span class="self">Self</span><span class="op">&gt;</span>,
-                ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ProjectionRef</span><span class="op">&lt;</span><span class="lifetime">&#39;__pin</span> $(, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">lifetime</span>,)<span class="op">*</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="op">*</span> )<span class="question-mark">?</span><span class="op">&gt;</span> {
+                ) <span class="op">-&gt;</span> <span class="ident">ProjectionRef</span><span class="op">&lt;</span><span class="lifetime">&#39;__pin</span> $(, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">lifetime</span>,)<span class="op">*</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">generics</span>),<span class="op">*</span> )<span class="question-mark">?</span><span class="op">&gt;</span> {
                     <span class="kw">unsafe</span> {
                         <span class="kw">let</span> <span class="ident">this</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_ref</span>();
                         <span class="ident">ProjectionRef</span> {
@@ -1316,7 +1316,7 @@
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_vis</span>:<span class="ident">vis</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span>
             ),<span class="op">+</span>
         }
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span> <span class="comment">// This lint warns unused fields/variants.</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">mut_mut</span>)]</span> <span class="comment">// This lint warns `&amp;mut &amp;mut &lt;ty&gt;`.</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">type_repetition_in_bounds</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust-clippy/issues/4326</span>
@@ -1383,7 +1383,7 @@
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_vis</span>:<span class="ident">vis</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span>
             ),<span class="op">+</span>
         }
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span> <span class="comment">// This lint warns unused fields/variants.</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">mut_mut</span>)]</span> <span class="comment">// This lint warns `&amp;mut &amp;mut &lt;ty&gt;`.</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">type_repetition_in_bounds</span>)]</span> <span class="comment">// https://github.com/rust-lang/rust-clippy/issues/4326</span>
@@ -1429,12 +1429,12 @@
     (@<span class="ident">make_unpin_bound</span>
         <span class="attribute">#[<span class="ident">pin</span>]</span>
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>
     };
     (@<span class="ident">make_unpin_bound</span>
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__private</span>::<span class="ident">AlwaysUnpin</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span><span class="op">&gt;</span>
     };
 
@@ -1444,14 +1444,14 @@
         <span class="attribute">#[<span class="ident">pin</span>]</span>
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>;
         $(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>:<span class="macro-nonterminal">ident</span>)<span class="question-mark">?</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__private</span>::<span class="ident">Pin</span>::<span class="ident">new_unchecked</span>(<span class="kw-2">&amp;</span>$(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>)
     };
     (@<span class="ident">make_unsafe_field_proj</span>
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>:<span class="ident">ident</span>;
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>:<span class="ident">ident</span>;
         $(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>:<span class="macro-nonterminal">ident</span>)<span class="question-mark">?</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="kw-2">&amp;</span>$(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)<span class="question-mark">?</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">this</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field</span>
     };
 
@@ -1460,13 +1460,13 @@
         <span class="attribute">#[<span class="ident">pin</span>]</span>
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span>;
         $(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>:<span class="macro-nonterminal">ident</span>)<span class="question-mark">?</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__private</span>::<span class="ident">Pin</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;__pin</span> $(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)<span class="question-mark">?</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>)<span class="op">&gt;</span>
     };
     (@<span class="ident">make_proj_field</span>
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>:<span class="ident">ty</span>;
         $(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>:<span class="macro-nonterminal">ident</span>)<span class="question-mark">?</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;__pin</span> $(<span class="macro-nonterminal">$</span><span class="kw-2">mut</span>)<span class="question-mark">?</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_ty</span>)
     };
 

@@ -66,7 +66,7 @@
 
 <span class="kw">impl</span> <span class="ident">PgQueryBuilder</span> {
     <span class="doccomment">/// Constructs a new query builder with an empty query</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">PgQueryBuilder</span>::<span class="ident">default</span>()
     }
 }
@@ -76,7 +76,7 @@
         <span class="self">self</span>.<span class="ident">sql</span>.<span class="ident">push_str</span>(<span class="ident">sql</span>);
     }
 
-    <span class="kw">fn</span> <span class="ident">push_identifier</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">identifier</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">push_identifier</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">identifier</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">push_sql</span>(<span class="string">&quot;\&quot;&quot;</span>);
         <span class="self">self</span>.<span class="ident">push_sql</span>(<span class="kw-2">&amp;</span><span class="ident">identifier</span>.<span class="ident">replace</span>(<span class="string">&#39;&quot;&#39;</span>, <span class="string">&quot;\&quot;\&quot;&quot;</span>));
         <span class="self">self</span>.<span class="ident">push_sql</span>(<span class="string">&quot;\&quot;&quot;</span>);
@@ -84,12 +84,12 @@
     }
 
     <span class="kw">fn</span> <span class="ident">push_bind_param</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">bind_idx</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+        <span class="self">self</span>.<span class="ident">bind_idx</span> <span class="op">+=</span> <span class="number">1</span>;
         <span class="kw">let</span> <span class="ident">sql</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;${}&quot;</span>, <span class="self">self</span>.<span class="ident">bind_idx</span>);
         <span class="self">self</span>.<span class="ident">push_sql</span>(<span class="kw-2">&amp;</span><span class="ident">sql</span>);
     }
 
-    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">finish</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
         <span class="self">self</span>.<span class="ident">sql</span>
     }
 }

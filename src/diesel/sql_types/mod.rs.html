@@ -877,7 +877,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method may use `lookup` to do dynamic runtime lookup. Implementors</span>
     <span class="doccomment">/// of this method should not do dynamic lookup unless absolutely necessary</span>
-    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="ident">lookup</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">MetadataLookup</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">TypeMetadata</span>;
+    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="ident">lookup</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">MetadataLookup</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">TypeMetadata</span>;
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;mysql&quot;</span>)]</span>

@@ -1405,7 +1405,7 @@
 <span class="kw">impl</span> <span class="ident">RocketConfig</span> {
     <span class="doccomment">/// Read the configuration from the `Rocket.toml` file. The file is search</span>
     <span class="doccomment">/// for recursively up the tree, starting from the CWD.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocketConfig</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>() <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocketConfig</span><span class="op">&gt;</span> {
         <span class="comment">// Find the config file, starting from the `cwd` and working backwards.</span>
         <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">RocketConfig</span>::<span class="ident">find</span>()<span class="question-mark">?</span>;
 
@@ -1422,7 +1422,7 @@
 
     <span class="doccomment">/// Return the default configuration for all environments and marks the</span>
     <span class="doccomment">/// active environment (via the CONFIG_ENV variable) as active.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">active_default_from</span>(<span class="ident">filename</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocketConfig</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">active_default_from</span>(<span class="ident">filename</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocketConfig</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">defaults</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">filename</span> {
             <span class="ident">defaults</span>.<span class="ident">insert</span>(<span class="ident">Development</span>, <span class="ident">Config</span>::<span class="ident">default_from</span>(<span class="ident">Development</span>, <span class="kw-2">&amp;</span><span class="ident">path</span>)<span class="question-mark">?</span>);
@@ -1446,7 +1446,7 @@
 
     <span class="doccomment">/// Return the default configuration for all environments and marks the</span>
     <span class="doccomment">/// active environment (via the CONFIG_ENV variable) as active.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">active_default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocketConfig</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">active_default</span>() <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocketConfig</span><span class="op">&gt;</span> {
         <span class="ident">RocketConfig</span>::<span class="ident">active_default_from</span>(<span class="prelude-val">None</span>)
     }
 
@@ -1454,7 +1454,7 @@
     <span class="doccomment">/// directory and working up through its parents. Returns the path to the</span>
     <span class="doccomment">/// file or an Error::NoKey if the file couldn&#39;t be found. If the current</span>
     <span class="doccomment">/// working directory can&#39;t be determined, return `BadCWD`.</span>
-    <span class="kw">fn</span> <span class="ident">find</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">find</span>() <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">cwd</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">current_dir</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">ConfigError</span>::<span class="ident">NotFound</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current</span> <span class="op">=</span> <span class="ident">cwd</span>.<span class="ident">as_path</span>();
 
@@ -1465,8 +1465,8 @@
             }
 
             <span class="kw">match</span> <span class="ident">current</span>.<span class="ident">parent</span>() {
-                <span class="prelude-val">Some</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">current</span> <span class="op">=</span> <span class="ident">p</span>,
-                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
+                <span class="prelude-val">Some</span>(<span class="ident">p</span>) <span class="op">=&gt;</span> <span class="ident">current</span> <span class="op">=</span> <span class="ident">p</span>,
+                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">break</span>,
             }
         }
 
@@ -1474,10 +1474,10 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Config</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Config</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">env</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">config</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">config</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;set(): {} config is missing.&quot;</span>, <span class="ident">env</span>),
+            <span class="prelude-val">Some</span>(<span class="ident">config</span>) <span class="op">=&gt;</span> <span class="ident">config</span>,
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;set(): {} config is missing.&quot;</span>, <span class="ident">env</span>),
         }
     }
 
@@ -1485,7 +1485,7 @@
     <span class="doccomment">/// derived from the TOML table `kvs`. The environment must already exist in</span>
     <span class="doccomment">/// `self`, otherwise this function panics. Any existing values are</span>
     <span class="doccomment">/// overridden by those in `kvs`.</span>
-    <span class="kw">fn</span> <span class="ident">set_from_table</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">env</span>: <span class="ident">Environment</span>, <span class="ident">kvs</span>: <span class="kw-2">&amp;</span><span class="ident">Table</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">set_from_table</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">env</span>: <span class="ident">Environment</span>, <span class="ident">kvs</span>: <span class="kw-2">&amp;</span><span class="ident">Table</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">for</span> (<span class="ident">key</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="ident">kvs</span> {
             <span class="self">self</span>.<span class="ident">get_mut</span>(<span class="ident">env</span>).<span class="ident">set_raw</span>(<span class="ident">key</span>, <span class="ident">value</span>)<span class="question-mark">?</span>;
         }
@@ -1494,21 +1494,21 @@
     }
 
     <span class="doccomment">/// Retrieves the `Config` for the environment `env`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Config</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Config</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">config</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">env</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">config</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">config</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;get(): {} config is missing.&quot;</span>, <span class="ident">env</span>),
+            <span class="prelude-val">Some</span>(<span class="ident">config</span>) <span class="op">=&gt;</span> <span class="ident">config</span>,
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;get(): {} config is missing.&quot;</span>, <span class="ident">env</span>),
         }
     }
 
     <span class="doccomment">/// Retrieves the `Config` for the active environment.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">active</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Config</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">active</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Config</span> {
         <span class="self">self</span>.<span class="ident">get</span>(<span class="self">self</span>.<span class="ident">active_env</span>)
     }
 
     <span class="comment">// Override all environments with values from env variables if present.</span>
-    <span class="kw">fn</span> <span class="ident">override_from_env</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">override_from_env</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">for</span> (<span class="ident">key</span>, <span class="ident">val</span>) <span class="kw">in</span> <span class="ident">env</span>::<span class="ident">vars</span>() {
             <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">ENV_VAR_PREFIX</span>.<span class="ident">len</span>() {
                 <span class="kw">continue</span>
@@ -1524,18 +1524,18 @@
             <span class="comment">// Parse the key and value and try to set the variable for all envs.</span>
             <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">key</span>[<span class="ident">ENV_VAR_PREFIX</span>.<span class="ident">len</span>()..].<span class="ident">to_lowercase</span>();
             <span class="kw">let</span> <span class="ident">toml_val</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">parse_simple_toml_value</span>(<span class="kw-2">&amp;</span><span class="ident">val</span>) {
-                <span class="prelude-val">Ok</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>,
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">BadEnvVal</span>(<span class="ident">key</span>, <span class="ident">val</span>, <span class="ident">e</span>))
+                <span class="prelude-val">Ok</span>(<span class="ident">val</span>) <span class="op">=&gt;</span> <span class="ident">val</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">BadEnvVal</span>(<span class="ident">key</span>, <span class="ident">val</span>, <span class="ident">e</span>))
             };
 
             <span class="kw">for</span> <span class="ident">env</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">Environment</span>::<span class="ident">ALL</span> {
                 <span class="kw">match</span> <span class="self">self</span>.<span class="ident">get_mut</span>(<span class="kw-2">*</span><span class="ident">env</span>).<span class="ident">set_raw</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>, <span class="kw-2">&amp;</span><span class="ident">toml_val</span>) {
-                    <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">BadType</span>(<span class="kw">_</span>, <span class="ident">exp</span>, <span class="ident">actual</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">BadType</span>(<span class="kw">_</span>, <span class="ident">exp</span>, <span class="ident">actual</span>, <span class="kw">_</span>)) <span class="op">=&gt;</span> {
                         <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;expected {}, but found {}&quot;</span>, <span class="ident">exp</span>, <span class="ident">actual</span>);
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">BadEnvVal</span>(<span class="ident">key</span>, <span class="ident">val</span>, <span class="ident">e</span>))
                     }
-                    <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>),
-                    <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="comment">/* move along */</span> }
+                    <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>),
+                    <span class="prelude-val">Ok</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> { <span class="comment">/* move along */</span> }
                 }
             }
         }
@@ -1545,18 +1545,18 @@
 
     <span class="doccomment">/// Parses the configuration from the Rocket.toml file. Also overrides any</span>
     <span class="doccomment">/// values there with values from the environment.</span>
-    <span class="kw">fn</span> <span class="ident">parse</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">src</span>: <span class="ident">String</span>, <span class="ident">filename</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocketConfig</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;&gt;</span>(<span class="ident">src</span>: <span class="ident">String</span>, <span class="ident">filename</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocketConfig</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="self">self</span>::<span class="ident">ConfigError</span>::<span class="ident">ParseError</span>;
 
         <span class="comment">// Parse the source as TOML, if possible.</span>
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">filename</span>.<span class="ident">as_ref</span>().<span class="ident">to_path_buf</span>();
         <span class="kw">let</span> <span class="ident">table</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">src</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">toml</span>::<span class="ident">Value</span><span class="op">&gt;</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">toml</span>::<span class="ident">Value</span>::<span class="ident">Table</span>(<span class="ident">table</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">table</span>,
-            <span class="prelude-val">Ok</span>(<span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">toml</span>::<span class="ident">Value</span>::<span class="ident">Table</span>(<span class="ident">table</span>)) <span class="op">=&gt;</span> <span class="ident">table</span>,
+            <span class="prelude-val">Ok</span>(<span class="ident">value</span>) <span class="op">=&gt;</span> {
                 <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;expected a table, found {}&quot;</span>, <span class="ident">value</span>.<span class="ident">type_str</span>());
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">ParseError</span>(<span class="ident">src</span>, <span class="ident">path</span>, <span class="ident">err</span>, <span class="prelude-val">Some</span>((<span class="number">1</span>, <span class="number">1</span>))));
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseError</span>(<span class="ident">src</span>, <span class="ident">path</span>, <span class="ident">e</span>.<span class="ident">to_string</span>(), <span class="ident">e</span>.<span class="ident">line_col</span>()))
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ParseError</span>(<span class="ident">src</span>, <span class="ident">path</span>, <span class="ident">e</span>.<span class="ident">to_string</span>(), <span class="ident">e</span>.<span class="ident">line_col</span>()))
         };
 
         <span class="comment">// Create a config with the defaults; set the env to the active one.</span>
@@ -1569,14 +1569,14 @@
         <span class="kw">for</span> (<span class="ident">entry</span>, <span class="ident">value</span>) <span class="kw">in</span> <span class="ident">table</span> {
             <span class="comment">// Each environment must be a table.</span>
             <span class="kw">let</span> <span class="ident">kv_pairs</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">value</span>.<span class="ident">as_table</span>() {
-                <span class="prelude-val">Some</span>(<span class="ident">table</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">table</span>,
-                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">BadType</span>(
+                <span class="prelude-val">Some</span>(<span class="ident">table</span>) <span class="op">=&gt;</span> <span class="ident">table</span>,
+                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">BadType</span>(
                     <span class="ident">entry</span>, <span class="string">&quot;a table&quot;</span>, <span class="ident">value</span>.<span class="ident">type_str</span>(), <span class="prelude-val">Some</span>(<span class="ident">path</span>.<span class="ident">clone</span>())
                 ))
             };
 
             <span class="comment">// Store the global table for later use and move on.</span>
-            <span class="kw">if</span> <span class="ident">entry</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">GLOBAL_ENV_NAME</span> {
+            <span class="kw">if</span> <span class="ident">entry</span>.<span class="ident">as_str</span>() <span class="op">==</span> <span class="ident">GLOBAL_ENV_NAME</span> {
                 <span class="ident">global</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">kv_pairs</span>.<span class="ident">clone</span>());
                 <span class="kw">continue</span>;
             }
@@ -1584,8 +1584,8 @@
             <span class="comment">// This is not the global table. Parse the environment name from the</span>
             <span class="comment">// table entry name and then set all of the key/values.</span>
             <span class="kw">match</span> <span class="ident">entry</span>.<span class="ident">as_str</span>().<span class="ident">parse</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">env</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">config</span>.<span class="ident">set_from_table</span>(<span class="ident">env</span>, <span class="ident">kv_pairs</span>)<span class="question-mark">?</span>,
-                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">BadEntry</span>(<span class="ident">entry</span>.<span class="ident">clone</span>(), <span class="ident">path</span>.<span class="ident">clone</span>()))<span class="question-mark">?</span>
+                <span class="prelude-val">Ok</span>(<span class="ident">env</span>) <span class="op">=&gt;</span> <span class="ident">config</span>.<span class="ident">set_from_table</span>(<span class="ident">env</span>, <span class="ident">kv_pairs</span>)<span class="question-mark">?</span>,
+                <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ConfigError</span>::<span class="ident">BadEntry</span>(<span class="ident">entry</span>.<span class="ident">clone</span>(), <span class="ident">path</span>.<span class="ident">clone</span>()))<span class="question-mark">?</span>
             }
         }
 
@@ -1617,8 +1617,8 @@
 <span class="doccomment">/// # Panics</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// If there is a problem, prints a nice error message and bails.</span>
-<span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">init</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Config</span> {
-    <span class="kw">let</span> <span class="ident">bail</span> <span class="op">=</span> <span class="op">|</span><span class="ident">e</span>: <span class="ident">ConfigError</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">init</span>() <span class="op">-&gt;</span> <span class="ident">Config</span> {
+    <span class="kw">let</span> <span class="ident">bail</span> <span class="op">=</span> <span class="op">|</span><span class="ident">e</span>: <span class="ident">ConfigError</span><span class="op">|</span> <span class="op">-&gt;</span> <span class="op">!</span> {
         <span class="ident">logger</span>::<span class="ident">init</span>(<span class="ident">LoggingLevel</span>::<span class="ident">Debug</span>);
         <span class="ident">e</span>.<span class="ident">pretty_print</span>();
         <span class="ident">process</span>::<span class="ident">exit</span>(<span class="number">1</span>)
@@ -1629,9 +1629,9 @@
         <span class="kw">match</span> <span class="ident">e</span> {
             <span class="op">|</span> <span class="ident">ParseError</span>(..) <span class="op">|</span> <span class="ident">BadEntry</span>(..) <span class="op">|</span> <span class="ident">BadEnv</span>(..) <span class="op">|</span> <span class="ident">BadType</span>(..) <span class="op">|</span> <span class="ident">Io</span>(..)
             <span class="op">|</span> <span class="ident">BadFilePath</span>(..) <span class="op">|</span> <span class="ident">BadEnvVal</span>(..) <span class="op">|</span> <span class="ident">UnknownKey</span>(..)
-            <span class="op">|</span> <span class="ident">Missing</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bail</span>(<span class="ident">e</span>),
-            <span class="ident">IoError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Failed reading Rocket.toml. Using defaults.&quot;</span>),
-            <span class="ident">NotFound</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="comment">/* try using the default below */</span> }
+            <span class="op">|</span> <span class="ident">Missing</span>(..) <span class="op">=&gt;</span> <span class="ident">bail</span>(<span class="ident">e</span>),
+            <span class="ident">IoError</span> <span class="op">=&gt;</span> <span class="macro">warn</span><span class="macro">!</span>(<span class="string">&quot;Failed reading Rocket.toml. Using defaults.&quot;</span>),
+            <span class="ident">NotFound</span> <span class="op">=&gt;</span> { <span class="comment">/* try using the default below */</span> }
         }
 
         <span class="ident">RocketConfig</span>::<span class="ident">active_default</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">bail</span>(<span class="ident">e</span>))
@@ -1662,28 +1662,28 @@
     }
 
     <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">check_config</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rconfig</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">econfig</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> (
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rconfig</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">econfig</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> (
             <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">econfig</span>.<span class="ident">finalize</span>().<span class="ident">unwrap</span>();
             <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rconfig</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">config</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">active</span>(), <span class="kw-2">&amp;</span><span class="ident">expected</span>),
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Config {} failed: {:?}&quot;</span>, <span class="macro">stringify</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rconfig</span>), <span class="ident">e</span>)
+                <span class="prelude-val">Ok</span>(<span class="ident">config</span>) <span class="op">=&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">active</span>(), <span class="kw-2">&amp;</span><span class="ident">expected</span>),
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Config {} failed: {:?}&quot;</span>, <span class="macro">stringify</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rconfig</span>), <span class="ident">e</span>)
             }
         );
 
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">env</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rconfig</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">econfig</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> (
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">env</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rconfig</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">econfig</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> (
             <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">econfig</span>.<span class="ident">finalize</span>().<span class="ident">unwrap</span>();
             <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rconfig</span> {
-                <span class="prelude-val">Ok</span>(<span class="kw-2">ref</span> <span class="ident">config</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">get</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">env</span>), <span class="kw-2">&amp;</span><span class="ident">expected</span>),
-                <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Config {} failed: {:?}&quot;</span>, <span class="macro">stringify</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rconfig</span>), <span class="ident">e</span>)
+                <span class="prelude-val">Ok</span>(<span class="kw-2">ref</span> <span class="ident">config</span>) <span class="op">=&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">get</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">env</span>), <span class="kw-2">&amp;</span><span class="ident">expected</span>),
+                <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Config {} failed: {:?}&quot;</span>, <span class="macro">stringify</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rconfig</span>), <span class="ident">e</span>)
             }
         );
     }
 
-    <span class="kw">fn</span> <span class="ident">active_default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocketConfig</span><span class="op">&gt;</span>  {
+    <span class="kw">fn</span> <span class="ident">active_default</span>() <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RocketConfig</span><span class="op">&gt;</span>  {
         <span class="ident">RocketConfig</span>::<span class="ident">active_default</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">default_config</span>(<span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ConfigBuilder</span> {
+    <span class="kw">fn</span> <span class="ident">default_config</span>(<span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-&gt;</span> <span class="ident">ConfigBuilder</span> {
         <span class="ident">ConfigBuilder</span>::<span class="ident">new</span>(<span class="ident">env</span>)
     }
 
@@ -1725,7 +1725,7 @@
         <span class="kw">for</span> <span class="ident">env</span> <span class="kw">in</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;&quot;</span>, <span class="string">&quot;p&quot;</span>, <span class="string">&quot;pr&quot;</span>, <span class="string">&quot;pro&quot;</span>, <span class="string">&quot;prodo&quot;</span>, <span class="string">&quot; prod&quot;</span>, <span class="string">&quot;dev &quot;</span>, <span class="string">&quot;!dev!&quot;</span>, <span class="string">&quot;🚀 &quot;</span>] {
             <span class="ident">env</span>::<span class="ident">set_var</span>(<span class="ident">CONFIG_ENV</span>, <span class="ident">env</span>);
             <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">ConfigError</span>::<span class="ident">BadEnv</span>(<span class="ident">env</span>.<span class="ident">to_string</span>());
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">active_default</span>().<span class="ident">err</span>().<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span> <span class="op">=</span><span class="op">=</span> <span class="ident">err</span>));
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">active_default</span>().<span class="ident">err</span>().<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span> <span class="op">==</span> <span class="ident">err</span>));
         }
 
         <span class="comment">// Test that a bunch of invalid environment names give the right error.</span>
@@ -1735,7 +1735,7 @@
             <span class="kw">let</span> <span class="ident">e_str</span> <span class="op">=</span> <span class="ident">env</span>.<span class="ident">to_string</span>();
             <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">ConfigError</span>::<span class="ident">BadEntry</span>(<span class="ident">e_str</span>, <span class="ident">TEST_CONFIG_FILENAME</span>.<span class="ident">into</span>());
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">RocketConfig</span>::<span class="ident">parse</span>(<span class="ident">toml_table</span>, <span class="ident">TEST_CONFIG_FILENAME</span>)
-                    .<span class="ident">err</span>().<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span> <span class="op">=</span><span class="op">=</span> <span class="ident">err</span>));
+                    .<span class="ident">err</span>().<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span> <span class="op">==</span> <span class="ident">err</span>));
         }
     }
 
@@ -2269,12 +2269,12 @@
 
         <span class="kw">let</span> <span class="ident">check_value</span> <span class="op">=</span> <span class="op">|</span><span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">val</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span><span class="op">|</span> {
             <span class="kw">match</span> <span class="ident">key</span> {
-                <span class="string">&quot;log&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">log_level</span>, <span class="ident">val</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()),
-                <span class="string">&quot;port&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">port</span>, <span class="ident">val</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()),
-                <span class="string">&quot;address&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">address</span>, <span class="ident">val</span>),
-                <span class="string">&quot;extra_extra&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">get_bool</span>(<span class="ident">key</span>).<span class="ident">unwrap</span>(), <span class="bool-val">true</span>),
-                <span class="string">&quot;workers&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">workers</span>, <span class="ident">val</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected key: {}&quot;</span>, <span class="ident">key</span>)
+                <span class="string">&quot;log&quot;</span> <span class="op">=&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">log_level</span>, <span class="ident">val</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()),
+                <span class="string">&quot;port&quot;</span> <span class="op">=&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">port</span>, <span class="ident">val</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()),
+                <span class="string">&quot;address&quot;</span> <span class="op">=&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">address</span>, <span class="ident">val</span>),
+                <span class="string">&quot;extra_extra&quot;</span> <span class="op">=&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">get_bool</span>(<span class="ident">key</span>).<span class="ident">unwrap</span>(), <span class="bool-val">true</span>),
+                <span class="string">&quot;workers&quot;</span> <span class="op">=&gt;</span> <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">config</span>.<span class="ident">workers</span>, <span class="ident">val</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()),
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected key: {}&quot;</span>, <span class="ident">key</span>)
             }
         };
 

@@ -28,7 +28,7 @@ into your struct.</p>
 <span class="kw">struct</span> <span class="ident">LowercaseString</span>(<span class="ident">String</span>);
 
 <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LowercaseString</span> {
-    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
 }
@@ -38,9 +38,9 @@ into your struct.</p>
     <span class="ident">DB</span>: <span class="ident">Backend</span>,
     <span class="ident">String</span>: <span class="ident">Queryable</span><span class="op">&lt;</span><span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Row</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">String</span> <span class="kw">as</span> <span class="ident">Queryable</span><span class="op">&lt;</span><span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Row</span>;
+    <span class="kw">type</span> <span class="ident">Row</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">String</span> <span class="kw">as</span> <span class="ident">Queryable</span><span class="op">&lt;</span><span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;&gt;</span>::<span class="ident">Row</span>;
 
-    <span class="kw">fn</span> <span class="ident">build</span>(<span class="ident">row</span>: <span class="self">Self</span>::<span class="ident">Row</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">build</span>(<span class="ident">row</span>: <span class="self">Self</span>::<span class="ident">Row</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">LowercaseString</span>(<span class="ident">String</span>::<span class="ident">build</span>(<span class="ident">row</span>).<span class="ident">to_lowercase</span>())
     }
 }
@@ -72,7 +72,7 @@ into your struct.</p>
 <span class="kw">impl</span> <span class="ident">Queryable</span><span class="op">&lt;</span><span class="ident">users</span>::<span class="ident">SqlType</span>, <span class="ident">DB</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">User</span> {
     <span class="kw">type</span> <span class="ident">Row</span> <span class="op">=</span> (<span class="ident">i32</span>, <span class="ident">String</span>);
 
-    <span class="kw">fn</span> <span class="ident">build</span>(<span class="ident">row</span>: <span class="self">Self</span>::<span class="ident">Row</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">build</span>(<span class="ident">row</span>: <span class="self">Self</span>::<span class="ident">Row</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">User</span> {
             <span class="ident">id</span>: <span class="ident">row</span>.<span class="number">0</span>,
             <span class="ident">name</span>: <span class="ident">row</span>.<span class="number">1</span>.<span class="ident">to_lowercase</span>(),

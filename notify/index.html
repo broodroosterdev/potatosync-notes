@@ -32,8 +32,8 @@ changes as soon as they happen. For more details, see
 
     <span class="kw">loop</span> {
         <span class="kw">match</span> <span class="ident">rx</span>.<span class="ident">recv</span>() {
-           <span class="prelude-val">Ok</span>(<span class="ident">event</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">event</span>),
-           <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;watch error: {:?}&quot;</span>, <span class="ident">e</span>),
+           <span class="prelude-val">Ok</span>(<span class="ident">event</span>) <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">event</span>),
+           <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;watch error: {:?}&quot;</span>, <span class="ident">e</span>),
         }
     }
 }</pre></div>
@@ -62,11 +62,11 @@ well.</p>
 
     <span class="kw">loop</span> {
         <span class="kw">match</span> <span class="ident">rx</span>.<span class="ident">recv</span>() {
-           <span class="prelude-val">Ok</span>(<span class="ident">RawEvent</span>{<span class="ident">path</span>: <span class="prelude-val">Some</span>(<span class="ident">path</span>), <span class="ident">op</span>: <span class="prelude-val">Ok</span>(<span class="ident">op</span>), <span class="ident">cookie</span>}) <span class="op">=</span><span class="op">&gt;</span> {
+           <span class="prelude-val">Ok</span>(<span class="ident">RawEvent</span>{<span class="ident">path</span>: <span class="prelude-val">Some</span>(<span class="ident">path</span>), <span class="ident">op</span>: <span class="prelude-val">Ok</span>(<span class="ident">op</span>), <span class="ident">cookie</span>}) <span class="op">=&gt;</span> {
                <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;{:?} {:?} ({:?})&quot;</span>, <span class="ident">op</span>, <span class="ident">path</span>, <span class="ident">cookie</span>)
            },
-           <span class="prelude-val">Ok</span>(<span class="ident">event</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;broken event: {:?}&quot;</span>, <span class="ident">event</span>),
-           <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;watch error: {:?}&quot;</span>, <span class="ident">e</span>),
+           <span class="prelude-val">Ok</span>(<span class="ident">event</span>) <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;broken event: {:?}&quot;</span>, <span class="ident">event</span>),
+           <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="macro">println</span><span class="macro">!</span>(<span class="string">&quot;watch error: {:?}&quot;</span>, <span class="ident">e</span>),
         }
     }
 }</pre></div>

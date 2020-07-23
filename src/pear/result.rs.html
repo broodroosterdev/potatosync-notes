@@ -206,11 +206,11 @@
 <span class="kw">use</span> <span class="ident">Input</span>;
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AsResult</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span>: <span class="ident">Input</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_result</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">as_result</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span>: <span class="ident">Input</span><span class="op">&gt;</span> <span class="ident">AsResult</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span> {
-    <span class="kw">fn</span> <span class="ident">as_result</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_result</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="self">self</span>)
     }
 }
@@ -225,7 +225,7 @@
 
 <span class="comment">// This one won&#39;t but makes some things uglier to write.</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span>: <span class="ident">Input</span><span class="op">&gt;</span> <span class="ident">AsResult</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">as_result</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_result</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span><span class="op">&gt;</span> {
         <span class="self">self</span>
     }
 }
@@ -239,14 +239,14 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span>, <span class="ident">S</span><span class="op">&gt;</span> <span class="ident">Expected</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span>, <span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">FT</span>, <span class="ident">FI</span>, <span class="ident">FS</span>, <span class="ident">OT</span>, <span class="ident">OI</span>, <span class="ident">OS</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f_t</span>: <span class="ident">FT</span>, <span class="ident">f_i</span>: <span class="ident">FI</span>, <span class="ident">f_s</span>: <span class="ident">FS</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Expected</span><span class="op">&lt;</span><span class="ident">OT</span>, <span class="ident">OI</span>, <span class="ident">OS</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">FT</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Fn</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OT</span>, <span class="ident">FI</span>: <span class="ident">Fn</span>(<span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OI</span>, <span class="ident">FS</span>: <span class="ident">Fn</span>(<span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OS</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">FT</span>, <span class="ident">FI</span>, <span class="ident">FS</span>, <span class="ident">OT</span>, <span class="ident">OI</span>, <span class="ident">OS</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f_t</span>: <span class="ident">FT</span>, <span class="ident">f_i</span>: <span class="ident">FI</span>, <span class="ident">f_s</span>: <span class="ident">FS</span>) <span class="op">-&gt;</span> <span class="ident">Expected</span><span class="op">&lt;</span><span class="ident">OT</span>, <span class="ident">OI</span>, <span class="ident">OS</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">FT</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Fn</span>(<span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">OT</span>, <span class="ident">FI</span>: <span class="ident">Fn</span>(<span class="ident">I</span>) <span class="op">-&gt;</span> <span class="ident">OI</span>, <span class="ident">FS</span>: <span class="ident">Fn</span>(<span class="ident">S</span>) <span class="op">-&gt;</span> <span class="ident">OS</span>
     {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="ident">a</span>.<span class="ident">map</span>(<span class="ident">f_t</span>), <span class="ident">b</span>.<span class="ident">map</span>(<span class="ident">f_t</span>)),
-            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="ident">a</span>.<span class="ident">map</span>(<span class="ident">f_i</span>), <span class="ident">b</span>.<span class="ident">map</span>(<span class="ident">f_s</span>)),
-            <span class="ident">Expected</span>::<span class="ident">Custom</span>(<span class="ident">msg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Expected</span>::<span class="ident">Custom</span>(<span class="ident">msg</span>),
-            <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="ident">t</span>.<span class="ident">map</span>(<span class="ident">f_t</span>))
+            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="ident">a</span>.<span class="ident">map</span>(<span class="ident">f_t</span>), <span class="ident">b</span>.<span class="ident">map</span>(<span class="ident">f_t</span>)),
+            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="ident">a</span>.<span class="ident">map</span>(<span class="ident">f_i</span>), <span class="ident">b</span>.<span class="ident">map</span>(<span class="ident">f_s</span>)),
+            <span class="ident">Expected</span>::<span class="ident">Custom</span>(<span class="ident">msg</span>) <span class="op">=&gt;</span> <span class="ident">Expected</span>::<span class="ident">Custom</span>(<span class="ident">msg</span>),
+            <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="ident">t</span>) <span class="op">=&gt;</span> <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="ident">t</span>.<span class="ident">map</span>(<span class="ident">f_t</span>))
         }
     }
 }
@@ -254,39 +254,39 @@
 <span class="comment">// FIXME: Dedup this.</span>
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Debug</span>, <span class="ident">I</span>: <span class="ident">Debug</span>, <span class="ident">S</span>: <span class="ident">Debug</span><span class="op">&gt;</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Expected</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span>, <span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected token {:?} but found {:?}&quot;</span>, <span class="ident">expected</span>, <span class="ident">found</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;unexpected token: {:?}&quot;</span>, <span class="ident">found</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected token {:?} but none was found&quot;</span>, <span class="ident">expected</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected any token but none was found&quot;</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected slice {:?} but found {:?}&quot;</span>, <span class="ident">expected</span>, <span class="ident">found</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;unexpected slice: {:?}&quot;</span>, <span class="ident">found</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected slice {:?} but none was found&quot;</span>, <span class="ident">expected</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected any slice but none was found&quot;</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Custom</span>(<span class="kw-2">ref</span> <span class="ident">message</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Custom</span>(<span class="kw-2">ref</span> <span class="ident">message</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">message</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected EOF but input remains&quot;</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">token</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">token</span>)) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected EOF but found {:?}&quot;</span>, <span class="ident">token</span>)
             }
         }
@@ -294,39 +294,39 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Display</span> <span class="op">+</span> <span class="ident">Debug</span>, <span class="ident">I</span>: <span class="ident">Display</span> <span class="op">+</span> <span class="ident">Debug</span>, <span class="ident">S</span>: <span class="ident">Display</span> <span class="op">+</span> <span class="ident">Debug</span><span class="op">&gt;</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Expected</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">I</span>, <span class="ident">S</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected token {} but found {}&quot;</span>, <span class="ident">expected</span>, <span class="ident">found</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;unexpected token: {}&quot;</span>, <span class="ident">found</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected token {} but none was found&quot;</span>, <span class="ident">expected</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Token</span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected any token but none was found&quot;</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected slice {} but found {}&quot;</span>, <span class="ident">expected</span>, <span class="ident">found</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">found</span>)) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;unexpected slice: {}&quot;</span>, <span class="ident">found</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">expected</span>), <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected slice {} but none was found&quot;</span>, <span class="ident">expected</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Slice</span>(<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected any slice but none was found&quot;</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">Custom</span>(<span class="kw-2">ref</span> <span class="ident">message</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">Custom</span>(<span class="kw-2">ref</span> <span class="ident">message</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">message</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="prelude-val">None</span>) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected EOF but input remains&quot;</span>)
             }
-            <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">token</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Expected</span>::<span class="ident">EOF</span>(<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">token</span>)) <span class="op">=&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;expected EOF but found {}&quot;</span>, <span class="ident">token</span>)
             }
         }
@@ -343,8 +343,8 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Input</span><span class="op">&gt;</span> <span class="ident">ParseErr</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">parser</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">message</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseErr</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">parser</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">message</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">ParseErr</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>
     {
         <span class="ident">ParseErr</span> {
             <span class="ident">parser</span>,
@@ -354,8 +354,8 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_context</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I</span>, <span class="ident">parser</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">message</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParseErr</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_context</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">I</span>, <span class="ident">parser</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">message</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">ParseErr</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>
     {
         <span class="ident">ParseErr</span> {
             <span class="ident">parser</span>,
@@ -371,7 +371,7 @@
           <span class="ident">I</span>::<span class="ident">InSlice</span>: <span class="ident">Display</span> <span class="op">+</span> <span class="ident">Debug</span>
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">expected</span>)<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">context</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">context</span> {
             <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot; ({} at {})&quot;</span>, <span class="self">self</span>.<span class="ident">parser</span>, <span class="ident">context</span>)<span class="question-mark">?</span>;
@@ -387,7 +387,7 @@
     <span class="kw">where</span> <span class="ident">I</span>::<span class="ident">Token</span>: <span class="ident">Debug</span>, <span class="ident">I</span>::<span class="ident">Slice</span>: <span class="ident">Debug</span>, <span class="ident">I</span>::<span class="ident">InSlice</span>: <span class="ident">Debug</span>
 {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="ident">default</span> <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">expected</span>)<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">context</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">context</span> {
             <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot; ({} at {})&quot;</span>, <span class="self">self</span>.<span class="ident">parser</span>, <span class="ident">context</span>)<span class="question-mark">?</span>;
@@ -400,6 +400,6 @@
 }
 
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">ParseErr</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">I</span><span class="op">&gt;</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">R</span>, <span class="ident">ParseErr</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;&gt;</span>;
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "pear";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

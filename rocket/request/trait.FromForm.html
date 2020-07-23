@@ -23,7 +23,7 @@ data via the <code>data</code> parameter and <code>Form</code> type.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/submit&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;task&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">submit_task</span>(<span class="ident">task</span>: <span class="ident">Form</span><span class="op">&lt;</span><span class="ident">TodoTask</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">fn</span> <span class="ident">submit_task</span>(<span class="ident">task</span>: <span class="ident">Form</span><span class="op">&lt;</span><span class="ident">TodoTask</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
     <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;New task: {}&quot;</span>, <span class="ident">task</span>.<span class="ident">description</span>)
 }</pre></div>
 <h1 id="implementing" class="section-header"><a href="#implementing">Implementing</a></h1>
@@ -52,17 +52,17 @@ implemented:</p>
     <span class="comment">// In practice, we&#39;d use a more descriptive error type.</span>
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">from_form</span>(<span class="ident">items</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FormItems</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span>, <span class="ident">strict</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Item</span>, ()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_form</span>(<span class="ident">items</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FormItems</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span>, <span class="ident">strict</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Item</span>, ()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">field</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 
         <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">items</span> {
             <span class="kw">match</span> <span class="ident">item</span>.<span class="ident">key</span>.<span class="ident">as_str</span>() {
-                <span class="string">&quot;balloon&quot;</span> <span class="op">|</span> <span class="string">&quot;space&quot;</span> <span class="kw">if</span> <span class="ident">field</span>.<span class="ident">is_none</span>() <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="string">&quot;balloon&quot;</span> <span class="op">|</span> <span class="string">&quot;space&quot;</span> <span class="kw">if</span> <span class="ident">field</span>.<span class="ident">is_none</span>() <span class="op">=&gt;</span> {
                     <span class="kw">let</span> <span class="ident">decoded</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">value</span>.<span class="ident">url_decode</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ())<span class="question-mark">?</span>;
                     <span class="ident">field</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">decoded</span>);
                 }
-                <span class="kw">_</span> <span class="kw">if</span> <span class="ident">strict</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(()),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="comment">/* allow extra value when not strict */</span> }
+                <span class="kw">_</span> <span class="kw">if</span> <span class="ident">strict</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(()),
+                <span class="kw">_</span> <span class="op">=&gt;</span> { <span class="comment">/* allow extra value when not strict */</span> }
             }
         }
 

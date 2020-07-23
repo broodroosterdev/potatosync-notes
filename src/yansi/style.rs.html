@@ -490,27 +490,27 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Property</span>(<span class="ident">u8</span>);
 
 <span class="kw">impl</span> <span class="ident">Property</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BOLD</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">0</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DIMMED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ITALIC</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">2</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UNDERLINE</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">3</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLINK</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INVERT</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HIDDEN</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">6</span>);
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">STRIKETHROUGH</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BOLD</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">0</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DIMMED</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">1</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ITALIC</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">2</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UNDERLINE</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">3</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BLINK</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">4</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">INVERT</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">5</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HIDDEN</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">6</span>);
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">STRIKETHROUGH</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="number">7</span>);
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Property</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        (<span class="ident">other</span>.<span class="number">0</span> <span class="op">&amp;</span> <span class="self">self</span>.<span class="number">0</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="number">0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Property</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        (<span class="ident">other</span>.<span class="number">0</span> <span class="op">&amp;</span> <span class="self">self</span>.<span class="number">0</span>) <span class="op">==</span> <span class="ident">other</span>.<span class="number">0</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Property</span>) {
-        <span class="self">self</span>.<span class="number">0</span> <span class="op">|</span><span class="op">=</span> <span class="ident">other</span>.<span class="number">0</span>;
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">|=</span> <span class="ident">other</span>.<span class="number">0</span>;
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iter</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Iter</span> {
         <span class="ident">Iter</span> { <span class="ident">index</span>: <span class="number">0</span>, <span class="ident">properties</span>: <span class="self">self</span> }
     }
 }
@@ -519,7 +519,7 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">bitor</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">bitor</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">Property</span>(<span class="self">self</span>.<span class="number">0</span> <span class="op">|</span> <span class="ident">rhs</span>.<span class="number">0</span>)
     }
 }
@@ -532,12 +532,12 @@
 <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Iter</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">usize</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
         <span class="kw">while</span> <span class="self">self</span>.<span class="ident">index</span> <span class="op">&lt;</span> <span class="number">8</span> {
             <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">index</span>;
-            <span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+            <span class="self">self</span>.<span class="ident">index</span> <span class="op">+=</span> <span class="number">1</span>;
 
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">properties</span>.<span class="ident">contains</span>(<span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">index</span>)) {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">properties</span>.<span class="ident">contains</span>(<span class="ident">Property</span>(<span class="number">1</span> <span class="op">&lt;&lt;</span> <span class="ident">index</span>)) {
                 <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>);
             }
         }
@@ -626,10 +626,10 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">Style</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Style</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">foreground</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">foreground</span>
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">background</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">background</span>
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">properties</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">properties</span>
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Style</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">foreground</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">foreground</span>
+            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">background</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">background</span>
+            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">properties</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">properties</span>
     }
 }
 
@@ -642,7 +642,7 @@
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">checker_for</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fn_name</span>:<span class="ident">ident</span>): <span class="macro-nonterminal">$</span><span class="macro-nonterminal">property</span>:<span class="ident">ident</span>),<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> ($(
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">fn_name</span>:<span class="ident">ident</span>): <span class="macro-nonterminal">$</span><span class="macro-nonterminal">property</span>:<span class="ident">ident</span>),<span class="kw-2">*</span>) <span class="op">=&gt;</span> ($(
     <span class="macro">docify</span><span class="macro">!</span>([
         <span class="ident">Returns</span> @<span class="ident">code</span>{<span class="bool-val">true</span>} <span class="kw">if</span> <span class="ident">the</span> @[<span class="kw">_</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>]<span class="kw">_</span> <span class="ident">property</span> <span class="ident">is</span> <span class="ident">set</span> <span class="ident">on</span> @<span class="ident">code</span>{<span class="self">self</span>}.
 
@@ -657,14 +657,14 @@
         @<span class="ident">fence</span>
     ];
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">fn_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">fn_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
             <span class="self">self</span>.<span class="ident">properties</span>.<span class="ident">contains</span>(<span class="ident">Property</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">property</span>)
         }
     );)<span class="kw-2">*</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">write_spliced</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Display</span><span class="op">&gt;</span>(<span class="ident">c</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bool</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Write</span>, <span class="ident">t</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">fn</span> <span class="ident">write_spliced</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Display</span><span class="op">&gt;</span>(<span class="ident">c</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bool</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Write</span>, <span class="ident">t</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
     <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">c</span> {
         <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;;{}&quot;</span>, <span class="ident">t</span>)
     } <span class="kw">else</span> {
@@ -684,7 +684,7 @@
     <span class="doccomment">/// assert_eq!(plain, Style::default());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">color</span>: <span class="ident">Color</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Style</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">color</span>: <span class="ident">Color</span>) <span class="op">-&gt;</span> <span class="ident">Style</span> {
         <span class="self">Self</span>::<span class="ident">default</span>().<span class="ident">fg</span>(<span class="ident">color</span>)
     }
 
@@ -696,7 +696,7 @@
     <span class="doccomment">/// let red_fg = Style::default().fg(Color::Red);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fg</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Color</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Style</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fg</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Color</span>) <span class="op">-&gt;</span> <span class="ident">Style</span> {
         <span class="self">self</span>.<span class="ident">foreground</span> <span class="op">=</span> <span class="ident">color</span>;
         <span class="self">self</span>
     }
@@ -709,7 +709,7 @@
     <span class="doccomment">/// let red_bg = Style::default().bg(Color::Red);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bg</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Color</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Style</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bg</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">color</span>: <span class="ident">Color</span>) <span class="op">-&gt;</span> <span class="ident">Style</span> {
         <span class="self">self</span>.<span class="ident">background</span> <span class="op">=</span> <span class="ident">color</span>;
         <span class="self">self</span>
     }
@@ -729,7 +729,7 @@
     <span class="doccomment">/// println!(&quot;{}Something happened.&quot;, masked.paint(&quot;Whoops! &quot;));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mask</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Style</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mask</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Style</span> {
         <span class="self">self</span>.<span class="ident">masked</span> <span class="op">=</span> <span class="bool-val">true</span>;
         <span class="self">self</span>
     }
@@ -758,7 +758,7 @@
     <span class="doccomment">/// println!(&quot;Hey! {}&quot;, wrapping.paint(inner));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wrap</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Style</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wrap</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Style</span> {
         <span class="self">self</span>.<span class="ident">wrap</span> <span class="op">=</span> <span class="bool-val">true</span>;
         <span class="self">self</span>
     }
@@ -778,7 +778,7 @@
     <span class="doccomment">/// println!(&quot;Alert: {}&quot;, alert.paint(&quot;This thing happened!&quot;));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">paint</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">item</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Paint</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">paint</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">item</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">Paint</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">Paint</span>::<span class="ident">new</span>(<span class="ident">item</span>).<span class="ident">with_style</span>(<span class="self">self</span>)
     }
 
@@ -794,7 +794,7 @@
     <span class="doccomment">/// assert_eq!(red.fg_color(), Color::Red);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fg_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fg_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Color</span> {
         <span class="self">self</span>.<span class="ident">foreground</span>
     }
 
@@ -810,7 +810,7 @@
     <span class="doccomment">/// assert_eq!(white.bg_color(), Color::White);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bg_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Color</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bg_color</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Color</span> {
         <span class="self">self</span>.<span class="ident">background</span>
     }
 
@@ -826,7 +826,7 @@
     <span class="doccomment">/// assert!(masked.is_masked());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_masked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_masked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">masked</span>
     }
 
@@ -842,7 +842,7 @@
     <span class="doccomment">/// assert!(wrapping.is_wrapping());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_wrapping</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_wrapping</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">wrap</span>
     }
 
@@ -853,8 +853,8 @@
         <span class="ident">strikethrough</span> (<span class="ident">is_strikethrough</span>): <span class="ident">STRIKETHROUGH</span>);
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">is_plain</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">Style</span>::<span class="ident">default</span>()
+    <span class="kw">fn</span> <span class="ident">is_plain</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span> <span class="op">==</span> <span class="kw-2">&amp;</span><span class="ident">Style</span>::<span class="ident">default</span>()
     }
 
     <span class="doccomment">/// Writes the ANSI code prefix for the currently set styles.</span>
@@ -891,7 +891,7 @@
     <span class="doccomment">///     }</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fmt_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Write</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fmt_prefix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Write</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="comment">// A user may just want a code-free string when no styles are applied.</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_plain</span>() {
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
@@ -901,16 +901,16 @@
         <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;\x1B[&quot;</span>)<span class="question-mark">?</span>;
 
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">properties</span>.<span class="ident">iter</span>() {
-            <span class="kw">let</span> <span class="ident">k</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">i</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">5</span> { <span class="ident">i</span> <span class="op">+</span> <span class="number">2</span> } <span class="kw">else</span> { <span class="ident">i</span> <span class="op">+</span> <span class="number">1</span> };
+            <span class="kw">let</span> <span class="ident">k</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">i</span> <span class="op">&gt;=</span> <span class="number">5</span> { <span class="ident">i</span> <span class="op">+</span> <span class="number">2</span> } <span class="kw">else</span> { <span class="ident">i</span> <span class="op">+</span> <span class="number">1</span> };
             <span class="ident">write_spliced</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">splice</span>, <span class="ident">f</span>, <span class="ident">k</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">background</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Color</span>::<span class="ident">Unset</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">background</span> <span class="op">!=</span> <span class="ident">Color</span>::<span class="ident">Unset</span> {
             <span class="ident">write_spliced</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">splice</span>, <span class="ident">f</span>, <span class="string">&quot;4&quot;</span>)<span class="question-mark">?</span>;
             <span class="self">self</span>.<span class="ident">background</span>.<span class="ident">ascii_fmt</span>(<span class="ident">f</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">foreground</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Color</span>::<span class="ident">Unset</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">foreground</span> <span class="op">!=</span> <span class="ident">Color</span>::<span class="ident">Unset</span> {
             <span class="ident">write_spliced</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">splice</span>, <span class="ident">f</span>, <span class="string">&quot;3&quot;</span>)<span class="question-mark">?</span>;
             <span class="self">self</span>.<span class="ident">foreground</span>.<span class="ident">ascii_fmt</span>(<span class="ident">f</span>)<span class="question-mark">?</span>;
         }
@@ -953,7 +953,7 @@
     <span class="doccomment">///     }</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fmt_suffix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Write</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fmt_suffix</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Write</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_plain</span>() {
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(());
         }

@@ -31,7 +31,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">StatusResponse</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">message</span>: <span class="ident">String</span>, <span class="ident">status</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusResponse</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">message</span>: <span class="ident">String</span>, <span class="ident">status</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="ident">StatusResponse</span> {
         <span class="ident">StatusResponse</span> {
             <span class="ident">message</span>,
             <span class="ident">status</span>,
@@ -40,7 +40,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">ToString</span> <span class="kw">for</span> <span class="ident">StatusResponse</span> {
-    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">to_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
         <span class="ident">serde_json</span>::<span class="ident">to_string</span>(<span class="self">self</span>).<span class="ident">unwrap</span>()
     }
 }

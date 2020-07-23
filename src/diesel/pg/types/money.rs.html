@@ -185,13 +185,13 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PgMoney</span>(<span class="kw">pub</span> <span class="ident">i64</span>);
 
 <span class="kw">impl</span> <span class="ident">FromSql</span><span class="op">&lt;</span><span class="ident">Money</span>, <span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PgMoney</span> {
-    <span class="kw">fn</span> <span class="ident">from_sql</span>(<span class="ident">bytes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_sql</span>(<span class="ident">bytes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;&gt;</span>) <span class="op">-&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">FromSql</span>::<span class="op">&lt;</span><span class="ident">BigInt</span>, <span class="ident">Pg</span><span class="op">&gt;</span>::<span class="ident">from_sql</span>(<span class="ident">bytes</span>).<span class="ident">map</span>(<span class="ident">PgMoney</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">ToSql</span><span class="op">&lt;</span><span class="ident">Money</span>, <span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PgMoney</span> {
-    <span class="kw">fn</span> <span class="ident">to_sql</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Output</span><span class="op">&lt;</span><span class="ident">W</span>, <span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">serialize</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">to_sql</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Output</span><span class="op">&lt;</span><span class="ident">W</span>, <span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">serialize</span>::<span class="prelude-ty">Result</span> {
         <span class="ident">ToSql</span>::<span class="op">&lt;</span><span class="ident">BigInt</span>, <span class="ident">Pg</span><span class="op">&gt;</span>::<span class="ident">to_sql</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">out</span>)
     }
 }
@@ -201,7 +201,7 @@
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Performs a checked addition, and will `panic!` on overflow in both `debug` and `release`.</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">PgMoney</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">PgMoney</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">self</span>.<span class="number">0</span>
             .<span class="ident">checked_add</span>(<span class="ident">rhs</span>.<span class="number">0</span>)
             .<span class="ident">map</span>(<span class="ident">PgMoney</span>)
@@ -226,7 +226,7 @@
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Performs a checked subtraction, and will `panic!` on underflow in both `debug` and `release`.</span>
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">PgMoney</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">PgMoney</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">self</span>.<span class="number">0</span>
             .<span class="ident">checked_sub</span>(<span class="ident">rhs</span>.<span class="number">0</span>)
             .<span class="ident">map</span>(<span class="ident">PgMoney</span>)
@@ -254,7 +254,7 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">PgMoney</span>;
 
     <span class="kw">impl</span> <span class="ident">Arbitrary</span> <span class="kw">for</span> <span class="ident">PgMoney</span> {
-        <span class="kw">fn</span> <span class="ident">arbitrary</span><span class="op">&lt;</span><span class="ident">G</span>: <span class="ident">Gen</span><span class="op">&gt;</span>(<span class="ident">g</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">G</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">fn</span> <span class="ident">arbitrary</span><span class="op">&lt;</span><span class="ident">G</span>: <span class="ident">Gen</span><span class="op">&gt;</span>(<span class="ident">g</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">G</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
             <span class="ident">PgMoney</span>(<span class="ident">i64</span>::<span class="ident">arbitrary</span>(<span class="ident">g</span>))
         }
     }
@@ -270,7 +270,7 @@
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">add_assign_money</span>() {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c1</span> <span class="op">=</span> <span class="ident">PgMoney</span>(<span class="number">123</span>);
-    <span class="ident">c1</span> <span class="op">+</span><span class="op">=</span> <span class="ident">PgMoney</span>(<span class="number">456</span>);
+    <span class="ident">c1</span> <span class="op">+=</span> <span class="ident">PgMoney</span>(<span class="number">456</span>);
     <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">PgMoney</span>(<span class="number">579</span>), <span class="ident">c1</span>);
 }
 
@@ -286,7 +286,7 @@
 <span class="attribute">#[<span class="ident">should_panic</span>(<span class="ident">expected</span> <span class="op">=</span> <span class="string">&quot;overflow adding money amounts&quot;</span>)]</span>
 <span class="kw">fn</span> <span class="ident">add_assign_money_overflow</span>() {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c1</span> <span class="op">=</span> <span class="ident">PgMoney</span>(::<span class="ident">std</span>::<span class="ident">i64</span>::<span class="ident">MAX</span>);
-    <span class="ident">c1</span> <span class="op">+</span><span class="op">=</span> <span class="ident">PgMoney</span>(<span class="number">1</span>);
+    <span class="ident">c1</span> <span class="op">+=</span> <span class="ident">PgMoney</span>(<span class="number">1</span>);
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -299,7 +299,7 @@
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">sub_assign_money</span>() {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c1</span> <span class="op">=</span> <span class="ident">PgMoney</span>(<span class="number">123</span>);
-    <span class="ident">c1</span> <span class="op">-</span><span class="op">=</span> <span class="ident">PgMoney</span>(<span class="number">456</span>);
+    <span class="ident">c1</span> <span class="op">-=</span> <span class="ident">PgMoney</span>(<span class="number">456</span>);
     <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">PgMoney</span>(<span class="op">-</span><span class="number">333</span>), <span class="ident">c1</span>);
 }
 
@@ -315,7 +315,7 @@
 <span class="attribute">#[<span class="ident">should_panic</span>(<span class="ident">expected</span> <span class="op">=</span> <span class="string">&quot;underflow subtracting money amounts&quot;</span>)]</span>
 <span class="kw">fn</span> <span class="ident">sub_assign_money_underflow</span>() {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c1</span> <span class="op">=</span> <span class="ident">PgMoney</span>(::<span class="ident">std</span>::<span class="ident">i64</span>::<span class="ident">MIN</span>);
-    <span class="ident">c1</span> <span class="op">-</span><span class="op">=</span> <span class="ident">PgMoney</span>(<span class="number">1</span>);
+    <span class="ident">c1</span> <span class="op">-=</span> <span class="ident">PgMoney</span>(<span class="number">1</span>);
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../../";window.currentCrate = "diesel";</script><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script><script defer src="../../../../search-index.js"></script></body></html>

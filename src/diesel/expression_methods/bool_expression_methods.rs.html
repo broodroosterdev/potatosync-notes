@@ -136,7 +136,7 @@
     <span class="doccomment">/// assert_eq!(expected, data);</span>
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
-    <span class="kw">fn</span> <span class="ident">and</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">And</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">and</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">And</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
         <span class="ident">And</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">other</span>.<span class="ident">as_expression</span>())
     }
 
@@ -177,7 +177,7 @@
     <span class="doccomment">/// assert_eq!(expected, data);</span>
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
-    <span class="kw">fn</span> <span class="ident">or</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Grouped</span><span class="op">&lt;</span><span class="ident">Or</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">or</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">Grouped</span><span class="op">&lt;</span><span class="ident">Or</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;&gt;</span> {
         <span class="ident">Grouped</span>(<span class="ident">Or</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">other</span>.<span class="ident">as_expression</span>()))
     }
 }

@@ -113,7 +113,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    (<span class="ident">AccessControlExposeHeaders</span>, <span class="string">&quot;Access-Control-Expose-Headers&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">UniCase</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>)<span class="op">*</span>
+    (<span class="ident">AccessControlExposeHeaders</span>, <span class="string">&quot;Access-Control-Expose-Headers&quot;</span>) <span class="op">=&gt;</span> (<span class="ident">UniCase</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>)<span class="op">*</span>
 
     <span class="ident">test_access_control_expose_headers</span> {
         <span class="macro">test_header</span><span class="macro">!</span>(<span class="ident">test1</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">b&quot;etag, content-length&quot;</span>]);

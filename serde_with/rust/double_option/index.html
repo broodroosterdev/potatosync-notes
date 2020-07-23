@@ -17,7 +17,7 @@ same value. This helper changes it, by using an <code>Option&lt;Option&lt;T&gt;&
         <span class="ident">skip_serializing_if</span> <span class="op">=</span> <span class="string">&quot;Option::is_none&quot;</span>,    <span class="comment">// &lt;- important for serialization</span>
         <span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;::serde_with::rust::double_option&quot;</span>,
     )]</span>
-    <span class="ident">a</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">a</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;&gt;</span>,
 }
 <span class="comment">// Missing Value</span>
 <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="string">r#&quot;{}&quot;#</span>;

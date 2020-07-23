@@ -34,11 +34,11 @@ implementation.</p>
     <span class="ident">DB</span>: <span class="ident">Backend</span>,
     <span class="ident">i32</span>: <span class="ident">FromSql</span><span class="op">&lt;</span><span class="ident">Integer</span>, <span class="ident">DB</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">from_sql</span>(<span class="ident">bytes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">backend</span>::<span class="ident">RawValue</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_sql</span>(<span class="ident">bytes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">backend</span>::<span class="ident">RawValue</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;&gt;</span>) <span class="op">-&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">i32</span>::<span class="ident">from_sql</span>(<span class="ident">bytes</span>)<span class="question-mark">?</span> {
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">MyEnum</span>::<span class="ident">A</span>),
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">MyEnum</span>::<span class="ident">B</span>),
-            <span class="ident">x</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Unrecognized variant {}&quot;</span>, <span class="ident">x</span>).<span class="ident">into</span>()),
+            <span class="number">1</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">MyEnum</span>::<span class="ident">A</span>),
+            <span class="number">2</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">MyEnum</span>::<span class="ident">B</span>),
+            <span class="ident">x</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Unrecognized variant {}&quot;</span>, <span class="ident">x</span>).<span class="ident">into</span>()),
         }
     }
 }</pre></div>

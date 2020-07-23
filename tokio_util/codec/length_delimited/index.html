@@ -16,7 +16,7 @@ byte stream into a stream of frames.</p>
 <span class="kw">use</span> <span class="ident">tokio_util</span>::<span class="ident">codec</span>::{<span class="ident">Framed</span>, <span class="ident">LengthDelimitedCodec</span>};
 
 <span class="kw">fn</span> <span class="ident">bind_transport</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span><span class="op">&gt;</span>(<span class="ident">io</span>: <span class="ident">T</span>)
-    <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Framed</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">LengthDelimitedCodec</span><span class="op">&gt;</span>
+    <span class="op">-&gt;</span> <span class="ident">Framed</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">LengthDelimitedCodec</span><span class="op">&gt;</span>
 {
     <span class="ident">Framed</span>::<span class="ident">new</span>(<span class="ident">io</span>, <span class="ident">LengthDelimitedCodec</span>::<span class="ident">new</span>())
 }</pre></div>
@@ -36,7 +36,7 @@ payload length:</p>
 <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">SinkExt</span>;
 <span class="kw">use</span> <span class="ident">bytes</span>::<span class="ident">Bytes</span>;
 
-<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write_frame</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">io</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write_frame</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">io</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;&gt;</span>
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">AsyncRead</span> <span class="op">+</span> <span class="ident">AsyncWrite</span> <span class="op">+</span> <span class="ident">Unpin</span>,
 {

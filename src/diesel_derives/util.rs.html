@@ -90,7 +90,7 @@
 <span class="kw">use</span> <span class="ident">proc_macro2</span>::{<span class="ident">Span</span>, <span class="ident">TokenStream</span>};
 <span class="kw">use</span> <span class="ident">syn</span>::{<span class="ident">Data</span>, <span class="ident">DeriveInput</span>, <span class="ident">GenericArgument</span>, <span class="ident">Type</span>};
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wrap_in_dummy_mod</span>(<span class="ident">item</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wrap_in_dummy_mod</span>(<span class="ident">item</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
     <span class="macro">quote</span><span class="macro">!</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
         <span class="kw">const</span> <span class="kw">_</span>: () <span class="op">=</span> {
@@ -107,44 +107,44 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner_of_option_ty</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Type</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner_of_option_ty</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Type</span> {
     <span class="ident">option_ty_arg</span>(<span class="ident">ty</span>).<span class="ident">unwrap_or</span>(<span class="ident">ty</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_option_ty</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_option_ty</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
     <span class="ident">option_ty_arg</span>(<span class="ident">ty</span>).<span class="ident">is_some</span>()
 }
 
-<span class="kw">fn</span> <span class="ident">option_ty_arg</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Type</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">option_ty_arg</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Type</span><span class="op">&gt;</span> {
     <span class="kw">use</span> <span class="ident">syn</span>::<span class="ident">PathArguments</span>::<span class="ident">AngleBracketed</span>;
 
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">ty</span> {
-        <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="ident">ty</span>) <span class="op">=&gt;</span> {
             <span class="kw">let</span> <span class="ident">last_segment</span> <span class="op">=</span> <span class="ident">ty</span>.<span class="ident">path</span>.<span class="ident">segments</span>.<span class="ident">iter</span>().<span class="ident">last</span>().<span class="ident">unwrap</span>();
             <span class="kw">match</span> <span class="ident">last_segment</span>.<span class="ident">arguments</span> {
-                <span class="ident">AngleBracketed</span>(<span class="kw-2">ref</span> <span class="ident">args</span>) <span class="kw">if</span> <span class="ident">last_segment</span>.<span class="ident">ident</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;Option&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">AngleBracketed</span>(<span class="kw-2">ref</span> <span class="ident">args</span>) <span class="kw">if</span> <span class="ident">last_segment</span>.<span class="ident">ident</span> <span class="op">==</span> <span class="string">&quot;Option&quot;</span> <span class="op">=&gt;</span> {
                     <span class="kw">match</span> <span class="ident">args</span>.<span class="ident">args</span>.<span class="ident">iter</span>().<span class="ident">last</span>() {
-                        <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">GenericArgument</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="ident">ty</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ty</span>),
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+                        <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">GenericArgument</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="ident">ty</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ty</span>),
+                        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
                     }
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
             }
         }
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ty_for_foreign_derive</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">DeriveInput</span>, <span class="ident">flags</span>: <span class="kw-2">&amp;</span><span class="ident">MetaItem</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Type</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ty_for_foreign_derive</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">DeriveInput</span>, <span class="ident">flags</span>: <span class="kw-2">&amp;</span><span class="ident">MetaItem</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Type</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">flags</span>.<span class="ident">has_flag</span>(<span class="string">&quot;foreign_derive&quot;</span>) {
         <span class="kw">match</span> <span class="ident">item</span>.<span class="ident">data</span> {
-            <span class="ident">Data</span>::<span class="ident">Struct</span>(<span class="kw-2">ref</span> <span class="ident">body</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">body</span>.<span class="ident">fields</span>.<span class="ident">iter</span>().<span class="ident">next</span>() {
-                <span class="prelude-val">Some</span>(<span class="ident">field</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">field</span>.<span class="ident">ty</span>.<span class="ident">clone</span>()),
-                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">flags</span>
+            <span class="ident">Data</span>::<span class="ident">Struct</span>(<span class="kw-2">ref</span> <span class="ident">body</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="ident">body</span>.<span class="ident">fields</span>.<span class="ident">iter</span>().<span class="ident">next</span>() {
+                <span class="prelude-val">Some</span>(<span class="ident">field</span>) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">field</span>.<span class="ident">ty</span>.<span class="ident">clone</span>()),
+                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">flags</span>
                     .<span class="ident">span</span>()
                     .<span class="ident">error</span>(<span class="string">&quot;foreign_derive requires at least one field&quot;</span>)),
             },
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">flags</span>
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">flags</span>
                 .<span class="ident">span</span>()
                 .<span class="ident">error</span>(<span class="string">&quot;foreign_derive can only be used with structs&quot;</span>)),
         }
@@ -155,15 +155,15 @@
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fix_span</span>(<span class="ident">maybe_bad_span</span>: <span class="ident">Span</span>, <span class="kw-2">mut</span> <span class="ident">fallback</span>: <span class="ident">Span</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Span</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fix_span</span>(<span class="ident">maybe_bad_span</span>: <span class="ident">Span</span>, <span class="kw-2">mut</span> <span class="ident">fallback</span>: <span class="ident">Span</span>) <span class="op">-&gt;</span> <span class="ident">Span</span> {
     <span class="kw">let</span> <span class="ident">bad_span_debug</span> <span class="op">=</span> <span class="string">&quot;#0 bytes(0..0)&quot;</span>;
 
-    <span class="kw">if</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">fallback</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">bad_span_debug</span> {
+    <span class="kw">if</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">fallback</span>) <span class="op">==</span> <span class="ident">bad_span_debug</span> {
         <span class="comment">// On recent rust nightlies, even our fallback span is bad.</span>
         <span class="ident">fallback</span> <span class="op">=</span> <span class="ident">Span</span>::<span class="ident">call_site</span>();
     }
 
-    <span class="kw">if</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">maybe_bad_span</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">bad_span_debug</span> {
+    <span class="kw">if</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">maybe_bad_span</span>) <span class="op">==</span> <span class="ident">bad_span_debug</span> {
         <span class="ident">fallback</span>
     } <span class="kw">else</span> {
         <span class="ident">maybe_bad_span</span>

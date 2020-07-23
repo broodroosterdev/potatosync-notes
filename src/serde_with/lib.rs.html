@@ -255,7 +255,7 @@
 <span class="doccomment">/// Separator for string-based collection de/serialization</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Separator</span> {
     <span class="doccomment">/// Return the string delimiting two elements in the string-based collection</span>
-    <span class="kw">fn</span> <span class="ident">separator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
+    <span class="kw">fn</span> <span class="ident">separator</span>() <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
 }
 
 <span class="doccomment">/// Predefined separator using a single space</span>
@@ -264,7 +264,7 @@
 
 <span class="kw">impl</span> <span class="ident">Separator</span> <span class="kw">for</span> <span class="ident">SpaceSeparator</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">separator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">separator</span>() <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="string">&quot; &quot;</span>
     }
 }
@@ -275,7 +275,7 @@
 
 <span class="kw">impl</span> <span class="ident">Separator</span> <span class="kw">for</span> <span class="ident">CommaSeparator</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">separator</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">separator</span>() <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="string">&quot;,&quot;</span>
     }
 }

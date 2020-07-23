@@ -220,7 +220,7 @@
     <span class="doccomment">/// # Notes</span>
     <span class="doccomment">/// * Using always Mime types to represent `media-range` differs from the ABNF.</span>
     <span class="doccomment">/// * **FIXME**: `accept-ext` is not supported.</span>
-    (<span class="ident">Accept</span>, <span class="string">&quot;Accept&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">QualityItem</span><span class="op">&lt;</span><span class="ident">Mime</span><span class="op">&gt;</span>)<span class="op">+</span>
+    (<span class="ident">Accept</span>, <span class="string">&quot;Accept&quot;</span>) <span class="op">=&gt;</span> (<span class="ident">QualityItem</span><span class="op">&lt;</span><span class="ident">Mime</span><span class="op">&gt;</span>)<span class="op">+</span>
 
     <span class="ident">test_accept</span> {
         <span class="comment">// Tests from the RFC</span>
@@ -263,22 +263,22 @@
 
 <span class="kw">impl</span> <span class="ident">Accept</span> {
     <span class="doccomment">/// A constructor to easily create `Accept: */*`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">star</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Accept</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">star</span>() <span class="op">-&gt;</span> <span class="ident">Accept</span> {
         <span class="ident">Accept</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">qitem</span>(<span class="macro">mime</span><span class="macro">!</span>(<span class="ident">Star</span><span class="op">/</span><span class="ident">Star</span>))])
     }
 
     <span class="doccomment">/// A constructor to easily create `Accept: application/json`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">json</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Accept</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">json</span>() <span class="op">-&gt;</span> <span class="ident">Accept</span> {
         <span class="ident">Accept</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">qitem</span>(<span class="macro">mime</span><span class="macro">!</span>(<span class="ident">Application</span><span class="op">/</span><span class="ident">Json</span>))])
     }
 
     <span class="doccomment">/// A constructor to easily create `Accept: text/*`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">text</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Accept</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">text</span>() <span class="op">-&gt;</span> <span class="ident">Accept</span> {
         <span class="ident">Accept</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">qitem</span>(<span class="macro">mime</span><span class="macro">!</span>(<span class="ident">Text</span><span class="op">/</span><span class="ident">Star</span>))])
     }
 
     <span class="doccomment">/// A constructor to easily create `Accept: image/*`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Accept</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">image</span>() <span class="op">-&gt;</span> <span class="ident">Accept</span> {
         <span class="ident">Accept</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="ident">qitem</span>(<span class="macro">mime</span><span class="macro">!</span>(<span class="ident">Image</span><span class="op">/</span><span class="ident">Star</span>))])
     }
 }

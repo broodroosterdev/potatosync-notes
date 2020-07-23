@@ -49,17 +49,17 @@
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if `value` is greater than max generation.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">value</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Generation</span> {
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">value</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">Self</span>::<span class="ident">MAX</span>);
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">value</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">Generation</span> {
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">value</span> <span class="op">&lt;=</span> <span class="self">Self</span>::<span class="ident">MAX</span>);
         <span class="ident">Generation</span>(<span class="ident">value</span>)
     }
 
     <span class="doccomment">/// Returns the next generation value</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">next</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Generation</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">next</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Generation</span> {
         <span class="ident">Generation</span>((<span class="self">self</span>.<span class="number">0</span> <span class="op">+</span> <span class="number">1</span>) <span class="op">&amp;</span> <span class="self">Self</span>::<span class="ident">MAX</span>)
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">to_usize</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">to_usize</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
 }

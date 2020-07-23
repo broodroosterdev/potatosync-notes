@@ -5,7 +5,7 @@ information about where in the user's code they were originally written (the
 messages.</p>
 <p>This function parses a <code>proc_macro::TokenStream</code> which is the type used for
 interop with the compiler in a procedural macro. To parse a
-<code>proc_macro2::TokenStream</code>, use <a href="parse2"><code>syn::parse2</code></a> instead.</p>
+<code>proc_macro2::TokenStream</code>, use <a href="../../devise/syn/fn.parse2.html"><code>syn::parse2</code></a> instead.</p>
 <p><em>This function is available if Syn is built with both the <code>&quot;parsing&quot;</code> and
 <code>&quot;proc-macro&quot;</code> features.</em></p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
@@ -17,7 +17,7 @@ interop with the compiler in a procedural macro. To parse a
 <span class="kw">use</span> <span class="ident">syn</span>::<span class="ident">DeriveInput</span>;
 
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">MyMacro</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">my_macro</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">my_macro</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
     <span class="comment">// Parse the tokens into a syntax tree</span>
     <span class="kw">let</span> <span class="ident">ast</span>: <span class="ident">DeriveInput</span> <span class="op">=</span> <span class="ident">syn</span>::<span class="ident">parse</span>(<span class="ident">input</span>).<span class="ident">unwrap</span>();
 

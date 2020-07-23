@@ -70,7 +70,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Ts</span>, <span class="ident">Tz</span><span class="op">&gt;</span> <span class="ident">AtTimeZone</span><span class="op">&lt;</span><span class="ident">Ts</span>, <span class="ident">Tz</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">timestamp</span>: <span class="ident">Ts</span>, <span class="ident">timezone</span>: <span class="ident">Tz</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">timestamp</span>: <span class="ident">Ts</span>, <span class="ident">timezone</span>: <span class="ident">Tz</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">AtTimeZone</span> {
             <span class="ident">timestamp</span>: <span class="ident">timestamp</span>,
             <span class="ident">timezone</span>: <span class="ident">timezone</span>,
@@ -92,7 +92,7 @@
     <span class="ident">Ts</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>,
     <span class="ident">Tz</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">timestamp</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; AT TIME ZONE &quot;</span>);
         <span class="self">self</span>.<span class="ident">timezone</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;

@@ -163,7 +163,7 @@
 <span class="kw">use</span> <span class="ident">meta</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">util</span>::<span class="kw-2">*</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive</span>(<span class="ident">item</span>: <span class="ident">syn</span>::<span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive</span>(<span class="ident">item</span>: <span class="ident">syn</span>::<span class="ident">DeriveInput</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">struct_name</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">ident</span>;
     <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="ident">ty_generics</span>, <span class="ident">where_clause</span>) <span class="op">=</span> <span class="ident">item</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>();
 
@@ -190,7 +190,7 @@
     }))
 }
 
-<span class="kw">fn</span> <span class="ident">sqlite_tokens</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">sqlite_tokens</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">DeriveInput</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span><span class="op">&gt;</span> {
     <span class="ident">MetaItem</span>::<span class="ident">with_name</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>, <span class="string">&quot;sqlite_type&quot;</span>)
         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">attr</span><span class="op">|</span> <span class="ident">attr</span>.<span class="ident">expect_ident_value</span>())
         .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">ty</span><span class="op">|</span> {
@@ -206,7 +206,7 @@
                     <span class="kw">for</span> <span class="ident">diesel</span>::<span class="ident">sqlite</span>::<span class="ident">Sqlite</span>
                 #<span class="ident">where_clause</span>
                 {
-                    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span>()) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">diesel</span>::<span class="ident">sqlite</span>::<span class="ident">SqliteType</span> {
+                    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span>()) <span class="op">-&gt;</span> <span class="ident">diesel</span>::<span class="ident">sqlite</span>::<span class="ident">SqliteType</span> {
                         <span class="ident">diesel</span>::<span class="ident">sqlite</span>::<span class="ident">SqliteType</span>::#<span class="ident">ty</span>
                     }
                 }
@@ -214,7 +214,7 @@
         })
 }
 
-<span class="kw">fn</span> <span class="ident">mysql_tokens</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">mysql_tokens</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">DeriveInput</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span><span class="op">&gt;</span> {
     <span class="ident">MetaItem</span>::<span class="ident">with_name</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>, <span class="string">&quot;mysql_type&quot;</span>)
         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">attr</span><span class="op">|</span> <span class="ident">attr</span>.<span class="ident">expect_ident_value</span>())
         .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">ty</span><span class="op">|</span> {
@@ -230,7 +230,7 @@
                     <span class="kw">for</span> <span class="ident">diesel</span>::<span class="ident">mysql</span>::<span class="ident">Mysql</span>
                 #<span class="ident">where_clause</span>
                 {
-                    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span>()) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">diesel</span>::<span class="ident">mysql</span>::<span class="ident">MysqlType</span> {
+                    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span>()) <span class="op">-&gt;</span> <span class="ident">diesel</span>::<span class="ident">mysql</span>::<span class="ident">MysqlType</span> {
                         <span class="ident">diesel</span>::<span class="ident">mysql</span>::<span class="ident">MysqlType</span>::#<span class="ident">ty</span>
                     }
                 }
@@ -238,7 +238,7 @@
         })
 }
 
-<span class="kw">fn</span> <span class="ident">pg_tokens</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">pg_tokens</span>(<span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">DeriveInput</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span><span class="op">&gt;</span> {
     <span class="ident">MetaItem</span>::<span class="ident">with_name</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>, <span class="string">&quot;postgres&quot;</span>)
         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">attr</span><span class="op">|</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span> <span class="ident">get_type_name</span>(<span class="kw-2">&amp;</span><span class="ident">attr</span>)<span class="question-mark">?</span> {
@@ -262,16 +262,16 @@
             <span class="kw">let</span> (<span class="ident">impl_generics</span>, <span class="ident">ty_generics</span>, <span class="ident">where_clause</span>) <span class="op">=</span> <span class="ident">item</span>.<span class="ident">generics</span>.<span class="ident">split_for_impl</span>();
 
             <span class="kw">let</span> <span class="ident">metadata_fn</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ty</span> {
-                <span class="ident">PgType</span>::<span class="ident">Fixed</span> { <span class="ident">oid</span>, <span class="ident">array_oid</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote</span><span class="macro">!</span>(
-                    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">PgMetadataLookup</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PgTypeMetadata</span> {
+                <span class="ident">PgType</span>::<span class="ident">Fixed</span> { <span class="ident">oid</span>, <span class="ident">array_oid</span> } <span class="op">=&gt;</span> <span class="macro">quote</span><span class="macro">!</span>(
+                    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">PgMetadataLookup</span>) <span class="op">-&gt;</span> <span class="ident">PgTypeMetadata</span> {
                         <span class="ident">PgTypeMetadata</span> {
                             <span class="ident">oid</span>: #<span class="ident">oid</span>,
                             <span class="ident">array_oid</span>: #<span class="ident">array_oid</span>,
                         }
                     }
                 ),
-                <span class="ident">PgType</span>::<span class="ident">Lookup</span>(<span class="ident">type_name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote</span><span class="macro">!</span>(
-                    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="ident">lookup</span>: <span class="kw-2">&amp;</span><span class="ident">PgMetadataLookup</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PgTypeMetadata</span> {
+                <span class="ident">PgType</span>::<span class="ident">Lookup</span>(<span class="ident">type_name</span>) <span class="op">=&gt;</span> <span class="macro">quote</span><span class="macro">!</span>(
+                    <span class="kw">fn</span> <span class="ident">metadata</span>(<span class="ident">lookup</span>: <span class="kw-2">&amp;</span><span class="ident">PgMetadataLookup</span>) <span class="op">-&gt;</span> <span class="ident">PgTypeMetadata</span> {
                         <span class="ident">lookup</span>.<span class="ident">lookup_type</span>(#<span class="ident">type_name</span>)
                     }
                 ),
@@ -290,14 +290,14 @@
         })
 }
 
-<span class="kw">fn</span> <span class="ident">get_type_name</span>(<span class="ident">attr</span>: <span class="kw-2">&amp;</span><span class="ident">MetaItem</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgType</span><span class="op">&gt;</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">get_type_name</span>(<span class="ident">attr</span>: <span class="kw-2">&amp;</span><span class="ident">MetaItem</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgType</span><span class="op">&gt;</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
     <span class="prelude-val">Ok</span>(<span class="ident">attr</span>.<span class="ident">nested_item</span>(<span class="string">&quot;type_name&quot;</span>)<span class="question-mark">?</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ty</span><span class="op">|</span> {
         <span class="ident">attr</span>.<span class="ident">warn_if_other_options</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;type_name&quot;</span>]);
         <span class="ident">PgType</span>::<span class="ident">Lookup</span>(<span class="ident">ty</span>.<span class="ident">expect_str_value</span>())
     }))
 }
 
-<span class="kw">fn</span> <span class="ident">get_oids</span>(<span class="ident">attr</span>: <span class="kw-2">&amp;</span><span class="ident">MetaItem</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgType</span><span class="op">&gt;</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">get_oids</span>(<span class="ident">attr</span>: <span class="kw-2">&amp;</span><span class="ident">MetaItem</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgType</span><span class="op">&gt;</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">oid</span>) <span class="op">=</span> <span class="ident">attr</span>.<span class="ident">nested_item</span>(<span class="string">&quot;oid&quot;</span>)<span class="question-mark">?</span> {
         <span class="ident">attr</span>.<span class="ident">warn_if_other_options</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;oid&quot;</span>, <span class="string">&quot;array_oid&quot;</span>]);
         <span class="kw">let</span> <span class="ident">array_oid</span> <span class="op">=</span> <span class="ident">attr</span>.<span class="ident">required_nested_item</span>(<span class="string">&quot;array_oid&quot;</span>)<span class="question-mark">?</span>.<span class="ident">expect_int_value</span>();

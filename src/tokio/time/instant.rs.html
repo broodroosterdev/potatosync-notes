@@ -221,17 +221,17 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// let now = Instant::now();</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Instant</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-&gt;</span> <span class="ident">Instant</span> {
         <span class="ident">variant</span>::<span class="ident">now</span>()
     }
 
     <span class="doccomment">/// Create a `tokio::time::Instant` from a `std::time::Instant`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_std</span>(<span class="ident">std</span>: <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Instant</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_std</span>(<span class="ident">std</span>: <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>) <span class="op">-&gt;</span> <span class="ident">Instant</span> {
         <span class="ident">Instant</span> { <span class="ident">std</span> }
     }
 
     <span class="doccomment">/// Convert the value into a `std::time::Instant`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_std</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_std</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span> {
         <span class="self">self</span>.<span class="ident">std</span>
     }
 
@@ -240,7 +240,7 @@
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function will panic if `earlier` is later than `self`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">duration_since</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">earlier</span>: <span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">duration_since</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">earlier</span>: <span class="ident">Instant</span>) <span class="op">-&gt;</span> <span class="ident">Duration</span> {
         <span class="self">self</span>.<span class="ident">std</span>.<span class="ident">duration_since</span>(<span class="ident">earlier</span>.<span class="ident">std</span>)
     }
 
@@ -261,7 +261,7 @@
     <span class="doccomment">///     println!(&quot;{:?}&quot;, now.checked_duration_since(new_now)); // None</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">checked_duration_since</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">earlier</span>: <span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">checked_duration_since</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">earlier</span>: <span class="ident">Instant</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">std</span>.<span class="ident">checked_duration_since</span>(<span class="ident">earlier</span>.<span class="ident">std</span>)
     }
 
@@ -282,7 +282,7 @@
     <span class="doccomment">///     println!(&quot;{:?}&quot;, now.saturating_duration_since(new_now)); // 0ns</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">saturating_duration_since</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">earlier</span>: <span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">saturating_duration_since</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">earlier</span>: <span class="ident">Instant</span>) <span class="op">-&gt;</span> <span class="ident">Duration</span> {
         <span class="self">self</span>.<span class="ident">std</span>.<span class="ident">saturating_duration_since</span>(<span class="ident">earlier</span>.<span class="ident">std</span>)
     }
 
@@ -307,33 +307,33 @@
     <span class="doccomment">///     assert!(instant.elapsed() &gt;= three_secs);</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">elapsed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">elapsed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Duration</span> {
         <span class="ident">Instant</span>::<span class="ident">now</span>() <span class="op">-</span> <span class="kw-2">*</span><span class="self">self</span>
     }
 
     <span class="doccomment">/// Returns `Some(t)` where `t` is the time `self + duration` if `t` can be</span>
     <span class="doccomment">/// represented as `Instant` (which means it&#39;s inside the bounds of the</span>
     <span class="doccomment">/// underlying data structure), `None` otherwise.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">checked_add</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">checked_add</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">std</span>.<span class="ident">checked_add</span>(<span class="ident">duration</span>).<span class="ident">map</span>(<span class="ident">Instant</span>::<span class="ident">from_std</span>)
     }
 
     <span class="doccomment">/// Returns `Some(t)` where `t` is the time `self - duration` if `t` can be</span>
     <span class="doccomment">/// represented as `Instant` (which means it&#39;s inside the bounds of the</span>
     <span class="doccomment">/// underlying data structure), `None` otherwise.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">checked_sub</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">checked_sub</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">std</span>.<span class="ident">checked_sub</span>(<span class="ident">duration</span>).<span class="ident">map</span>(<span class="ident">Instant</span>::<span class="ident">from_std</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instant</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">time</span>: <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Instant</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">time</span>: <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>) <span class="op">-&gt;</span> <span class="ident">Instant</span> {
         <span class="ident">Instant</span>::<span class="ident">from_std</span>(<span class="ident">time</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">time</span>: <span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">time</span>: <span class="ident">Instant</span>) <span class="op">-&gt;</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span> {
         <span class="ident">time</span>.<span class="ident">into_std</span>()
     }
 }
@@ -341,7 +341,7 @@
 <span class="kw">impl</span> <span class="ident">ops</span>::<span class="ident">Add</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instant</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Instant</span>;
 
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Instant</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Duration</span>) <span class="op">-&gt;</span> <span class="ident">Instant</span> {
         <span class="ident">Instant</span>::<span class="ident">from_std</span>(<span class="self">self</span>.<span class="ident">std</span> <span class="op">+</span> <span class="ident">other</span>)
     }
 }
@@ -355,7 +355,7 @@
 <span class="kw">impl</span> <span class="ident">ops</span>::<span class="ident">Sub</span> <span class="kw">for</span> <span class="ident">Instant</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Duration</span>;
 
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Instant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Instant</span>) <span class="op">-&gt;</span> <span class="ident">Duration</span> {
         <span class="self">self</span>.<span class="ident">std</span> <span class="op">-</span> <span class="ident">rhs</span>.<span class="ident">std</span>
     }
 }
@@ -363,7 +363,7 @@
 <span class="kw">impl</span> <span class="ident">ops</span>::<span class="ident">Sub</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instant</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Instant</span>;
 
-    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Instant</span> {
+    <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Duration</span>) <span class="op">-&gt;</span> <span class="ident">Instant</span> {
         <span class="ident">Instant</span>::<span class="ident">from_std</span>(<span class="self">self</span>.<span class="ident">std</span> <span class="op">-</span> <span class="ident">rhs</span>)
     }
 }
@@ -375,7 +375,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Instant</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="self">self</span>.<span class="ident">std</span>.<span class="ident">fmt</span>(<span class="ident">fmt</span>)
     }
 }
@@ -384,7 +384,7 @@
 <span class="kw">mod</span> <span class="ident">variant</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">Instant</span>;
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Instant</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-&gt;</span> <span class="ident">Instant</span> {
         <span class="ident">Instant</span>::<span class="ident">from_std</span>(<span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">Instant</span>::<span class="ident">now</span>())
     }
 }
@@ -393,7 +393,7 @@
 <span class="kw">mod</span> <span class="ident">variant</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">Instant</span>;
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Instant</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">now</span>() <span class="op">-&gt;</span> <span class="ident">Instant</span> {
         <span class="kw">crate</span>::<span class="ident">time</span>::<span class="ident">clock</span>::<span class="ident">now</span>()
     }
 }

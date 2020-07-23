@@ -136,7 +136,7 @@ path.</p>
 }
 
 <span class="kw">impl</span> <span class="ident">Fairing</span> <span class="kw">for</span> <span class="ident">Counter</span> {
-    <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Info</span> {
+    <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Info</span> {
         <span class="ident">Info</span> {
             <span class="ident">name</span>: <span class="string">&quot;GET/POST Counter&quot;</span>,
             <span class="ident">kind</span>: <span class="ident">Kind</span>::<span class="ident">Request</span> <span class="op">|</span> <span class="ident">Kind</span>::<span class="ident">Response</span>
@@ -144,20 +144,20 @@ path.</p>
     }
 
     <span class="kw">fn</span> <span class="ident">on_request</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Request</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Data</span>) {
-        <span class="kw">if</span> <span class="ident">request</span>.<span class="ident">method</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Method</span>::<span class="ident">Get</span> {
+        <span class="kw">if</span> <span class="ident">request</span>.<span class="ident">method</span>() <span class="op">==</span> <span class="ident">Method</span>::<span class="ident">Get</span> {
             <span class="self">self</span>.<span class="ident">get</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">request</span>.<span class="ident">method</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Method</span>::<span class="ident">Post</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">request</span>.<span class="ident">method</span>() <span class="op">==</span> <span class="ident">Method</span>::<span class="ident">Post</span> {
             <span class="self">self</span>.<span class="ident">post</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
         }
     }
 
     <span class="kw">fn</span> <span class="ident">on_response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
         <span class="comment">// Don&#39;t change a successful user&#39;s response, ever.</span>
-        <span class="kw">if</span> <span class="ident">response</span>.<span class="ident">status</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">Status</span>::<span class="ident">NotFound</span> {
+        <span class="kw">if</span> <span class="ident">response</span>.<span class="ident">status</span>() <span class="op">!=</span> <span class="ident">Status</span>::<span class="ident">NotFound</span> {
             <span class="kw">return</span>
         }
 
-        <span class="kw">if</span> <span class="ident">request</span>.<span class="ident">method</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Method</span>::<span class="ident">Get</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">request</span>.<span class="ident">uri</span>().<span class="ident">path</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;/counts&quot;</span> {
+        <span class="kw">if</span> <span class="ident">request</span>.<span class="ident">method</span>() <span class="op">==</span> <span class="ident">Method</span>::<span class="ident">Get</span> <span class="op">&amp;&amp;</span> <span class="ident">request</span>.<span class="ident">uri</span>().<span class="ident">path</span>() <span class="op">==</span> <span class="string">&quot;/counts&quot;</span> {
             <span class="kw">let</span> <span class="ident">get_count</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
             <span class="kw">let</span> <span class="ident">post_count</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">post</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
 
@@ -185,7 +185,7 @@ request guard.</p>
 <span class="kw">struct</span> <span class="ident">TimerStart</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SystemTime</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span> <span class="ident">Fairing</span> <span class="kw">for</span> <span class="ident">RequestTimer</span> {
-    <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Info</span> {
+    <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Info</span> {
         <span class="ident">Info</span> {
             <span class="ident">name</span>: <span class="string">&quot;Request Timer&quot;</span>,
             <span class="ident">kind</span>: <span class="ident">Kind</span>::<span class="ident">Request</span> <span class="op">|</span> <span class="ident">Kind</span>::<span class="ident">Response</span>
@@ -197,13 +197,13 @@ request guard.</p>
         <span class="comment">// Store a `TimerStart` instead of directly storing a `SystemTime`</span>
         <span class="comment">// to ensure that this usage doesn&#39;t conflict with anything else</span>
         <span class="comment">// that might store a `SystemTime` in request-local cache.</span>
-        <span class="ident">request</span>.<span class="ident">local_cache</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">TimerStart</span>(<span class="prelude-val">Some</span>(<span class="ident">SystemTime</span>::<span class="ident">now</span>())));
+        <span class="ident">request</span>.<span class="ident">local_cache</span>(<span class="op">||</span> <span class="ident">TimerStart</span>(<span class="prelude-val">Some</span>(<span class="ident">SystemTime</span>::<span class="ident">now</span>())));
     }
 
     <span class="doccomment">/// Adds a header to the response indicating how long the server took to</span>
     <span class="doccomment">/// process the request.</span>
     <span class="kw">fn</span> <span class="ident">on_response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Response</span>) {
-        <span class="kw">let</span> <span class="ident">start_time</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">local_cache</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">TimerStart</span>(<span class="prelude-val">None</span>));
+        <span class="kw">let</span> <span class="ident">start_time</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">local_cache</span>(<span class="op">||</span> <span class="ident">TimerStart</span>(<span class="prelude-val">None</span>));
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(<span class="ident">duration</span>)) <span class="op">=</span> <span class="ident">start_time</span>.<span class="number">0</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">st</span><span class="op">|</span> <span class="ident">st</span>.<span class="ident">elapsed</span>()) {
             <span class="kw">let</span> <span class="ident">ms</span> <span class="op">=</span> <span class="ident">duration</span>.<span class="ident">as_secs</span>() <span class="op">*</span> <span class="number">1000</span> <span class="op">+</span> <span class="ident">duration</span>.<span class="ident">subsec_millis</span>() <span class="kw">as</span> <span class="ident">u64</span>;
             <span class="ident">response</span>.<span class="ident">set_raw_header</span>(<span class="string">&quot;X-Response-Time&quot;</span>, <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} ms&quot;</span>, <span class="ident">ms</span>));
@@ -219,10 +219,10 @@ request guard.</p>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">FromRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">StartTime</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">from_request</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">request</span>::<span class="ident">Outcome</span><span class="op">&lt;</span><span class="ident">StartTime</span>, ()<span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">request</span>.<span class="ident">local_cache</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">TimerStart</span>(<span class="prelude-val">None</span>)) {
-            <span class="ident">TimerStart</span>(<span class="prelude-val">Some</span>(<span class="ident">time</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">StartTime</span>(<span class="ident">time</span>)),
-            <span class="ident">TimerStart</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">Status</span>::<span class="ident">InternalServerError</span>, ())),
+    <span class="kw">fn</span> <span class="ident">from_request</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">request</span>::<span class="ident">Outcome</span><span class="op">&lt;</span><span class="ident">StartTime</span>, ()<span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">request</span>.<span class="ident">local_cache</span>(<span class="op">||</span> <span class="ident">TimerStart</span>(<span class="prelude-val">None</span>)) {
+            <span class="ident">TimerStart</span>(<span class="prelude-val">Some</span>(<span class="ident">time</span>)) <span class="op">=&gt;</span> <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">StartTime</span>(<span class="ident">time</span>)),
+            <span class="ident">TimerStart</span>(<span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">Status</span>::<span class="ident">InternalServerError</span>, ())),
         }
     }
 }</pre></div>
@@ -248,7 +248,7 @@ Fairing&quot; that is both a launch and response fairing.</p>
 <span class="kw">struct</span> <span class="ident">MyFairing</span>;
 
 <span class="kw">impl</span> <span class="ident">Fairing</span> <span class="kw">for</span> <span class="ident">MyFairing</span> {
-    <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Info</span> {
+    <span class="kw">fn</span> <span class="ident">info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Info</span> {
         <span class="ident">Info</span> {
             <span class="ident">name</span>: <span class="string">&quot;My Custom Fairing&quot;</span>,
             <span class="ident">kind</span>: <span class="ident">Kind</span>::<span class="ident">Launch</span> <span class="op">|</span> <span class="ident">Kind</span>::<span class="ident">Response</span>

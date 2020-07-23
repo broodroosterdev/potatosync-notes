@@ -5,7 +5,7 @@
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">Request</span>;
 
 <span class="attribute">#[<span class="ident">catch</span>(<span class="number">404</span>)]</span>
-<span class="kw">fn</span> <span class="ident">not_found</span>(<span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">fn</span> <span class="ident">not_found</span>(<span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
     <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Sorry, {} does not exist.&quot;</span>, <span class="ident">req</span>.<span class="ident">uri</span>())
 }</pre></div>
 <h1 id="grammar" class="section-header"><a href="#grammar">Grammar</a></h1>

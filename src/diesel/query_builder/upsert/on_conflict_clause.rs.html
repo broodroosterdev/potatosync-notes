@@ -72,13 +72,13 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Values</span><span class="op">&gt;</span> <span class="ident">OnConflictValues</span><span class="op">&lt;</span><span class="ident">Values</span>, <span class="ident">NoConflictTarget</span>, <span class="ident">DoNothing</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">do_nothing</span>(<span class="ident">values</span>: <span class="ident">Values</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">do_nothing</span>(<span class="ident">values</span>: <span class="ident">Values</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">values</span>, <span class="ident">NoConflictTarget</span>, <span class="ident">DoNothing</span>)
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Values</span>, <span class="ident">Target</span>, <span class="ident">Action</span><span class="op">&gt;</span> <span class="ident">OnConflictValues</span><span class="op">&lt;</span><span class="ident">Values</span>, <span class="ident">Target</span>, <span class="ident">Action</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">values</span>: <span class="ident">Values</span>, <span class="ident">target</span>: <span class="ident">Target</span>, <span class="ident">action</span>: <span class="ident">Action</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">values</span>: <span class="ident">Values</span>, <span class="ident">target</span>: <span class="ident">Target</span>, <span class="ident">action</span>: <span class="ident">Action</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">OnConflictValues</span> {
             <span class="ident">values</span>,
             <span class="ident">target</span>,
@@ -93,7 +93,7 @@
     <span class="ident">DB</span>: <span class="ident">Backend</span> <span class="op">+</span> <span class="ident">SupportsOnConflictClause</span>,
     <span class="ident">Values</span>: <span class="ident">CanInsertInSingleQuery</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">rows_to_insert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">rows_to_insert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">values</span>.<span class="ident">rows_to_insert</span>()
     }
 }
@@ -105,7 +105,7 @@
     <span class="ident">Target</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
     <span class="ident">Action</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">values</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; ON CONFLICT&quot;</span>);
         <span class="self">self</span>.<span class="ident">target</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;

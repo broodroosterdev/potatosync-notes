@@ -109,7 +109,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    (<span class="ident">AccessControlAllowHeaders</span>, <span class="string">&quot;Access-Control-Allow-Headers&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">UniCase</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>)<span class="op">*</span>
+    (<span class="ident">AccessControlAllowHeaders</span>, <span class="string">&quot;Access-Control-Allow-Headers&quot;</span>) <span class="op">=&gt;</span> (<span class="ident">UniCase</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>)<span class="op">*</span>
 
     <span class="ident">test_access_control_allow_headers</span> {
         <span class="macro">test_header</span><span class="macro">!</span>(<span class="ident">test1</span>, <span class="macro">vec</span><span class="macro">!</span>[<span class="string">b&quot;accept-language, date&quot;</span>]);

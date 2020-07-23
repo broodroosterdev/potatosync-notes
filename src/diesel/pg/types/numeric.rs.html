@@ -329,7 +329,7 @@
     <span class="kw">impl</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">ToBase10000</span> {
         <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">i16</span>;
 
-        <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">take</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> {
                 <span class="kw">let</span> (<span class="ident">div</span>, <span class="ident">rem</span>) <span class="op">=</span> <span class="ident">v</span>.<span class="ident">div_rem</span>(<span class="kw-2">&amp;</span><span class="ident">BigUint</span>::<span class="ident">from</span>(<span class="number">10_000u16</span>));
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">div</span>.<span class="ident">is_zero</span>() {
@@ -343,19 +343,19 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PgNumeric</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BigDecimal</span> {
         <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>;
 
-        <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">numeric</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PgNumeric</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">numeric</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">PgNumeric</span>) <span class="op">-&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
             <span class="kw">let</span> (<span class="ident">sign</span>, <span class="ident">weight</span>, <span class="ident">scale</span>, <span class="ident">digits</span>) <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">numeric</span> {
                 <span class="ident">PgNumeric</span>::<span class="ident">Positive</span> {
                     <span class="ident">weight</span>,
                     <span class="ident">scale</span>,
                     <span class="kw-2">ref</span> <span class="ident">digits</span>,
-                } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Sign</span>::<span class="ident">Plus</span>, <span class="ident">weight</span>, <span class="ident">scale</span>, <span class="ident">digits</span>),
+                } <span class="op">=&gt;</span> (<span class="ident">Sign</span>::<span class="ident">Plus</span>, <span class="ident">weight</span>, <span class="ident">scale</span>, <span class="ident">digits</span>),
                 <span class="ident">PgNumeric</span>::<span class="ident">Negative</span> {
                     <span class="ident">weight</span>,
                     <span class="ident">scale</span>,
                     <span class="kw-2">ref</span> <span class="ident">digits</span>,
-                } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Sign</span>::<span class="ident">Minus</span>, <span class="ident">weight</span>, <span class="ident">scale</span>, <span class="ident">digits</span>),
-                <span class="ident">PgNumeric</span>::<span class="ident">NaN</span> <span class="op">=</span><span class="op">&gt;</span> {
+                } <span class="op">=&gt;</span> (<span class="ident">Sign</span>::<span class="ident">Minus</span>, <span class="ident">weight</span>, <span class="ident">scale</span>, <span class="ident">digits</span>),
+                <span class="ident">PgNumeric</span>::<span class="ident">NaN</span> <span class="op">=&gt;</span> {
                     <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Box</span>::<span class="ident">from</span>(<span class="string">&quot;NaN is not (yet) supported in BigDecimal&quot;</span>))
                 }
             };
@@ -363,8 +363,8 @@
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">BigUint</span>::<span class="ident">default</span>();
             <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">digits</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">i64</span>;
             <span class="kw">for</span> <span class="ident">digit</span> <span class="kw">in</span> <span class="ident">digits</span> {
-                <span class="ident">result</span> <span class="kw-2">*</span><span class="op">=</span> <span class="ident">BigUint</span>::<span class="ident">from</span>(<span class="number">10_000u64</span>);
-                <span class="ident">result</span> <span class="op">+</span><span class="op">=</span> <span class="ident">BigUint</span>::<span class="ident">from</span>(<span class="kw-2">*</span><span class="ident">digit</span> <span class="kw">as</span> <span class="ident">u64</span>);
+                <span class="ident">result</span> <span class="op">*=</span> <span class="ident">BigUint</span>::<span class="ident">from</span>(<span class="number">10_000u64</span>);
+                <span class="ident">result</span> <span class="op">+=</span> <span class="ident">BigUint</span>::<span class="ident">from</span>(<span class="kw-2">*</span><span class="ident">digit</span> <span class="kw">as</span> <span class="ident">u64</span>);
             }
             <span class="comment">// First digit got factor 10_000^(digits.len() - 1), but should get 10_000^weight</span>
             <span class="kw">let</span> <span class="ident">correction_exp</span> <span class="op">=</span> <span class="number">4</span> <span class="op">*</span> (<span class="ident">i64</span>::<span class="ident">from</span>(<span class="ident">weight</span>) <span class="op">-</span> <span class="ident">count</span> <span class="op">+</span> <span class="number">1</span>);
@@ -377,7 +377,7 @@
     <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">PgNumeric</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BigDecimal</span> {
         <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>;
 
-        <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">numeric</span>: <span class="ident">PgNumeric</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">numeric</span>: <span class="ident">PgNumeric</span>) <span class="op">-&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
             (<span class="kw-2">&amp;</span><span class="ident">numeric</span>).<span class="ident">try_into</span>()
         }
     }
@@ -389,7 +389,7 @@
         <span class="comment">// The closure gets an `&amp;&amp;i16` due to autoderef `&lt;i16 as Zero&gt;::is_zero(&amp;self) -&gt; bool`</span>
         <span class="comment">// is called. There is no impl for `&amp;i16` that would work with this closure.</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">assign_op_pattern</span>, <span class="ident">clippy</span>::<span class="ident">redundant_closure</span>)]</span>
-        <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">decimal</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">BigDecimal</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">decimal</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">BigDecimal</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
             <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">integer</span>, <span class="ident">scale</span>) <span class="op">=</span> <span class="ident">decimal</span>.<span class="ident">as_bigint_and_exponent</span>();
             <span class="kw">let</span> <span class="ident">scale</span> <span class="op">=</span> <span class="ident">scale</span> <span class="kw">as</span> <span class="ident">u16</span>;
             <span class="ident">integer</span> <span class="op">=</span> <span class="ident">integer</span>.<span class="ident">abs</span>();
@@ -400,12 +400,12 @@
             }
             <span class="kw">let</span> <span class="ident">integer</span> <span class="op">=</span> <span class="ident">integer</span>.<span class="ident">to_biguint</span>().<span class="ident">expect</span>(<span class="string">&quot;integer is always positive&quot;</span>);
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">digits</span> <span class="op">=</span> <span class="ident">ToBase10000</span>(<span class="prelude-val">Some</span>(<span class="ident">integer</span>)).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">digits</span> <span class="op">=</span> <span class="ident">ToBase10000</span>(<span class="prelude-val">Some</span>(<span class="ident">integer</span>)).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
             <span class="ident">digits</span>.<span class="ident">reverse</span>();
             <span class="kw">let</span> <span class="ident">digits_after_decimal</span> <span class="op">=</span> <span class="ident">scale</span> <span class="kw">as</span> <span class="ident">u16</span> <span class="op">/</span> <span class="number">4</span> <span class="op">+</span> <span class="number">1</span>;
             <span class="kw">let</span> <span class="ident">weight</span> <span class="op">=</span> <span class="ident">digits</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">i16</span> <span class="op">-</span> <span class="ident">digits_after_decimal</span> <span class="kw">as</span> <span class="ident">i16</span> <span class="op">-</span> <span class="number">1</span>;
 
-            <span class="kw">let</span> <span class="ident">unnecessary_zeroes</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">weight</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">let</span> <span class="ident">unnecessary_zeroes</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">weight</span> <span class="op">&gt;=</span> <span class="number">0</span> {
                 <span class="kw">let</span> <span class="ident">index_of_decimal</span> <span class="op">=</span> (<span class="ident">weight</span> <span class="op">+</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">usize</span>;
                 <span class="ident">digits</span>
                     .<span class="ident">get</span>(<span class="ident">index_of_decimal</span>..)
@@ -422,17 +422,17 @@
             <span class="ident">digits</span>.<span class="ident">truncate</span>(<span class="ident">relevant_digits</span>);
 
             <span class="kw">match</span> <span class="ident">decimal</span>.<span class="ident">sign</span>() {
-                <span class="ident">Sign</span>::<span class="ident">Plus</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PgNumeric</span>::<span class="ident">Positive</span> {
+                <span class="ident">Sign</span>::<span class="ident">Plus</span> <span class="op">=&gt;</span> <span class="ident">PgNumeric</span>::<span class="ident">Positive</span> {
                     <span class="ident">digits</span>,
                     <span class="ident">scale</span>,
                     <span class="ident">weight</span>,
                 },
-                <span class="ident">Sign</span>::<span class="ident">Minus</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PgNumeric</span>::<span class="ident">Negative</span> {
+                <span class="ident">Sign</span>::<span class="ident">Minus</span> <span class="op">=&gt;</span> <span class="ident">PgNumeric</span>::<span class="ident">Negative</span> {
                     <span class="ident">digits</span>,
                     <span class="ident">scale</span>,
                     <span class="ident">weight</span>,
                 },
-                <span class="ident">Sign</span>::<span class="ident">NoSign</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PgNumeric</span>::<span class="ident">Positive</span> {
+                <span class="ident">Sign</span>::<span class="ident">NoSign</span> <span class="op">=&gt;</span> <span class="ident">PgNumeric</span>::<span class="ident">Positive</span> {
                     <span class="ident">digits</span>: <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0</span>],
                     <span class="ident">scale</span>: <span class="number">0</span>,
                     <span class="ident">weight</span>: <span class="number">0</span>,
@@ -442,20 +442,20 @@
     }
 
     <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">BigDecimal</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PgNumeric</span> {
-        <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">bigdecimal</span>: <span class="ident">BigDecimal</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">bigdecimal</span>: <span class="ident">BigDecimal</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
             (<span class="kw-2">&amp;</span><span class="ident">bigdecimal</span>).<span class="ident">into</span>()
         }
     }
 
     <span class="kw">impl</span> <span class="ident">ToSql</span><span class="op">&lt;</span><span class="ident">Numeric</span>, <span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BigDecimal</span> {
-        <span class="kw">fn</span> <span class="ident">to_sql</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Output</span><span class="op">&lt;</span><span class="ident">W</span>, <span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">serialize</span>::<span class="prelude-ty">Result</span> {
+        <span class="kw">fn</span> <span class="ident">to_sql</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Output</span><span class="op">&lt;</span><span class="ident">W</span>, <span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">serialize</span>::<span class="prelude-ty">Result</span> {
             <span class="kw">let</span> <span class="ident">numeric</span> <span class="op">=</span> <span class="ident">PgNumeric</span>::<span class="ident">from</span>(<span class="self">self</span>);
             <span class="ident">ToSql</span>::<span class="op">&lt;</span><span class="ident">Numeric</span>, <span class="ident">Pg</span><span class="op">&gt;</span>::<span class="ident">to_sql</span>(<span class="kw-2">&amp;</span><span class="ident">numeric</span>, <span class="ident">out</span>)
         }
     }
 
     <span class="kw">impl</span> <span class="ident">FromSql</span><span class="op">&lt;</span><span class="ident">Numeric</span>, <span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BigDecimal</span> {
-        <span class="kw">fn</span> <span class="ident">from_sql</span>(<span class="ident">numeric</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">from_sql</span>(<span class="ident">numeric</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;&gt;</span>) <span class="op">-&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
             <span class="ident">PgNumeric</span>::<span class="ident">from_sql</span>(<span class="ident">numeric</span>)<span class="question-mark">?</span>.<span class="ident">try_into</span>()
         }
     }

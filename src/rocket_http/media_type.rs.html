@@ -574,14 +574,14 @@
 <span class="kw">impl</span> ::<span class="ident">pear</span>::<span class="ident">parsers</span>::<span class="ident">Collection</span> <span class="kw">for</span> <span class="ident">MediaParams</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="ident">IndexedString</span>, <span class="ident">IndexedString</span>);
 
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">MediaParams</span>::<span class="ident">Dynamic</span>(<span class="ident">SmallVec</span>::<span class="ident">new</span>())
     }
 
     <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">item</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">MediaParams</span>::<span class="ident">Static</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;can&#39;t add to static collection!&quot;</span>),
-            <span class="ident">MediaParams</span>::<span class="ident">Dynamic</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">v</span>.<span class="ident">push</span>(<span class="ident">item</span>)
+            <span class="ident">MediaParams</span>::<span class="ident">Static</span>(..) <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;can&#39;t add to static collection!&quot;</span>),
+            <span class="ident">MediaParams</span>::<span class="ident">Dynamic</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">v</span>) <span class="op">=&gt;</span> <span class="ident">v</span>.<span class="ident">push</span>(<span class="ident">item</span>)
         }
     }
 }
@@ -595,11 +595,11 @@
 
 <span class="kw">impl</span> <span class="ident">Source</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Source</span>::<span class="ident">Known</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
-            <span class="ident">Source</span>::<span class="ident">Custom</span>(<span class="kw-2">ref</span> <span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>.<span class="ident">borrow</span>()),
-            <span class="ident">Source</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>
+            <span class="ident">Source</span>::<span class="ident">Known</span>(<span class="ident">s</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+            <span class="ident">Source</span>::<span class="ident">Custom</span>(<span class="kw-2">ref</span> <span class="ident">s</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>.<span class="ident">borrow</span>()),
+            <span class="ident">Source</span>::<span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>
         }
     }
 }
@@ -658,12 +658,12 @@
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">media_str</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">string</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">string</span>)))
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">string</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> (<span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">string</span>)))
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">media_types</span> {
     ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">check</span>:<span class="ident">ident</span>): <span class="macro-nonterminal">$</span><span class="macro-nonterminal">str</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">expr</span>,
-        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">s</span>:<span class="ident">expr</span> $(; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">k</span>:<span class="ident">expr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">expr</span>)<span class="kw-2">*</span>,)<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="macro-nonterminal">$</span><span class="macro-nonterminal">s</span>:<span class="ident">expr</span> $(; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">k</span>:<span class="ident">expr</span> <span class="op">=&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">expr</span>)<span class="kw-2">*</span>,)<span class="op">+</span>) <span class="op">=&gt;</span> {
     $(
         <span class="macro">docify</span><span class="macro">!</span>([
             <span class="ident">Media</span> <span class="ident">Type</span> <span class="kw">for</span> @{<span class="string">&quot;**&quot;</span>}<span class="op">!</span> @{<span class="macro-nonterminal">$</span><span class="macro-nonterminal">str</span>}<span class="op">!</span> @{<span class="string">&quot;**&quot;</span>}<span class="op">!</span>: @{<span class="string">&quot;`&quot;</span>} @{<span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>}<span class="op">!</span> @[<span class="op">/</span>]<span class="op">!</span> @{<span class="macro-nonterminal">$</span><span class="macro-nonterminal">s</span>}<span class="op">!</span>
@@ -681,7 +681,7 @@
 
     <span class="doccomment">/// Returns `true` if this MediaType is known to Rocket. In other words,</span>
     <span class="doccomment">/// returns `true` if there is an associated constant for `self`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_known</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_known</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Source</span>::<span class="ident">Known</span>(<span class="kw">_</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">source</span> {
             <span class="kw">return</span> <span class="bool-val">true</span>;
         }
@@ -697,15 +697,15 @@
             @{<span class="string">&quot;`&quot;</span>}<span class="op">!</span>.
         ];
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">check</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">MediaType</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">check</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">==</span> <span class="ident">MediaType</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>
             }
         );
     )<span class="op">+</span>
 }}
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">from_extension</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ext</span>:<span class="ident">expr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>,)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> (
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ext</span>:<span class="ident">expr</span> <span class="op">=&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>,)<span class="kw-2">*</span>) <span class="op">=&gt;</span> (
     <span class="macro">docify</span><span class="macro">!</span>([
         <span class="ident">Returns</span> <span class="ident">the</span> @[<span class="ident">Media</span><span class="op">-</span><span class="ident">Type</span>] <span class="ident">associated</span> <span class="ident">with</span> <span class="ident">the</span> <span class="ident">extension</span> @<span class="ident">code</span>{<span class="ident">ext</span>}. <span class="ident">Not</span>
         <span class="ident">all</span> <span class="ident">extensions</span> <span class="ident">are</span> <span class="ident">recognized</span>. <span class="ident">If</span> <span class="ident">an</span> <span class="ident">extensions</span> <span class="ident">is</span> <span class="ident">not</span> <span class="ident">recognized</span>,
@@ -742,17 +742,17 @@
         <span class="doccomment">/// let foo = MediaType::from_extension(&quot;foo&quot;);</span>
         <span class="doccomment">/// assert!(foo.is_none());</span>
         <span class="doccomment">/// ```</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_extension</span>(<span class="ident">ext</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MediaType</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_extension</span>(<span class="ident">ext</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MediaType</span><span class="op">&gt;</span> {
             <span class="kw">match</span> <span class="ident">ext</span> {
-                $(<span class="ident">x</span> <span class="kw">if</span> <span class="ident">uncased_eq</span>(<span class="ident">x</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ext</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">MediaType</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>)),<span class="kw-2">*</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>
+                $(<span class="ident">x</span> <span class="kw">if</span> <span class="ident">uncased_eq</span>(<span class="ident">x</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ext</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">MediaType</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>)),<span class="kw-2">*</span>,
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>
             }
         }
     );)
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">parse_flexible</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">short</span>:<span class="ident">expr</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>,)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> (
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">short</span>:<span class="ident">expr</span> <span class="op">=&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>,)<span class="kw-2">*</span>) <span class="op">=&gt;</span> (
     <span class="macro">docify</span><span class="macro">!</span>([
         <span class="ident">Flexibly</span> <span class="ident">parses</span> @<span class="ident">code</span>{<span class="ident">name</span>} <span class="ident">into</span> <span class="ident">a</span> @<span class="ident">code</span>{<span class="ident">MediaType</span>}. <span class="ident">The</span> <span class="ident">parse</span> <span class="ident">is</span>
         @[<span class="ident">_flexible_</span>] <span class="ident">because</span>, <span class="kw">in</span> <span class="ident">addition</span> <span class="ident">to</span> <span class="ident">stricly</span> <span class="ident">correct</span> <span class="ident">media</span> <span class="ident">types</span>, <span class="ident">it</span>
@@ -808,10 +808,10 @@
         <span class="doccomment">/// let bar = MediaType::parse_flexible(&quot;foo/bar/baz&quot;);</span>
         <span class="doccomment">/// assert_eq!(bar, None);</span>
         <span class="doccomment">/// ```</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_flexible</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MediaType</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_flexible</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MediaType</span><span class="op">&gt;</span> {
             <span class="kw">match</span> <span class="ident">name</span> {
-                $(<span class="ident">x</span> <span class="kw">if</span> <span class="ident">uncased_eq</span>(<span class="ident">x</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">short</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">MediaType</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>)),<span class="kw-2">*</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MediaType</span>::<span class="ident">from_str</span>(<span class="ident">name</span>).<span class="ident">ok</span>(),
+                $(<span class="ident">x</span> <span class="kw">if</span> <span class="ident">uncased_eq</span>(<span class="ident">x</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">short</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">MediaType</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>)),<span class="kw-2">*</span>,
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="ident">MediaType</span>::<span class="ident">from_str</span>(<span class="ident">name</span>).<span class="ident">ok</span>(),
             }
         }
     );)
@@ -835,8 +835,8 @@
     <span class="doccomment">/// assert_eq!(custom.sub(), &quot;x-person&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">S</span><span class="op">&gt;</span>(<span class="ident">top</span>: <span class="ident">T</span>, <span class="ident">sub</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MediaType</span>
-        <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">S</span><span class="op">&gt;</span>(<span class="ident">top</span>: <span class="ident">T</span>, <span class="ident">sub</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="ident">MediaType</span>
+        <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>, <span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>
     {
         <span class="ident">MediaType</span> {
             <span class="ident">source</span>: <span class="ident">Source</span>::<span class="prelude-val">None</span>,
@@ -873,9 +873,9 @@
     <span class="doccomment">/// assert_eq!(mt.to_string(), &quot;text/person; name=bob; ref=2382&quot;.to_string());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_params</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">S</span>, <span class="ident">K</span>, <span class="ident">V</span>, <span class="ident">P</span><span class="op">&gt;</span>(<span class="ident">top</span>: <span class="ident">T</span>, <span class="ident">sub</span>: <span class="ident">S</span>, <span class="ident">ps</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MediaType</span>
-        <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-              <span class="ident">K</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">V</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_params</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">S</span>, <span class="ident">K</span>, <span class="ident">V</span>, <span class="ident">P</span><span class="op">&gt;</span>(<span class="ident">top</span>: <span class="ident">T</span>, <span class="ident">sub</span>: <span class="ident">S</span>, <span class="ident">ps</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="ident">MediaType</span>
+        <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>, <span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>,
+              <span class="ident">K</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>, <span class="ident">V</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>,
               <span class="ident">P</span>: <span class="ident">IntoCollection</span><span class="op">&lt;</span>(<span class="ident">K</span>, <span class="ident">V</span>)<span class="op">&gt;</span>
     {
         <span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">ps</span>.<span class="ident">mapped</span>(<span class="op">|</span>(<span class="ident">key</span>, <span class="ident">val</span>)<span class="op">|</span> (
@@ -910,7 +910,7 @@
     <span class="doccomment">/// assert_eq!(plain.top(), &quot;Text&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">top</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">UncasedStr</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">top</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">UncasedStr</span> {
         <span class="self">self</span>.<span class="ident">top</span>.<span class="ident">from_source</span>(<span class="self">self</span>.<span class="ident">source</span>.<span class="ident">as_str</span>()).<span class="ident">into</span>()
     }
 
@@ -929,7 +929,7 @@
     <span class="doccomment">/// assert_eq!(plain.sub(), &quot;pLaIn&quot;);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sub</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">UncasedStr</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sub</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">UncasedStr</span> {
         <span class="self">self</span>.<span class="ident">sub</span>.<span class="ident">from_source</span>(<span class="self">self</span>.<span class="ident">source</span>.<span class="ident">as_str</span>()).<span class="ident">into</span>()
     }
 
@@ -958,8 +958,8 @@
     <span class="doccomment">/// assert_eq!(mt.specificity(), 0);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">specificity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
-        (<span class="self">self</span>.<span class="ident">top</span>() <span class="op">!</span><span class="op">=</span> <span class="string">&quot;*&quot;</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">+</span> (<span class="self">self</span>.<span class="ident">sub</span>() <span class="op">!</span><span class="op">=</span> <span class="string">&quot;*&quot;</span>) <span class="kw">as</span> <span class="ident">u8</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">specificity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u8</span> {
+        (<span class="self">self</span>.<span class="ident">top</span>() <span class="op">!=</span> <span class="string">&quot;*&quot;</span>) <span class="kw">as</span> <span class="ident">u8</span> <span class="op">+</span> (<span class="self">self</span>.<span class="ident">sub</span>() <span class="op">!=</span> <span class="string">&quot;*&quot;</span>) <span class="kw">as</span> <span class="ident">u8</span>
     }
 
     <span class="doccomment">/// Compares `self` with `other` and returns `true` if `self` and `other`</span>
@@ -992,16 +992,16 @@
     <span class="doccomment">/// assert!(!plain2.exact_eq(&amp;just_plain));</span>
     <span class="doccomment">/// assert!(plain.exact_eq(&amp;plain2));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exact_eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">MediaType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exact_eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">MediaType</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span> <span class="op">==</span> <span class="ident">other</span> <span class="op">&amp;&amp;</span> {
             <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">a_params</span>, <span class="kw-2">mut</span> <span class="ident">b_params</span>) <span class="op">=</span> (<span class="self">self</span>.<span class="ident">params</span>(), <span class="ident">other</span>.<span class="ident">params</span>());
             <span class="kw">loop</span> {
                 <span class="kw">match</span> (<span class="ident">a_params</span>.<span class="ident">next</span>(), <span class="ident">b_params</span>.<span class="ident">next</span>()) {
-                    (<span class="prelude-val">Some</span>(<span class="ident">a</span>), <span class="prelude-val">Some</span>(<span class="ident">b</span>)) <span class="kw">if</span> <span class="ident">a</span> <span class="op">!</span><span class="op">=</span> <span class="ident">b</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
-                    (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
-                    (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
-                    (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
-                    (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="bool-val">true</span>
+                    (<span class="prelude-val">Some</span>(<span class="ident">a</span>), <span class="prelude-val">Some</span>(<span class="ident">b</span>)) <span class="kw">if</span> <span class="ident">a</span> <span class="op">!=</span> <span class="ident">b</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
+                    (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=&gt;</span> <span class="kw">continue</span>,
+                    (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
+                    (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
+                    (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="bool-val">true</span>
                 }
             }
         }
@@ -1034,10 +1034,10 @@
     <span class="doccomment">/// assert_eq!(png.params().count(), 0);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">params</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span><span class="op">=</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">params</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span><span class="op">=</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span> {
         <span class="kw">let</span> <span class="ident">param_slice</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">params</span> {
-            <span class="ident">MediaParams</span>::<span class="ident">Static</span>(<span class="ident">slice</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">slice</span>,
-            <span class="ident">MediaParams</span>::<span class="ident">Dynamic</span>(<span class="kw-2">ref</span> <span class="ident">vec</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">vec</span>[..],
+            <span class="ident">MediaParams</span>::<span class="ident">Static</span>(<span class="ident">slice</span>) <span class="op">=&gt;</span> <span class="ident">slice</span>,
+            <span class="ident">MediaParams</span>::<span class="ident">Dynamic</span>(<span class="kw-2">ref</span> <span class="ident">vec</span>) <span class="op">=&gt;</span> <span class="kw-2">&amp;</span><span class="ident">vec</span>[..],
         };
 
         <span class="ident">param_slice</span>.<span class="ident">iter</span>()
@@ -1055,15 +1055,15 @@
     <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> <span class="ident">String</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">raw</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MediaType</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">raw</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MediaType</span>, <span class="ident">String</span><span class="op">&gt;</span> {
         <span class="ident">parse_media_type</span>(<span class="ident">raw</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">to_string</span>())
     }
 }
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">MediaType</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">MediaType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">top</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">top</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">sub</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">sub</span>()
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">MediaType</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">top</span>() <span class="op">==</span> <span class="ident">other</span>.<span class="ident">top</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">sub</span>() <span class="op">==</span> <span class="ident">other</span>.<span class="ident">sub</span>()
     }
 }
 
@@ -1082,7 +1082,7 @@
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">MediaType</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Source</span>::<span class="ident">Known</span>(<span class="ident">src</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">source</span> {
             <span class="ident">src</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)
         } <span class="kw">else</span> {

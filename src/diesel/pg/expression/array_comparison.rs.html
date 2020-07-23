@@ -196,7 +196,7 @@
 <span class="doccomment">/// assert_eq!(Ok(vec![sean, jim]), data.load(&amp;connection));</span>
 <span class="doccomment">/// # }</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">any</span><span class="op">&lt;</span><span class="ident">ST</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">vals</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Any</span><span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">any</span><span class="op">&lt;</span><span class="ident">ST</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">vals</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">Any</span><span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">AsArrayExpression</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span>,
 {
@@ -223,7 +223,7 @@
 <span class="doccomment">/// assert_eq!(Ok(vec![tess]), data.load(&amp;connection));</span>
 <span class="doccomment">/// # }</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span><span class="op">&lt;</span><span class="ident">ST</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">vals</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">All</span><span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span><span class="op">&lt;</span><span class="ident">ST</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">vals</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">All</span><span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">AsArrayExpression</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span>,
 {
@@ -237,14 +237,14 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span> <span class="ident">Any</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">Any</span> { <span class="ident">expr</span>: <span class="ident">expr</span> }
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Expr</span>, <span class="ident">ST</span><span class="op">&gt;</span> <span class="ident">Expression</span> <span class="kw">for</span> <span class="ident">Any</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">Expr</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">Expr</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;&gt;</span>,
 {
     <span class="kw">type</span> <span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span>;
 }
@@ -253,7 +253,7 @@
 <span class="kw">where</span>
     <span class="ident">Expr</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;ANY(&quot;</span>);
         <span class="self">self</span>.<span class="ident">expr</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;)&quot;</span>);
@@ -270,14 +270,14 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span> <span class="ident">All</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">All</span> { <span class="ident">expr</span>: <span class="ident">expr</span> }
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Expr</span>, <span class="ident">ST</span><span class="op">&gt;</span> <span class="ident">Expression</span> <span class="kw">for</span> <span class="ident">All</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">Expr</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">Expr</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;&gt;</span>,
 {
     <span class="kw">type</span> <span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span>;
 }
@@ -286,7 +286,7 @@
 <span class="kw">where</span>
     <span class="ident">Expr</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;ALL(&quot;</span>);
         <span class="self">self</span>.<span class="ident">expr</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;)&quot;</span>);
@@ -297,18 +297,18 @@
 <span class="macro">impl_selectable_expression</span><span class="macro">!</span>(<span class="ident">All</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>);
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AsArrayExpression</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Expression</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Expression</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span>;
+    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">ST</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AsArrayExpression</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span>
 <span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Expression</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Expression</span>;
+    <span class="kw">type</span> <span class="ident">Expression</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>::<span class="ident">Expression</span>;
 
-    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span> {
+    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span> {
         <span class="ident">AsExpression</span>::<span class="ident">as_expression</span>(<span class="self">self</span>)
     }
 }
@@ -318,9 +318,9 @@
 <span class="kw">where</span>
     <span class="self">Self</span>: <span class="ident">SelectQuery</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Expression</span> <span class="op">=</span> <span class="ident">Subselect</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Expression</span> <span class="op">=</span> <span class="ident">Subselect</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span> {
+    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span> {
         <span class="ident">Subselect</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 }
@@ -329,9 +329,9 @@
 <span class="kw">where</span>
     <span class="self">Self</span>: <span class="ident">SelectQuery</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Expression</span> <span class="op">=</span> <span class="ident">Subselect</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Expression</span> <span class="op">=</span> <span class="ident">Subselect</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Array</span><span class="op">&lt;</span><span class="ident">ST</span><span class="op">&gt;&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span> {
+    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span> {
         <span class="ident">Subselect</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 }

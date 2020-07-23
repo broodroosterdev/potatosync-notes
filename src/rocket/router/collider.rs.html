@@ -531,11 +531,11 @@
     <span class="doccomment">/// Because query parsing is lenient, and dynamic query parameters can be</span>
     <span class="doccomment">/// missing, queries do not impact whether two routes collide.</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">collides_with</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">method</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">method</span>
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">rank</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">rank</span>
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">paths_collide</span>(<span class="self">self</span>, <span class="ident">other</span>)
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">formats_collide</span>(<span class="self">self</span>, <span class="ident">other</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">collides_with</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">method</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">method</span>
+            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">rank</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">rank</span>
+            <span class="op">&amp;&amp;</span> <span class="ident">paths_collide</span>(<span class="self">self</span>, <span class="ident">other</span>)
+            <span class="op">&amp;&amp;</span> <span class="ident">formats_collide</span>(<span class="self">self</span>, <span class="ident">other</span>)
     }
 
     <span class="doccomment">/// Determines if this route matches against the given request. This means</span>
@@ -551,33 +551,33 @@
     <span class="doccomment">///     request query string, though in any position.</span>
     <span class="doccomment">///     - If no query in route, requests with/without queries match.</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matches</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">method</span> <span class="op">=</span><span class="op">=</span> <span class="ident">req</span>.<span class="ident">method</span>()
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">paths_match</span>(<span class="self">self</span>, <span class="ident">req</span>)
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">queries_match</span>(<span class="self">self</span>, <span class="ident">req</span>)
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">formats_match</span>(<span class="self">self</span>, <span class="ident">req</span>)
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">matches</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">method</span> <span class="op">==</span> <span class="ident">req</span>.<span class="ident">method</span>()
+            <span class="op">&amp;&amp;</span> <span class="ident">paths_match</span>(<span class="self">self</span>, <span class="ident">req</span>)
+            <span class="op">&amp;&amp;</span> <span class="ident">queries_match</span>(<span class="self">self</span>, <span class="ident">req</span>)
+            <span class="op">&amp;&amp;</span> <span class="ident">formats_match</span>(<span class="self">self</span>, <span class="ident">req</span>)
     }
 }
 
-<span class="kw">fn</span> <span class="ident">paths_collide</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">paths_collide</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
     <span class="kw">let</span> <span class="ident">a_segments</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">route</span>.<span class="ident">metadata</span>.<span class="ident">path_segments</span>;
     <span class="kw">let</span> <span class="ident">b_segments</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="ident">metadata</span>.<span class="ident">path_segments</span>;
     <span class="kw">for</span> (<span class="ident">seg_a</span>, <span class="ident">seg_b</span>) <span class="kw">in</span> <span class="ident">a_segments</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">b_segments</span>.<span class="ident">iter</span>()) {
-        <span class="kw">if</span> <span class="ident">seg_a</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">|</span><span class="op">|</span> <span class="ident">seg_b</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Kind</span>::<span class="ident">Multi</span> {
+        <span class="kw">if</span> <span class="ident">seg_a</span>.<span class="ident">kind</span> <span class="op">==</span> <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">||</span> <span class="ident">seg_b</span>.<span class="ident">kind</span> <span class="op">==</span> <span class="ident">Kind</span>::<span class="ident">Multi</span> {
             <span class="kw">return</span> <span class="bool-val">true</span>;
         }
 
-        <span class="kw">if</span> <span class="ident">seg_a</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">seg_b</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Kind</span>::<span class="ident">Static</span> {
-            <span class="kw">if</span> <span class="ident">seg_a</span>.<span class="ident">string</span> <span class="op">!</span><span class="op">=</span> <span class="ident">seg_b</span>.<span class="ident">string</span> {
+        <span class="kw">if</span> <span class="ident">seg_a</span>.<span class="ident">kind</span> <span class="op">==</span> <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="op">&amp;&amp;</span> <span class="ident">seg_b</span>.<span class="ident">kind</span> <span class="op">==</span> <span class="ident">Kind</span>::<span class="ident">Static</span> {
+            <span class="kw">if</span> <span class="ident">seg_a</span>.<span class="ident">string</span> <span class="op">!=</span> <span class="ident">seg_b</span>.<span class="ident">string</span> {
                 <span class="kw">return</span> <span class="bool-val">false</span>;
             }
         }
     }
 
-    <span class="ident">a_segments</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">b_segments</span>.<span class="ident">len</span>()
+    <span class="ident">a_segments</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">b_segments</span>.<span class="ident">len</span>()
 }
 
-<span class="kw">fn</span> <span class="ident">paths_match</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">paths_match</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
     <span class="kw">let</span> <span class="ident">route_segments</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">route</span>.<span class="ident">metadata</span>.<span class="ident">path_segments</span>;
     <span class="kw">if</span> <span class="ident">route_segments</span>.<span class="ident">len</span>() <span class="op">&gt;</span> <span class="ident">request</span>.<span class="ident">state</span>.<span class="ident">path_segments</span>.<span class="ident">len</span>() {
         <span class="kw">return</span> <span class="bool-val">false</span>;
@@ -586,34 +586,34 @@
     <span class="kw">let</span> <span class="ident">request_segments</span> <span class="op">=</span> <span class="ident">request</span>.<span class="ident">raw_path_segments</span>();
     <span class="kw">for</span> (<span class="ident">route_seg</span>, <span class="ident">req_seg</span>) <span class="kw">in</span> <span class="ident">route_segments</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">request_segments</span>) {
         <span class="kw">match</span> <span class="ident">route_seg</span>.<span class="ident">kind</span> {
-            <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="bool-val">true</span>,
-            <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">route_seg</span>.<span class="ident">string</span> <span class="op">!</span><span class="op">=</span> <span class="ident">req_seg</span>.<span class="ident">as_str</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
+            <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="bool-val">true</span>,
+            <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="kw">if</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">route_seg</span>.<span class="ident">string</span> <span class="op">!=</span> <span class="ident">req_seg</span>.<span class="ident">as_str</span>() <span class="op">=&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="kw">continue</span>,
         }
     }
 
-    <span class="ident">route_segments</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">request</span>.<span class="ident">state</span>.<span class="ident">path_segments</span>.<span class="ident">len</span>()
+    <span class="ident">route_segments</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">request</span>.<span class="ident">state</span>.<span class="ident">path_segments</span>.<span class="ident">len</span>()
 }
 
-<span class="kw">fn</span> <span class="ident">queries_match</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">queries_match</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
     <span class="kw">if</span> <span class="ident">route</span>.<span class="ident">metadata</span>.<span class="ident">fully_dynamic_query</span> {
         <span class="kw">return</span> <span class="bool-val">true</span>;
     }
 
     <span class="kw">let</span> <span class="ident">route_query_segments</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">route</span>.<span class="ident">metadata</span>.<span class="ident">query_segments</span> {
-        <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">segments</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">segments</span>,
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="bool-val">true</span>
+        <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">segments</span>) <span class="op">=&gt;</span> <span class="ident">segments</span>,
+        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="bool-val">true</span>
     };
 
     <span class="kw">let</span> <span class="ident">req_query_segments</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">request</span>.<span class="ident">raw_query_items</span>() {
-        <span class="prelude-val">Some</span>(<span class="ident">iter</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">iter</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="ident">raw</span>.<span class="ident">as_str</span>()),
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">route</span>.<span class="ident">metadata</span>.<span class="ident">fully_dynamic_query</span>
+        <span class="prelude-val">Some</span>(<span class="ident">iter</span>) <span class="op">=&gt;</span> <span class="ident">iter</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">item</span><span class="op">|</span> <span class="ident">item</span>.<span class="ident">raw</span>.<span class="ident">as_str</span>()),
+        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="ident">route</span>.<span class="ident">metadata</span>.<span class="ident">fully_dynamic_query</span>
     };
 
     <span class="kw">for</span> <span class="ident">seg</span> <span class="kw">in</span> <span class="ident">route_query_segments</span>.<span class="ident">iter</span>() {
-        <span class="kw">if</span> <span class="ident">seg</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Kind</span>::<span class="ident">Static</span> {
+        <span class="kw">if</span> <span class="ident">seg</span>.<span class="ident">kind</span> <span class="op">==</span> <span class="ident">Kind</span>::<span class="ident">Static</span> {
             <span class="comment">// it&#39;s okay; this clones the iterator</span>
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">req_query_segments</span>.<span class="ident">clone</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span> <span class="op">=</span><span class="op">=</span> <span class="ident">seg</span>.<span class="ident">string</span>) {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">req_query_segments</span>.<span class="ident">clone</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span> <span class="op">==</span> <span class="ident">seg</span>.<span class="ident">string</span>) {
                 <span class="kw">return</span> <span class="bool-val">false</span>;
             }
         }
@@ -622,7 +622,7 @@
     <span class="bool-val">true</span>
 }
 
-<span class="kw">fn</span> <span class="ident">formats_collide</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">formats_collide</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
     <span class="comment">// When matching against the `Accept` header, the client can always provide</span>
     <span class="comment">// a media type that will cause a collision through non-specificity.</span>
     <span class="kw">if</span> <span class="op">!</span><span class="ident">route</span>.<span class="ident">method</span>.<span class="ident">supports_payload</span>() {
@@ -634,12 +634,12 @@
     <span class="comment">// route doesn&#39;t have a `format`, it accepts all `Content-Type`s. If a</span>
     <span class="comment">// request doesn&#39;t have a format, it only matches routes without a format.</span>
     <span class="kw">match</span> (<span class="ident">route</span>.<span class="ident">format</span>.<span class="ident">as_ref</span>(), <span class="ident">other</span>.<span class="ident">format</span>.<span class="ident">as_ref</span>()) {
-        (<span class="prelude-val">Some</span>(<span class="ident">a</span>), <span class="prelude-val">Some</span>(<span class="ident">b</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">media_types_collide</span>(<span class="ident">a</span>, <span class="ident">b</span>),
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>
+        (<span class="prelude-val">Some</span>(<span class="ident">a</span>), <span class="prelude-val">Some</span>(<span class="ident">b</span>)) <span class="op">=&gt;</span> <span class="ident">media_types_collide</span>(<span class="ident">a</span>, <span class="ident">b</span>),
+        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">true</span>
     }
 }
 
-<span class="kw">fn</span> <span class="ident">formats_match</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">formats_match</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
     <span class="kw">if</span> <span class="op">!</span><span class="ident">route</span>.<span class="ident">method</span>.<span class="ident">supports_payload</span>() {
         <span class="ident">route</span>.<span class="ident">format</span>.<span class="ident">as_ref</span>()
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">request</span>.<span class="ident">format</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> (<span class="ident">a</span>, <span class="ident">b</span>)))
@@ -647,18 +647,18 @@
             .<span class="ident">unwrap_or</span>(<span class="bool-val">true</span>)
     } <span class="kw">else</span> {
         <span class="kw">match</span> <span class="ident">route</span>.<span class="ident">format</span>.<span class="ident">as_ref</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">a</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">request</span>.<span class="ident">format</span>() {
-                <span class="prelude-val">Some</span>(<span class="ident">b</span>) <span class="kw">if</span> <span class="ident">b</span>.<span class="ident">specificity</span>() <span class="op">=</span><span class="op">=</span> <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">media_types_collide</span>(<span class="ident">a</span>, <span class="ident">b</span>),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>
+            <span class="prelude-val">Some</span>(<span class="ident">a</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="ident">request</span>.<span class="ident">format</span>() {
+                <span class="prelude-val">Some</span>(<span class="ident">b</span>) <span class="kw">if</span> <span class="ident">b</span>.<span class="ident">specificity</span>() <span class="op">==</span> <span class="number">2</span> <span class="op">=&gt;</span> <span class="ident">media_types_collide</span>(<span class="ident">a</span>, <span class="ident">b</span>),
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>
             }
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="bool-val">true</span>
         }
     }
 }
 
-<span class="kw">fn</span> <span class="ident">media_types_collide</span>(<span class="ident">first</span>: <span class="kw-2">&amp;</span><span class="ident">MediaType</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">MediaType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-    <span class="kw">let</span> <span class="ident">collide</span> <span class="op">=</span> <span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;*&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;*&quot;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="ident">b</span>;
-    <span class="ident">collide</span>(<span class="ident">first</span>.<span class="ident">top</span>(), <span class="ident">other</span>.<span class="ident">top</span>()) <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">collide</span>(<span class="ident">first</span>.<span class="ident">sub</span>(), <span class="ident">other</span>.<span class="ident">sub</span>())
+<span class="kw">fn</span> <span class="ident">media_types_collide</span>(<span class="ident">first</span>: <span class="kw-2">&amp;</span><span class="ident">MediaType</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">MediaType</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">let</span> <span class="ident">collide</span> <span class="op">=</span> <span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">a</span> <span class="op">==</span> <span class="string">&quot;*&quot;</span> <span class="op">||</span> <span class="ident">b</span> <span class="op">==</span> <span class="string">&quot;*&quot;</span> <span class="op">||</span> <span class="ident">a</span> <span class="op">==</span> <span class="ident">b</span>;
+    <span class="ident">collide</span>(<span class="ident">first</span>.<span class="ident">top</span>(), <span class="ident">other</span>.<span class="ident">top</span>()) <span class="op">&amp;&amp;</span> <span class="ident">collide</span>(<span class="ident">first</span>.<span class="ident">sub</span>(), <span class="ident">other</span>.<span class="ident">sub</span>())
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -676,19 +676,19 @@
 
     <span class="kw">type</span> <span class="ident">SimpleRoute</span> <span class="op">=</span> (<span class="ident">Method</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>);
 
-    <span class="kw">fn</span> <span class="ident">m_collide</span>(<span class="ident">a</span>: <span class="ident">SimpleRoute</span>, <span class="ident">b</span>: <span class="ident">SimpleRoute</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">m_collide</span>(<span class="ident">a</span>: <span class="ident">SimpleRoute</span>, <span class="ident">b</span>: <span class="ident">SimpleRoute</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">route_a</span> <span class="op">=</span> <span class="ident">Route</span>::<span class="ident">new</span>(<span class="ident">a</span>.<span class="number">0</span>, <span class="ident">a</span>.<span class="number">1</span>, <span class="ident">dummy_handler</span>);
         <span class="ident">route_a</span>.<span class="ident">collides_with</span>(<span class="kw-2">&amp;</span><span class="ident">Route</span>::<span class="ident">new</span>(<span class="ident">b</span>.<span class="number">0</span>, <span class="ident">b</span>.<span class="number">1</span>, <span class="ident">dummy_handler</span>))
     }
 
-    <span class="kw">fn</span> <span class="ident">unranked_collide</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">unranked_collide</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">route_a</span> <span class="op">=</span> <span class="ident">Route</span>::<span class="ident">ranked</span>(<span class="number">0</span>, <span class="ident">Get</span>, <span class="ident">a</span>, <span class="ident">dummy_handler</span>);
         <span class="kw">let</span> <span class="ident">route_b</span> <span class="op">=</span> <span class="ident">Route</span>::<span class="ident">ranked</span>(<span class="number">0</span>, <span class="ident">Get</span>, <span class="ident">b</span>, <span class="ident">dummy_handler</span>);
         <span class="macro">eprintln</span><span class="macro">!</span>(<span class="string">&quot;Checking {} against {}.&quot;</span>, <span class="ident">route_a</span>, <span class="ident">route_b</span>);
         <span class="ident">route_a</span>.<span class="ident">collides_with</span>(<span class="kw-2">&amp;</span><span class="ident">route_b</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">s_s_collide</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">s_s_collide</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Route</span>::<span class="ident">new</span>(<span class="ident">Get</span>, <span class="ident">a</span>, <span class="ident">dummy_handler</span>);
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Route</span>::<span class="ident">new</span>(<span class="ident">Get</span>, <span class="ident">b</span>, <span class="ident">dummy_handler</span>);
         <span class="ident">paths_collide</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>, <span class="kw-2">&amp;</span><span class="ident">b</span>)
@@ -829,7 +829,7 @@
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">s_s_collide</span>(<span class="string">&quot;/&quot;</span>, <span class="string">&quot;/a&quot;</span>));
     }
 
-    <span class="kw">fn</span> <span class="ident">mt_mt_collide</span>(<span class="ident">mt1</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">mt2</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">mt_mt_collide</span>(<span class="ident">mt1</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">mt2</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">mt_a</span> <span class="op">=</span> <span class="ident">MediaType</span>::<span class="ident">from_str</span>(<span class="ident">mt1</span>).<span class="ident">expect</span>(<span class="ident">mt1</span>);
         <span class="kw">let</span> <span class="ident">mt_b</span> <span class="op">=</span> <span class="ident">MediaType</span>::<span class="ident">from_str</span>(<span class="ident">mt2</span>).<span class="ident">expect</span>(<span class="ident">mt2</span>);
         <span class="ident">media_types_collide</span>(<span class="kw-2">&amp;</span><span class="ident">mt_a</span>, <span class="kw-2">&amp;</span><span class="ident">mt_b</span>)
@@ -853,8 +853,8 @@
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">mt_mt_collide</span>(<span class="string">&quot;something/*&quot;</span>, <span class="string">&quot;random/else&quot;</span>));
     }
 
-    <span class="kw">fn</span> <span class="ident">r_mt_mt_collide</span><span class="op">&lt;</span><span class="ident">S1</span>, <span class="ident">S2</span><span class="op">&gt;</span>(<span class="ident">m</span>: <span class="ident">Method</span>, <span class="ident">mt1</span>: <span class="ident">S1</span>, <span class="ident">mt2</span>: <span class="ident">S2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
-        <span class="kw">where</span> <span class="ident">S1</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">S2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">r_mt_mt_collide</span><span class="op">&lt;</span><span class="ident">S1</span>, <span class="ident">S2</span><span class="op">&gt;</span>(<span class="ident">m</span>: <span class="ident">Method</span>, <span class="ident">mt1</span>: <span class="ident">S1</span>, <span class="ident">mt2</span>: <span class="ident">S2</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
+        <span class="kw">where</span> <span class="ident">S1</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;&gt;</span>, <span class="ident">S2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;&gt;</span>
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">route_a</span> <span class="op">=</span> <span class="ident">Route</span>::<span class="ident">new</span>(<span class="ident">m</span>, <span class="string">&quot;/&quot;</span>, <span class="ident">dummy_handler</span>);
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">mt_str</span>) <span class="op">=</span> <span class="ident">mt1</span>.<span class="ident">into</span>() {
@@ -911,8 +911,8 @@
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">r_mt_mt_collide</span>(<span class="ident">Post</span>, <span class="string">&quot;other/html&quot;</span>, <span class="string">&quot;text/html&quot;</span>));
     }
 
-    <span class="kw">fn</span> <span class="ident">req_route_mt_collide</span><span class="op">&lt;</span><span class="ident">S1</span>, <span class="ident">S2</span><span class="op">&gt;</span>(<span class="ident">m</span>: <span class="ident">Method</span>, <span class="ident">mt1</span>: <span class="ident">S1</span>, <span class="ident">mt2</span>: <span class="ident">S2</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
-        <span class="kw">where</span> <span class="ident">S1</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">S2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">req_route_mt_collide</span><span class="op">&lt;</span><span class="ident">S1</span>, <span class="ident">S2</span><span class="op">&gt;</span>(<span class="ident">m</span>: <span class="ident">Method</span>, <span class="ident">mt1</span>: <span class="ident">S1</span>, <span class="ident">mt2</span>: <span class="ident">S2</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
+        <span class="kw">where</span> <span class="ident">S1</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;&gt;</span>, <span class="ident">S2</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;&gt;</span>
     {
         <span class="kw">let</span> <span class="ident">rocket</span> <span class="op">=</span> <span class="ident">Rocket</span>::<span class="ident">custom</span>(<span class="ident">Config</span>::<span class="ident">development</span>());
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">Request</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">rocket</span>, <span class="ident">m</span>, <span class="ident">Origin</span>::<span class="ident">dummy</span>());
@@ -980,7 +980,7 @@
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">req_route_mt_collide</span>(<span class="ident">Post</span>, <span class="prelude-val">None</span>, <span class="string">&quot;application/json&quot;</span>));
     }
 
-    <span class="kw">fn</span> <span class="ident">req_route_path_match</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">req_route_path_match</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">rocket</span> <span class="op">=</span> <span class="ident">Rocket</span>::<span class="ident">custom</span>(<span class="ident">Config</span>::<span class="ident">development</span>());
         <span class="kw">let</span> <span class="ident">req</span> <span class="op">=</span> <span class="ident">Request</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">rocket</span>, <span class="ident">Get</span>, <span class="ident">Origin</span>::<span class="ident">parse</span>(<span class="ident">a</span>).<span class="ident">expect</span>(<span class="string">&quot;valid URI&quot;</span>));
         <span class="kw">let</span> <span class="ident">route</span> <span class="op">=</span> <span class="ident">Route</span>::<span class="ident">ranked</span>(<span class="number">0</span>, <span class="ident">Get</span>, <span class="ident">b</span>.<span class="ident">to_string</span>(), <span class="ident">dummy_handler</span>);

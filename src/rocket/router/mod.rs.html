@@ -489,30 +489,30 @@
 <span class="kw">type</span> <span class="ident">Selector</span> <span class="op">=</span> <span class="ident">Method</span>;
 
 <span class="comment">// A handler to use when one is needed temporarily.</span>
-<span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">dummy_handler</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> ::<span class="ident">Request</span>, <span class="kw">_</span>: ::<span class="ident">Data</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="ident">handler</span>::<span class="ident">Outcome</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+<span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">dummy_handler</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> ::<span class="ident">Request</span>, <span class="kw">_</span>: ::<span class="ident">Data</span>) <span class="op">-&gt;</span> ::<span class="ident">handler</span>::<span class="ident">Outcome</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
     ::<span class="ident">Outcome</span>::<span class="ident">from</span>(<span class="ident">r</span>, ())
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Router</span> {
-    <span class="ident">routes</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">Selector</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Route</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">routes</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">Selector</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Route</span><span class="op">&gt;&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Router</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Router</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">Router</span> {
         <span class="ident">Router</span> { <span class="ident">routes</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>() }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">route</span>: <span class="ident">Route</span>) {
         <span class="kw">let</span> <span class="ident">selector</span> <span class="op">=</span> <span class="ident">route</span>.<span class="ident">method</span>;
-        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">routes</span>.<span class="ident">entry</span>(<span class="ident">selector</span>).<span class="ident">or_insert_with</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">vec</span><span class="macro">!</span>[]);
+        <span class="kw">let</span> <span class="ident">entries</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">routes</span>.<span class="ident">entry</span>(<span class="ident">selector</span>).<span class="ident">or_insert_with</span>(<span class="op">||</span> <span class="macro">vec</span><span class="macro">!</span>[]);
         <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">binary_search_by_key</span>(<span class="kw-2">&amp;</span><span class="ident">route</span>.<span class="ident">rank</span>, <span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">rank</span>)
             .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span>);
 
         <span class="ident">entries</span>.<span class="ident">insert</span>(<span class="ident">i</span>, <span class="ident">route</span>);
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">route</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">Route</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">route</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="ident">Route</span><span class="op">&gt;</span> {
         <span class="comment">// Note that routes are presorted by rank on each `add`.</span>
         <span class="kw">let</span> <span class="ident">matches</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">routes</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">req</span>.<span class="ident">method</span>()).<span class="ident">map_or</span>(<span class="macro">vec</span><span class="macro">!</span>[], <span class="op">|</span><span class="ident">routes</span><span class="op">|</span> {
             <span class="ident">routes</span>.<span class="ident">iter</span>()
@@ -525,7 +525,7 @@
         <span class="ident">matches</span>
     }
 
-    <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">collisions</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Router</span>, <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">Route</span>, <span class="ident">Route</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">collisions</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Router</span>, <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">Route</span>, <span class="ident">Route</span>)<span class="op">&gt;&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">collisions</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
         <span class="kw">for</span> <span class="ident">routes</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">routes</span>.<span class="ident">values_mut</span>() {
             <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">routes</span>.<span class="ident">len</span>() {
@@ -552,13 +552,13 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">routes</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span><span class="op">=</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Route</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">routes</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span><span class="op">=</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Route</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span> {
         <span class="self">self</span>.<span class="ident">routes</span>.<span class="ident">values</span>().<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">iter</span>())
     }
 
     <span class="comment">// This is slow. Don&#39;t expose this publicly; only for tests.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">has_collisions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">has_collisions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">for</span> <span class="ident">routes</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">routes</span>.<span class="ident">values</span>() {
             <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">a_route</span>) <span class="kw">in</span> <span class="ident">routes</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
                 <span class="kw">for</span> <span class="ident">b_route</span> <span class="kw">in</span> <span class="ident">routes</span>.<span class="ident">iter</span>().<span class="ident">skip</span>(<span class="ident">i</span> <span class="op">+</span> <span class="number">1</span>) {
@@ -584,7 +584,7 @@
     <span class="kw">use</span> <span class="ident">http</span>::<span class="ident">uri</span>::<span class="ident">Origin</span>;
     <span class="kw">use</span> <span class="ident">request</span>::<span class="ident">Request</span>;
 
-    <span class="kw">fn</span> <span class="ident">router_with_routes</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Router</span> {
+    <span class="kw">fn</span> <span class="ident">router_with_routes</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) <span class="op">-&gt;</span> <span class="ident">Router</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">Router</span>::<span class="ident">new</span>();
         <span class="kw">for</span> <span class="ident">route</span> <span class="kw">in</span> <span class="ident">routes</span> {
             <span class="kw">let</span> <span class="ident">route</span> <span class="op">=</span> <span class="ident">Route</span>::<span class="ident">new</span>(<span class="ident">Get</span>, <span class="ident">route</span>.<span class="ident">to_string</span>(), <span class="ident">dummy_handler</span>);
@@ -594,7 +594,7 @@
         <span class="ident">router</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">router_with_ranked_routes</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[(<span class="ident">isize</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>)]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Router</span> {
+    <span class="kw">fn</span> <span class="ident">router_with_ranked_routes</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[(<span class="ident">isize</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>)]) <span class="op">-&gt;</span> <span class="ident">Router</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">Router</span>::<span class="ident">new</span>();
         <span class="kw">for</span> <span class="kw-2">&amp;</span>(<span class="ident">rank</span>, <span class="ident">route</span>) <span class="kw">in</span> <span class="ident">routes</span> {
             <span class="kw">let</span> <span class="ident">route</span> <span class="op">=</span> <span class="ident">Route</span>::<span class="ident">ranked</span>(<span class="ident">rank</span>, <span class="ident">Get</span>, <span class="ident">route</span>.<span class="ident">to_string</span>(), <span class="ident">dummy_handler</span>);
@@ -604,7 +604,7 @@
         <span class="ident">router</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">router_with_unranked_routes</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Router</span> {
+    <span class="kw">fn</span> <span class="ident">router_with_unranked_routes</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) <span class="op">-&gt;</span> <span class="ident">Router</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">Router</span>::<span class="ident">new</span>();
         <span class="kw">for</span> <span class="ident">route</span> <span class="kw">in</span> <span class="ident">routes</span> {
             <span class="kw">let</span> <span class="ident">route</span> <span class="op">=</span> <span class="ident">Route</span>::<span class="ident">ranked</span>(<span class="number">0</span>, <span class="ident">Get</span>, <span class="ident">route</span>.<span class="ident">to_string</span>(), <span class="ident">dummy_handler</span>);
@@ -614,12 +614,12 @@
         <span class="ident">router</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">unranked_route_collisions</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">unranked_route_collisions</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">router_with_unranked_routes</span>(<span class="ident">routes</span>);
         <span class="ident">router</span>.<span class="ident">has_collisions</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">default_rank_route_collisions</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">default_rank_route_collisions</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">router_with_routes</span>(<span class="ident">routes</span>);
         <span class="ident">router</span>.<span class="ident">has_collisions</span>()
     }
@@ -704,7 +704,7 @@
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">default_rank_route_collisions</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;/hi?&lt;c&gt;&quot;</span>, <span class="string">&quot;/hi?c&quot;</span>]));
     }
 
-    <span class="kw">fn</span> <span class="ident">route</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">router</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Router</span>, <span class="ident">method</span>: <span class="ident">Method</span>, <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Route</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">route</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">router</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Router</span>, <span class="ident">method</span>: <span class="ident">Method</span>, <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Route</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">rocket</span> <span class="op">=</span> <span class="ident">Rocket</span>::<span class="ident">custom</span>(<span class="ident">Config</span>::<span class="ident">development</span>());
         <span class="kw">let</span> <span class="ident">request</span> <span class="op">=</span> <span class="ident">Request</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">rocket</span>, <span class="ident">method</span>, <span class="ident">Origin</span>::<span class="ident">parse</span>(<span class="ident">uri</span>).<span class="ident">unwrap</span>());
         <span class="kw">let</span> <span class="ident">matches</span> <span class="op">=</span> <span class="ident">router</span>.<span class="ident">route</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>);
@@ -715,7 +715,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">matches</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">router</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Router</span>, <span class="ident">method</span>: <span class="ident">Method</span>, <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Route</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">matches</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">router</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Router</span>, <span class="ident">method</span>: <span class="ident">Method</span>, <span class="ident">uri</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Route</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">rocket</span> <span class="op">=</span> <span class="ident">Rocket</span>::<span class="ident">custom</span>(<span class="ident">Config</span>::<span class="ident">development</span>());
         <span class="kw">let</span> <span class="ident">request</span> <span class="op">=</span> <span class="ident">Request</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">rocket</span>, <span class="ident">method</span>, <span class="ident">Origin</span>::<span class="ident">parse</span>(<span class="ident">uri</span>).<span class="ident">unwrap</span>());
         <span class="ident">router</span>.<span class="ident">route</span>(<span class="kw-2">&amp;</span><span class="ident">request</span>)
@@ -783,7 +783,7 @@
     }
 
     <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">assert_ranked_routes</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">routes</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">want</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> ({
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">routes</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">want</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> ({
             <span class="kw">let</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">router_with_routes</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">routes</span>);
             <span class="kw">let</span> <span class="ident">route_path</span> <span class="op">=</span> <span class="ident">route</span>(<span class="kw-2">&amp;</span><span class="ident">router</span>, <span class="ident">Get</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>).<span class="ident">unwrap</span>().<span class="ident">uri</span>.<span class="ident">to_string</span>();
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">route_path</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">want</span>.<span class="ident">to_string</span>());
@@ -812,7 +812,7 @@
         <span class="macro">assert_ranked_routes</span><span class="macro">!</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;/a?&lt;c&gt;&amp;b&quot;</span>, <span class="string">&quot;/a?&lt;b&gt;&quot;</span>], <span class="string">&quot;/a?c&quot;</span>, <span class="string">&quot;/a?&lt;b&gt;&quot;</span>);
     }
 
-    <span class="kw">fn</span> <span class="ident">ranked_collisions</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[(<span class="ident">isize</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>)]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">ranked_collisions</span>(<span class="ident">routes</span>: <span class="kw-2">&amp;</span>[(<span class="ident">isize</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>)]) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">router_with_ranked_routes</span>(<span class="ident">routes</span>);
         <span class="ident">router</span>.<span class="ident">has_collisions</span>()
     }
@@ -837,11 +837,11 @@
     }
 
     <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">assert_ranked_routing</span> {
-        (<span class="ident">to</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>:<span class="ident">expr</span>, <span class="ident">with</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">routes</span>:<span class="ident">expr</span>, <span class="ident">expect</span>: $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">want</span>:<span class="ident">expr</span>),<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> ({
+        (<span class="ident">to</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>:<span class="ident">expr</span>, <span class="ident">with</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">routes</span>:<span class="ident">expr</span>, <span class="ident">expect</span>: $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">want</span>:<span class="ident">expr</span>),<span class="op">+</span>) <span class="op">=&gt;</span> ({
             <span class="kw">let</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">router_with_ranked_routes</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">routes</span>);
             <span class="kw">let</span> <span class="ident">routed_to</span> <span class="op">=</span> <span class="ident">matches</span>(<span class="kw-2">&amp;</span><span class="ident">router</span>, <span class="ident">Get</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>);
             <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">want</span>),<span class="op">+</span>];
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">routed_to</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">expected</span>.<span class="ident">len</span>());
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">routed_to</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">expected</span>.<span class="ident">len</span>());
             <span class="kw">for</span> (<span class="ident">got</span>, <span class="ident">expected</span>) <span class="kw">in</span> <span class="ident">routed_to</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">expected</span>.<span class="ident">iter</span>()) {
                 <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">got</span>.<span class="ident">rank</span>, <span class="ident">expected</span>.<span class="number">0</span>);
                 <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">got</span>.<span class="ident">uri</span>.<span class="ident">to_string</span>(), <span class="ident">expected</span>.<span class="number">1</span>.<span class="ident">to_string</span>());
@@ -907,11 +907,11 @@
     }
 
     <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">assert_default_ranked_routing</span> {
-        (<span class="ident">to</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>:<span class="ident">expr</span>, <span class="ident">with</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">routes</span>:<span class="ident">expr</span>, <span class="ident">expect</span>: $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">want</span>:<span class="ident">expr</span>),<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> ({
+        (<span class="ident">to</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>:<span class="ident">expr</span>, <span class="ident">with</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">routes</span>:<span class="ident">expr</span>, <span class="ident">expect</span>: $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">want</span>:<span class="ident">expr</span>),<span class="op">+</span>) <span class="op">=&gt;</span> ({
             <span class="kw">let</span> <span class="ident">router</span> <span class="op">=</span> <span class="ident">router_with_routes</span>(<span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">routes</span>);
             <span class="kw">let</span> <span class="ident">routed_to</span> <span class="op">=</span> <span class="ident">matches</span>(<span class="kw-2">&amp;</span><span class="ident">router</span>, <span class="ident">Get</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">to</span>);
             <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">want</span>),<span class="op">+</span>];
-            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">routed_to</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">expected</span>.<span class="ident">len</span>());
+            <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">routed_to</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="ident">expected</span>.<span class="ident">len</span>());
             <span class="kw">for</span> (<span class="ident">got</span>, <span class="ident">expected</span>) <span class="kw">in</span> <span class="ident">routed_to</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">expected</span>.<span class="ident">iter</span>()) {
                 <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">got</span>.<span class="ident">uri</span>.<span class="ident">to_string</span>(), <span class="ident">expected</span>.<span class="ident">to_string</span>());
             }

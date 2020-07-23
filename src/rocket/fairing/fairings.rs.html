@@ -108,7 +108,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Fairings</span> {
-    <span class="ident">all_fairings</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Fairing</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">all_fairings</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Fairing</span><span class="op">&gt;&gt;</span>,
     <span class="ident">attach_failures</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span>,
     <span class="comment">// The vectors below hold indices into `all_fairings`.</span>
     <span class="ident">launch</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
@@ -118,11 +118,11 @@
 
 <span class="kw">impl</span> <span class="ident">Fairings</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Fairings</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">Fairings</span> {
         <span class="ident">Fairings</span>::<span class="ident">default</span>()
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attach</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fairing</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Fairing</span><span class="op">&gt;</span>, <span class="kw-2">mut</span> <span class="ident">rocket</span>: <span class="ident">Rocket</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rocket</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attach</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fairing</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">Fairing</span><span class="op">&gt;</span>, <span class="kw-2">mut</span> <span class="ident">rocket</span>: <span class="ident">Rocket</span>) <span class="op">-&gt;</span> <span class="ident">Rocket</span> {
         <span class="comment">// Run the `on_attach` callback if this is an &#39;attach&#39; fairing.</span>
         <span class="kw">let</span> <span class="ident">kind</span> <span class="op">=</span> <span class="ident">fairing</span>.<span class="ident">info</span>().<span class="ident">kind</span>;
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">fairing</span>.<span class="ident">info</span>().<span class="ident">name</span>;
@@ -174,7 +174,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">failures</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">failures</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">attach_failures</span>.<span class="ident">is_empty</span>() {
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
@@ -187,7 +187,7 @@
             <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="ident">fairings</span>.<span class="ident">len</span>();
             <span class="kw">let</span> <span class="ident">names</span> <span class="op">=</span> <span class="ident">fairings</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>()
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">all_fairings</span>[<span class="ident">i</span>].<span class="ident">info</span>().<span class="ident">name</span>)
-                .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>()
+                .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>()
                 .<span class="ident">join</span>(<span class="string">&quot;, &quot;</span>);
 
             <span class="macro">info_</span><span class="macro">!</span>(<span class="string">&quot;{} {}: {}&quot;</span>, <span class="ident">Paint</span>::<span class="ident">default</span>(<span class="ident">num</span>).<span class="ident">bold</span>(), <span class="ident">kind</span>, <span class="ident">Paint</span>::<span class="ident">default</span>(<span class="ident">names</span>).<span class="ident">bold</span>());

@@ -89,7 +89,7 @@
 
 <span class="kw">impl</span> <span class="ident">PgMetadataLookup</span> {
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_ret_no_self</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">conn</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">PgConnection</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">PgMetadataLookup</span>) }
     }
 
@@ -98,9 +98,9 @@
     <span class="doccomment">/// This function should only be used for user defined types, or types which</span>
     <span class="doccomment">/// come from an extension. This function may perform a SQL query to look</span>
     <span class="doccomment">/// up the type. For built-in types, a static OID should be preferred.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">type_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PgTypeMetadata</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">type_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">PgTypeMetadata</span> {
         <span class="kw">let</span> <span class="ident">metadata_cache</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">conn</span>.<span class="ident">get_metadata_cache</span>();
-        <span class="ident">metadata_cache</span>.<span class="ident">lookup_type</span>(<span class="ident">type_name</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
+        <span class="ident">metadata_cache</span>.<span class="ident">lookup_type</span>(<span class="ident">type_name</span>).<span class="ident">unwrap_or_else</span>(<span class="op">||</span> {
             <span class="kw">use</span> <span class="self">self</span>::<span class="ident">pg_type</span>::<span class="ident">dsl</span>::<span class="kw-2">*</span>;
 
             <span class="kw">let</span> <span class="ident">type_metadata</span> <span class="op">=</span> <span class="ident">pg_type</span>
@@ -117,17 +117,17 @@
 <span class="doccomment">/// Stores a cache for the OID of custom types</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_debug_implementations</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PgMetadataCache</span> {
-    <span class="ident">cache</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PgTypeMetadata</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">cache</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PgTypeMetadata</span><span class="op">&gt;&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">PgMetadataCache</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">PgMetadataCache</span> {
             <span class="ident">cache</span>: <span class="ident">RefCell</span>::<span class="ident">new</span>(<span class="ident">HashMap</span>::<span class="ident">new</span>()),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">lookup_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">type_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgTypeMetadata</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">lookup_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">type_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgTypeMetadata</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">cache</span>.<span class="ident">borrow</span>().<span class="ident">get</span>(<span class="ident">type_name</span>)<span class="question-mark">?</span>)
     }
 
@@ -140,9 +140,9 @@
 
 <span class="macro">table</span><span class="macro">!</span> {
     <span class="ident">pg_type</span> (<span class="ident">oid</span>) {
-        <span class="ident">oid</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Oid</span>,
-        <span class="ident">typname</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
-        <span class="ident">typarray</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Oid</span>,
+        <span class="ident">oid</span> <span class="op">-&gt;</span> <span class="ident">Oid</span>,
+        <span class="ident">typname</span> <span class="op">-&gt;</span> <span class="ident">Text</span>,
+        <span class="ident">typarray</span> <span class="op">-&gt;</span> <span class="ident">Oid</span>,
     }
 }
 </pre></div>

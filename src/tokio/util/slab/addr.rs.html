@@ -231,12 +231,12 @@
 <span class="kw">impl</span> <span class="ident">Address</span> {
     <span class="doccomment">/// Represents no entry, picked to avoid collision with Mio&#39;s internals.</span>
     <span class="doccomment">/// This value should not be passed to mio.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">NULL</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">usize</span>::<span class="ident">MAX</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">1</span>;
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">NULL</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">usize</span>::<span class="ident">MAX</span> <span class="op">&gt;&gt;</span> <span class="number">1</span>;
 
     <span class="doccomment">/// Re-exported by `Generation`.</span>
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="ident">GENERATION_WIDTH</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">GENERATION</span>.<span class="ident">width</span>();
 
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">shard_index</span>: <span class="ident">usize</span>, <span class="ident">generation</span>: <span class="ident">Generation</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Address</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">shard_index</span>: <span class="ident">usize</span>, <span class="ident">generation</span>: <span class="ident">Generation</span>) <span class="op">-&gt;</span> <span class="ident">Address</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">repr</span> <span class="op">=</span> <span class="number">0</span>;
 
         <span class="ident">repr</span> <span class="op">=</span> <span class="ident">SLOT</span>.<span class="ident">pack</span>(<span class="ident">shard_index</span>, <span class="ident">repr</span>);
@@ -246,23 +246,23 @@
     }
 
     <span class="doccomment">/// Convert from a `usize` representation.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_usize</span>(<span class="ident">src</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Address</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_usize</span>(<span class="ident">src</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">Address</span> {
         <span class="macro">assert_ne</span><span class="macro">!</span>(<span class="ident">src</span>, <span class="self">Self</span>::<span class="ident">NULL</span>);
 
         <span class="ident">Address</span>(<span class="ident">src</span>)
     }
 
     <span class="doccomment">/// Convert to a `usize` representation</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">to_usize</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">to_usize</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">generation</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Generation</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">generation</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Generation</span> {
         <span class="ident">Generation</span>::<span class="ident">new</span>(<span class="ident">GENERATION</span>.<span class="ident">unpack</span>(<span class="self">self</span>.<span class="number">0</span>))
     }
 
     <span class="doccomment">/// Returns the page index</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">page</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">page</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">usize</span> {
         <span class="comment">// Since every page is twice as large as the previous page, and all page</span>
         <span class="comment">// sizes are powers of two, we can determine the page index that</span>
         <span class="comment">// contains a given address by shifting the address down by the smallest</span>
@@ -272,12 +272,12 @@
         <span class="comment">// of leading zeros (unused twos places) in the number&#39;s binary</span>
         <span class="comment">// representation, and subtracting that count from the total number of</span>
         <span class="comment">// bits in a word.</span>
-        <span class="kw">let</span> <span class="ident">slot_shifted</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">slot</span>() <span class="op">+</span> <span class="ident">INITIAL_PAGE_SIZE</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">PAGE_INDEX_SHIFT</span>;
+        <span class="kw">let</span> <span class="ident">slot_shifted</span> <span class="op">=</span> (<span class="self">self</span>.<span class="ident">slot</span>() <span class="op">+</span> <span class="ident">INITIAL_PAGE_SIZE</span>) <span class="op">&gt;&gt;</span> <span class="ident">PAGE_INDEX_SHIFT</span>;
         (<span class="ident">bit</span>::<span class="ident">pointer_width</span>() <span class="op">-</span> <span class="ident">slot_shifted</span>.<span class="ident">leading_zeros</span>()) <span class="kw">as</span> <span class="ident">usize</span>
     }
 
     <span class="doccomment">/// Returns the slot index</span>
-    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">slot</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">slot</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">usize</span> {
         <span class="ident">SLOT</span>.<span class="ident">unpack</span>(<span class="self">self</span>.<span class="number">0</span>)
     }
 }

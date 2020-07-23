@@ -542,7 +542,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">Rhs</span>, <span class="ident">Kind</span><span class="op">&gt;</span>, <span class="ident">On</span><span class="op">&gt;</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">join</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Rhs</span>, <span class="ident">kind</span>: <span class="ident">Kind</span>, <span class="ident">on</span>: <span class="ident">On</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">join</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Rhs</span>, <span class="ident">kind</span>: <span class="ident">Kind</span>, <span class="ident">on</span>: <span class="ident">On</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
             <span class="ident">Join</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">from</span>, <span class="ident">rhs</span>, <span class="ident">kind</span>).<span class="ident">on</span>(<span class="ident">on</span>),
@@ -565,7 +565,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">SelectClause</span><span class="op">&lt;</span><span class="ident">Selection</span><span class="op">&gt;</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">select</span>(<span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">select</span>(<span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="ident">SelectClause</span>(<span class="ident">selection</span>),
             <span class="self">self</span>.<span class="ident">from</span>,
@@ -586,7 +586,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">DistinctClause</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">distinct</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">distinct</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
             <span class="self">self</span>.<span class="ident">from</span>,
@@ -608,7 +608,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>::<span class="ident">Output</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">filter</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">filter</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
             <span class="self">self</span>.<span class="ident">from</span>,
@@ -630,7 +630,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>::<span class="ident">Output</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">or_filter</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">or_filter</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
             <span class="self">self</span>.<span class="ident">from</span>,
@@ -652,11 +652,11 @@
 <span class="kw">where</span>
     <span class="ident">F</span>: <span class="ident">Table</span>,
     <span class="ident">F</span>::<span class="ident">PrimaryKey</span>: <span class="ident">EqAll</span><span class="op">&lt;</span><span class="ident">PK</span><span class="op">&gt;</span>,
-    <span class="self">Self</span>: <span class="ident">FilterDsl</span><span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">F</span>::<span class="ident">PrimaryKey</span> <span class="kw">as</span> <span class="ident">EqAll</span><span class="op">&lt;</span><span class="ident">PK</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Output</span><span class="op">&gt;</span>,
+    <span class="self">Self</span>: <span class="ident">FilterDsl</span><span class="op">&lt;&lt;</span><span class="ident">F</span>::<span class="ident">PrimaryKey</span> <span class="kw">as</span> <span class="ident">EqAll</span><span class="op">&lt;</span><span class="ident">PK</span><span class="op">&gt;&gt;</span>::<span class="ident">Output</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Filter</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="ident">F</span>::<span class="ident">PrimaryKey</span> <span class="kw">as</span> <span class="ident">EqAll</span><span class="op">&lt;</span><span class="ident">PK</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Output</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Filter</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="op">&lt;</span><span class="ident">F</span>::<span class="ident">PrimaryKey</span> <span class="kw">as</span> <span class="ident">EqAll</span><span class="op">&lt;</span><span class="ident">PK</span><span class="op">&gt;&gt;</span>::<span class="ident">Output</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">find</span>(<span class="self">self</span>, <span class="ident">id</span>: <span class="ident">PK</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">find</span>(<span class="self">self</span>, <span class="ident">id</span>: <span class="ident">PK</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="kw">let</span> <span class="ident">primary_key</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">from</span>.<span class="ident">primary_key</span>();
         <span class="ident">FilterDsl</span>::<span class="ident">filter</span>(<span class="self">self</span>, <span class="ident">primary_key</span>.<span class="ident">eq_all</span>(<span class="ident">id</span>))
     }
@@ -671,7 +671,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">OrderClause</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">order</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">order</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="kw">let</span> <span class="ident">order</span> <span class="op">=</span> <span class="ident">OrderClause</span>(<span class="ident">expr</span>);
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
@@ -693,7 +693,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">OrderClause</span><span class="op">&lt;</span>(<span class="ident">O</span>, <span class="ident">Expr</span>)<span class="op">&gt;</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">then_order_by</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">then_order_by</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
             <span class="self">self</span>.<span class="ident">from</span>,
@@ -715,7 +715,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">dsl</span>::<span class="ident">Order</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Expr</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">then_order_by</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">then_order_by</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">self</span>.<span class="ident">order_by</span>(<span class="ident">expr</span>)
     }
 }
@@ -732,7 +732,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LimitOffsetClause</span><span class="op">&lt;</span><span class="ident">LimitClause</span><span class="op">&lt;</span><span class="ident">Limit</span><span class="op">&gt;</span>, <span class="ident">Of</span><span class="op">&gt;</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">limit</span>(<span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">limit</span>(<span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">i64</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="kw">let</span> <span class="ident">limit_clause</span> <span class="op">=</span> <span class="ident">LimitClause</span>(<span class="ident">limit</span>.<span class="ident">into_sql</span>::<span class="op">&lt;</span><span class="ident">BigInt</span><span class="op">&gt;</span>());
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
@@ -757,12 +757,12 @@
     <span class="kw">for</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LimitOffsetClause</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">Of</span><span class="op">&gt;</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="self">Self</span>: <span class="ident">SelectQuery</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span><span class="op">&gt;</span>,
-    <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LimitOffsetClause</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">OffsetClause</span><span class="op">&lt;</span><span class="ident">Offset</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>:
+    <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LimitOffsetClause</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">OffsetClause</span><span class="op">&lt;</span><span class="ident">Offset</span><span class="op">&gt;&gt;</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>:
         <span class="ident">SelectQuery</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LimitOffsetClause</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">OffsetClause</span><span class="op">&lt;</span><span class="ident">Offset</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LimitOffsetClause</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">OffsetClause</span><span class="op">&lt;</span><span class="ident">Offset</span><span class="op">&gt;&gt;</span>, <span class="ident">G</span>, <span class="ident">LC</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">offset</span>(<span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">offset</span>(<span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">i64</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="kw">let</span> <span class="ident">offset_clause</span> <span class="op">=</span> <span class="ident">OffsetClause</span>(<span class="ident">offset</span>.<span class="ident">into_sql</span>::<span class="op">&lt;</span><span class="ident">BigInt</span><span class="op">&gt;</span>());
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
@@ -782,12 +782,12 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">Expr</span><span class="op">&gt;</span> <span class="ident">GroupByDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">GroupByClause</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>: <span class="ident">SelectQuery</span>,
+    <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">GroupByClause</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;&gt;</span>: <span class="ident">SelectQuery</span>,
     <span class="ident">Expr</span>: <span class="ident">Expression</span>,
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">GroupByClause</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">GroupByClause</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">group_by</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">group_by</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="kw">let</span> <span class="ident">group_by</span> <span class="op">=</span> <span class="ident">GroupByClause</span>(<span class="ident">expr</span>);
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
@@ -816,7 +816,7 @@
         <span class="ident">LockingClause</span><span class="op">&lt;</span><span class="ident">Lock</span>, <span class="ident">NoModifier</span><span class="op">&gt;</span>,
     <span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">with_lock</span>(<span class="self">self</span>, <span class="ident">lock</span>: <span class="ident">Lock</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">with_lock</span>(<span class="self">self</span>, <span class="ident">lock</span>: <span class="ident">Lock</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
             <span class="self">self</span>.<span class="ident">from</span>,
@@ -831,11 +831,11 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LC</span>, <span class="ident">LM</span>, <span class="ident">Modifier</span><span class="op">&gt;</span> <span class="ident">ModifyLockDsl</span><span class="op">&lt;</span><span class="ident">Modifier</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LockingClause</span><span class="op">&lt;</span><span class="ident">LC</span>, <span class="ident">LM</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LockingClause</span><span class="op">&lt;</span><span class="ident">LC</span>, <span class="ident">LM</span><span class="op">&gt;&gt;</span>
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LockingClause</span><span class="op">&lt;</span><span class="ident">LC</span>, <span class="ident">Modifier</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span>, <span class="ident">LockingClause</span><span class="op">&lt;</span><span class="ident">LC</span>, <span class="ident">Modifier</span><span class="op">&gt;&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">modify_lock</span>(<span class="self">self</span>, <span class="ident">modifier</span>: <span class="ident">Modifier</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">modify_lock</span>(<span class="self">self</span>, <span class="ident">modifier</span>: <span class="ident">Modifier</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="self">self</span>.<span class="ident">select</span>,
             <span class="self">self</span>.<span class="ident">from</span>,
@@ -856,14 +856,14 @@
     <span class="ident">DB</span>: <span class="ident">Backend</span>,
     <span class="ident">S</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
     <span class="ident">D</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
-    <span class="ident">W</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">LOf</span>: <span class="ident">IntoBoxedClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span>, <span class="ident">BoxedClause</span> <span class="op">=</span> <span class="ident">BoxedLimitOffsetClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">W</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">LOf</span>: <span class="ident">IntoBoxedClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span>, <span class="ident">BoxedClause</span> <span class="op">=</span> <span class="ident">BoxedLimitOffsetClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;&gt;</span>,
     <span class="ident">G</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">BoxedSelectStatement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">S</span>::<span class="ident">SqlType</span>, <span class="ident">F</span>, <span class="ident">DB</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">internal_into_boxed</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">internal_into_boxed</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">BoxedSelectStatement</span>::<span class="ident">new</span>(
             <span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">select</span>.<span class="number">0</span>),
             <span class="self">self</span>.<span class="ident">from</span>,
@@ -884,13 +884,13 @@
     <span class="ident">F</span>: <span class="ident">QuerySource</span>,
     <span class="ident">F</span>::<span class="ident">DefaultSelection</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
     <span class="ident">D</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
-    <span class="ident">W</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">LOf</span>: <span class="ident">IntoBoxedClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span>, <span class="ident">BoxedClause</span> <span class="op">=</span> <span class="ident">BoxedLimitOffsetClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">W</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">O</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">LOf</span>: <span class="ident">IntoBoxedClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span>, <span class="ident">BoxedClause</span> <span class="op">=</span> <span class="ident">BoxedLimitOffsetClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;&gt;</span>,
     <span class="ident">G</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">BoxedSelectStatement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="op">&lt;</span><span class="ident">F</span>::<span class="ident">DefaultSelection</span> <span class="kw">as</span> <span class="ident">Expression</span><span class="op">&gt;</span>::<span class="ident">SqlType</span>, <span class="ident">F</span>, <span class="ident">DB</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">internal_into_boxed</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">internal_into_boxed</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">BoxedSelectStatement</span>::<span class="ident">new</span>(
             <span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">from</span>.<span class="ident">default_selection</span>()),
             <span class="self">self</span>.<span class="ident">from</span>,
@@ -909,7 +909,7 @@
 {
     <span class="kw">type</span> <span class="ident">Table</span> <span class="op">=</span> <span class="ident">F</span>::<span class="ident">Table</span>;
 
-    <span class="kw">fn</span> <span class="ident">table</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Table</span> {
+    <span class="kw">fn</span> <span class="ident">table</span>() <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Table</span> {
         <span class="ident">F</span>::<span class="ident">table</span>()
     }
 }
@@ -921,7 +921,7 @@
 {
     <span class="kw">type</span> <span class="ident">WhereClause</span> <span class="op">=</span> <span class="ident">W</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_update_target</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UpdateTarget</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Table</span>, <span class="self">Self</span>::<span class="ident">WhereClause</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_update_target</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">UpdateTarget</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Table</span>, <span class="self">Self</span>::<span class="ident">WhereClause</span><span class="op">&gt;</span> {
         <span class="ident">UpdateTarget</span> {
             <span class="ident">table</span>: <span class="self">Self</span>::<span class="ident">table</span>(),
             <span class="ident">where_clause</span>: <span class="self">self</span>.<span class="ident">where_clause</span>,
@@ -939,7 +939,7 @@
     <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">F</span>::<span class="ident">FromClause</span>;
     <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="ident">F</span>::<span class="ident">OnClause</span>;
 
-    <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">Rhs</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
+    <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">Rhs</span>) <span class="op">-&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
         <span class="ident">F</span>::<span class="ident">join_target</span>(<span class="ident">rhs</span>)
     }
 }
@@ -958,7 +958,7 @@
 {
     <span class="kw">type</span> <span class="ident">Values</span> <span class="op">=</span> <span class="ident">InsertFromSelect</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Tab</span>::<span class="ident">AllColumns</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Values</span> {
+    <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Values</span> {
         <span class="ident">InsertFromSelect</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 }
@@ -971,7 +971,7 @@
 {
     <span class="kw">type</span> <span class="ident">Values</span> <span class="op">=</span> <span class="ident">InsertFromSelect</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Tab</span>::<span class="ident">AllColumns</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Values</span> {
+    <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Values</span> {
         <span class="ident">InsertFromSelect</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 }
@@ -979,9 +979,9 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="ident">SelectNullableDsl</span>
     <span class="kw">for</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">SelectClause</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span><span class="op">&gt;</span>
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">SelectClause</span><span class="op">&lt;</span><span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">SelectClause</span><span class="op">&lt;</span><span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;&gt;</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">nullable</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">nullable</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="ident">SelectClause</span>(<span class="ident">Nullable</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">select</span>.<span class="number">0</span>)),
             <span class="self">self</span>.<span class="ident">from</span>,
@@ -1000,9 +1000,9 @@
 <span class="kw">where</span>
     <span class="ident">F</span>: <span class="ident">QuerySource</span>,
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">SelectClause</span><span class="op">&lt;</span><span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">F</span>::<span class="ident">DefaultSelection</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">SelectClause</span><span class="op">&lt;</span><span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">F</span>::<span class="ident">DefaultSelection</span><span class="op">&gt;&gt;</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">LOf</span>, <span class="ident">G</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">nullable</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">nullable</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">SelectStatement</span>::<span class="ident">new</span>(
             <span class="ident">SelectClause</span>(<span class="ident">Nullable</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">from</span>.<span class="ident">default_selection</span>())),
             <span class="self">self</span>.<span class="ident">from</span>,

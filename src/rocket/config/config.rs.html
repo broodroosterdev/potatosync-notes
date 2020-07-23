@@ -1011,13 +1011,13 @@
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">config_from_raw</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">value</span>:<span class="ident">expr</span>,
-        $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">key</span>:<span class="ident">ident</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">set</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">map</span>:<span class="ident">expr</span>),)<span class="op">+</span> <span class="op">|</span> <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> (
+        $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">key</span>:<span class="ident">ident</span> <span class="op">=&gt;</span> (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">set</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">map</span>:<span class="ident">expr</span>),)<span class="op">+</span> <span class="op">|</span> <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> (
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {
-            $(<span class="macro">stringify</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">key</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            $(<span class="macro">stringify</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">key</span>) <span class="op">=&gt;</span> {
                 <span class="kw">super</span>::<span class="ident">custom_values</span>::<span class="macro-nonterminal">$</span><span class="kw">type</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">value</span>)
                     .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">parsed</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">map</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">config</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">set</span>(<span class="ident">parsed</span>)))
             })<span class="op">+</span>
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>
         }
     )
 }
@@ -1038,7 +1038,7 @@
     <span class="doccomment">///     .workers(12)</span>
     <span class="doccomment">///     .unwrap();</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span>(<span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ConfigBuilder</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span>(<span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-&gt;</span> <span class="ident">ConfigBuilder</span> {
         <span class="ident">ConfigBuilder</span>::<span class="ident">new</span>(<span class="ident">env</span>)
     }
 
@@ -1053,7 +1053,7 @@
     <span class="doccomment">/// let mut my_config = Config::new(Environment::Production);</span>
     <span class="doccomment">/// my_config.set_port(1001);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Config</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-&gt;</span> <span class="ident">Config</span> {
         <span class="ident">Config</span>::<span class="ident">default</span>(<span class="ident">env</span>)
     }
 
@@ -1080,7 +1080,7 @@
     <span class="doccomment">/// let mut my_config = Config::active().unwrap();</span>
     <span class="doccomment">/// my_config.set_port(1001);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">active</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Config</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">active</span>() <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Config</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">Config</span>::<span class="ident">new</span>(<span class="ident">Environment</span>::<span class="ident">active</span>()<span class="question-mark">?</span>))
     }
 
@@ -1095,7 +1095,7 @@
     <span class="doccomment">/// let mut my_config = Config::development();</span>
     <span class="doccomment">/// my_config.set_port(1001);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">development</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Config</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">development</span>() <span class="op">-&gt;</span> <span class="ident">Config</span> {
         <span class="ident">Config</span>::<span class="ident">new</span>(<span class="ident">Environment</span>::<span class="ident">Development</span>)
     }
 
@@ -1110,7 +1110,7 @@
     <span class="doccomment">/// let mut my_config = Config::staging();</span>
     <span class="doccomment">/// my_config.set_port(1001);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">staging</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Config</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">staging</span>() <span class="op">-&gt;</span> <span class="ident">Config</span> {
         <span class="ident">Config</span>::<span class="ident">new</span>(<span class="ident">Environment</span>::<span class="ident">Staging</span>)
     }
 
@@ -1125,7 +1125,7 @@
     <span class="doccomment">/// let mut my_config = Config::production();</span>
     <span class="doccomment">/// my_config.set_port(1001);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">production</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Config</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">production</span>() <span class="op">-&gt;</span> <span class="ident">Config</span> {
         <span class="ident">Config</span>::<span class="ident">new</span>(<span class="ident">Environment</span>::<span class="ident">Production</span>)
     }
 
@@ -1139,7 +1139,7 @@
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if randomness cannot be retrieved from the OS.</span>
-    <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">default_from</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(<span class="ident">env</span>: <span class="ident">Environment</span>, <span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Config</span><span class="op">&gt;</span>
+    <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">default_from</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(<span class="ident">env</span>: <span class="ident">Environment</span>, <span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Config</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">config</span> <span class="op">=</span> <span class="ident">Config</span>::<span class="ident">default</span>(<span class="ident">env</span>);
@@ -1161,7 +1161,7 @@
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if randomness cannot be retrieved from the OS.</span>
-    <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">default</span>(<span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Config</span> {
+    <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">default</span>(<span class="ident">env</span>: <span class="ident">Environment</span>) <span class="op">-&gt;</span> <span class="ident">Config</span> {
         <span class="comment">// Note: This may truncate if num_cpus::get() / 2 &gt; u16::max. That&#39;s okay.</span>
         <span class="kw">let</span> <span class="ident">default_workers</span> <span class="op">=</span> (<span class="ident">num_cpus</span>::<span class="ident">get</span>() <span class="op">*</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">u16</span>;
 
@@ -1169,7 +1169,7 @@
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">SecretKey</span>::<span class="ident">Generated</span>(<span class="ident">Key</span>::<span class="ident">generate</span>());
 
         <span class="kw">match</span> <span class="ident">env</span> {
-            <span class="ident">Development</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Development</span> <span class="op">=&gt;</span> {
                 <span class="ident">Config</span> {
                     <span class="ident">environment</span>: <span class="ident">Development</span>,
                     <span class="ident">address</span>: <span class="string">&quot;localhost&quot;</span>.<span class="ident">to_string</span>(),
@@ -1185,7 +1185,7 @@
                     <span class="ident">root_path</span>: <span class="prelude-val">None</span>,
                 }
             }
-            <span class="ident">Staging</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Staging</span> <span class="op">=&gt;</span> {
                 <span class="ident">Config</span> {
                     <span class="ident">environment</span>: <span class="ident">Staging</span>,
                     <span class="ident">address</span>: <span class="string">&quot;0.0.0.0&quot;</span>.<span class="ident">to_string</span>(),
@@ -1201,7 +1201,7 @@
                     <span class="ident">root_path</span>: <span class="prelude-val">None</span>,
                 }
             }
-            <span class="ident">Production</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Production</span> <span class="op">=&gt;</span> {
                 <span class="ident">Config</span> {
                     <span class="ident">environment</span>: <span class="ident">Production</span>,
                     <span class="ident">address</span>: <span class="string">&quot;0.0.0.0&quot;</span>.<span class="ident">to_string</span>(),
@@ -1226,7 +1226,7 @@
     <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">bad_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>,
                            <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
                            <span class="ident">actual</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>,
-                           <span class="ident">expect</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ConfigError</span> {
+                           <span class="ident">expect</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">ConfigError</span> {
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}.{}&quot;</span>, <span class="self">self</span>.<span class="ident">environment</span>, <span class="ident">name</span>);
         <span class="ident">ConfigError</span>::<span class="ident">BadType</span>(<span class="ident">id</span>, <span class="ident">expect</span>, <span class="ident">actual</span>, <span class="self">self</span>.<span class="ident">config_file_path</span>.<span class="ident">clone</span>())
     }
@@ -1247,18 +1247,18 @@
     <span class="doccomment">///   * **log**: String</span>
     <span class="doccomment">///   * **secret_key**: String (256-bit base64)</span>
     <span class="doccomment">///   * **tls**: Table (`certs` (path as String), `key` (path as String))</span>
-    <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">set_raw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">val</span>: <span class="kw-2">&amp;</span><span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">set_raw</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">val</span>: <span class="kw-2">&amp;</span><span class="ident">Value</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">id</span>, <span class="ident">ok</span>) <span class="op">=</span> (<span class="op">|</span><span class="ident">val</span><span class="op">|</span> <span class="ident">val</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="prelude-val">Ok</span>(()));
         <span class="macro">config_from_raw</span><span class="macro">!</span>(<span class="self">self</span>, <span class="ident">name</span>, <span class="ident">val</span>,
-            <span class="ident">address</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">str</span>, <span class="ident">set_address</span>, <span class="ident">id</span>),
-            <span class="ident">port</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">u16</span>, <span class="ident">set_port</span>, <span class="ident">ok</span>),
-            <span class="ident">workers</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">u16</span>, <span class="ident">set_workers</span>, <span class="ident">ok</span>),
-            <span class="ident">keep_alive</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">u32</span>, <span class="ident">set_keep_alive</span>, <span class="ident">ok</span>),
-            <span class="ident">log</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">log_level</span>, <span class="ident">set_log_level</span>, <span class="ident">ok</span>),
-            <span class="ident">secret_key</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">str</span>, <span class="ident">set_secret_key</span>, <span class="ident">id</span>),
-            <span class="ident">tls</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">tls_config</span>, <span class="ident">set_raw_tls</span>, <span class="ident">id</span>),
-            <span class="ident">limits</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">limits</span>, <span class="ident">set_limits</span>, <span class="ident">ok</span>),
-            <span class="op">|</span> <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">address</span> <span class="op">=&gt;</span> (<span class="ident">str</span>, <span class="ident">set_address</span>, <span class="ident">id</span>),
+            <span class="ident">port</span> <span class="op">=&gt;</span> (<span class="ident">u16</span>, <span class="ident">set_port</span>, <span class="ident">ok</span>),
+            <span class="ident">workers</span> <span class="op">=&gt;</span> (<span class="ident">u16</span>, <span class="ident">set_workers</span>, <span class="ident">ok</span>),
+            <span class="ident">keep_alive</span> <span class="op">=&gt;</span> (<span class="ident">u32</span>, <span class="ident">set_keep_alive</span>, <span class="ident">ok</span>),
+            <span class="ident">log</span> <span class="op">=&gt;</span> (<span class="ident">log_level</span>, <span class="ident">set_log_level</span>, <span class="ident">ok</span>),
+            <span class="ident">secret_key</span> <span class="op">=&gt;</span> (<span class="ident">str</span>, <span class="ident">set_secret_key</span>, <span class="ident">id</span>),
+            <span class="ident">tls</span> <span class="op">=&gt;</span> (<span class="ident">tls_config</span>, <span class="ident">set_raw_tls</span>, <span class="ident">id</span>),
+            <span class="ident">limits</span> <span class="op">=&gt;</span> (<span class="ident">limits</span>, <span class="ident">set_limits</span>, <span class="ident">ok</span>),
+            <span class="op">|</span> <span class="kw">_</span> <span class="op">=&gt;</span> {
                 <span class="self">self</span>.<span class="ident">extras</span>.<span class="ident">insert</span>(<span class="ident">name</span>.<span class="ident">into</span>(), <span class="ident">val</span>.<span class="ident">clone</span>());
                 <span class="prelude-val">Ok</span>(())
             }
@@ -1279,7 +1279,7 @@
     <span class="doccomment">/// # #[cfg(not(windows))]</span>
     <span class="doccomment">/// assert_eq!(config.root().unwrap(), Path::new(&quot;/var/my_app&quot;));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_root</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_root</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) {
         <span class="self">self</span>.<span class="ident">root_path</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>.<span class="ident">as_ref</span>().<span class="ident">into</span>());
     }
 
@@ -1300,7 +1300,7 @@
     <span class="doccomment">/// assert!(config.set_address(&quot;::&quot;).is_ok());</span>
     <span class="doccomment">/// assert!(config.set_address(&quot;?&quot;).is_err());</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_address</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_address</span><span class="op">&lt;</span><span class="ident">A</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">address</span>: <span class="ident">A</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">address</span> <span class="op">=</span> <span class="ident">address</span>.<span class="ident">into</span>();
         <span class="kw">if</span> (<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">address</span>, <span class="number">0u16</span>).<span class="ident">to_socket_addrs</span>().<span class="ident">is_err</span>() {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="self">self</span>.<span class="ident">bad_type</span>(<span class="string">&quot;address&quot;</span>, <span class="string">&quot;string&quot;</span>, <span class="string">&quot;a valid hostname or IP&quot;</span>));
@@ -1362,7 +1362,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_keep_alive</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">timeout</span>: <span class="ident">u32</span>) {
-        <span class="kw">if</span> <span class="ident">timeout</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="ident">timeout</span> <span class="op">==</span> <span class="number">0</span> {
             <span class="self">self</span>.<span class="ident">keep_alive</span> <span class="op">=</span> <span class="prelude-val">None</span>;
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">keep_alive</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">timeout</span>);
@@ -1387,18 +1387,18 @@
     <span class="doccomment">/// assert!(config.set_secret_key(key).is_ok());</span>
     <span class="doccomment">/// assert!(config.set_secret_key(&quot;hello? anyone there?&quot;).is_err());</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_secret_key</span><span class="op">&lt;</span><span class="ident">K</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_secret_key</span><span class="op">&lt;</span><span class="ident">K</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">key</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="string">&quot;secret_key&quot;</span>, <span class="string">&quot;string&quot;</span>,
                                   <span class="string">&quot;a 256-bit base64 encoded string&quot;</span>);
 
-        <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">len</span>() <span class="op">!</span><span class="op">=</span> <span class="number">44</span> {
+        <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">len</span>() <span class="op">!=</span> <span class="number">44</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>);
         }
 
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">base64</span>::<span class="ident">decode</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">bytes</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bytes</span>,
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>)
+            <span class="prelude-val">Ok</span>(<span class="ident">bytes</span>) <span class="op">=&gt;</span> <span class="ident">bytes</span>,
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">error</span>)
         };
 
         <span class="self">self</span>.<span class="ident">secret_key</span> <span class="op">=</span> <span class="ident">SecretKey</span>::<span class="ident">Provided</span>(<span class="ident">Key</span>::<span class="ident">from_master</span>(<span class="kw-2">&amp;</span><span class="ident">bytes</span>));
@@ -1462,7 +1462,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tls&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_tls</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">certs_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_tls</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">certs_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">key_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">http</span>::<span class="ident">tls</span>::<span class="ident">util</span>::{<span class="self">self</span>, <span class="ident">Error</span>};
 
         <span class="kw">let</span> <span class="ident">pem_err</span> <span class="op">=</span> <span class="string">&quot;malformed PEM file&quot;</span>;
@@ -1470,15 +1470,15 @@
         <span class="comment">// Load the certificates.</span>
         <span class="kw">let</span> <span class="ident">certs</span> <span class="op">=</span> <span class="ident">util</span>::<span class="ident">load_certs</span>(<span class="self">self</span>.<span class="ident">root_relative</span>(<span class="ident">certs_path</span>))
             .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">e</span> {
-                <span class="ident">Error</span>::<span class="ident">Io</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ConfigError</span>::<span class="ident">Io</span>(<span class="ident">e</span>, <span class="string">&quot;tls.certs&quot;</span>),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="string">&quot;tls&quot;</span>, <span class="ident">pem_err</span>, <span class="string">&quot;a valid certificates file&quot;</span>)
+                <span class="ident">Error</span>::<span class="ident">Io</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="ident">ConfigError</span>::<span class="ident">Io</span>(<span class="ident">e</span>, <span class="string">&quot;tls.certs&quot;</span>),
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="string">&quot;tls&quot;</span>, <span class="ident">pem_err</span>, <span class="string">&quot;a valid certificates file&quot;</span>)
             })<span class="question-mark">?</span>;
 
         <span class="comment">// And now the private key.</span>
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">util</span>::<span class="ident">load_private_key</span>(<span class="self">self</span>.<span class="ident">root_relative</span>(<span class="ident">key_path</span>))
             .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">e</span> {
-                <span class="ident">Error</span>::<span class="ident">Io</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ConfigError</span>::<span class="ident">Io</span>(<span class="ident">e</span>, <span class="string">&quot;tls.key&quot;</span>),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="string">&quot;tls&quot;</span>, <span class="ident">pem_err</span>, <span class="string">&quot;a valid private key file&quot;</span>)
+                <span class="ident">Error</span>::<span class="ident">Io</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="ident">ConfigError</span>::<span class="ident">Io</span>(<span class="ident">e</span>, <span class="string">&quot;tls.key&quot;</span>),
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="string">&quot;tls&quot;</span>, <span class="ident">pem_err</span>, <span class="string">&quot;a valid private key file&quot;</span>)
             })<span class="question-mark">?</span>;
 
         <span class="self">self</span>.<span class="ident">tls</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">TlsConfig</span> { <span class="ident">certs</span>, <span class="ident">key</span> });
@@ -1487,13 +1487,13 @@
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tls&quot;</span>))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_tls</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_tls</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">tls</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">TlsConfig</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">set_raw_tls</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_paths</span>: (<span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">set_raw_tls</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">_paths</span>: (<span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>)) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">test</span>))]</span>
         { <span class="self">self</span>.<span class="ident">set_tls</span>(<span class="ident">_paths</span>.<span class="number">0</span>, <span class="ident">_paths</span>.<span class="number">1</span>) }
 
@@ -1546,14 +1546,14 @@
     <span class="doccomment">/// assert_eq!(config.extras().count(), 2);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extras</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span><span class="op">=</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Value</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extras</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span><span class="op">=</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Value</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">extras</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="ident">v</span>)<span class="op">|</span> (<span class="ident">k</span>.<span class="ident">as_str</span>(), <span class="ident">v</span>))
     }
 
     <span class="doccomment">/// Returns `true` if TLS is enabled.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Always returns `false` if the `tls` compilation feature is not enabled.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tls_enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tls_enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">if</span> <span class="macro">cfg</span><span class="macro">!</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;tls&quot;</span>) {
             <span class="self">self</span>.<span class="ident">tls</span>.<span class="ident">is_some</span>()
         } <span class="kw">else</span> {
@@ -1563,7 +1563,7 @@
 
     <span class="doccomment">/// Retrieves the secret key from `self`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">secret_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Key</span> {
+    <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">secret_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Key</span> {
         <span class="self">self</span>.<span class="ident">secret_key</span>.<span class="ident">inner</span>()
     }
 
@@ -1585,8 +1585,8 @@
     <span class="doccomment">/// assert_eq!(config.get_extra(&quot;name&quot;), Ok(&amp;Value::String(&quot;value&quot;.into())));</span>
     <span class="doccomment">/// assert!(config.get_extra(&quot;other&quot;).is_err());</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_extra</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Value</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">extras</span>.<span class="ident">get</span>(<span class="ident">name</span>).<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">ConfigError</span>::<span class="ident">Missing</span>(<span class="ident">name</span>.<span class="ident">into</span>()))
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_extra</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Value</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">extras</span>.<span class="ident">get</span>(<span class="ident">name</span>).<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="ident">ConfigError</span>::<span class="ident">Missing</span>(<span class="ident">name</span>.<span class="ident">into</span>()))
     }
 
     <span class="doccomment">/// Attempts to retrieve the extra named `name` as a borrowed string.</span>
@@ -1608,9 +1608,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(config.get_str(&quot;my_extra&quot;), Ok(&quot;extra_value&quot;));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_str</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_str</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_extra</span>(<span class="ident">name</span>)<span class="question-mark">?</span>;
-        <span class="ident">val</span>.<span class="ident">as_str</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;a string&quot;</span>))
+        <span class="ident">val</span>.<span class="ident">as_str</span>().<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;a string&quot;</span>))
     }
 
     <span class="doccomment">/// Attempts to retrieve the extra named `name` as an owned string.</span>
@@ -1632,7 +1632,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(config.get_string(&quot;my_extra&quot;), Ok(&quot;extra_value&quot;.to_string()));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_string</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">get_str</span>(<span class="ident">name</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string</span>())
     }
 
@@ -1655,9 +1655,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(config.get_int(&quot;my_extra&quot;), Ok(1025));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_int</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_int</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_extra</span>(<span class="ident">name</span>)<span class="question-mark">?</span>;
-        <span class="ident">val</span>.<span class="ident">as_integer</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;an integer&quot;</span>))
+        <span class="ident">val</span>.<span class="ident">as_integer</span>().<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;an integer&quot;</span>))
     }
 
     <span class="doccomment">/// Attempts to retrieve the extra named `name` as a boolean.</span>
@@ -1679,9 +1679,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(config.get_bool(&quot;my_extra&quot;), Ok(true));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bool</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_bool</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_extra</span>(<span class="ident">name</span>)<span class="question-mark">?</span>;
-        <span class="ident">val</span>.<span class="ident">as_bool</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;a boolean&quot;</span>))
+        <span class="ident">val</span>.<span class="ident">as_bool</span>().<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;a boolean&quot;</span>))
     }
 
     <span class="doccomment">/// Attempts to retrieve the extra named `name` as a float.</span>
@@ -1703,9 +1703,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(config.get_float(&quot;pi&quot;), Ok(3.14159));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_float</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_float</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_extra</span>(<span class="ident">name</span>)<span class="question-mark">?</span>;
-        <span class="ident">val</span>.<span class="ident">as_float</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;a float&quot;</span>))
+        <span class="ident">val</span>.<span class="ident">as_float</span>().<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;a float&quot;</span>))
     }
 
     <span class="doccomment">/// Attempts to retrieve the extra named `name` as a slice of an array.</span>
@@ -1727,9 +1727,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert!(config.get_slice(&quot;numbers&quot;).is_ok());</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Array</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Array</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_extra</span>(<span class="ident">name</span>)<span class="question-mark">?</span>;
-        <span class="ident">val</span>.<span class="ident">as_array</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;an array&quot;</span>))
+        <span class="ident">val</span>.<span class="ident">as_array</span>().<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;an array&quot;</span>))
     }
 
     <span class="doccomment">/// Attempts to retrieve the extra named `name` as a table.</span>
@@ -1755,9 +1755,9 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert!(config.get_table(&quot;my_table&quot;).is_ok());</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_table</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Table</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_table</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Table</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_extra</span>(<span class="ident">name</span>)<span class="question-mark">?</span>;
-        <span class="ident">val</span>.<span class="ident">as_table</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;a table&quot;</span>))
+        <span class="ident">val</span>.<span class="ident">as_table</span>().<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;a table&quot;</span>))
     }
 
     <span class="doccomment">/// Attempts to retrieve the extra named `name` as a datetime value.</span>
@@ -1781,10 +1781,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// assert_eq!(config.get_datetime(&quot;my_date&quot;), Ok(&amp;date));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_datetime</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Datetime</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_datetime</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Datetime</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_extra</span>(<span class="ident">name</span>)<span class="question-mark">?</span>;
         <span class="ident">val</span>.<span class="ident">as_datetime</span>()
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;a datetime&quot;</span>))
+            .<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="self">self</span>.<span class="ident">bad_type</span>(<span class="ident">name</span>, <span class="ident">val</span>.<span class="ident">type_str</span>(), <span class="string">&quot;a datetime&quot;</span>))
     }
 
     <span class="doccomment">/// Returns the root path of the configuration, if one is known.</span>
@@ -1808,7 +1808,7 @@
     <span class="doccomment">/// config.set_root(&amp;cwd);</span>
     <span class="doccomment">/// assert_eq!(config.root().unwrap(), cwd);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">root</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">root</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">root_path</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>())
     }
 
@@ -1847,7 +1847,7 @@
     <span class="doccomment">/// # #[cfg(windows)]</span>
     <span class="doccomment">/// # assert_eq!(config.root_relative(&quot;C:\\abc&quot;), Path::new(&quot;C:\\abc&quot;));</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">root_relative</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">root_relative</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-&gt;</span> <span class="ident">PathBuf</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">as_ref</span>();
         <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">is_absolute</span>() {
             <span class="ident">path</span>.<span class="ident">into</span>()
@@ -1862,7 +1862,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Config</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Config&quot;</span>);
         <span class="ident">s</span>.<span class="ident">field</span>(<span class="string">&quot;environment&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">environment</span>);
         <span class="ident">s</span>.<span class="ident">field</span>(<span class="string">&quot;address&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">address</span>);
@@ -1881,14 +1881,14 @@
 
 <span class="doccomment">/// Doesn&#39;t consider the secret key or config path.</span>
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">Config</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">address</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">address</span>
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">port</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">port</span>
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">workers</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">workers</span>
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">log_level</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">log_level</span>
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">keep_alive</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">keep_alive</span>
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">environment</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">environment</span>
-            <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="self">self</span>.<span class="ident">extras</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">extras</span>
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">address</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">address</span>
+            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">port</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">port</span>
+            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">workers</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">workers</span>
+            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">log_level</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">log_level</span>
+            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">keep_alive</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">keep_alive</span>
+            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">environment</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">environment</span>
+            <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">extras</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">extras</span>
     }
 }
 </pre></div>

@@ -302,13 +302,13 @@
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">class_check_fn</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">variant</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> (
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">variant</span>:<span class="ident">ident</span>) <span class="op">=&gt;</span> (
         <span class="doccomment">/// Returns `true` if `self` is a `StatusClass` of</span>
         <span class="attribute">#[<span class="ident">doc</span><span class="op">=</span><span class="macro-nonterminal">$</span><span class="kw">type</span>]</span>
         <span class="doccomment">/// Returns `false` otherwise.</span>
         <span class="attribute">#[<span class="macro-nonterminal">inline</span>(<span class="ident">always</span>)]</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-            <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span><span class="op">=</span> <span class="ident">StatusClass</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">variant</span>
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+            <span class="kw-2">*</span><span class="self">self</span> <span class="op">==</span> <span class="ident">StatusClass</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">variant</span>
         }
     )
 }
@@ -373,7 +373,7 @@
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">ctrs</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code_str</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">reason</span>:<span class="ident">expr</span>),<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">code_str</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">=&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">reason</span>:<span class="ident">expr</span>),<span class="op">+</span>) <span class="op">=&gt;</span> {
         $(
             <span class="attribute">#[<span class="ident">doc</span><span class="op">=</span><span class="string">&quot;[`Status`] with code &lt;b&gt;&quot;</span>]</span>
             <span class="attribute">#[<span class="ident">doc</span><span class="op">=</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">code_str</span>]</span>
@@ -408,10 +408,10 @@
         <span class="doccomment">/// let not_found = Status::from_code(600);</span>
         <span class="doccomment">/// assert!(not_found.is_none());</span>
         <span class="doccomment">/// ```</span>
-        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_code</span>(<span class="ident">code</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_code</span>(<span class="ident">code</span>: <span class="ident">u16</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span> {
             <span class="kw">match</span> <span class="ident">code</span> {
-                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Status</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>),)<span class="op">+</span>
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>
+                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">code</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Status</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>),)<span class="op">+</span>
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>
             }
         }
     };
@@ -434,7 +434,7 @@
     <span class="doccomment">/// assert_eq!(custom.to_string(), &quot;299 Somewhat Successful&quot;.to_string());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">code</span>: <span class="ident">u16</span>, <span class="ident">reason</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">code</span>: <span class="ident">u16</span>, <span class="ident">reason</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">Status</span> {
         <span class="ident">Status</span> { <span class="ident">code</span>, <span class="ident">reason</span> }
     }
 
@@ -464,14 +464,14 @@
     <span class="doccomment">/// let custom = Status::new(600, &quot;Bizarre&quot;);</span>
     <span class="doccomment">/// assert_eq!(custom.class(), StatusClass::Unknown);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">class</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StatusClass</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">class</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">StatusClass</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">code</span> <span class="op">/</span> <span class="number">100</span> {
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">Informational</span>,
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">Success</span>,
-            <span class="number">3</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">Redirection</span>,
-            <span class="number">4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">ClientError</span>,
-            <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">ServerError</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">Unknown</span>
+            <span class="number">1</span> <span class="op">=&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">Informational</span>,
+            <span class="number">2</span> <span class="op">=&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">Success</span>,
+            <span class="number">3</span> <span class="op">=&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">Redirection</span>,
+            <span class="number">4</span> <span class="op">=&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">ClientError</span>,
+            <span class="number">5</span> <span class="op">=&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">ServerError</span>,
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="ident">StatusClass</span>::<span class="ident">Unknown</span>
         }
     }
 
@@ -480,80 +480,80 @@
     <span class="doccomment">/// Otherwise the reason phrase is set to &quot;&lt;unknown code&gt;&quot;.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">raw</span>(<span class="ident">code</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">raw</span>(<span class="ident">code</span>: <span class="ident">u16</span>) <span class="op">-&gt;</span> <span class="ident">Status</span> {
         <span class="kw">match</span> <span class="ident">Status</span>::<span class="ident">from_code</span>(<span class="ident">code</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">status</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">status</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">code</span>, <span class="string">&quot;&lt;unknown code&gt;&quot;</span>)
+            <span class="prelude-val">Some</span>(<span class="ident">status</span>) <span class="op">=&gt;</span> <span class="ident">status</span>,
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">Status</span>::<span class="ident">new</span>(<span class="ident">code</span>, <span class="string">&quot;&lt;unknown code&gt;&quot;</span>)
         }
     }
 
     <span class="macro">ctrs</span><span class="macro">!</span> {
-        <span class="number">100</span>, <span class="string">&quot;100&quot;</span>, <span class="ident">Continue</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Continue&quot;</span>,
-        <span class="number">101</span>, <span class="string">&quot;101&quot;</span>, <span class="ident">SwitchingProtocols</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Switching Protocols&quot;</span>,
-        <span class="number">102</span>, <span class="string">&quot;102&quot;</span>, <span class="ident">Processing</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Processing&quot;</span>,
-        <span class="number">200</span>, <span class="string">&quot;200&quot;</span>, <span class="prelude-val">Ok</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;OK&quot;</span>,
-        <span class="number">201</span>, <span class="string">&quot;201&quot;</span>, <span class="ident">Created</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Created&quot;</span>,
-        <span class="number">202</span>, <span class="string">&quot;202&quot;</span>, <span class="ident">Accepted</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Accepted&quot;</span>,
-        <span class="number">203</span>, <span class="string">&quot;203&quot;</span>, <span class="ident">NonAuthoritativeInformation</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Non-Authoritative Information&quot;</span>,
-        <span class="number">204</span>, <span class="string">&quot;204&quot;</span>, <span class="ident">NoContent</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;No Content&quot;</span>,
-        <span class="number">205</span>, <span class="string">&quot;205&quot;</span>, <span class="ident">ResetContent</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Reset Content&quot;</span>,
-        <span class="number">206</span>, <span class="string">&quot;206&quot;</span>, <span class="ident">PartialContent</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Partial Content&quot;</span>,
-        <span class="number">207</span>, <span class="string">&quot;207&quot;</span>, <span class="ident">MultiStatus</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Multi-Status&quot;</span>,
-        <span class="number">208</span>, <span class="string">&quot;208&quot;</span>, <span class="ident">AlreadyReported</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Already Reported&quot;</span>,
-        <span class="number">226</span>, <span class="string">&quot;226&quot;</span>, <span class="ident">ImUsed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;IM Used&quot;</span>,
-        <span class="number">300</span>, <span class="string">&quot;300&quot;</span>, <span class="ident">MultipleChoices</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Multiple Choices&quot;</span>,
-        <span class="number">301</span>, <span class="string">&quot;301&quot;</span>, <span class="ident">MovedPermanently</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Moved Permanently&quot;</span>,
-        <span class="number">302</span>, <span class="string">&quot;302&quot;</span>, <span class="ident">Found</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Found&quot;</span>,
-        <span class="number">303</span>, <span class="string">&quot;303&quot;</span>, <span class="ident">SeeOther</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;See Other&quot;</span>,
-        <span class="number">304</span>, <span class="string">&quot;304&quot;</span>, <span class="ident">NotModified</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Not Modified&quot;</span>,
-        <span class="number">305</span>, <span class="string">&quot;305&quot;</span>, <span class="ident">UseProxy</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Use Proxy&quot;</span>,
-        <span class="number">307</span>, <span class="string">&quot;307&quot;</span>, <span class="ident">TemporaryRedirect</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Temporary Redirect&quot;</span>,
-        <span class="number">308</span>, <span class="string">&quot;308&quot;</span>, <span class="ident">PermanentRedirect</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Permanent Redirect&quot;</span>,
-        <span class="number">400</span>, <span class="string">&quot;400&quot;</span>, <span class="ident">BadRequest</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Bad Request&quot;</span>,
-        <span class="number">401</span>, <span class="string">&quot;401&quot;</span>, <span class="ident">Unauthorized</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Unauthorized&quot;</span>,
-        <span class="number">402</span>, <span class="string">&quot;402&quot;</span>, <span class="ident">PaymentRequired</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Payment Required&quot;</span>,
-        <span class="number">403</span>, <span class="string">&quot;403&quot;</span>, <span class="ident">Forbidden</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Forbidden&quot;</span>,
-        <span class="number">404</span>, <span class="string">&quot;404&quot;</span>, <span class="ident">NotFound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Not Found&quot;</span>,
-        <span class="number">405</span>, <span class="string">&quot;405&quot;</span>, <span class="ident">MethodNotAllowed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Method Not Allowed&quot;</span>,
-        <span class="number">406</span>, <span class="string">&quot;406&quot;</span>, <span class="ident">NotAcceptable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Not Acceptable&quot;</span>,
-        <span class="number">407</span>, <span class="string">&quot;407&quot;</span>, <span class="ident">ProxyAuthenticationRequired</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Proxy Authentication Required&quot;</span>,
-        <span class="number">408</span>, <span class="string">&quot;408&quot;</span>, <span class="ident">RequestTimeout</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Request Timeout&quot;</span>,
-        <span class="number">409</span>, <span class="string">&quot;409&quot;</span>, <span class="ident">Conflict</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Conflict&quot;</span>,
-        <span class="number">410</span>, <span class="string">&quot;410&quot;</span>, <span class="ident">Gone</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Gone&quot;</span>,
-        <span class="number">411</span>, <span class="string">&quot;411&quot;</span>, <span class="ident">LengthRequired</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Length Required&quot;</span>,
-        <span class="number">412</span>, <span class="string">&quot;412&quot;</span>, <span class="ident">PreconditionFailed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Precondition Failed&quot;</span>,
-        <span class="number">413</span>, <span class="string">&quot;413&quot;</span>, <span class="ident">PayloadTooLarge</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Payload Too Large&quot;</span>,
-        <span class="number">414</span>, <span class="string">&quot;414&quot;</span>, <span class="ident">UriTooLong</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;URI Too Long&quot;</span>,
-        <span class="number">415</span>, <span class="string">&quot;415&quot;</span>, <span class="ident">UnsupportedMediaType</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Unsupported Media Type&quot;</span>,
-        <span class="number">416</span>, <span class="string">&quot;416&quot;</span>, <span class="ident">RangeNotSatisfiable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Range Not Satisfiable&quot;</span>,
-        <span class="number">417</span>, <span class="string">&quot;417&quot;</span>, <span class="ident">ExpectationFailed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Expectation Failed&quot;</span>,
-        <span class="number">418</span>, <span class="string">&quot;418&quot;</span>, <span class="ident">ImATeapot</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;I&#39;m a teapot&quot;</span>,
-        <span class="number">421</span>, <span class="string">&quot;421&quot;</span>, <span class="ident">MisdirectedRequest</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Misdirected Request&quot;</span>,
-        <span class="number">422</span>, <span class="string">&quot;422&quot;</span>, <span class="ident">UnprocessableEntity</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Unprocessable Entity&quot;</span>,
-        <span class="number">423</span>, <span class="string">&quot;423&quot;</span>, <span class="ident">Locked</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Locked&quot;</span>,
-        <span class="number">424</span>, <span class="string">&quot;424&quot;</span>, <span class="ident">FailedDependency</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Failed Dependency&quot;</span>,
-        <span class="number">426</span>, <span class="string">&quot;426&quot;</span>, <span class="ident">UpgradeRequired</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Upgrade Required&quot;</span>,
-        <span class="number">428</span>, <span class="string">&quot;428&quot;</span>, <span class="ident">PreconditionRequired</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Precondition Required&quot;</span>,
-        <span class="number">429</span>, <span class="string">&quot;429&quot;</span>, <span class="ident">TooManyRequests</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Too Many Requests&quot;</span>,
-        <span class="number">431</span>, <span class="string">&quot;431&quot;</span>, <span class="ident">RequestHeaderFieldsTooLarge</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Request Header Fields Too Large&quot;</span>,
-        <span class="number">451</span>, <span class="string">&quot;451&quot;</span>, <span class="ident">UnavailableForLegalReasons</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Unavailable For Legal Reasons&quot;</span>,
-        <span class="number">500</span>, <span class="string">&quot;500&quot;</span>, <span class="ident">InternalServerError</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Internal Server Error&quot;</span>,
-        <span class="number">501</span>, <span class="string">&quot;501&quot;</span>, <span class="ident">NotImplemented</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Not Implemented&quot;</span>,
-        <span class="number">502</span>, <span class="string">&quot;502&quot;</span>, <span class="ident">BadGateway</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Bad Gateway&quot;</span>,
-        <span class="number">503</span>, <span class="string">&quot;503&quot;</span>, <span class="ident">ServiceUnavailable</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Service Unavailable&quot;</span>,
-        <span class="number">504</span>, <span class="string">&quot;504&quot;</span>, <span class="ident">GatewayTimeout</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Gateway Timeout&quot;</span>,
-        <span class="number">505</span>, <span class="string">&quot;505&quot;</span>, <span class="ident">HttpVersionNotSupported</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;HTTP Version Not Supported&quot;</span>,
-        <span class="number">506</span>, <span class="string">&quot;506&quot;</span>, <span class="ident">VariantAlsoNegotiates</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Variant Also Negotiates&quot;</span>,
-        <span class="number">507</span>, <span class="string">&quot;507&quot;</span>, <span class="ident">InsufficientStorage</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Insufficient Storage&quot;</span>,
-        <span class="number">508</span>, <span class="string">&quot;508&quot;</span>, <span class="ident">LoopDetected</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Loop Detected&quot;</span>,
-        <span class="number">510</span>, <span class="string">&quot;510&quot;</span>, <span class="ident">NotExtended</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Not Extended&quot;</span>,
-        <span class="number">511</span>, <span class="string">&quot;511&quot;</span>, <span class="ident">NetworkAuthenticationRequired</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Network Authentication Required&quot;</span>
+        <span class="number">100</span>, <span class="string">&quot;100&quot;</span>, <span class="ident">Continue</span> <span class="op">=&gt;</span> <span class="string">&quot;Continue&quot;</span>,
+        <span class="number">101</span>, <span class="string">&quot;101&quot;</span>, <span class="ident">SwitchingProtocols</span> <span class="op">=&gt;</span> <span class="string">&quot;Switching Protocols&quot;</span>,
+        <span class="number">102</span>, <span class="string">&quot;102&quot;</span>, <span class="ident">Processing</span> <span class="op">=&gt;</span> <span class="string">&quot;Processing&quot;</span>,
+        <span class="number">200</span>, <span class="string">&quot;200&quot;</span>, <span class="prelude-val">Ok</span> <span class="op">=&gt;</span> <span class="string">&quot;OK&quot;</span>,
+        <span class="number">201</span>, <span class="string">&quot;201&quot;</span>, <span class="ident">Created</span> <span class="op">=&gt;</span> <span class="string">&quot;Created&quot;</span>,
+        <span class="number">202</span>, <span class="string">&quot;202&quot;</span>, <span class="ident">Accepted</span> <span class="op">=&gt;</span> <span class="string">&quot;Accepted&quot;</span>,
+        <span class="number">203</span>, <span class="string">&quot;203&quot;</span>, <span class="ident">NonAuthoritativeInformation</span> <span class="op">=&gt;</span> <span class="string">&quot;Non-Authoritative Information&quot;</span>,
+        <span class="number">204</span>, <span class="string">&quot;204&quot;</span>, <span class="ident">NoContent</span> <span class="op">=&gt;</span> <span class="string">&quot;No Content&quot;</span>,
+        <span class="number">205</span>, <span class="string">&quot;205&quot;</span>, <span class="ident">ResetContent</span> <span class="op">=&gt;</span> <span class="string">&quot;Reset Content&quot;</span>,
+        <span class="number">206</span>, <span class="string">&quot;206&quot;</span>, <span class="ident">PartialContent</span> <span class="op">=&gt;</span> <span class="string">&quot;Partial Content&quot;</span>,
+        <span class="number">207</span>, <span class="string">&quot;207&quot;</span>, <span class="ident">MultiStatus</span> <span class="op">=&gt;</span> <span class="string">&quot;Multi-Status&quot;</span>,
+        <span class="number">208</span>, <span class="string">&quot;208&quot;</span>, <span class="ident">AlreadyReported</span> <span class="op">=&gt;</span> <span class="string">&quot;Already Reported&quot;</span>,
+        <span class="number">226</span>, <span class="string">&quot;226&quot;</span>, <span class="ident">ImUsed</span> <span class="op">=&gt;</span> <span class="string">&quot;IM Used&quot;</span>,
+        <span class="number">300</span>, <span class="string">&quot;300&quot;</span>, <span class="ident">MultipleChoices</span> <span class="op">=&gt;</span> <span class="string">&quot;Multiple Choices&quot;</span>,
+        <span class="number">301</span>, <span class="string">&quot;301&quot;</span>, <span class="ident">MovedPermanently</span> <span class="op">=&gt;</span> <span class="string">&quot;Moved Permanently&quot;</span>,
+        <span class="number">302</span>, <span class="string">&quot;302&quot;</span>, <span class="ident">Found</span> <span class="op">=&gt;</span> <span class="string">&quot;Found&quot;</span>,
+        <span class="number">303</span>, <span class="string">&quot;303&quot;</span>, <span class="ident">SeeOther</span> <span class="op">=&gt;</span> <span class="string">&quot;See Other&quot;</span>,
+        <span class="number">304</span>, <span class="string">&quot;304&quot;</span>, <span class="ident">NotModified</span> <span class="op">=&gt;</span> <span class="string">&quot;Not Modified&quot;</span>,
+        <span class="number">305</span>, <span class="string">&quot;305&quot;</span>, <span class="ident">UseProxy</span> <span class="op">=&gt;</span> <span class="string">&quot;Use Proxy&quot;</span>,
+        <span class="number">307</span>, <span class="string">&quot;307&quot;</span>, <span class="ident">TemporaryRedirect</span> <span class="op">=&gt;</span> <span class="string">&quot;Temporary Redirect&quot;</span>,
+        <span class="number">308</span>, <span class="string">&quot;308&quot;</span>, <span class="ident">PermanentRedirect</span> <span class="op">=&gt;</span> <span class="string">&quot;Permanent Redirect&quot;</span>,
+        <span class="number">400</span>, <span class="string">&quot;400&quot;</span>, <span class="ident">BadRequest</span> <span class="op">=&gt;</span> <span class="string">&quot;Bad Request&quot;</span>,
+        <span class="number">401</span>, <span class="string">&quot;401&quot;</span>, <span class="ident">Unauthorized</span> <span class="op">=&gt;</span> <span class="string">&quot;Unauthorized&quot;</span>,
+        <span class="number">402</span>, <span class="string">&quot;402&quot;</span>, <span class="ident">PaymentRequired</span> <span class="op">=&gt;</span> <span class="string">&quot;Payment Required&quot;</span>,
+        <span class="number">403</span>, <span class="string">&quot;403&quot;</span>, <span class="ident">Forbidden</span> <span class="op">=&gt;</span> <span class="string">&quot;Forbidden&quot;</span>,
+        <span class="number">404</span>, <span class="string">&quot;404&quot;</span>, <span class="ident">NotFound</span> <span class="op">=&gt;</span> <span class="string">&quot;Not Found&quot;</span>,
+        <span class="number">405</span>, <span class="string">&quot;405&quot;</span>, <span class="ident">MethodNotAllowed</span> <span class="op">=&gt;</span> <span class="string">&quot;Method Not Allowed&quot;</span>,
+        <span class="number">406</span>, <span class="string">&quot;406&quot;</span>, <span class="ident">NotAcceptable</span> <span class="op">=&gt;</span> <span class="string">&quot;Not Acceptable&quot;</span>,
+        <span class="number">407</span>, <span class="string">&quot;407&quot;</span>, <span class="ident">ProxyAuthenticationRequired</span> <span class="op">=&gt;</span> <span class="string">&quot;Proxy Authentication Required&quot;</span>,
+        <span class="number">408</span>, <span class="string">&quot;408&quot;</span>, <span class="ident">RequestTimeout</span> <span class="op">=&gt;</span> <span class="string">&quot;Request Timeout&quot;</span>,
+        <span class="number">409</span>, <span class="string">&quot;409&quot;</span>, <span class="ident">Conflict</span> <span class="op">=&gt;</span> <span class="string">&quot;Conflict&quot;</span>,
+        <span class="number">410</span>, <span class="string">&quot;410&quot;</span>, <span class="ident">Gone</span> <span class="op">=&gt;</span> <span class="string">&quot;Gone&quot;</span>,
+        <span class="number">411</span>, <span class="string">&quot;411&quot;</span>, <span class="ident">LengthRequired</span> <span class="op">=&gt;</span> <span class="string">&quot;Length Required&quot;</span>,
+        <span class="number">412</span>, <span class="string">&quot;412&quot;</span>, <span class="ident">PreconditionFailed</span> <span class="op">=&gt;</span> <span class="string">&quot;Precondition Failed&quot;</span>,
+        <span class="number">413</span>, <span class="string">&quot;413&quot;</span>, <span class="ident">PayloadTooLarge</span> <span class="op">=&gt;</span> <span class="string">&quot;Payload Too Large&quot;</span>,
+        <span class="number">414</span>, <span class="string">&quot;414&quot;</span>, <span class="ident">UriTooLong</span> <span class="op">=&gt;</span> <span class="string">&quot;URI Too Long&quot;</span>,
+        <span class="number">415</span>, <span class="string">&quot;415&quot;</span>, <span class="ident">UnsupportedMediaType</span> <span class="op">=&gt;</span> <span class="string">&quot;Unsupported Media Type&quot;</span>,
+        <span class="number">416</span>, <span class="string">&quot;416&quot;</span>, <span class="ident">RangeNotSatisfiable</span> <span class="op">=&gt;</span> <span class="string">&quot;Range Not Satisfiable&quot;</span>,
+        <span class="number">417</span>, <span class="string">&quot;417&quot;</span>, <span class="ident">ExpectationFailed</span> <span class="op">=&gt;</span> <span class="string">&quot;Expectation Failed&quot;</span>,
+        <span class="number">418</span>, <span class="string">&quot;418&quot;</span>, <span class="ident">ImATeapot</span> <span class="op">=&gt;</span> <span class="string">&quot;I&#39;m a teapot&quot;</span>,
+        <span class="number">421</span>, <span class="string">&quot;421&quot;</span>, <span class="ident">MisdirectedRequest</span> <span class="op">=&gt;</span> <span class="string">&quot;Misdirected Request&quot;</span>,
+        <span class="number">422</span>, <span class="string">&quot;422&quot;</span>, <span class="ident">UnprocessableEntity</span> <span class="op">=&gt;</span> <span class="string">&quot;Unprocessable Entity&quot;</span>,
+        <span class="number">423</span>, <span class="string">&quot;423&quot;</span>, <span class="ident">Locked</span> <span class="op">=&gt;</span> <span class="string">&quot;Locked&quot;</span>,
+        <span class="number">424</span>, <span class="string">&quot;424&quot;</span>, <span class="ident">FailedDependency</span> <span class="op">=&gt;</span> <span class="string">&quot;Failed Dependency&quot;</span>,
+        <span class="number">426</span>, <span class="string">&quot;426&quot;</span>, <span class="ident">UpgradeRequired</span> <span class="op">=&gt;</span> <span class="string">&quot;Upgrade Required&quot;</span>,
+        <span class="number">428</span>, <span class="string">&quot;428&quot;</span>, <span class="ident">PreconditionRequired</span> <span class="op">=&gt;</span> <span class="string">&quot;Precondition Required&quot;</span>,
+        <span class="number">429</span>, <span class="string">&quot;429&quot;</span>, <span class="ident">TooManyRequests</span> <span class="op">=&gt;</span> <span class="string">&quot;Too Many Requests&quot;</span>,
+        <span class="number">431</span>, <span class="string">&quot;431&quot;</span>, <span class="ident">RequestHeaderFieldsTooLarge</span> <span class="op">=&gt;</span> <span class="string">&quot;Request Header Fields Too Large&quot;</span>,
+        <span class="number">451</span>, <span class="string">&quot;451&quot;</span>, <span class="ident">UnavailableForLegalReasons</span> <span class="op">=&gt;</span> <span class="string">&quot;Unavailable For Legal Reasons&quot;</span>,
+        <span class="number">500</span>, <span class="string">&quot;500&quot;</span>, <span class="ident">InternalServerError</span> <span class="op">=&gt;</span> <span class="string">&quot;Internal Server Error&quot;</span>,
+        <span class="number">501</span>, <span class="string">&quot;501&quot;</span>, <span class="ident">NotImplemented</span> <span class="op">=&gt;</span> <span class="string">&quot;Not Implemented&quot;</span>,
+        <span class="number">502</span>, <span class="string">&quot;502&quot;</span>, <span class="ident">BadGateway</span> <span class="op">=&gt;</span> <span class="string">&quot;Bad Gateway&quot;</span>,
+        <span class="number">503</span>, <span class="string">&quot;503&quot;</span>, <span class="ident">ServiceUnavailable</span> <span class="op">=&gt;</span> <span class="string">&quot;Service Unavailable&quot;</span>,
+        <span class="number">504</span>, <span class="string">&quot;504&quot;</span>, <span class="ident">GatewayTimeout</span> <span class="op">=&gt;</span> <span class="string">&quot;Gateway Timeout&quot;</span>,
+        <span class="number">505</span>, <span class="string">&quot;505&quot;</span>, <span class="ident">HttpVersionNotSupported</span> <span class="op">=&gt;</span> <span class="string">&quot;HTTP Version Not Supported&quot;</span>,
+        <span class="number">506</span>, <span class="string">&quot;506&quot;</span>, <span class="ident">VariantAlsoNegotiates</span> <span class="op">=&gt;</span> <span class="string">&quot;Variant Also Negotiates&quot;</span>,
+        <span class="number">507</span>, <span class="string">&quot;507&quot;</span>, <span class="ident">InsufficientStorage</span> <span class="op">=&gt;</span> <span class="string">&quot;Insufficient Storage&quot;</span>,
+        <span class="number">508</span>, <span class="string">&quot;508&quot;</span>, <span class="ident">LoopDetected</span> <span class="op">=&gt;</span> <span class="string">&quot;Loop Detected&quot;</span>,
+        <span class="number">510</span>, <span class="string">&quot;510&quot;</span>, <span class="ident">NotExtended</span> <span class="op">=&gt;</span> <span class="string">&quot;Not Extended&quot;</span>,
+        <span class="number">511</span>, <span class="string">&quot;511&quot;</span>, <span class="ident">NetworkAuthenticationRequired</span> <span class="op">=&gt;</span> <span class="string">&quot;Network Authentication Required&quot;</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Status</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{} {}&quot;</span>, <span class="self">self</span>.<span class="ident">code</span>, <span class="self">self</span>.<span class="ident">reason</span>)
     }
 }

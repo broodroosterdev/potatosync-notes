@@ -2,15 +2,15 @@
     const <a href='#associatedconstant.DELIMITER' class="constant"><b>DELIMITER</b></a>: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.char.html">char</a>;
 }</pre></div><div class='docblock'><p>Marker trait for types that mark a part of a URI.</p>
 <p>This trait exists solely to categorize types that mark a part of the URI,
-currently <a href="../../../rocket/http/uri/enum.Path.html"><code>Path</code></a> and <a href="../../../rocket/http/uri/enum.Query.html"><code>Query</code></a>. Said another way, types that implement
+currently <a href="uri::Path"><code>Path</code></a> and <a href="uri::Query"><code>Query</code></a>. Said another way, types that implement
 this trait are marker types that represent a part of a URI at the
 type-level.</p>
 <p>This trait is <em>sealed</em>: it cannot be implemented outside of Rocket.</p>
 <h1 id="usage" class="section-header"><a href="#usage">Usage</a></h1>
-<p>You will find this trait in traits like <a href="../../../rocket/http/uri/trait.UriDisplay.html"><code>UriDisplay</code></a> or structs like
-<a href="../../../rocket/http/uri/struct.Formatter.html"><code>Formatter</code></a> as the bound on a generic parameter: <code>P: UriPart</code>. Because the
+<p>You will find this trait in traits like <a href="uri::UriDisplay"><code>UriDisplay</code></a> or structs like
+<a href="uri::Formatter"><code>Formatter</code></a> as the bound on a generic parameter: <code>P: UriPart</code>. Because the
 trait is sealed, the generic type is guaranteed to be instantiated as one of
-<a href="../../../rocket/http/uri/enum.Query.html"><code>Query</code></a> or <a href="../../../rocket/http/uri/enum.Path.html"><code>Path</code></a>, effectively creating two instances of the generic
+<a href="uri::Query"><code>Query</code></a> or <a href="uri::Path"><code>Path</code></a>, effectively creating two instances of the generic
 items: <code>UriDisplay&lt;Query&gt;</code> and <code>UriDisplay&lt;Path&gt;</code>, and <code>Formatter&lt;Query&gt;</code>
 and <code>Formatter&lt;Path&gt;</code>. Unlike having two distinct, non-generic traits, this
 approach enables succinct, type-checked generic implementations of these

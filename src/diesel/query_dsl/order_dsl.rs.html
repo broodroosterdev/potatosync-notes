@@ -72,7 +72,7 @@
     <span class="kw">type</span> <span class="ident">Output</span>;
 
     <span class="doccomment">/// See the trait documentation.</span>
-    <span class="kw">fn</span> <span class="ident">order</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
+    <span class="kw">fn</span> <span class="ident">order</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Expr</span><span class="op">&gt;</span> <span class="ident">OrderDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span>
@@ -81,9 +81,9 @@
     <span class="ident">T</span>: <span class="ident">Table</span>,
     <span class="ident">T</span>::<span class="ident">Query</span>: <span class="ident">OrderDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Query</span> <span class="kw">as</span> <span class="ident">OrderDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Output</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Query</span> <span class="kw">as</span> <span class="ident">OrderDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;&gt;</span>::<span class="ident">Output</span>;
 
-    <span class="kw">fn</span> <span class="ident">order</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">order</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">self</span>.<span class="ident">as_query</span>().<span class="ident">order</span>(<span class="ident">expr</span>)
     }
 }
@@ -100,7 +100,7 @@
     <span class="kw">type</span> <span class="ident">Output</span>;
 
     <span class="doccomment">/// See the trait documentation.</span>
-    <span class="kw">fn</span> <span class="ident">then_order_by</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
+    <span class="kw">fn</span> <span class="ident">then_order_by</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Expr</span><span class="op">&gt;</span> <span class="ident">ThenOrderDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span>
@@ -109,9 +109,9 @@
     <span class="ident">T</span>: <span class="ident">Table</span>,
     <span class="ident">T</span>::<span class="ident">Query</span>: <span class="ident">ThenOrderDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Query</span> <span class="kw">as</span> <span class="ident">ThenOrderDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Output</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Query</span> <span class="kw">as</span> <span class="ident">ThenOrderDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;&gt;</span>::<span class="ident">Output</span>;
 
-    <span class="kw">fn</span> <span class="ident">then_order_by</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">then_order_by</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="self">self</span>.<span class="ident">as_query</span>().<span class="ident">then_order_by</span>(<span class="ident">expr</span>)
     }
 }

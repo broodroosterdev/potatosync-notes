@@ -260,27 +260,27 @@
     <span class="doccomment">/// If the transaction depth is greater than 0,</span>
     <span class="doccomment">/// this should create a savepoint instead.</span>
     <span class="doccomment">/// This function is expected to increment the transaction depth by 1.</span>
-    <span class="kw">fn</span> <span class="ident">begin_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">begin_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Rollback the inner-most transaction or savepoint</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the transaction depth is greater than 1,</span>
     <span class="doccomment">/// this should rollback to the most recent savepoint.</span>
     <span class="doccomment">/// This function is expected to decrement the transaction depth by 1.</span>
-    <span class="kw">fn</span> <span class="ident">rollback_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">rollback_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Commit the inner-most transaction or savepoint</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the transaction depth is greater than 1,</span>
     <span class="doccomment">/// this should release the most recent savepoint.</span>
     <span class="doccomment">/// This function is expected to decrement the transaction depth by 1.</span>
-    <span class="kw">fn</span> <span class="ident">commit_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">commit_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Fetch the current transaction depth</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Used to ensure that `begin_test_transaction` is not called when already</span>
     <span class="doccomment">/// inside of a transaction.</span>
-    <span class="kw">fn</span> <span class="ident">get_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span>;
+    <span class="kw">fn</span> <span class="ident">get_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u32</span>;
 }
 
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cell</span>::<span class="ident">Cell</span>;
@@ -295,11 +295,11 @@
 
 <span class="kw">impl</span> <span class="ident">AnsiTransactionManager</span> {
     <span class="doccomment">/// Create a new transaction manager</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">AnsiTransactionManager</span>::<span class="ident">default</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">change_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">by</span>: <span class="ident">i32</span>, <span class="ident">query</span>: <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">change_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">by</span>: <span class="ident">i32</span>, <span class="ident">query</span>: <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">query</span>.<span class="ident">is_ok</span>() {
             <span class="self">self</span>.<span class="ident">transaction_depth</span>
                 .<span class="ident">set</span>(<span class="self">self</span>.<span class="ident">transaction_depth</span>.<span class="ident">get</span>() <span class="op">+</span> <span class="ident">by</span>)
@@ -312,13 +312,13 @@
     <span class="doccomment">/// This is used by connections to implement more complex transaction APIs</span>
     <span class="doccomment">/// to set things such as isolation levels.</span>
     <span class="doccomment">/// Returns an error if already inside of a transaction.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">begin_transaction_sql</span><span class="op">&lt;</span><span class="ident">Conn</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>, <span class="ident">sql</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">begin_transaction_sql</span><span class="op">&lt;</span><span class="ident">Conn</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>, <span class="ident">sql</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">Conn</span>: <span class="ident">SimpleConnection</span>,
     {
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">result</span>::<span class="ident">Error</span>::<span class="ident">AlreadyInTransaction</span>;
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">transaction_depth</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">transaction_depth</span>.<span class="ident">get</span>() <span class="op">==</span> <span class="number">0</span> {
             <span class="self">self</span>.<span class="ident">change_transaction_depth</span>(<span class="number">1</span>, <span class="ident">conn</span>.<span class="ident">batch_execute</span>(<span class="ident">sql</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="ident">AlreadyInTransaction</span>)
@@ -331,11 +331,11 @@
     <span class="ident">Conn</span>: <span class="ident">Connection</span>,
     <span class="ident">Conn</span>::<span class="ident">Backend</span>: <span class="ident">UsesAnsiSavepointSyntax</span>,
 {
-    <span class="kw">fn</span> <span class="ident">begin_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">begin_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">transaction_depth</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">transaction_depth</span>.<span class="ident">get</span>();
         <span class="self">self</span>.<span class="ident">change_transaction_depth</span>(
             <span class="number">1</span>,
-            <span class="kw">if</span> <span class="ident">transaction_depth</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="ident">transaction_depth</span> <span class="op">==</span> <span class="number">0</span> {
                 <span class="ident">conn</span>.<span class="ident">batch_execute</span>(<span class="string">&quot;BEGIN&quot;</span>)
             } <span class="kw">else</span> {
                 <span class="ident">conn</span>.<span class="ident">batch_execute</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;SAVEPOINT diesel_savepoint_{}&quot;</span>, <span class="ident">transaction_depth</span>))
@@ -343,11 +343,11 @@
         )
     }
 
-    <span class="kw">fn</span> <span class="ident">rollback_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">rollback_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">transaction_depth</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">transaction_depth</span>.<span class="ident">get</span>();
         <span class="self">self</span>.<span class="ident">change_transaction_depth</span>(
             <span class="op">-</span><span class="number">1</span>,
-            <span class="kw">if</span> <span class="ident">transaction_depth</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+            <span class="kw">if</span> <span class="ident">transaction_depth</span> <span class="op">==</span> <span class="number">1</span> {
                 <span class="ident">conn</span>.<span class="ident">batch_execute</span>(<span class="string">&quot;ROLLBACK&quot;</span>)
             } <span class="kw">else</span> {
                 <span class="ident">conn</span>.<span class="ident">batch_execute</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(
@@ -363,19 +363,19 @@
     <span class="doccomment">/// the original error will be returned, otherwise the error generated by the rollback</span>
     <span class="doccomment">/// will be returned. In the second case the connection should be considered broken</span>
     <span class="doccomment">/// as it contains a uncommitted unabortable open transaction.</span>
-    <span class="kw">fn</span> <span class="ident">commit_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">commit_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">transaction_depth</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">transaction_depth</span>.<span class="ident">get</span>();
-        <span class="kw">if</span> <span class="ident">transaction_depth</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">1</span> {
+        <span class="kw">if</span> <span class="ident">transaction_depth</span> <span class="op">&lt;=</span> <span class="number">1</span> {
             <span class="kw">match</span> <span class="ident">conn</span>.<span class="ident">batch_execute</span>(<span class="string">&quot;COMMIT&quot;</span>) {
                 <span class="comment">// When any of these kinds of error happen on `COMMIT`, it is expected</span>
                 <span class="comment">// that a `ROLLBACK` would succeed, leaving the transaction in a non-broken state.</span>
                 <span class="comment">// If there are other such errors, it is fine to add them here.</span>
                 <span class="ident">e</span> @ <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">DatabaseError</span>(<span class="ident">DatabaseErrorKind</span>::<span class="ident">SerializationFailure</span>, <span class="kw">_</span>))
-                <span class="op">|</span> <span class="ident">e</span> @ <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">DatabaseError</span>(<span class="ident">DatabaseErrorKind</span>::<span class="ident">ReadOnlyTransaction</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="op">|</span> <span class="ident">e</span> @ <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">DatabaseError</span>(<span class="ident">DatabaseErrorKind</span>::<span class="ident">ReadOnlyTransaction</span>, <span class="kw">_</span>)) <span class="op">=&gt;</span> {
                     <span class="self">self</span>.<span class="ident">change_transaction_depth</span>(<span class="op">-</span><span class="number">1</span>, <span class="ident">conn</span>.<span class="ident">batch_execute</span>(<span class="string">&quot;ROLLBACK&quot;</span>))<span class="question-mark">?</span>;
                     <span class="ident">e</span>
                 }
-                <span class="ident">result</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">change_transaction_depth</span>(<span class="op">-</span><span class="number">1</span>, <span class="ident">result</span>),
+                <span class="ident">result</span> <span class="op">=&gt;</span> <span class="self">self</span>.<span class="ident">change_transaction_depth</span>(<span class="op">-</span><span class="number">1</span>, <span class="ident">result</span>),
             }
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">change_transaction_depth</span>(
@@ -388,7 +388,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">get_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">transaction_depth</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">u32</span>
     }
 }
@@ -397,10 +397,10 @@
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;postgres&quot;</span>)]</span>
     <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">matches</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">expression</span>:<span class="ident">expr</span>, $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pattern</span>:<span class="ident">pat</span> )<span class="op">|</span><span class="op">+</span> $( <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">guard</span>: <span class="ident">expr</span> )<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">expression</span>:<span class="ident">expr</span>, $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pattern</span>:<span class="ident">pat</span> )<span class="op">|</span><span class="op">+</span> $( <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">guard</span>: <span class="ident">expr</span> )<span class="question-mark">?</span>) <span class="op">=&gt;</span> {
             <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">expression</span> {
-                $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pattern</span> )<span class="op">|</span><span class="op">+</span> $( <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">guard</span> )<span class="question-mark">?</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>
+                $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pattern</span> )<span class="op">|</span><span class="op">+</span> $( <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">guard</span> )<span class="question-mark">?</span> <span class="op">=&gt;</span> <span class="bool-val">true</span>,
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>
             }
         }
     }
@@ -417,8 +417,8 @@
         <span class="macro">table</span><span class="macro">!</span> {
             <span class="attribute">#[<span class="ident">sql_name</span> <span class="op">=</span> <span class="string">&quot;transaction_depth_is_tracked_properly_on_commit_failure&quot;</span>]</span>
             <span class="ident">serialization_example</span> {
-                <span class="ident">id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Serial</span>,
-                <span class="ident">class</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Integer</span>,
+                <span class="ident">id</span> <span class="op">-&gt;</span> <span class="ident">Serial</span>,
+                <span class="ident">class</span> <span class="op">-&gt;</span> <span class="ident">Integer</span>,
             }
         }
 
@@ -450,15 +450,15 @@
         <span class="kw">let</span> <span class="ident">threads</span> <span class="op">=</span> (<span class="number">1</span>..<span class="number">3</span>)
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">barrier</span> <span class="op">=</span> <span class="ident">barrier</span>.<span class="ident">clone</span>();
-                <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
                     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">connection</span>::<span class="ident">transaction_manager</span>::<span class="ident">AnsiTransactionManager</span>;
                     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">connection</span>::<span class="ident">transaction_manager</span>::<span class="ident">TransactionManager</span>;
                     <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">test_helpers</span>::<span class="ident">pg_connection_no_transaction</span>();
-                    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0</span>, <span class="op">&lt;</span><span class="ident">AnsiTransactionManager</span> <span class="kw">as</span> <span class="ident">TransactionManager</span><span class="op">&lt;</span><span class="ident">PgConnection</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">get_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="ident">conn</span>.<span class="ident">transaction_manager</span>));
+                    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0</span>, <span class="op">&lt;</span><span class="ident">AnsiTransactionManager</span> <span class="kw">as</span> <span class="ident">TransactionManager</span><span class="op">&lt;</span><span class="ident">PgConnection</span><span class="op">&gt;&gt;</span>::<span class="ident">get_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="ident">conn</span>.<span class="ident">transaction_manager</span>));
 
                     <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span>
-                    <span class="ident">conn</span>.<span class="ident">build_transaction</span>().<span class="ident">serializable</span>().<span class="ident">run</span>(<span class="op">|</span><span class="op">|</span> {
-                        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">1</span>, <span class="op">&lt;</span><span class="ident">AnsiTransactionManager</span> <span class="kw">as</span> <span class="ident">TransactionManager</span><span class="op">&lt;</span><span class="ident">PgConnection</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">get_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="ident">conn</span>.<span class="ident">transaction_manager</span>));
+                    <span class="ident">conn</span>.<span class="ident">build_transaction</span>().<span class="ident">serializable</span>().<span class="ident">run</span>(<span class="op">||</span> {
+                        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">1</span>, <span class="op">&lt;</span><span class="ident">AnsiTransactionManager</span> <span class="kw">as</span> <span class="ident">TransactionManager</span><span class="op">&lt;</span><span class="ident">PgConnection</span><span class="op">&gt;&gt;</span>::<span class="ident">get_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="ident">conn</span>.<span class="ident">transaction_manager</span>));
 
                         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">serialization_example</span>::<span class="ident">table</span>
                             .<span class="ident">filter</span>(<span class="ident">serialization_example</span>::<span class="ident">class</span>.<span class="ident">eq</span>(<span class="ident">i</span>))
@@ -467,22 +467,22 @@
 
                         <span class="ident">barrier</span>.<span class="ident">wait</span>();
 
-                        <span class="kw">let</span> <span class="ident">other_i</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> { <span class="number">2</span> } <span class="kw">else</span> { <span class="number">1</span> };
+                        <span class="kw">let</span> <span class="ident">other_i</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">i</span> <span class="op">==</span> <span class="number">1</span> { <span class="number">2</span> } <span class="kw">else</span> { <span class="number">1</span> };
                         <span class="ident">insert_into</span>(<span class="ident">serialization_example</span>::<span class="ident">table</span>)
                             .<span class="ident">values</span>(<span class="ident">serialization_example</span>::<span class="ident">class</span>.<span class="ident">eq</span>(<span class="ident">other_i</span>))
                             .<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">conn</span>)
                     });
 
-                    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0</span>, <span class="op">&lt;</span><span class="ident">AnsiTransactionManager</span> <span class="kw">as</span> <span class="ident">TransactionManager</span><span class="op">&lt;</span><span class="ident">PgConnection</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">get_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="ident">conn</span>.<span class="ident">transaction_manager</span>));
+                    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0</span>, <span class="op">&lt;</span><span class="ident">AnsiTransactionManager</span> <span class="kw">as</span> <span class="ident">TransactionManager</span><span class="op">&lt;</span><span class="ident">PgConnection</span><span class="op">&gt;&gt;</span>::<span class="ident">get_transaction_depth</span>(<span class="kw-2">&amp;</span><span class="ident">conn</span>.<span class="ident">transaction_manager</span>));
                     <span class="ident">result</span>
                 })
             })
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">results</span> <span class="op">=</span> <span class="ident">threads</span>
             .<span class="ident">into_iter</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> <span class="ident">t</span>.<span class="ident">join</span>().<span class="ident">unwrap</span>())
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
 
         <span class="ident">results</span>.<span class="ident">sort_by_key</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">is_err</span>());
 

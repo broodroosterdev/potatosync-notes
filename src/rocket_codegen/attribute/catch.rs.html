@@ -129,23 +129,23 @@
     <span class="ident">function</span>: <span class="ident">syn</span>::<span class="ident">ItemFn</span>,
 }
 
-<span class="kw">fn</span> <span class="ident">parse_params</span>(<span class="ident">args</span>: <span class="ident">TokenStream2</span>, <span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CatchParams</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">parse_params</span>(<span class="ident">args</span>: <span class="ident">TokenStream2</span>, <span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">CatchParams</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">function</span>: <span class="ident">syn</span>::<span class="ident">ItemFn</span> <span class="op">=</span> <span class="ident">syn</span>::<span class="ident">parse</span>(<span class="ident">input</span>).<span class="ident">map_err</span>(<span class="ident">syn_to_diag</span>)
         .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">diag</span><span class="op">|</span> <span class="ident">diag</span>.<span class="ident">help</span>(<span class="string">&quot;`#[catch]` can only be used on functions&quot;</span>))<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="ident">full_attr</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>(<span class="attribute">#[<span class="ident">catch</span>(#<span class="ident">args</span>)]</span>);
     <span class="kw">let</span> <span class="ident">attrs</span> <span class="op">=</span> <span class="ident">Attribute</span>::<span class="ident">parse_outer</span>.<span class="ident">parse2</span>(<span class="ident">full_attr</span>).<span class="ident">map_err</span>(<span class="ident">syn_to_diag</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">attribute</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">CatchAttribute</span>::<span class="ident">from_attrs</span>(<span class="string">&quot;catch&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">attrs</span>) {
-        <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">result</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=&gt;</span> <span class="ident">result</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> {
             <span class="ident">d</span>.<span class="ident">help</span>(<span class="string">&quot;`#[catch]` expects a single status integer, e.g.: #[catch(404)]&quot;</span>)
         })<span class="question-mark">?</span>,
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Span</span>::<span class="ident">call_site</span>().<span class="ident">error</span>(<span class="string">&quot;internal error: bad attribute&quot;</span>))
+        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Span</span>::<span class="ident">call_site</span>().<span class="ident">error</span>(<span class="string">&quot;internal error: bad attribute&quot;</span>))
     };
 
     <span class="prelude-val">Ok</span>(<span class="ident">CatchParams</span> { <span class="ident">status</span>: <span class="ident">attribute</span>.<span class="ident">status</span>, <span class="ident">function</span> })
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">_catch</span>(<span class="ident">args</span>: <span class="ident">TokenStream</span>, <span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">_catch</span>(<span class="ident">args</span>: <span class="ident">TokenStream</span>, <span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
     <span class="comment">// Parse and validate all of the user&#39;s input.</span>
     <span class="kw">let</span> <span class="ident">catch</span> <span class="op">=</span> <span class="ident">parse_params</span>(<span class="ident">TokenStream2</span>::<span class="ident">from</span>(<span class="ident">args</span>), <span class="ident">input</span>)<span class="question-mark">?</span>;
 
@@ -162,9 +162,9 @@
 
     <span class="comment">// Determine the number of parameters that will be passed in.</span>
     <span class="kw">let</span> (<span class="ident">fn_sig</span>, <span class="ident">inputs</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">catch</span>.<span class="ident">function</span>.<span class="ident">decl</span>.<span class="ident">inputs</span>.<span class="ident">len</span>() {
-        <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="macro">quote</span><span class="macro">!</span>(<span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">_</span>), <span class="macro">quote</span><span class="macro">!</span>()),
-        <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="macro">quote</span><span class="macro">!</span>(<span class="kw">fn</span>(<span class="kw-2">&amp;</span>#<span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">_</span>), <span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">req</span>)),
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">catch</span>.<span class="ident">function</span>.<span class="ident">decl</span>.<span class="ident">inputs</span>.<span class="ident">span</span>()
+        <span class="number">0</span> <span class="op">=&gt;</span> (<span class="macro">quote</span><span class="macro">!</span>(<span class="kw">fn</span>() <span class="op">-&gt;</span> <span class="kw">_</span>), <span class="macro">quote</span><span class="macro">!</span>()),
+        <span class="number">1</span> <span class="op">=&gt;</span> (<span class="macro">quote</span><span class="macro">!</span>(<span class="kw">fn</span>(<span class="kw-2">&amp;</span>#<span class="ident">Request</span>) <span class="op">-&gt;</span> <span class="kw">_</span>), <span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">req</span>)),
+        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">catch</span>.<span class="ident">function</span>.<span class="ident">decl</span>.<span class="ident">inputs</span>.<span class="ident">span</span>()
                 .<span class="ident">error</span>(<span class="string">&quot;invalid number of arguments: must be zero or one&quot;</span>)
                 .<span class="ident">help</span>(<span class="string">&quot;catchers may optionally take an argument of type `&amp;Request`&quot;</span>))
     };
@@ -178,7 +178,7 @@
         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">ty</span><span class="op">|</span> <span class="ident">ty</span>.<span class="ident">span</span>().<span class="ident">into</span>())
         .<span class="ident">unwrap_or</span>(<span class="ident">Span</span>::<span class="ident">call_site</span>().<span class="ident">into</span>());
 
-    <span class="kw">let</span> <span class="ident">catcher_response</span> <span class="op">=</span> <span class="macro">quote_spanned</span><span class="macro">!</span>(<span class="ident">return_type_span</span> <span class="op">=</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">catcher_response</span> <span class="op">=</span> <span class="macro">quote_spanned</span><span class="macro">!</span>(<span class="ident">return_type_span</span> <span class="op">=&gt;</span> {
         <span class="comment">// Emit this to force a type signature check.</span>
         <span class="kw">let</span> #<span class="ident">catcher</span>: #<span class="ident">fn_sig</span> <span class="op">=</span> #<span class="ident">user_catcher_fn_name</span>;
         <span class="kw">let</span> <span class="ident">___responder</span> <span class="op">=</span> #<span class="ident">catcher</span>(#<span class="ident">inputs</span>);
@@ -190,7 +190,7 @@
         #<span class="ident">user_catcher_fn</span>
 
         <span class="doccomment">/// Rocket code generated wrapping catch function.</span>
-        #<span class="ident">vis</span> <span class="kw">fn</span> #<span class="ident">generated_fn_name</span><span class="op">&lt;</span><span class="lifetime">&#39;_b</span><span class="op">&gt;</span>(#<span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;_b</span> #<span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> #<span class="ident">response</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="lifetime">&#39;_b</span><span class="op">&gt;</span> {
+        #<span class="ident">vis</span> <span class="kw">fn</span> #<span class="ident">generated_fn_name</span><span class="op">&lt;</span><span class="lifetime">&#39;_b</span><span class="op">&gt;</span>(#<span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;_b</span> #<span class="ident">Request</span>) <span class="op">-&gt;</span> #<span class="ident">response</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="lifetime">&#39;_b</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">__response</span> <span class="op">=</span> #<span class="ident">catcher_response</span>;
             #<span class="ident">Response</span>::<span class="ident">build</span>()
                 .<span class="ident">status</span>(#<span class="ident">status</span>)
@@ -208,7 +208,7 @@
     }.<span class="ident">into</span>())
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">catch_attribute</span>(<span class="ident">args</span>: <span class="ident">TokenStream</span>, <span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">catch_attribute</span>(<span class="ident">args</span>: <span class="ident">TokenStream</span>, <span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">_catch</span>(<span class="ident">args</span>, <span class="ident">input</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> { <span class="ident">d</span>.<span class="ident">emit</span>(); <span class="ident">TokenStream</span>::<span class="ident">new</span>() })
 }
 </pre></div>

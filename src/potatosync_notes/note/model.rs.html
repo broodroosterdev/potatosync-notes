@@ -227,7 +227,7 @@
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// Special function to serialize Option&lt;DateTime&lt;Utc&gt;&gt;</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize_option</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="ident">dt</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="prelude-val">Ok</span>, <span class="ident">S</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">serialize_option</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="ident">dt</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;&gt;</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="prelude-val">Ok</span>, <span class="ident">S</span>::<span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span> <span class="ident">S</span>: <span class="ident">Serializer</span>
 {
     <span class="kw">return</span> <span class="kw">if</span> <span class="ident">dt</span>.<span class="ident">is_some</span>() {
@@ -238,7 +238,7 @@
 }
 
 <span class="doccomment">/// Special function to deserialize Option&lt;DateTime&lt;Utc&gt;&gt;</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize_option</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">d</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">D</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">deserialize_option</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span>, <span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">d</span>: <span class="ident">D</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;&gt;</span>, <span class="ident">D</span>::<span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span> <span class="ident">D</span>: <span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>
 {
     <span class="kw">let</span> <span class="ident">dt</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-ty">Option</span>::<span class="ident">deserialize</span>(<span class="ident">d</span>)<span class="question-mark">?</span>;
@@ -284,7 +284,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Note</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">mock_empty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Note</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">mock_empty</span>() <span class="op">-&gt;</span> <span class="ident">Note</span> {
         <span class="ident">Note</span> {
             <span class="ident">note_id</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
             <span class="ident">account_id</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
@@ -337,7 +337,7 @@
 
 <span class="kw">impl</span> <span class="ident">SavingNote</span> {
     <span class="doccomment">/// Convert to Note by adding account_id</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_note</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Note</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_note</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">account_id</span>: <span class="ident">String</span>) <span class="op">-&gt;</span> <span class="ident">Note</span> {
         <span class="ident">Note</span> {
             <span class="ident">note_id</span>: <span class="self">self</span>.<span class="ident">note_id</span>.<span class="ident">clone</span>(),
             <span class="ident">account_id</span>: <span class="ident">account_id</span>.<span class="ident">clone</span>(),
@@ -371,7 +371,7 @@
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">default</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;deserialize_option&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize_option&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">last_modify_date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">last_modify_date</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;&gt;</span>,
     <span class="kw">pub</span> <span class="ident">color</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">images</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">list</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
@@ -386,7 +386,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">impl</span> <span class="ident">PatchingNote</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">mock_empty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PatchingNote</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">mock_empty</span>() <span class="op">-&gt;</span> <span class="ident">PatchingNote</span> {
         <span class="kw">return</span> <span class="ident">PatchingNote</span> {
             <span class="ident">title</span>: <span class="prelude-val">None</span>,
             <span class="ident">content</span>: <span class="prelude-val">None</span>,
@@ -405,7 +405,7 @@
             <span class="ident">archived</span>: <span class="prelude-val">None</span>,
         }
     }
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">mock_empty_with_last_modify</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PatchingNote</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">mock_empty_with_last_modify</span>() <span class="op">-&gt;</span> <span class="ident">PatchingNote</span> {
         <span class="kw">return</span> <span class="ident">PatchingNote</span> {
             <span class="ident">title</span>: <span class="prelude-val">None</span>,
             <span class="ident">content</span>: <span class="prelude-val">None</span>,

@@ -34,10 +34,10 @@ and make multiple requests simultaneously.</p>
 <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">Client</span>::<span class="ident">new</span>());
 <span class="kw">let</span> <span class="ident">clone1</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">clone</span>();
 <span class="kw">let</span> <span class="ident">clone2</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">clone</span>();
-<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
     <span class="ident">clone1</span>.<span class="ident">get</span>(<span class="string">&quot;http://example.domain&quot;</span>).<span class="ident">send</span>().<span class="ident">unwrap</span>();
 });
-<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+<span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> {
     <span class="ident">clone2</span>.<span class="ident">post</span>(<span class="string">&quot;http://example.domain/post&quot;</span>).<span class="ident">body</span>(<span class="string">&quot;foo=bar&quot;</span>).<span class="ident">send</span>().<span class="ident">unwrap</span>();
 });</pre></div>
 </div><h2 id='reexports' class='section-header'><a href="#reexports">Re-exports</a></h2>

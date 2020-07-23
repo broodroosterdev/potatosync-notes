@@ -52,7 +52,7 @@
 <span class="doccomment">/// assert_eq!(Ok(2), users_not_with_name.first(&amp;connection));</span>
 <span class="doccomment">/// # }</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">not</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="ident">Bool</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">expr</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">not</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">not</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="ident">Bool</span><span class="op">&gt;&gt;</span>(<span class="ident">expr</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">not</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">super</span>::<span class="ident">operators</span>::<span class="ident">Not</span>::<span class="ident">new</span>(<span class="ident">Grouped</span>(<span class="ident">expr</span>.<span class="ident">as_expression</span>()))
 }
 </pre></div>

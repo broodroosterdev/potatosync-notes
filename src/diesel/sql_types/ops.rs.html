@@ -251,7 +251,7 @@
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">numeric_type</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tpe</span>: <span class="ident">ident</span>),<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tpe</span>: <span class="ident">ident</span>),<span class="kw-2">*</span>) <span class="op">=&gt;</span> {
         $(
         <span class="kw">impl</span> <span class="ident">Add</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tpe</span> {
             <span class="kw">type</span> <span class="ident">Rhs</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tpe</span>;

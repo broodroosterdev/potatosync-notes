@@ -93,12 +93,12 @@
 <span class="doccomment">/// If you apply it on String, don&#39;t forget that the length can be different</span>
 <span class="doccomment">/// from the number of visual characters for Unicode</span>
 <span class="attribute">#[<span class="ident">must_use</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">validate_length</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">HasLen</span><span class="op">&gt;</span>(<span class="ident">length</span>: <span class="ident">Validator</span>, <span class="ident">val</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">validate_length</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">HasLen</span><span class="op">&gt;</span>(<span class="ident">length</span>: <span class="ident">Validator</span>, <span class="ident">val</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
     <span class="kw">match</span> <span class="ident">length</span> {
-        <span class="ident">Validator</span>::<span class="ident">Length</span> { <span class="ident">min</span>, <span class="ident">max</span>, <span class="ident">equal</span> } <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">Validator</span>::<span class="ident">Length</span> { <span class="ident">min</span>, <span class="ident">max</span>, <span class="ident">equal</span> } <span class="op">=&gt;</span> {
             <span class="kw">let</span> <span class="ident">val_length</span> <span class="op">=</span> <span class="ident">val</span>.<span class="ident">length</span>();
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">eq</span>) <span class="op">=</span> <span class="ident">equal</span> {
-                <span class="kw">return</span> <span class="ident">val_length</span> <span class="op">=</span><span class="op">=</span> <span class="ident">eq</span>;
+                <span class="kw">return</span> <span class="ident">val_length</span> <span class="op">==</span> <span class="ident">eq</span>;
             }
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">m</span>) <span class="op">=</span> <span class="ident">min</span> {
                 <span class="kw">if</span> <span class="ident">val_length</span> <span class="op">&lt;</span> <span class="ident">m</span> {
@@ -111,7 +111,7 @@
                 }
             }
         }
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
     }
 
     <span class="bool-val">true</span>

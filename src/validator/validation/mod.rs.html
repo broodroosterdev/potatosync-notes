@@ -127,25 +127,25 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Validator</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">code</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Validator</span>::<span class="ident">MustMatch</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;must_match&quot;</span>,
-            <span class="ident">Validator</span>::<span class="ident">Email</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;email&quot;</span>,
-            <span class="ident">Validator</span>::<span class="ident">Url</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;url&quot;</span>,
-            <span class="ident">Validator</span>::<span class="ident">Custom</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;custom&quot;</span>,
-            <span class="ident">Validator</span>::<span class="ident">Contains</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;contains&quot;</span>,
-            <span class="ident">Validator</span>::<span class="ident">Regex</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;regex&quot;</span>,
-            <span class="ident">Validator</span>::<span class="ident">Range</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;range&quot;</span>,
-            <span class="ident">Validator</span>::<span class="ident">Length</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;length&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">MustMatch</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="string">&quot;must_match&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">Email</span> <span class="op">=&gt;</span> <span class="string">&quot;email&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">Url</span> <span class="op">=&gt;</span> <span class="string">&quot;url&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">Custom</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="string">&quot;custom&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">Contains</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="string">&quot;contains&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">Regex</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="string">&quot;regex&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">Range</span> { .. } <span class="op">=&gt;</span> <span class="string">&quot;range&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">Length</span> { .. } <span class="op">=&gt;</span> <span class="string">&quot;length&quot;</span>,
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;card&quot;</span>)]</span>
-            <span class="ident">Validator</span>::<span class="ident">CreditCard</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;credit_card&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">CreditCard</span> <span class="op">=&gt;</span> <span class="string">&quot;credit_card&quot;</span>,
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;phone&quot;</span>)]</span>
-            <span class="ident">Validator</span>::<span class="ident">Phone</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;phone&quot;</span>,
-            <span class="ident">Validator</span>::<span class="ident">Nested</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;nested&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">Phone</span> <span class="op">=&gt;</span> <span class="string">&quot;phone&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">Nested</span> <span class="op">=&gt;</span> <span class="string">&quot;nested&quot;</span>,
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unic&quot;</span>)]</span>
-            <span class="ident">Validator</span>::<span class="ident">NonControlCharacter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;non_control_character&quot;</span>,
-            <span class="ident">Validator</span>::<span class="ident">Required</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;required&quot;</span>,
-            <span class="ident">Validator</span>::<span class="ident">RequiredNested</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;required_nested&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">NonControlCharacter</span> <span class="op">=&gt;</span> <span class="string">&quot;non_control_character&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">Required</span> <span class="op">=&gt;</span> <span class="string">&quot;required&quot;</span>,
+            <span class="ident">Validator</span>::<span class="ident">RequiredNested</span> <span class="op">=&gt;</span> <span class="string">&quot;required_nested&quot;</span>,
         }
     }
 }

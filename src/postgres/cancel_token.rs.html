@@ -45,7 +45,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CancelToken</span>(<span class="ident">tokio_postgres</span>::<span class="ident">CancelToken</span>);
 
 <span class="kw">impl</span> <span class="ident">CancelToken</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">inner</span>: <span class="ident">tokio_postgres</span>::<span class="ident">CancelToken</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CancelToken</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">inner</span>: <span class="ident">tokio_postgres</span>::<span class="ident">CancelToken</span>) <span class="op">-&gt;</span> <span class="ident">CancelToken</span> {
         <span class="ident">CancelToken</span>(<span class="ident">inner</span>)
     }
 
@@ -59,7 +59,7 @@
     <span class="doccomment">/// cancellation request will reach the server before the query terminates</span>
     <span class="doccomment">/// normally, or that the connection associated with this token is still</span>
     <span class="doccomment">/// active.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cancel_query</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tls</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cancel_query</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tls</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">MakeTlsConnect</span><span class="op">&lt;</span><span class="ident">Socket</span><span class="op">&gt;</span>,
     {

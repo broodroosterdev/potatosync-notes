@@ -30,17 +30,17 @@ enum value that the user provides:</p>
 <span class="kw">struct</span> <span class="ident">CustomHandler</span>(<span class="ident">Kind</span>);
 
 <span class="kw">impl</span> <span class="ident">Handler</span> <span class="kw">for</span> <span class="ident">CustomHandler</span> {
-    <span class="kw">fn</span> <span class="ident">handle</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">Request</span>, <span class="ident">data</span>: <span class="ident">Data</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Outcome</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">handle</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">Request</span>, <span class="ident">data</span>: <span class="ident">Data</span>) <span class="op">-&gt;</span> <span class="ident">Outcome</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="ident">Kind</span>::<span class="ident">Simple</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome</span>::<span class="ident">from</span>(<span class="ident">req</span>, <span class="string">&quot;simple&quot;</span>),
-            <span class="ident">Kind</span>::<span class="ident">Intermediate</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome</span>::<span class="ident">from</span>(<span class="ident">req</span>, <span class="string">&quot;intermediate&quot;</span>),
-            <span class="ident">Kind</span>::<span class="ident">Complex</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome</span>::<span class="ident">from</span>(<span class="ident">req</span>, <span class="string">&quot;complex&quot;</span>),
+            <span class="ident">Kind</span>::<span class="ident">Simple</span> <span class="op">=&gt;</span> <span class="ident">Outcome</span>::<span class="ident">from</span>(<span class="ident">req</span>, <span class="string">&quot;simple&quot;</span>),
+            <span class="ident">Kind</span>::<span class="ident">Intermediate</span> <span class="op">=&gt;</span> <span class="ident">Outcome</span>::<span class="ident">from</span>(<span class="ident">req</span>, <span class="string">&quot;intermediate&quot;</span>),
+            <span class="ident">Kind</span>::<span class="ident">Complex</span> <span class="op">=&gt;</span> <span class="ident">Outcome</span>::<span class="ident">from</span>(<span class="ident">req</span>, <span class="string">&quot;complex&quot;</span>),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Route</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CustomHandler</span> {
-    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Route</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Route</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">CustomHandler</span> {
+    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Route</span><span class="op">&gt;</span> {
         <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Route</span>::<span class="ident">new</span>(<span class="ident">Method</span>::<span class="ident">Get</span>, <span class="string">&quot;/&quot;</span>, <span class="self">self</span>)]
     }
 }
@@ -69,11 +69,11 @@ managed state and a static route, as follows:</p>
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">State</span>;
 
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">custom_handler</span>(<span class="ident">state</span>: <span class="ident">State</span><span class="op">&lt;</span><span class="ident">Kind</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+<span class="kw">fn</span> <span class="ident">custom_handler</span>(<span class="ident">state</span>: <span class="ident">State</span><span class="op">&lt;</span><span class="ident">Kind</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">state</span> {
-        <span class="ident">Kind</span>::<span class="ident">Simple</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;simple&quot;</span>,
-        <span class="ident">Kind</span>::<span class="ident">Intermediate</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;intermediate&quot;</span>,
-        <span class="ident">Kind</span>::<span class="ident">Complex</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;complex&quot;</span>,
+        <span class="ident">Kind</span>::<span class="ident">Simple</span> <span class="op">=&gt;</span> <span class="string">&quot;simple&quot;</span>,
+        <span class="ident">Kind</span>::<span class="ident">Intermediate</span> <span class="op">=&gt;</span> <span class="string">&quot;intermediate&quot;</span>,
+        <span class="ident">Kind</span>::<span class="ident">Complex</span> <span class="op">=&gt;</span> <span class="string">&quot;complex&quot;</span>,
     }
 }
 

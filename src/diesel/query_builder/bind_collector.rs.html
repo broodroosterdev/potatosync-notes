@@ -99,7 +99,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">bind</span>: <span class="kw-2">&amp;</span><span class="ident">U</span>,
         <span class="ident">metadata_lookup</span>: <span class="kw-2">&amp;</span><span class="ident">DB</span>::<span class="ident">MetadataLookup</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+    ) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">DB</span>: <span class="ident">HasSqlType</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
         <span class="ident">U</span>: <span class="ident">ToSql</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">DB</span><span class="op">&gt;</span>;
@@ -119,13 +119,13 @@
     <span class="doccomment">/// The serialized bytes for each bind parameter.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This vec is guaranteed to be the same length as `metadata`.</span>
-    <span class="kw">pub</span> <span class="ident">binds</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">binds</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_without_default</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">DB</span>: <span class="ident">Backend</span> <span class="op">+</span> <span class="ident">TypeMetadata</span><span class="op">&gt;</span> <span class="ident">RawBytesBindCollector</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Construct an empty `RawBytesBindCollector`</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="ident">RawBytesBindCollector</span> {
             <span class="ident">metadata</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
             <span class="ident">binds</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
@@ -138,7 +138,7 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">bind</span>: <span class="kw-2">&amp;</span><span class="ident">U</span>,
         <span class="ident">metadata_lookup</span>: <span class="kw-2">&amp;</span><span class="ident">DB</span>::<span class="ident">MetadataLookup</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
+    ) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">DB</span>: <span class="ident">HasSqlType</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
         <span class="ident">U</span>: <span class="ident">ToSql</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">DB</span><span class="op">&gt;</span>,
@@ -148,10 +148,10 @@
             .<span class="ident">to_sql</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">to_sql_output</span>)
             .<span class="ident">map_err</span>(<span class="ident">SerializationError</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">to_sql_output</span>.<span class="ident">into_inner</span>();
-        <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">DB</span> <span class="kw">as</span> <span class="ident">HasSqlType</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">metadata</span>(<span class="ident">metadata_lookup</span>);
+        <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">DB</span> <span class="kw">as</span> <span class="ident">HasSqlType</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>::<span class="ident">metadata</span>(<span class="ident">metadata_lookup</span>);
         <span class="kw">match</span> <span class="ident">is_null</span> {
-            <span class="ident">IsNull</span>::<span class="ident">No</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">binds</span>.<span class="ident">push</span>(<span class="prelude-val">Some</span>(<span class="ident">bytes</span>)),
-            <span class="ident">IsNull</span>::<span class="ident">Yes</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">binds</span>.<span class="ident">push</span>(<span class="prelude-val">None</span>),
+            <span class="ident">IsNull</span>::<span class="ident">No</span> <span class="op">=&gt;</span> <span class="self">self</span>.<span class="ident">binds</span>.<span class="ident">push</span>(<span class="prelude-val">Some</span>(<span class="ident">bytes</span>)),
+            <span class="ident">IsNull</span>::<span class="ident">Yes</span> <span class="op">=&gt;</span> <span class="self">self</span>.<span class="ident">binds</span>.<span class="ident">push</span>(<span class="prelude-val">None</span>),
         }
         <span class="self">self</span>.<span class="ident">metadata</span>.<span class="ident">push</span>(<span class="ident">metadata</span>);
         <span class="prelude-val">Ok</span>(())

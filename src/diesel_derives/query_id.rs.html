@@ -41,7 +41,7 @@
 
 <span class="kw">use</span> <span class="ident">util</span>::<span class="kw-2">*</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive</span>(<span class="kw-2">mut</span> <span class="ident">item</span>: <span class="ident">syn</span>::<span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive</span>(<span class="kw-2">mut</span> <span class="ident">item</span>: <span class="ident">syn</span>::<span class="ident">DeriveInput</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
     <span class="kw">for</span> <span class="ident">ty_param</span> <span class="kw">in</span> <span class="ident">item</span>.<span class="ident">generics</span>.<span class="ident">type_params_mut</span>() {
         <span class="ident">ty_param</span>.<span class="ident">bounds</span>.<span class="ident">push</span>(<span class="macro">parse_quote</span><span class="macro">!</span>(<span class="ident">QueryId</span>));
     }
@@ -69,7 +69,7 @@
         {
             <span class="kw">type</span> <span class="ident">QueryId</span> <span class="op">=</span> #<span class="ident">struct_name</span><span class="op">&lt;</span>#(#<span class="ident">lifetimes</span>,)<span class="op">*</span> #(#<span class="ident">query_id_ty_params</span>,)<span class="kw-2">*</span><span class="op">&gt;</span>;
 
-            <span class="kw">const</span> <span class="ident">HAS_STATIC_QUERY_ID</span>: <span class="ident">bool</span> <span class="op">=</span> #(#<span class="ident">has_static_query_id</span> <span class="kw-2">&amp;</span><span class="kw-2">&amp;</span>)<span class="op">*</span> <span class="bool-val">true</span>;
+            <span class="kw">const</span> <span class="ident">HAS_STATIC_QUERY_ID</span>: <span class="ident">bool</span> <span class="op">=</span> #(#<span class="ident">has_static_query_id</span> <span class="op">&amp;&amp;</span>)<span class="op">*</span> <span class="bool-val">true</span>;
         }
     }))
 }

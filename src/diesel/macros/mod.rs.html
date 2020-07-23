@@ -1266,7 +1266,7 @@
         <span class="ident">sql_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sql_name</span>:<span class="ident">expr</span>,
         <span class="ident">ty</span> <span class="op">=</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">Type</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
         <span class="ident">meta</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>],
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>)<span class="op">*</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>, <span class="ident">dead_code</span>)]</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">query_builder</span>::<span class="ident">QueryId</span>, <span class="ident">Default</span>)]</span>
@@ -1281,7 +1281,7 @@
             <span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">table</span> <span class="kw">as</span> <span class="ident">QuerySource</span><span class="op">&gt;</span>::<span class="ident">FromClause</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
         {
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
-            <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">__out</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">query_builder</span>::<span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">result</span>::<span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">__out</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">query_builder</span>::<span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">result</span>::<span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table</span>.<span class="ident">from_clause</span>().<span class="ident">walk_ast</span>(<span class="ident">__out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
                 <span class="ident">__out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;.&quot;</span>);
                 <span class="ident">__out</span>.<span class="ident">push_identifier</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">sql_name</span>)
@@ -1299,7 +1299,7 @@
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span><span class="op">&gt;</span> <span class="ident">SelectableExpression</span><span class="op">&lt;</span>
             <span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">LeftOuter</span><span class="op">&gt;</span>,
         <span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span> <span class="kw">where</span>
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>: <span class="ident">AppearsOnTable</span><span class="op">&lt;</span><span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">LeftOuter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>: <span class="ident">AppearsOnTable</span><span class="op">&lt;</span><span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">LeftOuter</span><span class="op">&gt;&gt;</span>,
             <span class="self">Self</span>: <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">Left</span><span class="op">&gt;</span>,
             <span class="comment">// If our table is on the right side of this join, only</span>
             <span class="comment">// `Nullable&lt;Self&gt;` can be selected</span>
@@ -1310,25 +1310,25 @@
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span><span class="op">&gt;</span> <span class="ident">SelectableExpression</span><span class="op">&lt;</span>
             <span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Inner</span><span class="op">&gt;</span>,
         <span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span> <span class="kw">where</span>
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>: <span class="ident">AppearsOnTable</span><span class="op">&lt;</span><span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Inner</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>: <span class="ident">AppearsOnTable</span><span class="op">&lt;</span><span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Inner</span><span class="op">&gt;&gt;</span>,
             <span class="ident">Left</span>: <span class="ident">AppearsInFromClause</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">table</span><span class="op">&gt;</span>,
             <span class="ident">Right</span>: <span class="ident">AppearsInFromClause</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">table</span><span class="op">&gt;</span>,
             (<span class="ident">Left</span>::<span class="ident">Count</span>, <span class="ident">Right</span>::<span class="ident">Count</span>): <span class="ident">Pick</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span><span class="op">&gt;</span>,
             <span class="self">Self</span>: <span class="ident">SelectableExpression</span><span class="op">&lt;</span>
-                <span class="op">&lt;</span>(<span class="ident">Left</span>::<span class="ident">Count</span>, <span class="ident">Right</span>::<span class="ident">Count</span>) <span class="kw">as</span> <span class="ident">Pick</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Selection</span>,
+                <span class="op">&lt;</span>(<span class="ident">Left</span>::<span class="ident">Count</span>, <span class="ident">Right</span>::<span class="ident">Count</span>) <span class="kw">as</span> <span class="ident">Pick</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span><span class="op">&gt;&gt;</span>::<span class="ident">Selection</span>,
             <span class="op">&gt;</span>,
         {
         }
 
         <span class="comment">// FIXME: Remove this when overlapping marker traits are stable</span>
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span> <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span> <span class="kw">where</span>
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>: <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">Join</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">AppearsOnTable</span><span class="op">&lt;</span><span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span> <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span> <span class="kw">where</span>
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>: <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">Join</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">AppearsOnTable</span><span class="op">&lt;</span><span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;&gt;</span>,
         {
         }
 
         <span class="comment">// FIXME: Remove this when overlapping marker traits are stable</span>
-        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">From</span><span class="op">&gt;</span> <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">From</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span> <span class="kw">where</span>
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>: <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">From</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">AppearsOnTable</span><span class="op">&lt;</span><span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">From</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">From</span><span class="op">&gt;</span> <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">From</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span> <span class="kw">where</span>
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>: <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">From</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">AppearsOnTable</span><span class="op">&lt;</span><span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">From</span><span class="op">&gt;&gt;</span>,
         {
         }
 
@@ -1352,7 +1352,7 @@
         {
             <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">dsl</span>::<span class="ident">Eq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>;
 
-            <span class="kw">fn</span> <span class="ident">eq_all</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+            <span class="kw">fn</span> <span class="ident">eq_all</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
                 <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">expression</span>::<span class="ident">operators</span>::<span class="ident">Eq</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">rhs</span>.<span class="ident">as_expression</span>())
             }
         }
@@ -1520,7 +1520,7 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">table</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {
         <span class="macro">__diesel_parse_table</span><span class="macro">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>)<span class="kw-2">*</span>],
             <span class="ident">imports</span> <span class="op">=</span> [],
@@ -1536,7 +1536,7 @@
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">__diesel_invalid_table_syntax</span> {
-    () <span class="op">=</span><span class="op">&gt;</span> {
+    () <span class="op">=&gt;</span> {
         <span class="macro">compile_error</span><span class="macro">!</span>(
             <span class="string">&quot;Invalid `table!` syntax. Please see the `table!` macro docs for more info.&quot;</span>
         );
@@ -1551,7 +1551,7 @@
         <span class="ident">tokens</span> <span class="op">=</span> [<span class="kw">use</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">import</span>:<span class="ident">tt</span>)::<span class="op">+</span>; $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>],
         <span class="ident">imports</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">imports</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>],
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_table</span><span class="op">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>],
             <span class="ident">imports</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">imports</span>)<span class="op">*</span> <span class="kw">use</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">import</span>)::<span class="op">+</span>;],
@@ -1566,7 +1566,7 @@
         <span class="ident">meta</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">tt</span>,
         <span class="ident">sql_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ignore</span>:<span class="ident">tt</span>,
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_table</span><span class="op">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>],
             <span class="ident">imports</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">imports</span>,
@@ -1582,7 +1582,7 @@
         <span class="ident">imports</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">imports</span>:<span class="ident">tt</span>,
         <span class="ident">meta</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>],
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_table</span><span class="op">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>],
             <span class="ident">imports</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">imports</span>,
@@ -1600,7 +1600,7 @@
         <span class="ident">name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">tt</span>,
         <span class="ident">schema</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ignore</span>:<span class="ident">tt</span>,
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_table</span><span class="op">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>],
             <span class="ident">imports</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">imports</span>,
@@ -1620,7 +1620,7 @@
         <span class="ident">sql_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sql_name</span>:<span class="ident">tt</span>,
         <span class="ident">name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ignore</span>:<span class="ident">tt</span>,
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_table</span><span class="op">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>],
             <span class="ident">imports</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">imports</span>,
@@ -1641,7 +1641,7 @@
         <span class="ident">schema</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">schema</span>:<span class="ident">tt</span>,
         <span class="ident">primary_key</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ignore</span>:<span class="ident">tt</span>,
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_table</span><span class="op">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>)<span class="kw-2">*</span>],
             <span class="ident">imports</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">imports</span>,
@@ -1659,7 +1659,7 @@
         <span class="ident">tokens</span> <span class="op">=</span> [{$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">columns</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>}],
         <span class="ident">imports</span> <span class="op">=</span> [],
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_table</span><span class="op">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> [{$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">columns</span>)<span class="kw-2">*</span>}],
             <span class="ident">imports</span> <span class="op">=</span> [<span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">sql_types</span>::<span class="kw-2">*</span>;],
@@ -1675,7 +1675,7 @@
         <span class="ident">sql_name</span> <span class="op">=</span> <span class="ident">unknown</span>,
         <span class="ident">name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">tt</span>,
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_table</span><span class="op">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> [{$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">columns</span>)<span class="kw-2">*</span>}],
             <span class="ident">imports</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">imports</span>,
@@ -1690,7 +1690,7 @@
     (
         <span class="ident">tokens</span> <span class="op">=</span> [{$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">columns</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>}],
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_columns</span><span class="op">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">columns</span>)<span class="kw-2">*</span>],
             <span class="ident">table</span> <span class="op">=</span> { $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>)<span class="op">*</span> },
@@ -1699,7 +1699,7 @@
     };
 
     <span class="comment">// Invalid syntax</span>
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_invalid_table_syntax</span><span class="op">!</span>();
     }
 }
@@ -1712,11 +1712,11 @@
     (
         <span class="ident">tokens</span> <span class="op">=</span> [
             $(#<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">tt</span>)<span class="op">*</span>
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">-</span><span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">tt</span>)::<span class="op">*</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_params</span>:<span class="ident">tt</span>)::<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="kw-2">*</span>,
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">-&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">tt</span>)::<span class="op">*</span> $(<span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_params</span>:<span class="ident">tt</span>)::<span class="kw-2">*</span><span class="op">&gt;</span>)<span class="kw-2">*</span>,
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="op">*</span>
         ],
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_columns</span><span class="op">!</span> {
             <span class="ident">current_column</span> <span class="op">=</span> {
                 <span class="ident">unchecked_meta</span> <span class="op">=</span> [$(#<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>)<span class="kw-2">*</span>],
@@ -1734,11 +1734,11 @@
     (
         <span class="ident">tokens</span> <span class="op">=</span> [
             $(#<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>:<span class="ident">tt</span>)<span class="op">*</span>
-            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>,
+            <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">-&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span>,
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rest</span>:<span class="ident">tt</span>)<span class="op">*</span>
         ],
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_columns</span><span class="op">!</span> {
             <span class="ident">current_column</span> <span class="op">=</span> {
                 <span class="ident">unchecked_meta</span> <span class="op">=</span> [$(#<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>)<span class="kw-2">*</span>],
@@ -1762,7 +1762,7 @@
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">current_column</span>:<span class="ident">tt</span>)<span class="op">*</span>
         },
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_columns</span><span class="op">!</span> {
             <span class="ident">current_column</span> <span class="op">=</span> {
                 <span class="ident">unchecked_meta</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>)<span class="kw-2">*</span>],
@@ -1785,7 +1785,7 @@
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">current_column</span>:<span class="ident">tt</span>)<span class="op">*</span>
         },
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_columns</span><span class="op">!</span> {
             <span class="ident">current_column</span> <span class="op">=</span> {
                 <span class="ident">unchecked_meta</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">unchecked_meta</span>)<span class="kw-2">*</span>],
@@ -1809,7 +1809,7 @@
         <span class="ident">table</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table</span>:<span class="ident">tt</span>,
         <span class="ident">columns</span> <span class="op">=</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">columns</span>:<span class="ident">tt</span>,)<span class="kw-2">*</span>],
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_parse_columns</span><span class="op">!</span> {
             <span class="ident">tokens</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>,
             <span class="ident">table</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table</span>,
@@ -1822,12 +1822,12 @@
     (
         <span class="ident">tokens</span> <span class="op">=</span> [],
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="op">*</span>
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_table_impl</span><span class="op">!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>)<span class="kw-2">*</span>);
     };
 
     <span class="comment">// Invalid syntax</span>
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__diesel_invalid_table_syntax</span><span class="op">!</span>();
     }
 }
@@ -1850,7 +1850,7 @@
             <span class="ident">ty</span> <span class="op">=</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_ty</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">column</span>:<span class="ident">tt</span>)<span class="op">*</span>
         },)<span class="op">+</span>],
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">meta</span>)<span class="op">*</span>
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_name</span> {
             <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
@@ -1873,7 +1873,7 @@
             <span class="doccomment">/// glob imported for functions which only deal with one table.</span>
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">dsl</span> {
                 $(<span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">static_cond</span><span class="op">!</span> {
-                    <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_name</span> <span class="op">=</span><span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span> {
+                    <span class="kw">if</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_name</span> <span class="op">==</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span> {
                         <span class="macro">compile_error</span><span class="macro">!</span>(<span class="macro">concat</span><span class="macro">!</span>(
                             <span class="string">&quot;Column `&quot;</span>,
                             <span class="macro">stringify</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>),
@@ -1909,7 +1909,7 @@
                 <span class="doccomment">/// Represents `table_name.*`, which is sometimes necessary</span>
                 <span class="doccomment">/// for efficient count queries. It cannot be used in place of</span>
                 <span class="doccomment">/// `all_columns`</span>
-                <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">star</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">star</span> {
+                <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">star</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">star</span> {
                     <span class="ident">star</span>
                 }
             }
@@ -1926,7 +1926,7 @@
                 <span class="kw">type</span> <span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">SqlType</span>;
                 <span class="kw">type</span> <span class="ident">Query</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 
-                <span class="kw">fn</span> <span class="ident">as_query</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Query</span> {
+                <span class="kw">fn</span> <span class="ident">as_query</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Query</span> {
                     <span class="ident">SelectStatement</span>::<span class="ident">simple</span>(<span class="self">self</span>)
                 }
             }
@@ -1935,11 +1935,11 @@
                 <span class="kw">type</span> <span class="ident">PrimaryKey</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">primary_key</span>;
                 <span class="kw">type</span> <span class="ident">AllColumns</span> <span class="op">=</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>,)<span class="op">+</span>);
 
-                <span class="kw">fn</span> <span class="ident">primary_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">PrimaryKey</span> {
+                <span class="kw">fn</span> <span class="ident">primary_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">PrimaryKey</span> {
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">primary_key</span>
                 }
 
-                <span class="kw">fn</span> <span class="ident">all_columns</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">AllColumns</span> {
+                <span class="kw">fn</span> <span class="ident">all_columns</span>() <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">AllColumns</span> {
                     ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>,)<span class="op">+</span>)
                 }
             }
@@ -1947,15 +1947,15 @@
             <span class="kw">impl</span> <span class="ident">HasTable</span> <span class="kw">for</span> <span class="ident">table</span> {
                 <span class="kw">type</span> <span class="ident">Table</span> <span class="op">=</span> <span class="self">Self</span>;
 
-                <span class="kw">fn</span> <span class="ident">table</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Table</span> {
+                <span class="kw">fn</span> <span class="ident">table</span>() <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Table</span> {
                     <span class="ident">table</span>
                 }
             }
 
             <span class="kw">impl</span> <span class="ident">IntoUpdateTarget</span> <span class="kw">for</span> <span class="ident">table</span> {
-                <span class="kw">type</span> <span class="ident">WhereClause</span> <span class="op">=</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">AsQuery</span><span class="op">&gt;</span>::<span class="ident">Query</span> <span class="kw">as</span> <span class="ident">IntoUpdateTarget</span><span class="op">&gt;</span>::<span class="ident">WhereClause</span>;
+                <span class="kw">type</span> <span class="ident">WhereClause</span> <span class="op">=</span> <span class="op">&lt;&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">AsQuery</span><span class="op">&gt;</span>::<span class="ident">Query</span> <span class="kw">as</span> <span class="ident">IntoUpdateTarget</span><span class="op">&gt;</span>::<span class="ident">WhereClause</span>;
 
-                <span class="kw">fn</span> <span class="ident">into_update_target</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UpdateTarget</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Table</span>, <span class="self">Self</span>::<span class="ident">WhereClause</span><span class="op">&gt;</span> {
+                <span class="kw">fn</span> <span class="ident">into_update_target</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">UpdateTarget</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Table</span>, <span class="self">Self</span>::<span class="ident">WhereClause</span><span class="op">&gt;</span> {
                     <span class="self">self</span>.<span class="ident">as_query</span>().<span class="ident">into_update_target</span>()
                 }
             }
@@ -1968,48 +1968,48 @@
                 <span class="kw">type</span> <span class="ident">Count</span> <span class="op">=</span> <span class="ident">Never</span>;
             }
 
-            <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">table</span> <span class="kw">where</span>
+            <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">table</span> <span class="kw">where</span>
                 <span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span>: <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;</span>,
             {
                 <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span>;
-                <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">OnClause</span>;
+                <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;&gt;</span>::<span class="ident">OnClause</span>;
 
-                <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
+                <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">Join</span><span class="op">&lt;</span><span class="ident">Left</span>, <span class="ident">Right</span>, <span class="ident">Kind</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
                     <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">on_clause</span>) <span class="op">=</span> <span class="ident">Join</span>::<span class="ident">join_target</span>(<span class="ident">table</span>);
                     (<span class="ident">rhs</span>, <span class="ident">on_clause</span>)
                 }
             }
 
-            <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">table</span> <span class="kw">where</span>
+            <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">table</span> <span class="kw">where</span>
                 <span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span>: <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;</span>,
             {
                 <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span>;
-                <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">OnClause</span>;
+                <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;&gt;</span>::<span class="ident">OnClause</span>;
 
-                <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
+                <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">JoinOn</span><span class="op">&lt;</span><span class="ident">Join</span>, <span class="ident">On</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
                     <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">on_clause</span>) <span class="op">=</span> <span class="ident">JoinOn</span>::<span class="ident">join_target</span>(<span class="ident">table</span>);
                     (<span class="ident">rhs</span>, <span class="ident">on_clause</span>)
                 }
             }
 
-            <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">L</span>, <span class="ident">Of</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">L</span>, <span class="ident">Of</span>, <span class="ident">G</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">table</span> <span class="kw">where</span>
+            <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">L</span>, <span class="ident">Of</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">L</span>, <span class="ident">Of</span>, <span class="ident">G</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">table</span> <span class="kw">where</span>
                 <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">L</span>, <span class="ident">Of</span>, <span class="ident">G</span><span class="op">&gt;</span>: <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;</span>,
             {
                 <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">L</span>, <span class="ident">Of</span>, <span class="ident">G</span><span class="op">&gt;</span>;
-                <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">L</span>, <span class="ident">Of</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">OnClause</span>;
+                <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">L</span>, <span class="ident">Of</span>, <span class="ident">G</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;&gt;</span>::<span class="ident">OnClause</span>;
 
-                <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">L</span>, <span class="ident">Of</span>, <span class="ident">G</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
+                <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">SelectStatement</span><span class="op">&lt;</span><span class="ident">F</span>, <span class="ident">S</span>, <span class="ident">D</span>, <span class="ident">W</span>, <span class="ident">O</span>, <span class="ident">L</span>, <span class="ident">Of</span>, <span class="ident">G</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
                     <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">on_clause</span>) <span class="op">=</span> <span class="ident">SelectStatement</span>::<span class="ident">join_target</span>(<span class="ident">table</span>);
                     (<span class="ident">rhs</span>, <span class="ident">on_clause</span>)
                 }
             }
 
-            <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">QS</span>, <span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">BoxedSelectStatement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">QS</span>, <span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">table</span> <span class="kw">where</span>
+            <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">QS</span>, <span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">BoxedSelectStatement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">QS</span>, <span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">table</span> <span class="kw">where</span>
                 <span class="ident">BoxedSelectStatement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">QS</span>, <span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span>: <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;</span>,
             {
                 <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">BoxedSelectStatement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">QS</span>, <span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span>;
-                <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">BoxedSelectStatement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">QS</span>, <span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">OnClause</span>;
-                <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">BoxedSelectStatement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">QS</span>, <span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
+                <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">BoxedSelectStatement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">QS</span>, <span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">JoinTo</span><span class="op">&lt;</span><span class="ident">table</span><span class="op">&gt;&gt;</span>::<span class="ident">OnClause</span>;
+                <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="ident">BoxedSelectStatement</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">QS</span>, <span class="ident">ST</span>, <span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
                     <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">on_clause</span>) <span class="op">=</span> <span class="ident">BoxedSelectStatement</span>::<span class="ident">join_target</span>(<span class="ident">table</span>);
                     (<span class="ident">rhs</span>, <span class="ident">on_clause</span>)
                 }
@@ -2021,9 +2021,9 @@
             <span class="kw">where</span>
                 <span class="op">&lt;</span><span class="ident">table</span> <span class="kw">as</span> <span class="ident">AsQuery</span><span class="op">&gt;</span>::<span class="ident">Query</span>: <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
             {
-                <span class="kw">type</span> <span class="ident">Values</span> <span class="op">=</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">table</span> <span class="kw">as</span> <span class="ident">AsQuery</span><span class="op">&gt;</span>::<span class="ident">Query</span> <span class="kw">as</span> <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Values</span>;
+                <span class="kw">type</span> <span class="ident">Values</span> <span class="op">=</span> <span class="op">&lt;&lt;</span><span class="ident">table</span> <span class="kw">as</span> <span class="ident">AsQuery</span><span class="op">&gt;</span>::<span class="ident">Query</span> <span class="kw">as</span> <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>::<span class="ident">Values</span>;
 
-                <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Values</span> {
+                <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Values</span> {
                     <span class="self">self</span>.<span class="ident">as_query</span>().<span class="ident">values</span>()
                 }
             }
@@ -2032,9 +2032,9 @@
             <span class="kw">where</span>
                 <span class="ident">table</span>: <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
             {
-                <span class="kw">type</span> <span class="ident">Values</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">table</span> <span class="kw">as</span> <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Values</span>;
+                <span class="kw">type</span> <span class="ident">Values</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">table</span> <span class="kw">as</span> <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>::<span class="ident">Values</span>;
 
-                <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Values</span> {
+                <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Values</span> {
                     (<span class="kw-2">*</span><span class="self">self</span>).<span class="ident">values</span>()
                 }
             }
@@ -2062,7 +2062,7 @@
                 <span class="kw">where</span>
                     ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>,)<span class="op">+</span>): <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">expression</span>::<span class="ident">ValidGrouping</span><span class="op">&lt;</span><span class="ident">__GB</span><span class="op">&gt;</span>,
                 {
-                    <span class="kw">type</span> <span class="ident">IsAggregate</span> <span class="op">=</span> <span class="op">&lt;</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>,)<span class="op">+</span>) <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">expression</span>::<span class="ident">ValidGrouping</span><span class="op">&lt;</span><span class="ident">__GB</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">IsAggregate</span>;
+                    <span class="kw">type</span> <span class="ident">IsAggregate</span> <span class="op">=</span> <span class="op">&lt;</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">column_name</span>,)<span class="op">+</span>) <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">expression</span>::<span class="ident">ValidGrouping</span><span class="op">&lt;</span><span class="ident">__GB</span><span class="op">&gt;&gt;</span>::<span class="ident">IsAggregate</span>;
                 }
 
                 <span class="kw">impl</span> <span class="ident">Expression</span> <span class="kw">for</span> <span class="ident">star</span> {
@@ -2073,7 +2073,7 @@
                     <span class="op">&lt;</span><span class="ident">table</span> <span class="kw">as</span> <span class="ident">QuerySource</span><span class="op">&gt;</span>::<span class="ident">FromClause</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
                 {
                     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
-                    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">__out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+                    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">__out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
                         <span class="ident">table</span>.<span class="ident">from_clause</span>().<span class="ident">walk_ast</span>(<span class="ident">__out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
                         <span class="ident">__out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;.*&quot;</span>);
                         <span class="prelude-val">Ok</span>(())
@@ -2101,22 +2101,22 @@
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">__diesel_table_query_source_impl</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_struct</span>:<span class="ident">ident</span>, <span class="ident">public</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_name</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_struct</span>:<span class="ident">ident</span>, <span class="ident">public</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_name</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> {
         <span class="kw">impl</span> <span class="ident">QuerySource</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_struct</span> {
             <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="ident">Identifier</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>;
             <span class="kw">type</span> <span class="ident">DefaultSelection</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Table</span><span class="op">&gt;</span>::<span class="ident">AllColumns</span>;
 
-            <span class="kw">fn</span> <span class="ident">from_clause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">FromClause</span> {
+            <span class="kw">fn</span> <span class="ident">from_clause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">FromClause</span> {
                 <span class="ident">Identifier</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_name</span>)
             }
 
-            <span class="kw">fn</span> <span class="ident">default_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">DefaultSelection</span> {
+            <span class="kw">fn</span> <span class="ident">default_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">DefaultSelection</span> {
                 <span class="self">Self</span>::<span class="ident">all_columns</span>()
             }
         }
     };
 
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_struct</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">schema_name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_name</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_struct</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">schema_name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_name</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> {
         <span class="kw">impl</span> <span class="ident">QuerySource</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_struct</span> {
             <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">query_builder</span>::<span class="ident">nodes</span>::<span class="ident">InfixNode</span><span class="op">&lt;</span>
                 <span class="lifetime">&#39;static</span>,
@@ -2125,7 +2125,7 @@
             <span class="op">&gt;</span>;
             <span class="kw">type</span> <span class="ident">DefaultSelection</span> <span class="op">=</span> <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">Table</span><span class="op">&gt;</span>::<span class="ident">AllColumns</span>;
 
-            <span class="kw">fn</span> <span class="ident">from_clause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">FromClause</span> {
+            <span class="kw">fn</span> <span class="ident">from_clause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">FromClause</span> {
                 <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">query_builder</span>::<span class="ident">nodes</span>::<span class="ident">InfixNode</span>::<span class="ident">new</span>(
                     <span class="ident">Identifier</span>(<span class="macro">stringify</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">schema_name</span>)),
                     <span class="ident">Identifier</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">table_name</span>),
@@ -2133,7 +2133,7 @@
                 )
             }
 
-            <span class="kw">fn</span> <span class="ident">default_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">DefaultSelection</span> {
+            <span class="kw">fn</span> <span class="ident">default_selection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">DefaultSelection</span> {
                 <span class="self">Self</span>::<span class="ident">all_columns</span>()
             }
         }
@@ -2205,16 +2205,16 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">joinable</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">child</span>:<span class="ident">ident</span>)::<span class="op">*</span> <span class="op">-</span><span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>:<span class="ident">ident</span>)::<span class="op">*</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">source</span>:<span class="ident">ident</span>)) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">joinable_inner</span><span class="macro">!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">child</span>)::<span class="op">*</span> ::<span class="ident">table</span> <span class="op">=</span><span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>)::<span class="op">*</span> ::<span class="ident">table</span> : ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">child</span>)::<span class="op">*</span> ::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">source</span> <span class="op">=</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>)::<span class="op">*</span> ::<span class="ident">table</span>));
-        <span class="macro">joinable_inner</span><span class="macro">!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>)::<span class="op">*</span> ::<span class="ident">table</span> <span class="op">=</span><span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">child</span>)::<span class="op">*</span> ::<span class="ident">table</span> : ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">child</span>)::<span class="op">*</span> ::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">source</span> <span class="op">=</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>)::<span class="op">*</span> ::<span class="ident">table</span>));
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">child</span>:<span class="ident">ident</span>)::<span class="op">*</span> <span class="op">-&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>:<span class="ident">ident</span>)::<span class="op">*</span> (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">source</span>:<span class="ident">ident</span>)) <span class="op">=&gt;</span> {
+        <span class="macro">joinable_inner</span><span class="macro">!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">child</span>)::<span class="op">*</span> ::<span class="ident">table</span> <span class="op">=&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>)::<span class="op">*</span> ::<span class="ident">table</span> : ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">child</span>)::<span class="op">*</span> ::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">source</span> <span class="op">=</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>)::<span class="op">*</span> ::<span class="ident">table</span>));
+        <span class="macro">joinable_inner</span><span class="macro">!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>)::<span class="op">*</span> ::<span class="ident">table</span> <span class="op">=&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">child</span>)::<span class="op">*</span> ::<span class="ident">table</span> : ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">child</span>)::<span class="op">*</span> ::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">source</span> <span class="op">=</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent</span>)::<span class="op">*</span> ::<span class="ident">table</span>));
     }
 }
 
 <span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">joinable_inner</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">left_table</span>:<span class="ident">path</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_table</span>:<span class="ident">path</span> : (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">foreign_key</span>:<span class="ident">path</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent_table</span>:<span class="ident">path</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">left_table</span>:<span class="ident">path</span> <span class="op">=&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_table</span>:<span class="ident">path</span> : (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">foreign_key</span>:<span class="ident">path</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parent_table</span>:<span class="ident">path</span>)) <span class="op">=&gt;</span> {
         <span class="macro">joinable_inner</span><span class="macro">!</span>(
             <span class="ident">left_table_ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">left_table</span>,
             <span class="ident">right_table_ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_table</span>,
@@ -2233,7 +2233,7 @@
         <span class="ident">foreign_key</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">foreign_key</span>:<span class="ident">path</span>,
         <span class="ident">primary_key_ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">primary_key_ty</span>:<span class="ident">ty</span>,
         <span class="ident">primary_key_expr</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">primary_key_expr</span>:<span class="ident">expr</span>,
-    ) <span class="op">=</span><span class="op">&gt;</span> {
+    ) <span class="op">=&gt;</span> {
         <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">JoinTo</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_table_ty</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">left_table_ty</span> {
             <span class="kw">type</span> <span class="ident">FromClause</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_table_ty</span>;
             <span class="kw">type</span> <span class="ident">OnClause</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">dsl</span>::<span class="ident">Eq</span><span class="op">&lt;</span>
@@ -2241,7 +2241,7 @@
                 <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">expression</span>::<span class="ident">nullable</span>::<span class="ident">Nullable</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">primary_key_ty</span><span class="op">&gt;</span>,
             <span class="op">&gt;</span>;
 
-            <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_table_ty</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
+            <span class="kw">fn</span> <span class="ident">join_target</span>(<span class="ident">rhs</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_table_ty</span>) <span class="op">-&gt;</span> (<span class="self">Self</span>::<span class="ident">FromClause</span>, <span class="self">Self</span>::<span class="ident">OnClause</span>) {
                 <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::{<span class="macro-nonterminal">ExpressionMethods</span>, <span class="ident">NullableExpressionMethods</span>};
 
                 (
@@ -2282,7 +2282,7 @@
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">allow_tables_to_appear_in_same_query</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">left_mod</span>:<span class="ident">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_mod</span>:<span class="ident">ident</span>),<span class="op">+</span> $(,)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">left_mod</span>:<span class="ident">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_mod</span>:<span class="ident">ident</span>),<span class="op">+</span> $(,)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {
         $(
             <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">query_source</span>::<span class="ident">AppearsInFromClause</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">left_mod</span>::<span class="ident">table</span><span class="op">&gt;</span>
                 <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_mod</span>::<span class="ident">table</span>
@@ -2299,9 +2299,9 @@
         <span class="macro">allow_tables_to_appear_in_same_query</span><span class="macro">!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">right_mod</span>,)<span class="op">+</span>);
     };
 
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">last_table</span>:<span class="ident">ident</span>,) <span class="op">=</span><span class="op">&gt;</span> {};
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">last_table</span>:<span class="ident">ident</span>,) <span class="op">=&gt;</span> {};
 
-    () <span class="op">=</span><span class="op">&gt;</span> {};
+    () <span class="op">=&gt;</span> {};
 }
 
 <span class="doccomment">/// Gets the value out of an option, or returns an error.</span>
@@ -2309,10 +2309,10 @@
 <span class="doccomment">/// This is used by `FromSql` implementations.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">not_none</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> {
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">bytes</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bytes</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">result</span>::<span class="ident">UnexpectedNullError</span>)),
+            <span class="prelude-val">Some</span>(<span class="ident">bytes</span>) <span class="op">=&gt;</span> <span class="ident">bytes</span>,
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">result</span>::<span class="ident">UnexpectedNullError</span>)),
         }
     };
 }
@@ -2334,8 +2334,8 @@
 
     <span class="macro">table</span><span class="macro">!</span> {
         <span class="ident">foo</span>.<span class="ident">bars</span> {
-            <span class="ident">id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Integer</span>,
-            <span class="ident">baz</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Text</span>,
+            <span class="ident">id</span> <span class="op">-&gt;</span> <span class="ident">Integer</span>,
+            <span class="ident">baz</span> <span class="op">-&gt;</span> <span class="ident">Text</span>,
         }
     }
 
@@ -2349,8 +2349,8 @@
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">macros</span>::<span class="ident">tests</span>::<span class="ident">my_types</span>::<span class="kw-2">*</span>;
 
         <span class="ident">table_with_custom_types</span> {
-            <span class="ident">id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Integer</span>,
-            <span class="ident">my_type</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MyCustomType</span>,
+            <span class="ident">id</span> <span class="op">-&gt;</span> <span class="ident">Integer</span>,
+            <span class="ident">my_type</span> <span class="op">-&gt;</span> <span class="ident">MyCustomType</span>,
         }
     }
 
@@ -2365,8 +2365,8 @@
             <span class="doccomment">/// Column documentation</span>
             <span class="doccomment">///</span>
             <span class="doccomment">/// some more details</span>
-            <span class="ident">a</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Integer</span>,
-            <span class="ident">my_type</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MyCustomType</span>,
+            <span class="ident">a</span> <span class="op">-&gt;</span> <span class="ident">Integer</span>,
+            <span class="ident">my_type</span> <span class="op">-&gt;</span> <span class="ident">MyCustomType</span>,
         }
     }
 
@@ -2386,28 +2386,28 @@
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="kw-2">*</span>;
 
         <span class="ident">table_with_arbitrarily_complex_types</span> {
-            <span class="ident">id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sql_types</span>::<span class="ident">Integer</span>,
-            <span class="ident">qualified_nullable</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">sql_types</span>::<span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">sql_types</span>::<span class="ident">Integer</span><span class="op">&gt;</span>,
-            <span class="ident">deeply_nested_type</span> <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">Integer</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">id</span> <span class="op">-&gt;</span> <span class="ident">sql_types</span>::<span class="ident">Integer</span>,
+            <span class="ident">qualified_nullable</span> <span class="op">-&gt;</span> <span class="ident">sql_types</span>::<span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">sql_types</span>::<span class="ident">Integer</span><span class="op">&gt;</span>,
+            <span class="ident">deeply_nested_type</span> <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Nullable</span><span class="op">&lt;</span><span class="ident">Integer</span><span class="op">&gt;&gt;</span>,
             <span class="comment">// This actually should work, but there appears to be a rustc bug</span>
             <span class="comment">// on the `AsExpression` bound for `EqAll` when the ty param is a projection</span>
             <span class="comment">// projected_type -&gt; &lt;Nullable&lt;Integer&gt; as sql_types::IntoNullable&gt;::Nullable,</span>
-            <span class="ident">random_tuple</span> <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Integer</span>, <span class="ident">Integer</span>),
+            <span class="ident">random_tuple</span> <span class="op">-&gt;</span> (<span class="ident">Integer</span>, <span class="ident">Integer</span>),
         }
     }
 
     <span class="macro">table</span><span class="macro">!</span>(
         <span class="ident">foo</span> {
             <span class="doccomment">/// Column doc</span>
-            <span class="ident">id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Integer</span>,
+            <span class="ident">id</span> <span class="op">-&gt;</span> <span class="ident">Integer</span>,
 
             <span class="attribute">#[<span class="ident">sql_name</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>]</span>
             <span class="doccomment">/// Also important to document this column</span>
-            <span class="ident">mytype</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Integer</span>,
+            <span class="ident">mytype</span> <span class="op">-&gt;</span> <span class="ident">Integer</span>,
 
             <span class="doccomment">/// And this one</span>
             <span class="attribute">#[<span class="ident">sql_name</span> <span class="op">=</span> <span class="string">&quot;bleh&quot;</span>]</span>
-            <span class="ident">hey</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Integer</span>,
+            <span class="ident">hey</span> <span class="op">-&gt;</span> <span class="ident">Integer</span>,
         }
     );
 
@@ -2454,7 +2454,7 @@
         <span class="attribute">#[<span class="ident">sql_name</span><span class="op">=</span><span class="string">&quot;mod&quot;</span>]</span>
         <span class="doccomment">/// Some more documentation</span>
         <span class="ident">bar</span> {
-            <span class="ident">id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Integer</span>,
+            <span class="ident">id</span> <span class="op">-&gt;</span> <span class="ident">Integer</span>,
         }
     );
 

@@ -134,17 +134,17 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Field</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_struct_field</span>(<span class="ident">field</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Field</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_struct_field</span>(<span class="ident">field</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Field</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">column_name_from_attribute</span> <span class="op">=</span>
             <span class="ident">MetaItem</span>::<span class="ident">with_name</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">attrs</span>, <span class="string">&quot;column_name&quot;</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">expect_ident_value</span>());
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">field</span>.<span class="ident">ident</span>.<span class="ident">clone</span>() {
-            <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">x</span>) <span class="op">=&gt;</span> {
                 <span class="comment">// https://github.com/rust-lang/rust/issues/47983#issuecomment-362817105</span>
                 <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">x</span>.<span class="ident">span</span>();
                 <span class="ident">x</span>.<span class="ident">set_span</span>(<span class="ident">fix_span</span>(<span class="ident">span</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>()));
                 <span class="ident">FieldName</span>::<span class="ident">Named</span>(<span class="ident">x</span>)
             }
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">FieldName</span>::<span class="ident">Unnamed</span>(<span class="ident">syn</span>::<span class="ident">Index</span> {
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">FieldName</span>::<span class="ident">Unnamed</span>(<span class="ident">syn</span>::<span class="ident">Index</span> {
                 <span class="ident">index</span>: <span class="ident">index</span> <span class="kw">as</span> <span class="ident">u32</span>,
                 <span class="comment">// https://github.com/rust-lang/rust/issues/47312</span>
                 <span class="ident">span</span>: <span class="ident">Span</span>::<span class="ident">call_site</span>(),
@@ -153,7 +153,7 @@
         <span class="kw">let</span> <span class="ident">sql_type</span> <span class="op">=</span> <span class="ident">MetaItem</span>::<span class="ident">with_name</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">attrs</span>, <span class="string">&quot;sql_type&quot;</span>)
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">ty_value</span>().<span class="ident">map_err</span>(<span class="ident">Diagnostic</span>::<span class="ident">emit</span>).<span class="ident">ok</span>());
         <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">MetaItem</span>::<span class="ident">with_name</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">attrs</span>, <span class="string">&quot;diesel&quot;</span>)
-            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">MetaItem</span>::<span class="ident">empty</span>(<span class="string">&quot;diesel&quot;</span>));
+            .<span class="ident">unwrap_or_else</span>(<span class="op">||</span> <span class="ident">MetaItem</span>::<span class="ident">empty</span>(<span class="string">&quot;diesel&quot;</span>));
         <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">field</span>.<span class="ident">span</span>();
 
         <span class="self">Self</span> {
@@ -166,12 +166,12 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">column_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn</span>::<span class="ident">Ident</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">column_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">syn</span>::<span class="ident">Ident</span> {
         <span class="self">self</span>.<span class="ident">column_name_from_attribute</span>
             .<span class="ident">clone</span>()
-            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">name</span> {
-                <span class="ident">FieldName</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>.<span class="ident">clone</span>(),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+            .<span class="ident">unwrap_or_else</span>(<span class="op">||</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">name</span> {
+                <span class="ident">FieldName</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="ident">x</span>) <span class="op">=&gt;</span> <span class="ident">x</span>.<span class="ident">clone</span>(),
+                <span class="kw">_</span> <span class="op">=&gt;</span> {
                     <span class="self">self</span>.<span class="ident">span</span>
                         .<span class="ident">error</span>(
                             <span class="string">&quot;All fields of tuple structs must be annotated with `#[column_name]`&quot;</span>,
@@ -182,11 +182,11 @@
             })
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_flag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">flag</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_flag</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">flag</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">has_flag</span>(<span class="ident">flag</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ty_for_deserialize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="ident">syn</span>::<span class="ident">Type</span><span class="op">&gt;</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ty_for_deserialize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="ident">syn</span>::<span class="ident">Type</span><span class="op">&gt;</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">meta</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">flags</span>.<span class="ident">nested_item</span>(<span class="string">&quot;deserialize_as&quot;</span>)<span class="question-mark">?</span> {
             <span class="ident">meta</span>.<span class="ident">ty_value</span>().<span class="ident">map</span>(<span class="ident">Cow</span>::<span class="ident">Owned</span>)
         } <span class="kw">else</span> {
@@ -201,24 +201,24 @@
 }
 
 <span class="kw">impl</span> <span class="ident">FieldName</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assign</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">syn</span>::<span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn</span>::<span class="ident">FieldValue</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assign</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">syn</span>::<span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="ident">syn</span>::<span class="ident">FieldValue</span> {
         <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">span</span>();
         <span class="comment">// Parens are to work around https://github.com/rust-lang/rust/issues/47311</span>
-        <span class="kw">let</span> <span class="ident">tokens</span> <span class="op">=</span> <span class="macro">quote_spanned</span><span class="macro">!</span>(<span class="ident">span</span><span class="op">=</span><span class="op">&gt;</span> #<span class="self">self</span>: (#<span class="ident">expr</span>));
+        <span class="kw">let</span> <span class="ident">tokens</span> <span class="op">=</span> <span class="macro">quote_spanned</span><span class="macro">!</span>(<span class="ident">span</span><span class="op">=&gt;</span> #<span class="self">self</span>: (#<span class="ident">expr</span>));
         <span class="macro">parse_quote</span><span class="macro">!</span>(#<span class="ident">tokens</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">access</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">access</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span> {
         <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">span</span>();
         <span class="comment">// Span of the dot is important due to</span>
         <span class="comment">// https://github.com/rust-lang/rust/issues/47312</span>
-        <span class="macro">quote_spanned</span><span class="macro">!</span>(<span class="ident">span</span><span class="op">=</span><span class="op">&gt;</span> .#<span class="self">self</span>)
+        <span class="macro">quote_spanned</span><span class="macro">!</span>(<span class="ident">span</span><span class="op">=&gt;</span> .#<span class="self">self</span>)
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">span</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Span</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">span</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Span</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">FieldName</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>.<span class="ident">span</span>(),
-            <span class="ident">FieldName</span>::<span class="ident">Unnamed</span>(<span class="kw-2">ref</span> <span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>.<span class="ident">span</span>,
+            <span class="ident">FieldName</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="ident">x</span>) <span class="op">=&gt;</span> <span class="ident">x</span>.<span class="ident">span</span>(),
+            <span class="ident">FieldName</span>::<span class="ident">Unnamed</span>(<span class="kw-2">ref</span> <span class="ident">x</span>) <span class="op">=&gt;</span> <span class="ident">x</span>.<span class="ident">span</span>,
         }
     }
 }
@@ -226,8 +226,8 @@
 <span class="kw">impl</span> <span class="ident">ToTokens</span> <span class="kw">for</span> <span class="ident">FieldName</span> {
     <span class="kw">fn</span> <span class="ident">to_tokens</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tokens</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span>) {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">FieldName</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>.<span class="ident">to_tokens</span>(<span class="ident">tokens</span>),
-            <span class="ident">FieldName</span>::<span class="ident">Unnamed</span>(<span class="kw-2">ref</span> <span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>.<span class="ident">to_tokens</span>(<span class="ident">tokens</span>),
+            <span class="ident">FieldName</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="ident">x</span>) <span class="op">=&gt;</span> <span class="ident">x</span>.<span class="ident">to_tokens</span>(<span class="ident">tokens</span>),
+            <span class="ident">FieldName</span>::<span class="ident">Unnamed</span>(<span class="kw-2">ref</span> <span class="ident">x</span>) <span class="op">=&gt;</span> <span class="ident">x</span>.<span class="ident">to_tokens</span>(<span class="ident">tokens</span>),
         }
     }
 }

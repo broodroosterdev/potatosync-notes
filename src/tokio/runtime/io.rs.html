@@ -91,7 +91,7 @@
     <span class="doccomment">/// When the `io-driver` feature is **not** enabled, this is `()`.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">Handle</span> <span class="op">=</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">driver</span>::<span class="ident">Handle</span><span class="op">&gt;</span>;
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create_driver</span>(<span class="ident">enable</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Driver</span>, <span class="ident">Handle</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create_driver</span>(<span class="ident">enable</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Driver</span>, <span class="ident">Handle</span>)<span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">loom</span>)]</span>
         <span class="macro">assert</span><span class="macro">!</span>(<span class="op">!</span><span class="ident">enable</span>);
 
@@ -119,7 +119,7 @@
     <span class="doccomment">/// There is no handle</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">type</span> <span class="ident">Handle</span> <span class="op">=</span> ();
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create_driver</span>(<span class="ident">_enable</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Driver</span>, <span class="ident">Handle</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">create_driver</span>(<span class="ident">_enable</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Driver</span>, <span class="ident">Handle</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">driver</span> <span class="op">=</span> <span class="ident">ParkThread</span>::<span class="ident">new</span>();
 
         <span class="prelude-val">Ok</span>((<span class="ident">driver</span>, ()))

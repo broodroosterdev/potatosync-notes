@@ -114,16 +114,16 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">serialize</span>::{<span class="self">self</span>, <span class="ident">Output</span>, <span class="ident">ToSql</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>;
 
-<span class="kw">fn</span> <span class="ident">pg_epoch</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SystemTime</span> {
+<span class="kw">fn</span> <span class="ident">pg_epoch</span>() <span class="op">-&gt;</span> <span class="ident">SystemTime</span> {
     <span class="kw">let</span> <span class="ident">thirty_years</span> <span class="op">=</span> <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">946_684_800</span>);
     <span class="ident">UNIX_EPOCH</span> <span class="op">+</span> <span class="ident">thirty_years</span>
 }
 
 <span class="kw">impl</span> <span class="ident">ToSql</span><span class="op">&lt;</span><span class="ident">sql_types</span>::<span class="ident">Timestamp</span>, <span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SystemTime</span> {
-    <span class="kw">fn</span> <span class="ident">to_sql</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Output</span><span class="op">&lt;</span><span class="ident">W</span>, <span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">serialize</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">to_sql</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Output</span><span class="op">&lt;</span><span class="ident">W</span>, <span class="ident">Pg</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">serialize</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">let</span> (<span class="ident">before_epoch</span>, <span class="ident">duration</span>) <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">duration_since</span>(<span class="ident">pg_epoch</span>()) {
-            <span class="prelude-val">Ok</span>(<span class="ident">duration</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="bool-val">false</span>, <span class="ident">duration</span>),
-            <span class="prelude-val">Err</span>(<span class="ident">time_err</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="bool-val">true</span>, <span class="ident">time_err</span>.<span class="ident">duration</span>()),
+            <span class="prelude-val">Ok</span>(<span class="ident">duration</span>) <span class="op">=&gt;</span> (<span class="bool-val">false</span>, <span class="ident">duration</span>),
+            <span class="prelude-val">Err</span>(<span class="ident">time_err</span>) <span class="op">=&gt;</span> (<span class="bool-val">true</span>, <span class="ident">time_err</span>.<span class="ident">duration</span>()),
         };
         <span class="kw">let</span> <span class="ident">time_since_epoch</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">before_epoch</span> {
             <span class="op">-</span>(<span class="ident">duration_to_usecs</span>(<span class="ident">duration</span>) <span class="kw">as</span> <span class="ident">i64</span>)
@@ -135,8 +135,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">FromSql</span><span class="op">&lt;</span><span class="ident">sql_types</span>::<span class="ident">Timestamp</span>, <span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SystemTime</span> {
-    <span class="kw">fn</span> <span class="ident">from_sql</span>(<span class="ident">bytes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">usecs_passed</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">i64</span> <span class="kw">as</span> <span class="ident">FromSql</span><span class="op">&lt;</span><span class="ident">sql_types</span>::<span class="ident">BigInt</span>, <span class="ident">Pg</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">from_sql</span>(<span class="ident">bytes</span>)<span class="question-mark">?</span>;
+    <span class="kw">fn</span> <span class="ident">from_sql</span>(<span class="ident">bytes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;&gt;</span>) <span class="op">-&gt;</span> <span class="ident">deserialize</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">usecs_passed</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">i64</span> <span class="kw">as</span> <span class="ident">FromSql</span><span class="op">&lt;</span><span class="ident">sql_types</span>::<span class="ident">BigInt</span>, <span class="ident">Pg</span><span class="op">&gt;&gt;</span>::<span class="ident">from_sql</span>(<span class="ident">bytes</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">before_epoch</span> <span class="op">=</span> <span class="ident">usecs_passed</span> <span class="op">&lt;</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">time_passed</span> <span class="op">=</span> <span class="ident">usecs_to_duration</span>(<span class="ident">usecs_passed</span>.<span class="ident">abs</span>() <span class="kw">as</span> <span class="ident">u64</span>);
 
@@ -151,7 +151,7 @@
 <span class="kw">const</span> <span class="ident">USEC_PER_SEC</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1_000_000</span>;
 <span class="kw">const</span> <span class="ident">NANO_PER_USEC</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">1_000</span>;
 
-<span class="kw">fn</span> <span class="ident">usecs_to_duration</span>(<span class="ident">usecs_passed</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Duration</span> {
+<span class="kw">fn</span> <span class="ident">usecs_to_duration</span>(<span class="ident">usecs_passed</span>: <span class="ident">u64</span>) <span class="op">-&gt;</span> <span class="ident">Duration</span> {
     <span class="kw">let</span> <span class="ident">usecs_passed</span> <span class="op">=</span> <span class="ident">usecs_passed</span>;
     <span class="kw">let</span> <span class="ident">seconds</span> <span class="op">=</span> <span class="ident">usecs_passed</span> <span class="op">/</span> <span class="ident">USEC_PER_SEC</span>;
     <span class="kw">let</span> <span class="ident">subsecond_usecs</span> <span class="op">=</span> <span class="ident">usecs_passed</span> <span class="op">%</span> <span class="ident">USEC_PER_SEC</span>;
@@ -159,7 +159,7 @@
     <span class="ident">Duration</span>::<span class="ident">new</span>(<span class="ident">seconds</span>, <span class="ident">subseconds</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">duration_to_usecs</span>(<span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+<span class="kw">fn</span> <span class="ident">duration_to_usecs</span>(<span class="ident">duration</span>: <span class="ident">Duration</span>) <span class="op">-&gt;</span> <span class="ident">u64</span> {
     <span class="kw">let</span> <span class="ident">seconds</span> <span class="op">=</span> <span class="ident">duration</span>.<span class="ident">as_secs</span>() <span class="op">*</span> <span class="ident">USEC_PER_SEC</span>;
     <span class="kw">let</span> <span class="ident">subseconds</span> <span class="op">=</span> <span class="ident">duration</span>.<span class="ident">subsec_micros</span>();
     <span class="ident">seconds</span> <span class="op">+</span> <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">subseconds</span>)
@@ -177,7 +177,7 @@
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">select</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">Timestamp</span>;
 
-    <span class="kw">fn</span> <span class="ident">connection</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PgConnection</span> {
+    <span class="kw">fn</span> <span class="ident">connection</span>() <span class="op">-&gt;</span> <span class="ident">PgConnection</span> {
         <span class="ident">dotenv</span>().<span class="ident">ok</span>();
 
         <span class="kw">let</span> <span class="ident">connection_url</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;PG_DATABASE_URL&quot;</span>)

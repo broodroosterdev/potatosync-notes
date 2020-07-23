@@ -160,7 +160,7 @@
 <span class="kw">where</span>
     <span class="ident">E</span>::<span class="ident">Output</span>: <span class="ident">ReductionEncoding</span>,
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="op">&lt;</span><span class="op">&lt;</span><span class="ident">E</span> <span class="kw">as</span> <span class="ident">ReductionEncoding</span><span class="op">&gt;</span>::<span class="ident">Output</span> <span class="kw">as</span> <span class="ident">ReductionEncoding</span><span class="op">&gt;</span>::<span class="ident">Output</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="op">&lt;&lt;</span><span class="ident">E</span> <span class="kw">as</span> <span class="ident">ReductionEncoding</span><span class="op">&gt;</span>::<span class="ident">Output</span> <span class="kw">as</span> <span class="ident">ReductionEncoding</span><span class="op">&gt;</span>::<span class="ident">Output</span>;
 }
 
 <span class="comment">// XXX: Rust doesn&#39;t allow overlapping impls,</span>

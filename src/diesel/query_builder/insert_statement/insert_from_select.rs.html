@@ -81,7 +81,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Select</span>, <span class="ident">Columns</span><span class="op">&gt;</span> <span class="ident">InsertFromSelect</span><span class="op">&lt;</span><span class="ident">Select</span>, <span class="ident">Columns</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Construct a new `InsertFromSelect` where the target column list is</span>
     <span class="doccomment">/// `T::AllColumns`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">query</span>: <span class="ident">Select</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">query</span>: <span class="ident">Select</span>) <span class="op">-&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Table</span><span class="op">&lt;</span><span class="ident">AllColumns</span> <span class="op">=</span> <span class="ident">Columns</span><span class="op">&gt;</span>,
         <span class="ident">Columns</span>: <span class="ident">SelectableExpression</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">NonAggregate</span>,
@@ -93,7 +93,7 @@
     }
 
     <span class="doccomment">/// Replace the target column list</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_columns</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">columns</span>: <span class="ident">C</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">InsertFromSelect</span><span class="op">&lt;</span><span class="ident">Select</span>, <span class="ident">C</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_columns</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">columns</span>: <span class="ident">C</span>) <span class="op">-&gt;</span> <span class="ident">InsertFromSelect</span><span class="op">&lt;</span><span class="ident">Select</span>, <span class="ident">C</span><span class="op">&gt;</span> {
         <span class="ident">InsertFromSelect</span> {
             <span class="ident">query</span>: <span class="self">self</span>.<span class="ident">query</span>,
             <span class="ident">columns</span>,
@@ -105,7 +105,7 @@
 <span class="kw">where</span>
     <span class="ident">DB</span>: <span class="ident">Backend</span>,
 {
-    <span class="kw">fn</span> <span class="ident">rows_to_insert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">rows_to_insert</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="prelude-val">None</span>
     }
 }
@@ -116,7 +116,7 @@
     <span class="ident">Columns</span>: <span class="ident">ColumnList</span> <span class="op">+</span> <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Select</span>::<span class="ident">SqlType</span><span class="op">&gt;</span>,
     <span class="ident">Select</span>: <span class="ident">Query</span> <span class="op">+</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;(&quot;</span>);
         <span class="self">self</span>.<span class="ident">columns</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;) &quot;</span>);

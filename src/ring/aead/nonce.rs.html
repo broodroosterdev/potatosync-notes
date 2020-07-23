@@ -223,7 +223,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Fails if `value` isn&#39;t `NONCE_LEN` bytes long.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_assume_unique_for_key</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">error</span>::<span class="ident">Unspecified</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_assume_unique_for_key</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">error</span>::<span class="ident">Unspecified</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">value</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="ident">NONCE_LEN</span>] <span class="op">=</span> <span class="ident">value</span>.<span class="ident">try_into</span>()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="self">Self</span>::<span class="ident">assume_unique_for_key</span>(<span class="kw-2">*</span><span class="ident">value</span>))
     }
@@ -231,13 +231,13 @@
     <span class="doccomment">/// Constructs a `Nonce` with the given value, assuming that the value is</span>
     <span class="doccomment">/// unique for the lifetime of the key it is being used with.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assume_unique_for_key</span>(<span class="ident">value</span>: [<span class="ident">u8</span>; <span class="ident">NONCE_LEN</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assume_unique_for_key</span>(<span class="ident">value</span>: [<span class="ident">u8</span>; <span class="ident">NONCE_LEN</span>]) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">value</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="ident">NONCE_LEN</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Nonce</span> {
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="ident">NONCE_LEN</span>] {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="ident">NONCE_LEN</span>] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
 }
@@ -249,7 +249,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Intentionally not `Clone` to ensure counters aren&#39;t forked.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
-<span class="kw">pub</span> <span class="ident">union</span> <span class="ident">Counter</span><span class="op">&lt;</span><span class="ident">U32</span>: <span class="ident">Layout</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>
+<span class="kw">pub</span> <span class="ident">union</span> <span class="ident">Counter</span><span class="op">&lt;</span><span class="ident">U32</span>: <span class="ident">Layout</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;&gt;</span>
 <span class="kw">where</span>
     <span class="ident">u32</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">U32</span><span class="op">&gt;</span>,
 {
@@ -258,27 +258,27 @@
     <span class="ident">encoding</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">U32</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">U32</span>: <span class="ident">Layout</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Counter</span><span class="op">&lt;</span><span class="ident">U32</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">U32</span>: <span class="ident">Layout</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;&gt;</span> <span class="ident">Counter</span><span class="op">&lt;</span><span class="ident">U32</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">u32</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">U32</span><span class="op">&gt;</span>,
 {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zero</span>(<span class="ident">nonce</span>: <span class="ident">Nonce</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">zero</span>(<span class="ident">nonce</span>: <span class="ident">Nonce</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">nonce</span>, <span class="number">0</span>)
     }
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">one</span>(<span class="ident">nonce</span>: <span class="ident">Nonce</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">one</span>(<span class="ident">nonce</span>: <span class="ident">Nonce</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">nonce</span>, <span class="number">1</span>)
     }
 
     <span class="comment">// Used by `zero()` and by the tests.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_test_vector</span>(<span class="ident">nonce</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">initial_counter</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_test_vector</span>(<span class="ident">nonce</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">initial_counter</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>::<span class="ident">new</span>(
             <span class="ident">Nonce</span>::<span class="ident">try_assume_unique_for_key</span>(<span class="ident">nonce</span>).<span class="ident">unwrap</span>(),
             <span class="ident">initial_counter</span>,
         )
     }
 
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">Nonce</span>(<span class="ident">nonce</span>): <span class="ident">Nonce</span>, <span class="ident">initial_counter</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">Nonce</span>(<span class="ident">nonce</span>): <span class="ident">Nonce</span>, <span class="ident">initial_counter</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">Self</span> {
             <span class="ident">block</span>: <span class="ident">Block</span>::<span class="ident">zero</span>(),
         };
@@ -290,7 +290,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">increment</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Iv</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">increment</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Iv</span> {
         <span class="kw">let</span> <span class="ident">block</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">block</span> };
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Iv</span>(<span class="ident">block</span>.<span class="ident">clone</span>());
 
@@ -313,23 +313,23 @@
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Iv</span>(<span class="ident">Block</span>);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">U32</span>: <span class="ident">Layout</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Counter</span><span class="op">&lt;</span><span class="ident">U32</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Iv</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">U32</span>: <span class="ident">Layout</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Counter</span><span class="op">&lt;</span><span class="ident">U32</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">Iv</span>
 <span class="kw">where</span>
     <span class="ident">u32</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">U32</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">counter</span>: <span class="ident">Counter</span><span class="op">&lt;</span><span class="ident">U32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">counter</span>: <span class="ident">Counter</span><span class="op">&lt;</span><span class="ident">U32</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="kw">unsafe</span> { <span class="ident">counter</span>.<span class="ident">block</span> })
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Iv</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assume_unique_for_key</span>(<span class="ident">a</span>: <span class="ident">Block</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">assume_unique_for_key</span>(<span class="ident">a</span>: <span class="ident">Block</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">a</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_block_less_safe</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Block</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_block_less_safe</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Block</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
 }

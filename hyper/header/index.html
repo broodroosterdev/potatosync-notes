@@ -18,7 +18,7 @@ many wrapper-style headers.</p>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">macro_use</span>]</span> <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">hyper</span>;
 <span class="kw">use</span> <span class="ident">hyper</span>::<span class="ident">header</span>::<span class="ident">Headers</span>;
-<span class="macro">header</span><span class="macro">!</span> { (<span class="ident">XRequestGuid</span>, <span class="string">&quot;X-Request-Guid&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> [<span class="ident">String</span>] }
+<span class="macro">header</span><span class="macro">!</span> { (<span class="ident">XRequestGuid</span>, <span class="string">&quot;X-Request-Guid&quot;</span>) <span class="op">=&gt;</span> [<span class="ident">String</span>] }
 
 <span class="kw">fn</span> <span class="ident">main</span> () {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">Headers</span>::<span class="ident">new</span>();
@@ -40,19 +40,19 @@ that via the numerals <code>1</code> and <code>0</code>.</p>
 <span class="kw">struct</span> <span class="ident">Dnt</span>(<span class="ident">bool</span>);
 
 <span class="kw">impl</span> <span class="ident">Header</span> <span class="kw">for</span> <span class="ident">Dnt</span> {
-    <span class="kw">fn</span> <span class="ident">header_name</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">header_name</span>() <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
         <span class="string">&quot;DNT&quot;</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">parse_header</span>(<span class="ident">raw</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">hyper</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Dnt</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">raw</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+    <span class="kw">fn</span> <span class="ident">parse_header</span>(<span class="ident">raw</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>]) <span class="op">-&gt;</span> <span class="ident">hyper</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Dnt</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">raw</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">1</span> {
             <span class="kw">let</span> <span class="ident">line</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">raw</span>[<span class="number">0</span>];
-            <span class="kw">if</span> <span class="ident">line</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
+            <span class="kw">if</span> <span class="ident">line</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">1</span> {
                 <span class="kw">let</span> <span class="ident">byte</span> <span class="op">=</span> <span class="ident">line</span>[<span class="number">0</span>];
                 <span class="kw">match</span> <span class="ident">byte</span> {
-                    <span class="string">b&#39;0&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Dnt</span>(<span class="bool-val">true</span>)),
-                    <span class="string">b&#39;1&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Dnt</span>(<span class="bool-val">false</span>)),
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> ()
+                    <span class="string">b&#39;0&#39;</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Dnt</span>(<span class="bool-val">true</span>)),
+                    <span class="string">b&#39;1&#39;</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Dnt</span>(<span class="bool-val">false</span>)),
+                    <span class="kw">_</span> <span class="op">=&gt;</span> ()
                 }
             }
         }
@@ -61,7 +61,7 @@ that via the numerals <code>1</code> and <code>0</code>.</p>
 }
 
 <span class="kw">impl</span> <span class="ident">HeaderFormat</span> <span class="kw">for</span> <span class="ident">Dnt</span> {
-    <span class="kw">fn</span> <span class="ident">fmt_header</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt_header</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span> {
             <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;1&quot;</span>)
         } <span class="kw">else</span> {

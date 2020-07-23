@@ -202,7 +202,7 @@
     <span class="kw">type</span> <span class="ident">Output</span>;
 
     <span class="doccomment">/// See the trait-level docs.</span>
-    <span class="kw">fn</span> <span class="ident">and</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
+    <span class="kw">fn</span> <span class="ident">and</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
 }
 
 <span class="doccomment">/// Add `Predicate` to the current `WHERE` clause, joining with `OR` if</span>
@@ -212,7 +212,7 @@
     <span class="kw">type</span> <span class="ident">Output</span>;
 
     <span class="doccomment">/// See the trait-level docs.</span>
-    <span class="kw">fn</span> <span class="ident">or</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
+    <span class="kw">fn</span> <span class="ident">or</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
 }
 
 <span class="doccomment">/// Represents that a query has no `WHERE` clause.</span>
@@ -220,7 +220,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoWhereClause</span>;
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">DB</span>: <span class="ident">Backend</span><span class="op">&gt;</span> <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">NoWhereClause</span> {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw">_</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(())
     }
 }
@@ -231,7 +231,7 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">WhereClause</span><span class="op">&lt;</span><span class="ident">Predicate</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">and</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">and</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">WhereClause</span>(<span class="ident">predicate</span>)
     }
 }
@@ -242,13 +242,13 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">WhereClause</span><span class="op">&lt;</span><span class="ident">Predicate</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">or</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">or</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">WhereClause</span>(<span class="ident">predicate</span>)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">NoWhereClause</span> {
-    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">NoWhereClause</span> {
+    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span> {
         <span class="ident">BoxedWhereClause</span>::<span class="prelude-val">None</span>
     }
 }
@@ -262,7 +262,7 @@
     <span class="ident">DB</span>: <span class="ident">Backend</span>,
     <span class="ident">Expr</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; WHERE &quot;</span>);
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
@@ -274,9 +274,9 @@
     <span class="ident">Expr</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Bool</span><span class="op">&gt;</span>,
     <span class="ident">Predicate</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Bool</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">WhereClause</span><span class="op">&lt;</span><span class="ident">And</span><span class="op">&lt;</span><span class="ident">Expr</span>, <span class="ident">Predicate</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">WhereClause</span><span class="op">&lt;</span><span class="ident">And</span><span class="op">&lt;</span><span class="ident">Expr</span>, <span class="ident">Predicate</span><span class="op">&gt;&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">and</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">and</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">WhereClause</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">and</span>(<span class="ident">predicate</span>))
     }
 }
@@ -286,19 +286,19 @@
     <span class="ident">Expr</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Bool</span><span class="op">&gt;</span>,
     <span class="ident">Predicate</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">Bool</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">WhereClause</span><span class="op">&lt;</span><span class="ident">Or</span><span class="op">&lt;</span><span class="ident">Expr</span>, <span class="ident">Predicate</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">WhereClause</span><span class="op">&lt;</span><span class="ident">Or</span><span class="op">&lt;</span><span class="ident">Expr</span>, <span class="ident">Predicate</span><span class="op">&gt;&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">or</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">or</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="ident">WhereClause</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">or</span>(<span class="ident">predicate</span>))
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span>, <span class="ident">Predicate</span><span class="op">&gt;</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WhereClause</span><span class="op">&lt;</span><span class="ident">Predicate</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span>, <span class="ident">Predicate</span><span class="op">&gt;</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">WhereClause</span><span class="op">&lt;</span><span class="ident">Predicate</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">DB</span>: <span class="ident">Backend</span>,
     <span class="ident">Predicate</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
 {
-    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">BoxedWhereClause</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span> {
         <span class="ident">BoxedWhereClause</span>::<span class="ident">Where</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="number">0</span>))
     }
 }
@@ -321,13 +321,13 @@
 <span class="kw">where</span>
     <span class="ident">DB</span>: <span class="ident">Backend</span>,
 {
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">BoxedWhereClause</span>::<span class="ident">Where</span>(<span class="kw-2">ref</span> <span class="ident">where_clause</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">BoxedWhereClause</span>::<span class="ident">Where</span>(<span class="kw-2">ref</span> <span class="ident">where_clause</span>) <span class="op">=&gt;</span> {
                 <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; WHERE &quot;</span>);
                 <span class="ident">where_clause</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>)
             }
-            <span class="ident">BoxedWhereClause</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
+            <span class="ident">BoxedWhereClause</span>::<span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(()),
         }
     }
 }
@@ -345,12 +345,12 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">and</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">and</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="kw">use</span> <span class="self">self</span>::<span class="ident">BoxedWhereClause</span>::<span class="ident">Where</span>;
 
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Where</span>(<span class="ident">where_clause</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Where</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">And</span>::<span class="ident">new</span>(<span class="ident">where_clause</span>, <span class="ident">predicate</span>))),
-            <span class="ident">BoxedWhereClause</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Where</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">predicate</span>)),
+            <span class="ident">Where</span>(<span class="ident">where_clause</span>) <span class="op">=&gt;</span> <span class="ident">Where</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">And</span>::<span class="ident">new</span>(<span class="ident">where_clause</span>, <span class="ident">predicate</span>))),
+            <span class="ident">BoxedWhereClause</span>::<span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">Where</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">predicate</span>)),
         }
     }
 }
@@ -362,14 +362,14 @@
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">or</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">or</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="kw">use</span> <span class="self">self</span>::<span class="ident">BoxedWhereClause</span>::<span class="ident">Where</span>;
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">expression</span>::<span class="ident">grouped</span>::<span class="ident">Grouped</span>;
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">expression</span>::<span class="ident">operators</span>::<span class="ident">Or</span>;
 
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Where</span>(<span class="ident">where_clause</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Where</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Grouped</span>(<span class="ident">Or</span>::<span class="ident">new</span>(<span class="ident">where_clause</span>, <span class="ident">predicate</span>)))),
-            <span class="ident">BoxedWhereClause</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Where</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">predicate</span>)),
+            <span class="ident">Where</span>(<span class="ident">where_clause</span>) <span class="op">=&gt;</span> <span class="ident">Where</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Grouped</span>(<span class="ident">Or</span>::<span class="ident">new</span>(<span class="ident">where_clause</span>, <span class="ident">predicate</span>)))),
+            <span class="ident">BoxedWhereClause</span>::<span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">Where</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">predicate</span>)),
         }
     }
 }

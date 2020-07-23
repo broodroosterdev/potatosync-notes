@@ -178,7 +178,7 @@
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">result</span>;
 
 <span class="doccomment">/// A crate private constructor for `Error`.</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_error</span>(<span class="ident">kind</span>: <span class="ident">ErrorKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new_error</span>(<span class="ident">kind</span>: <span class="ident">ErrorKind</span>) <span class="op">-&gt;</span> <span class="ident">Error</span> {
     <span class="ident">Error</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">kind</span>))
 }
 
@@ -191,12 +191,12 @@
 
 <span class="kw">impl</span> <span class="ident">Error</span> {
     <span class="doccomment">/// Return the specific type of this error.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ErrorKind</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kind</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">ErrorKind</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
 
     <span class="doccomment">/// Unwrap this error into its underlying type.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_kind</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ErrorKind</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_kind</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ErrorKind</span> {
         <span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span>
     }
 }
@@ -252,31 +252,31 @@
 }
 
 <span class="kw">impl</span> <span class="ident">StdError</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">cause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">StdError</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">cause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">StdError</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span> {
-            <span class="ident">ErrorKind</span>::<span class="ident">InvalidToken</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">InvalidSignature</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">InvalidEcdsaKey</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">InvalidRsaKey</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">ExpiredSignature</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">InvalidIssuer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">InvalidAudience</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">InvalidSubject</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">ImmatureSignature</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">InvalidAlgorithm</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">InvalidAlgorithmName</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">InvalidKeyFormat</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">ErrorKind</span>::<span class="ident">Base64</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>),
-            <span class="ident">ErrorKind</span>::<span class="ident">Json</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>),
-            <span class="ident">ErrorKind</span>::<span class="ident">Utf8</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>),
-            <span class="ident">ErrorKind</span>::<span class="ident">Crypto</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>),
-            <span class="ident">ErrorKind</span>::<span class="ident">__Nonexhaustive</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">InvalidToken</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">InvalidSignature</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">InvalidEcdsaKey</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">InvalidRsaKey</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">ExpiredSignature</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">InvalidIssuer</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">InvalidAudience</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">InvalidSubject</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">ImmatureSignature</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">InvalidAlgorithm</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">InvalidAlgorithmName</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">InvalidKeyFormat</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">ErrorKind</span>::<span class="ident">Base64</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>),
+            <span class="ident">ErrorKind</span>::<span class="ident">Json</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>),
+            <span class="ident">ErrorKind</span>::<span class="ident">Utf8</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>),
+            <span class="ident">ErrorKind</span>::<span class="ident">Crypto</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">err</span>),
+            <span class="ident">ErrorKind</span>::<span class="ident">__Nonexhaustive</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="number">0</span> {
             <span class="ident">ErrorKind</span>::<span class="ident">InvalidToken</span>
             <span class="op">|</span> <span class="ident">ErrorKind</span>::<span class="ident">InvalidSignature</span>
@@ -289,48 +289,48 @@
             <span class="op">|</span> <span class="ident">ErrorKind</span>::<span class="ident">ImmatureSignature</span>
             <span class="op">|</span> <span class="ident">ErrorKind</span>::<span class="ident">InvalidAlgorithm</span>
             <span class="op">|</span> <span class="ident">ErrorKind</span>::<span class="ident">InvalidKeyFormat</span>
-            <span class="op">|</span> <span class="ident">ErrorKind</span>::<span class="ident">InvalidAlgorithmName</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>),
-            <span class="ident">ErrorKind</span>::<span class="ident">Json</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;JSON error: {}&quot;</span>, <span class="ident">err</span>),
-            <span class="ident">ErrorKind</span>::<span class="ident">Utf8</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;UTF-8 error: {}&quot;</span>, <span class="ident">err</span>),
-            <span class="ident">ErrorKind</span>::<span class="ident">Crypto</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Crypto error: {}&quot;</span>, <span class="ident">err</span>),
-            <span class="ident">ErrorKind</span>::<span class="ident">Base64</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Base64 error: {}&quot;</span>, <span class="ident">err</span>),
-            <span class="ident">ErrorKind</span>::<span class="ident">__Nonexhaustive</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Unknown error&quot;</span>),
+            <span class="op">|</span> <span class="ident">ErrorKind</span>::<span class="ident">InvalidAlgorithmName</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>),
+            <span class="ident">ErrorKind</span>::<span class="ident">Json</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;JSON error: {}&quot;</span>, <span class="ident">err</span>),
+            <span class="ident">ErrorKind</span>::<span class="ident">Utf8</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;UTF-8 error: {}&quot;</span>, <span class="ident">err</span>),
+            <span class="ident">ErrorKind</span>::<span class="ident">Crypto</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Crypto error: {}&quot;</span>, <span class="ident">err</span>),
+            <span class="ident">ErrorKind</span>::<span class="ident">Base64</span>(<span class="kw-2">ref</span> <span class="ident">err</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Base64 error: {}&quot;</span>, <span class="ident">err</span>),
+            <span class="ident">ErrorKind</span>::<span class="ident">__Nonexhaustive</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Unknown error&quot;</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">base64</span>::<span class="ident">DecodeError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">base64</span>::<span class="ident">DecodeError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">base64</span>::<span class="ident">DecodeError</span>) <span class="op">-&gt;</span> <span class="ident">Error</span> {
         <span class="ident">new_error</span>(<span class="ident">ErrorKind</span>::<span class="ident">Base64</span>(<span class="ident">err</span>))
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">serde_json</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">serde_json</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">serde_json</span>::<span class="ident">Error</span>) <span class="op">-&gt;</span> <span class="ident">Error</span> {
         <span class="ident">new_error</span>(<span class="ident">ErrorKind</span>::<span class="ident">Json</span>(<span class="ident">err</span>))
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>::<span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">FromUtf8Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: ::<span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">FromUtf8Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: ::<span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">FromUtf8Error</span>) <span class="op">-&gt;</span> <span class="ident">Error</span> {
         <span class="ident">new_error</span>(<span class="ident">ErrorKind</span>::<span class="ident">Utf8</span>(<span class="ident">err</span>))
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>::<span class="ident">ring</span>::<span class="ident">error</span>::<span class="ident">Unspecified</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: ::<span class="ident">ring</span>::<span class="ident">error</span>::<span class="ident">Unspecified</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: ::<span class="ident">ring</span>::<span class="ident">error</span>::<span class="ident">Unspecified</span>) <span class="op">-&gt;</span> <span class="ident">Error</span> {
         <span class="ident">new_error</span>(<span class="ident">ErrorKind</span>::<span class="ident">Crypto</span>(<span class="ident">err</span>))
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span>::<span class="ident">ring</span>::<span class="ident">error</span>::<span class="ident">KeyRejected</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">_err</span>: ::<span class="ident">ring</span>::<span class="ident">error</span>::<span class="ident">KeyRejected</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">_err</span>: ::<span class="ident">ring</span>::<span class="ident">error</span>::<span class="ident">KeyRejected</span>) <span class="op">-&gt;</span> <span class="ident">Error</span> {
         <span class="ident">new_error</span>(<span class="ident">ErrorKind</span>::<span class="ident">InvalidEcdsaKey</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ErrorKind</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">kind</span>: <span class="ident">ErrorKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">kind</span>: <span class="ident">ErrorKind</span>) <span class="op">-&gt;</span> <span class="ident">Error</span> {
         <span class="ident">new_error</span>(<span class="ident">kind</span>)
     }
 }

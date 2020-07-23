@@ -6,7 +6,7 @@ as illustrated below with <code>T</code>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">index</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> { <span class="comment">/* ... */</span> }</pre></div>
+<span class="kw">fn</span> <span class="ident">index</span>() <span class="op">-&gt;</span> <span class="ident">T</span> { <span class="comment">/* ... */</span> }</pre></div>
 <p>In this example, <code>T</code> can be any type, as long as it implements <code>Responder</code>.</p>
 <h1 id="return-value" class="section-header"><a href="#return-value">Return Value</a></h1>
 <p>A <code>Responder</code> returns an <code>Ok(Response)</code> or an <code>Err(Status)</code>:</p>
@@ -118,7 +118,7 @@ fully determine its functionality.</p>
 
 <div class='information'><div class='tooltip ignore'>ⓘ<span class='tooltiptext'>This example is not tested</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/person/&lt;id&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">person</span>(<span class="ident">id</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Person</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">person</span>(<span class="ident">id</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Person</span><span class="op">&gt;</span> {
     <span class="ident">Person</span>::<span class="ident">from_id</span>(<span class="ident">id</span>)
 }</pre></div>
 <p>You want the <code>Person</code> responder to set two header fields: <code>X-Person-Name</code>
@@ -134,7 +134,7 @@ following <code>Responder</code> implementation accomplishes this:</p>
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">http</span>::<span class="ident">ContentType</span>;
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Person</span> {
-    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">response</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-&gt;</span> <span class="ident">response</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="ident">Response</span>::<span class="ident">build</span>()
             .<span class="ident">sized_body</span>(<span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}:{}&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>, <span class="self">self</span>.<span class="ident">age</span>)))
             .<span class="ident">raw_header</span>(<span class="string">&quot;X-Person-Name&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>)

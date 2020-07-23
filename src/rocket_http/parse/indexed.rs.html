@@ -356,19 +356,19 @@
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">IndexedBytes</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, [<span class="ident">u8</span>]<span class="op">&gt;</span>;
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">AsPtr</span> {
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>;
+    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">AsPtr</span> <span class="kw">for</span> <span class="ident">str</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span> {
+    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span> {
         <span class="ident">str</span>::<span class="ident">as_ptr</span>(<span class="self">self</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">AsPtr</span> <span class="kw">for</span> [<span class="ident">u8</span>] {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span> {
+    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span> {
         <span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>::<span class="ident">as_ptr</span>(<span class="self">self</span>)
     }
 }
@@ -379,9 +379,9 @@
     <span class="ident">Concrete</span>(<span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>)
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">ToOwned</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">ToOwned</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>, <span class="ident">C</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">C</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">value</span>: <span class="ident">C</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">value</span>: <span class="ident">C</span>) <span class="op">-&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="ident">value</span>.<span class="ident">into</span>())
     }
 }
@@ -389,28 +389,28 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">ToOwned</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Panics if `self` is not an `Indexed`.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">indices</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="ident">usize</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">indices</span>(<span class="self">self</span>) <span class="op">-&gt;</span> (<span class="ident">usize</span>, <span class="ident">usize</span>) {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">a</span>, <span class="ident">b</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;cannot convert indexed T to U unless indexed&quot;</span>)
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> (<span class="ident">a</span>, <span class="ident">b</span>),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;cannot convert indexed T to U unless indexed&quot;</span>)
         }
     }
 
     <span class="doccomment">/// Panics if `self` is not an `Indexed`.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">coerce</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">ToOwned</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">U</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">coerce</span><span class="op">&lt;</span><span class="ident">U</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">ToOwned</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">U</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;cannot convert indexed T to U unless indexed&quot;</span>)
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;cannot convert indexed T to U unless indexed&quot;</span>)
         }
     }
 
     <span class="doccomment">/// Panics if `self` is not an `Indexed`.</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">coerce_lifetime</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">coerce_lifetime</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;cannot coerce lifetime unless indexed&quot;</span>)
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;cannot coerce lifetime unless indexed&quot;</span>)
         }
     }
 }
@@ -418,10 +418,10 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">ToOwned</span><span class="op">&gt;</span> <span class="ident">IntoOwned</span> <span class="kw">for</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Owned</span> <span class="op">=</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_owned</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">into_owned</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>),
-            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="ident">IntoOwned</span>::<span class="ident">into_owned</span>(<span class="ident">cow</span>))
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>),
+            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="ident">cow</span>) <span class="op">=&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="ident">IntoOwned</span>::<span class="ident">into_owned</span>(<span class="ident">cow</span>))
         }
     }
 }
@@ -432,13 +432,13 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">other</span> {
-                <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">c</span>, <span class="ident">d</span>) <span class="kw">if</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="ident">c</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">a</span> <span class="op">&lt;</span> <span class="ident">d</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">d</span>),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;+ requires indexed&quot;</span>)
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="ident">other</span> {
+                <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">c</span>, <span class="ident">d</span>) <span class="kw">if</span> <span class="ident">b</span> <span class="op">==</span> <span class="ident">c</span> <span class="op">&amp;&amp;</span> <span class="ident">a</span> <span class="op">&lt;</span> <span class="ident">d</span> <span class="op">=&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">d</span>),
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;+ requires indexed&quot;</span>)
             }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;+ requires indexed&quot;</span>)
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;+ requires indexed&quot;</span>)
         }
     }
 }
@@ -447,7 +447,7 @@
     <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">Length</span> <span class="op">+</span> <span class="ident">AsPtr</span> <span class="op">+</span> <span class="ident">Index</span><span class="op">&lt;</span><span class="ident">Range</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>, <span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>
 {
     <span class="comment">// Returns `None` if `needle` is not a substring of `haystack`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">checked_from</span>(<span class="ident">needle</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">checked_from</span>(<span class="ident">needle</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;&gt;</span> {
         <span class="kw">let</span> <span class="ident">haystack_start</span> <span class="op">=</span> <span class="ident">haystack</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>;
         <span class="kw">let</span> <span class="ident">needle_start</span> <span class="op">=</span> <span class="ident">needle</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>;
 
@@ -465,7 +465,7 @@
     }
 
     <span class="comment">// Caller must ensure that `needle` is a substring of `haystack`.</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">unchecked_from</span>(<span class="ident">needle</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">unchecked_from</span>(<span class="ident">needle</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">haystack_start</span> <span class="op">=</span> <span class="ident">haystack</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>;
         <span class="kw">let</span> <span class="ident">needle_start</span> <span class="op">=</span> <span class="ident">needle</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>;
 
@@ -476,17 +476,17 @@
 
     <span class="doccomment">/// Whether this string is derived from indexes or not.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_indexed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_indexed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(..) <span class="op">=&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(..) <span class="op">=&gt;</span> <span class="bool-val">false</span>,
         }
     }
 
     <span class="doccomment">/// Whether this string is derived from indexes or not.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">len</span>() <span class="op">==</span> <span class="number">0</span>
     }
 
     <span class="doccomment">/// Retrieves the string `self` corresponds to. If `self` is derived from</span>
@@ -497,14 +497,14 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if `self` is an indexed string and `string` is None.</span>
     <span class="comment">// pub fn to_source(&amp;self, source: Option&lt;&amp;&#39;a T&gt;) -&gt; &amp;T {</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_cow_source</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="self">self</span>, <span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="ident">T</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_indexed</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">source</span>.<span class="ident">is_none</span>() {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_cow_source</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="self">self</span>, <span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="ident">T</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_indexed</span>() <span class="op">&amp;&amp;</span> <span class="ident">source</span>.<span class="ident">is_none</span>() {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Cannot convert indexed str to str without base string!&quot;</span>)
         }
 
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">i</span>, <span class="ident">j</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">source</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()[<span class="ident">i</span>..<span class="ident">j</span>],
-            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="kw-2">ref</span> <span class="ident">mstr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">mstr</span>.<span class="ident">as_ref</span>(),
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">i</span>, <span class="ident">j</span>) <span class="op">=&gt;</span> <span class="kw-2">&amp;</span><span class="ident">source</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()[<span class="ident">i</span>..<span class="ident">j</span>],
+            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="kw-2">ref</span> <span class="ident">mstr</span>) <span class="op">=&gt;</span> <span class="ident">mstr</span>.<span class="ident">as_ref</span>(),
         }
     }
 
@@ -515,23 +515,23 @@
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if `self` is an indexed string and `string` is None.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_source</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="self">self</span>, <span class="ident">source</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="ident">T</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_indexed</span>() <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">source</span>.<span class="ident">is_none</span>() {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_source</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="self">self</span>, <span class="ident">source</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="ident">T</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_indexed</span>() <span class="op">&amp;&amp;</span> <span class="ident">source</span>.<span class="ident">is_none</span>() {
             <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Cannot convert indexed str to str without base string!&quot;</span>)
         }
 
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">i</span>, <span class="ident">j</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">source</span>.<span class="ident">unwrap</span>()[(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>)..(<span class="ident">j</span> <span class="kw">as</span> <span class="ident">usize</span>)],
-            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="kw-2">ref</span> <span class="ident">mstr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">mstr</span>,
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">i</span>, <span class="ident">j</span>) <span class="op">=&gt;</span> <span class="kw-2">&amp;</span><span class="ident">source</span>.<span class="ident">unwrap</span>()[(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">usize</span>)..(<span class="ident">j</span> <span class="kw">as</span> <span class="ident">usize</span>)],
+            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="kw-2">ref</span> <span class="ident">mstr</span>) <span class="op">=&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">mstr</span>,
         }
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">ToOwned</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>),
-            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="kw-2">ref</span> <span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="ident">cow</span>.<span class="ident">clone</span>())
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>),
+            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="kw-2">ref</span> <span class="ident">cow</span>) <span class="op">=&gt;</span> <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="ident">cow</span>.<span class="ident">clone</span>())
         }
     }
 }
@@ -539,20 +539,20 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">ToOwned</span> <span class="op">+</span> <span class="ident">Debug</span>, <span class="ident">T</span>::<span class="ident">Owned</span>: <span class="ident">Debug</span>
 {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span>::<span class="ident">fmt</span>(<span class="kw-2">&amp;</span>(<span class="ident">a</span>, <span class="ident">b</span>), <span class="ident">f</span>),
-            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="kw-2">ref</span> <span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span>::<span class="ident">fmt</span>(<span class="ident">cow</span>, <span class="ident">f</span>),
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span>::<span class="ident">fmt</span>(<span class="kw-2">&amp;</span>(<span class="ident">a</span>, <span class="ident">b</span>), <span class="ident">f</span>),
+            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="kw-2">ref</span> <span class="ident">cow</span>) <span class="op">=&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span>::<span class="ident">fmt</span>(<span class="ident">cow</span>, <span class="ident">f</span>),
         }
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Length</span> <span class="op">+</span> <span class="ident">ToOwned</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Length</span> <span class="kw">for</span> <span class="ident">Indexed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">usize</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">b</span> <span class="op">-</span> <span class="ident">a</span>) <span class="kw">as</span> <span class="ident">usize</span>,
-            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="kw-2">ref</span> <span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cow</span>.<span class="ident">len</span>()
+            <span class="ident">Indexed</span>::<span class="ident">Indexed</span>(<span class="ident">a</span>, <span class="ident">b</span>) <span class="op">=&gt;</span> (<span class="ident">b</span> <span class="op">-</span> <span class="ident">a</span>) <span class="kw">as</span> <span class="ident">usize</span>,
+            <span class="ident">Indexed</span>::<span class="ident">Concrete</span>(<span class="kw-2">ref</span> <span class="ident">cow</span>) <span class="op">=&gt;</span> <span class="ident">cow</span>.<span class="ident">len</span>()
         }
     }
 }
@@ -565,23 +565,23 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">IndexedInput</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">source</span>
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">ToOwned</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">IndexedInput</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cow_source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cow_source</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="self">self</span>.<span class="ident">source</span>)
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">IndexedInput</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, [<span class="ident">u8</span>]<span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backtrack</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="ident">pear</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">backtrack</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> ::<span class="ident">pear</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">source_addr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">source</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>;
         <span class="kw">let</span> <span class="ident">current_addr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="kw">if</span> <span class="ident">current_addr</span> <span class="op">&gt;</span> <span class="ident">n</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> (<span class="ident">current_addr</span> <span class="op">-</span> <span class="ident">n</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="ident">source_addr</span> {
+        <span class="kw">if</span> <span class="ident">current_addr</span> <span class="op">&gt;</span> <span class="ident">n</span> <span class="op">&amp;&amp;</span> (<span class="ident">current_addr</span> <span class="op">-</span> <span class="ident">n</span>) <span class="op">&gt;=</span> <span class="ident">source_addr</span> {
             <span class="kw">let</span> <span class="ident">forward</span> <span class="op">=</span> (<span class="ident">current_addr</span> <span class="op">-</span> <span class="ident">n</span>) <span class="op">-</span> <span class="ident">source_addr</span>;
             <span class="self">self</span>.<span class="ident">current</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">source</span>[<span class="ident">forward</span>..];
             <span class="prelude-val">Ok</span>(())
@@ -591,16 +591,16 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">source</span>.<span class="ident">len</span>()
     }
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">impl_indexed_input</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>:<span class="ident">ty</span>, <span class="ident">token</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">token</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> (
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>:<span class="ident">ty</span>, <span class="ident">token</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">token</span>:<span class="ident">ty</span>) <span class="op">=&gt;</span> (
         <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IndexedInput</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&gt;</span> {
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
                 <span class="ident">IndexedInput</span> { <span class="ident">source</span>: <span class="ident">source</span>, <span class="ident">current</span>: <span class="ident">source</span> }
             }
         }
@@ -613,12 +613,12 @@
             <span class="kw">type</span> <span class="ident">Context</span> <span class="op">=</span> <span class="ident">Context</span>;
 
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-            <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Token</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Token</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">current</span>.<span class="ident">peek</span>()
             }
 
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-            <span class="kw">fn</span> <span class="ident">peek_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">slice</span>: <span class="self">Self</span>::<span class="ident">InSlice</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Slice</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">peek_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">slice</span>: <span class="self">Self</span>::<span class="ident">InSlice</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Slice</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">current</span>.<span class="ident">peek_slice</span>(<span class="ident">slice</span>)
                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">slice</span><span class="op">|</span> <span class="kw">unsafe</span> {
                         <span class="ident">Indexed</span>::<span class="ident">unchecked_from</span>(<span class="ident">slice</span>, <span class="self">self</span>.<span class="ident">source</span>)
@@ -626,15 +626,15 @@
             }
 
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-            <span class="kw">fn</span> <span class="ident">skip_many</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cond</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span>
-                <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Token</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
+            <span class="kw">fn</span> <span class="ident">skip_many</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cond</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">usize</span>
+                <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Token</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
             {
                 <span class="self">self</span>.<span class="ident">current</span>.<span class="ident">skip_many</span>(<span class="ident">cond</span>)
             }
 
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-            <span class="kw">fn</span> <span class="ident">take_many</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cond</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Many</span>
-                <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Token</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
+            <span class="kw">fn</span> <span class="ident">take_many</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">cond</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Many</span>
+                <span class="kw">where</span> <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="self">Self</span>::<span class="ident">Token</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
             {
                 <span class="kw">let</span> <span class="ident">many</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span>.<span class="ident">take_many</span>(<span class="ident">cond</span>);
                 <span class="kw">unsafe</span> { <span class="ident">Indexed</span>::<span class="ident">unchecked_from</span>(<span class="ident">many</span>, <span class="self">self</span>.<span class="ident">source</span>) }
@@ -646,11 +646,11 @@
             }
 
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-            <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
                 <span class="self">self</span>.<span class="ident">current</span>.<span class="ident">is_empty</span>()
             }
 
-            <span class="kw">fn</span> <span class="ident">context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">context</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Context</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">source</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">current</span>.<span class="ident">len</span>();
                 <span class="kw">let</span> <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="self">self</span>.<span class="ident">current</span>.<span class="ident">as_ref</span>();
                 <span class="kw">let</span> <span class="ident">string</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="ident">bytes</span>.<span class="ident">into</span>()).<span class="ident">ok</span>()<span class="question-mark">?</span>;
@@ -667,7 +667,7 @@
 }
 
 <span class="kw">impl</span> ::<span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Context</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">const</span> <span class="ident">LIMIT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">7</span>;
         <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;[{}:]&quot;</span>, <span class="self">self</span>.<span class="ident">offset</span>)<span class="question-mark">?</span>;
 

@@ -633,16 +633,16 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
 
 <span class="comment">// for readability&#39;s sake</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ParsedLine</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">String</span>)<span class="op">&gt;</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ParsedLine</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">String</span>)<span class="op">&gt;&gt;</span>;
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_line</span>(<span class="ident">line</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">substitution_data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParsedLine</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_line</span>(<span class="ident">line</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">substitution_data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ParsedLine</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parser</span> <span class="op">=</span> <span class="ident">LineParser</span>::<span class="ident">new</span>(<span class="ident">line</span>, <span class="ident">substitution_data</span>);
     <span class="ident">parser</span>.<span class="ident">parse_line</span>()
 }
 
 <span class="kw">struct</span> <span class="ident">LineParser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">original_line</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="ident">substitution_data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">substitution_data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>,
     <span class="ident">line</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
     <span class="ident">pos</span>: <span class="ident">usize</span>,
 }
@@ -650,8 +650,8 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">LineParser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">line</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-        <span class="ident">substitution_data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LineParser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+        <span class="ident">substitution_data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>,
+    ) <span class="op">-&gt;</span> <span class="ident">LineParser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">LineParser</span> {
             <span class="ident">original_line</span>: <span class="ident">line</span>,
             <span class="ident">substitution_data</span>,
@@ -660,14 +660,14 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">err</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">err</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Error</span> {
         <span class="kw">return</span> <span class="ident">Error</span>::<span class="ident">LineParse</span>(<span class="self">self</span>.<span class="ident">original_line</span>.<span class="ident">into</span>(), <span class="self">self</span>.<span class="ident">pos</span>);
     }
 
-    <span class="kw">fn</span> <span class="ident">parse_line</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ParsedLine</span> {
+    <span class="kw">fn</span> <span class="ident">parse_line</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ParsedLine</span> {
         <span class="self">self</span>.<span class="ident">skip_whitespace</span>();
         <span class="comment">// if its an empty line or a comment, skip it</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">starts_with</span>(<span class="string">&#39;#&#39;</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">is_empty</span>() <span class="op">||</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">starts_with</span>(<span class="string">&#39;#&#39;</span>) {
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>);
         }
 
@@ -675,7 +675,7 @@
         <span class="self">self</span>.<span class="ident">skip_whitespace</span>();
 
         <span class="comment">// export can be either an optional prefix or a key itself</span>
-        <span class="kw">if</span> <span class="ident">key</span> <span class="op">=</span><span class="op">=</span> <span class="string">&quot;export&quot;</span> {
+        <span class="kw">if</span> <span class="ident">key</span> <span class="op">==</span> <span class="string">&quot;export&quot;</span> {
             <span class="comment">// here we check for an optional `=`, below we throw directly when it’s not found.</span>
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">expect_equal</span>().<span class="ident">is_err</span>() {
                 <span class="ident">key</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">parse_key</span>()<span class="question-mark">?</span>;
@@ -687,7 +687,7 @@
         }
         <span class="self">self</span>.<span class="ident">skip_whitespace</span>();
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">is_empty</span>() <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">starts_with</span>(<span class="string">&#39;#&#39;</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">is_empty</span>() <span class="op">||</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">starts_with</span>(<span class="string">&#39;#&#39;</span>) {
             <span class="self">self</span>.<span class="ident">substitution_data</span>.<span class="ident">insert</span>(<span class="ident">key</span>.<span class="ident">clone</span>(), <span class="prelude-val">None</span>);
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>((<span class="ident">key</span>, <span class="ident">String</span>::<span class="ident">new</span>())));
         }
@@ -699,41 +699,41 @@
         <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>((<span class="ident">key</span>, <span class="ident">parsed_value</span>)));
     }
 
-    <span class="kw">fn</span> <span class="ident">parse_key</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse_key</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>
             .<span class="ident">line</span>
-            .<span class="ident">starts_with</span>(<span class="op">|</span><span class="ident">c</span>: <span class="ident">char</span><span class="op">|</span> <span class="ident">c</span>.<span class="ident">is_ascii_alphabetic</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;_&#39;</span>)
+            .<span class="ident">starts_with</span>(<span class="op">|</span><span class="ident">c</span>: <span class="ident">char</span><span class="op">|</span> <span class="ident">c</span>.<span class="ident">is_ascii_alphabetic</span>() <span class="op">||</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;_&#39;</span>)
         {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="self">self</span>.<span class="ident">err</span>());
         }
         <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>
             .<span class="ident">line</span>
-            .<span class="ident">find</span>(<span class="op">|</span><span class="ident">c</span>: <span class="ident">char</span><span class="op">|</span> <span class="op">!</span>(<span class="ident">c</span>.<span class="ident">is_ascii_alphanumeric</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;_&#39;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;.&#39;</span>))
+            .<span class="ident">find</span>(<span class="op">|</span><span class="ident">c</span>: <span class="ident">char</span><span class="op">|</span> <span class="op">!</span>(<span class="ident">c</span>.<span class="ident">is_ascii_alphanumeric</span>() <span class="op">||</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;_&#39;</span> <span class="op">||</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;.&#39;</span>))
         {
-            <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">index</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">len</span>(),
+            <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=&gt;</span> <span class="ident">index</span>,
+            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">len</span>(),
         };
-        <span class="self">self</span>.<span class="ident">pos</span> <span class="op">+</span><span class="op">=</span> <span class="ident">index</span>;
+        <span class="self">self</span>.<span class="ident">pos</span> <span class="op">+=</span> <span class="ident">index</span>;
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">line</span>[..<span class="ident">index</span>]);
         <span class="self">self</span>.<span class="ident">line</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">line</span>[<span class="ident">index</span>..];
         <span class="prelude-val">Ok</span>(<span class="ident">key</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">expect_equal</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">expect_equal</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">line</span>.<span class="ident">starts_with</span>(<span class="string">&quot;=&quot;</span>) {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="self">self</span>.<span class="ident">err</span>());
         }
         <span class="self">self</span>.<span class="ident">line</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">line</span>[<span class="number">1</span>..];
-        <span class="self">self</span>.<span class="ident">pos</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+        <span class="self">self</span>.<span class="ident">pos</span> <span class="op">+=</span> <span class="number">1</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="kw">fn</span> <span class="ident">skip_whitespace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">find</span>(<span class="op">|</span><span class="ident">c</span>: <span class="ident">char</span><span class="op">|</span> <span class="op">!</span><span class="ident">c</span>.<span class="ident">is_whitespace</span>()) {
-            <span class="self">self</span>.<span class="ident">pos</span> <span class="op">+</span><span class="op">=</span> <span class="ident">index</span>;
+            <span class="self">self</span>.<span class="ident">pos</span> <span class="op">+=</span> <span class="ident">index</span>;
             <span class="self">self</span>.<span class="ident">line</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">line</span>[<span class="ident">index</span>..];
         } <span class="kw">else</span> {
-            <span class="self">self</span>.<span class="ident">pos</span> <span class="op">+</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">len</span>();
+            <span class="self">self</span>.<span class="ident">pos</span> <span class="op">+=</span> <span class="self">self</span>.<span class="ident">line</span>.<span class="ident">len</span>();
             <span class="self">self</span>.<span class="ident">line</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>;
         }
     }
@@ -746,7 +746,7 @@
     <span class="ident">EscapedBlock</span>,
 }
 
-<span class="kw">fn</span> <span class="ident">parse_value</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">substitution_data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">parse_value</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">substitution_data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">strong_quote</span> <span class="op">=</span> <span class="bool-val">false</span>; <span class="comment">// &#39;</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">weak_quote</span> <span class="op">=</span> <span class="bool-val">false</span>; <span class="comment">// &quot;</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">escaped</span> <span class="op">=</span> <span class="bool-val">false</span>;
@@ -764,9 +764,9 @@
         <span class="comment">//without affecting: k=v#comment</span>
         <span class="comment">//and throwing on: k=v w</span>
         <span class="kw">if</span> <span class="ident">expecting_end</span> {
-            <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39; &#39;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;\t&#39;</span> {
+            <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39; &#39;</span> <span class="op">||</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;\t&#39;</span> {
                 <span class="kw">continue</span>;
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;#&#39;</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;#&#39;</span> {
                 <span class="kw">break</span>;
             } <span class="kw">else</span> {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">LineParse</span>(<span class="ident">input</span>.<span class="ident">to_owned</span>(), <span class="ident">index</span>));
@@ -777,33 +777,33 @@
             <span class="comment">//(actually handling backslash 0x10 would be a whole other matter)</span>
             <span class="comment">//then there&#39;s \v \f bell hex... etc</span>
             <span class="kw">match</span> <span class="ident">c</span> {
-                <span class="string">&#39;\\&#39;</span> <span class="op">|</span> <span class="string">&#39;\&#39;&#39;</span> <span class="op">|</span> <span class="string">&#39;&quot;&#39;</span> <span class="op">|</span> <span class="string">&#39;$&#39;</span> <span class="op">|</span> <span class="string">&#39; &#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">output</span>.<span class="ident">push</span>(<span class="ident">c</span>),
-                <span class="string">&#39;n&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">output</span>.<span class="ident">push</span>(<span class="string">&#39;\n&#39;</span>),  <span class="comment">// handle \n case</span>
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="string">&#39;\\&#39;</span> <span class="op">|</span> <span class="string">&#39;\&#39;&#39;</span> <span class="op">|</span> <span class="string">&#39;&quot;&#39;</span> <span class="op">|</span> <span class="string">&#39;$&#39;</span> <span class="op">|</span> <span class="string">&#39; &#39;</span> <span class="op">=&gt;</span> <span class="ident">output</span>.<span class="ident">push</span>(<span class="ident">c</span>),
+                <span class="string">&#39;n&#39;</span> <span class="op">=&gt;</span> <span class="ident">output</span>.<span class="ident">push</span>(<span class="string">&#39;\n&#39;</span>),  <span class="comment">// handle \n case</span>
+                <span class="kw">_</span> <span class="op">=&gt;</span> {
                     <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">LineParse</span>(<span class="ident">input</span>.<span class="ident">to_owned</span>(), <span class="ident">index</span>));
                 }
             }
 
             <span class="ident">escaped</span> <span class="op">=</span> <span class="bool-val">false</span>;
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">strong_quote</span> {
-            <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;\&#39;&#39;</span> {
+            <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;\&#39;&#39;</span> {
                 <span class="ident">strong_quote</span> <span class="op">=</span> <span class="bool-val">false</span>;
             } <span class="kw">else</span> {
                 <span class="ident">output</span>.<span class="ident">push</span>(<span class="ident">c</span>);
             }
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">substitution_mode</span> <span class="op">!</span><span class="op">=</span> <span class="ident">SubstitutionMode</span>::<span class="prelude-val">None</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">substitution_mode</span> <span class="op">!=</span> <span class="ident">SubstitutionMode</span>::<span class="prelude-val">None</span> {
             <span class="kw">if</span> <span class="ident">c</span>.<span class="ident">is_alphanumeric</span>() {
                 <span class="ident">substitution_name</span>.<span class="ident">push</span>(<span class="ident">c</span>);
             } <span class="kw">else</span> {
                 <span class="kw">match</span> <span class="ident">substitution_mode</span> {
-                    <span class="ident">SubstitutionMode</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
-                    <span class="ident">SubstitutionMode</span>::<span class="ident">Block</span> <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;{&#39;</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="ident">substitution_name</span>.<span class="ident">is_empty</span>() {
+                    <span class="ident">SubstitutionMode</span>::<span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+                    <span class="ident">SubstitutionMode</span>::<span class="ident">Block</span> <span class="op">=&gt;</span> {
+                        <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;{&#39;</span> <span class="op">&amp;&amp;</span> <span class="ident">substitution_name</span>.<span class="ident">is_empty</span>() {
                             <span class="ident">substitution_mode</span> <span class="op">=</span> <span class="ident">SubstitutionMode</span>::<span class="ident">EscapedBlock</span>;
                         } <span class="kw">else</span> {
                             <span class="ident">apply_substitution</span>(<span class="ident">substitution_data</span>, <span class="kw-2">&amp;</span><span class="ident">substitution_name</span>.<span class="ident">drain</span>(..).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">output</span>);
-                            <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;$&#39;</span> {
-                                <span class="ident">substitution_mode</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">strong_quote</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="op">!</span><span class="ident">escaped</span> {
+                            <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;$&#39;</span> {
+                                <span class="ident">substitution_mode</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">strong_quote</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">escaped</span> {
                                     <span class="ident">SubstitutionMode</span>::<span class="ident">Block</span>
                                 } <span class="kw">else</span> {
                                     <span class="ident">SubstitutionMode</span>::<span class="prelude-val">None</span>
@@ -814,8 +814,8 @@
                             }
                         }
                     }
-                    <span class="ident">SubstitutionMode</span>::<span class="ident">EscapedBlock</span> <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;}&#39;</span> {
+                    <span class="ident">SubstitutionMode</span>::<span class="ident">EscapedBlock</span> <span class="op">=&gt;</span> {
+                        <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;}&#39;</span> {
                             <span class="ident">substitution_mode</span> <span class="op">=</span> <span class="ident">SubstitutionMode</span>::<span class="prelude-val">None</span>;
                             <span class="ident">apply_substitution</span>(<span class="ident">substitution_data</span>, <span class="kw-2">&amp;</span><span class="ident">substitution_name</span>.<span class="ident">drain</span>(..).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">output</span>);
                         } <span class="kw">else</span> {
@@ -824,27 +824,27 @@
                     }
                 }
             }
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;$&#39;</span> {
-            <span class="ident">substitution_mode</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">strong_quote</span> <span class="kw-2">&amp;</span><span class="op">&amp;</span> <span class="op">!</span><span class="ident">escaped</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;$&#39;</span> {
+            <span class="ident">substitution_mode</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">strong_quote</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">escaped</span> {
                 <span class="ident">SubstitutionMode</span>::<span class="ident">Block</span>
             } <span class="kw">else</span> {
                 <span class="ident">SubstitutionMode</span>::<span class="prelude-val">None</span>
             }
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">weak_quote</span> {
-            <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;&quot;&#39;</span> {
+            <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;&quot;&#39;</span> {
                 <span class="ident">weak_quote</span> <span class="op">=</span> <span class="bool-val">false</span>;
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;\\&#39;</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;\\&#39;</span> {
                 <span class="ident">escaped</span> <span class="op">=</span> <span class="bool-val">true</span>;
             } <span class="kw">else</span> {
                 <span class="ident">output</span>.<span class="ident">push</span>(<span class="ident">c</span>);
             }
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;\&#39;&#39;</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;\&#39;&#39;</span> {
             <span class="ident">strong_quote</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;&quot;&#39;</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;&quot;&#39;</span> {
             <span class="ident">weak_quote</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;\\&#39;</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;\\&#39;</span> {
             <span class="ident">escaped</span> <span class="op">=</span> <span class="bool-val">true</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39; &#39;</span> <span class="op">|</span><span class="op">|</span> <span class="ident">c</span> <span class="op">=</span><span class="op">=</span> <span class="string">&#39;\t&#39;</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39; &#39;</span> <span class="op">||</span> <span class="ident">c</span> <span class="op">==</span> <span class="string">&#39;\t&#39;</span> {
             <span class="ident">expecting_end</span> <span class="op">=</span> <span class="bool-val">true</span>;
         } <span class="kw">else</span> {
             <span class="ident">output</span>.<span class="ident">push</span>(<span class="ident">c</span>);
@@ -852,16 +852,16 @@
     }
 
     <span class="comment">//XXX also fail if escaped? or...</span>
-    <span class="kw">if</span> <span class="ident">substitution_mode</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SubstitutionMode</span>::<span class="ident">EscapedBlock</span> <span class="op">|</span><span class="op">|</span> <span class="ident">strong_quote</span> <span class="op">|</span><span class="op">|</span> <span class="ident">weak_quote</span> {
+    <span class="kw">if</span> <span class="ident">substitution_mode</span> <span class="op">==</span> <span class="ident">SubstitutionMode</span>::<span class="ident">EscapedBlock</span> <span class="op">||</span> <span class="ident">strong_quote</span> <span class="op">||</span> <span class="ident">weak_quote</span> {
         <span class="kw">let</span> <span class="ident">value_length</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">len</span>();
-        <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">LineParse</span>(<span class="ident">input</span>.<span class="ident">to_owned</span>(), <span class="kw">if</span> <span class="ident">value_length</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> { <span class="number">0</span> } <span class="kw">else</span> { <span class="ident">value_length</span> <span class="op">-</span> <span class="number">1</span> }))
+        <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">LineParse</span>(<span class="ident">input</span>.<span class="ident">to_owned</span>(), <span class="kw">if</span> <span class="ident">value_length</span> <span class="op">==</span> <span class="number">0</span> { <span class="number">0</span> } <span class="kw">else</span> { <span class="ident">value_length</span> <span class="op">-</span> <span class="number">1</span> }))
     } <span class="kw">else</span> {
         <span class="ident">apply_substitution</span>(<span class="ident">substitution_data</span>, <span class="kw-2">&amp;</span><span class="ident">substitution_name</span>.<span class="ident">drain</span>(..).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">output</span>);
         <span class="prelude-val">Ok</span>(<span class="ident">output</span>)
     }
 }
 
-<span class="kw">fn</span> <span class="ident">apply_substitution</span>(<span class="ident">substitution_data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">substitution_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">String</span>) {
+<span class="kw">fn</span> <span class="ident">apply_substitution</span>(<span class="ident">substitution_data</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>, <span class="ident">substitution_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">output</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">String</span>) {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">environment_value</span>) <span class="op">=</span> <span class="ident">std</span>::<span class="ident">env</span>::<span class="ident">var</span>(<span class="ident">substitution_name</span>) {
         <span class="ident">output</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="ident">environment_value</span>);
     } <span class="kw">else</span> {
@@ -916,7 +916,7 @@ export   SHELL_LOVER=1
         <span class="kw">for</span> (<span class="ident">expected</span>, <span class="ident">actual</span>) <span class="kw">in</span> <span class="ident">expected_iter</span>.<span class="ident">zip</span>(<span class="ident">actual_iter</span>) {
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">actual</span>.<span class="ident">is_ok</span>());
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>());
-            <span class="ident">count</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+            <span class="ident">count</span> <span class="op">+=</span> <span class="number">1</span>;
         }
 
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">count</span>, <span class="number">13</span>);
@@ -924,7 +924,7 @@ export   SHELL_LOVER=1
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parse_line_comment</span>() {
-        <span class="kw">let</span> <span class="ident">result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">String</span>)<span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Iter</span>::<span class="ident">new</span>(<span class="string">r#&quot;
+        <span class="kw">let</span> <span class="ident">result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">String</span>)<span class="op">&gt;&gt;</span> <span class="op">=</span> <span class="ident">Iter</span>::<span class="ident">new</span>(<span class="string">r#&quot;
 # foo=bar
 #    &quot;#</span>.<span class="ident">as_bytes</span>()).<span class="ident">collect</span>();
         <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">result</span>.<span class="ident">unwrap</span>().<span class="ident">is_empty</span>());
@@ -941,7 +941,7 @@ very bacon = yes indeed
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">for</span> <span class="ident">actual</span> <span class="kw">in</span> <span class="ident">actual_iter</span> {
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">actual</span>.<span class="ident">is_err</span>());
-            <span class="ident">count</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+            <span class="ident">count</span> <span class="op">+=</span> <span class="number">1</span>;
         }
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">count</span>, <span class="number">3</span>);
     }
@@ -1005,7 +1005,7 @@ KEY4=h\8u
         <span class="kw">for</span> (<span class="ident">expected</span>, <span class="ident">actual</span>) <span class="kw">in</span> <span class="ident">expected_iter</span>.<span class="ident">zip</span>(<span class="ident">actual_iter</span>) {
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">actual</span>.<span class="ident">is_ok</span>());
             <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">expected</span>, <span class="ident">actual</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>());
-            <span class="ident">count</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
+            <span class="ident">count</span> <span class="op">+=</span> <span class="number">1</span>;
         }
 
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">count</span>, <span class="kw-2">*</span><span class="ident">expected_count</span>);

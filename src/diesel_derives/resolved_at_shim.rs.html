@@ -21,19 +21,19 @@
 <span class="kw">use</span> <span class="ident">proc_macro2</span>::<span class="ident">Span</span>;
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ResolvedAtExt</span> {
-    <span class="kw">fn</span> <span class="ident">resolved_at</span>(<span class="self">self</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Span</span>;
+    <span class="kw">fn</span> <span class="ident">resolved_at</span>(<span class="self">self</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-&gt;</span> <span class="ident">Span</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nightly&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ResolvedAtExt</span> <span class="kw">for</span> <span class="ident">Span</span> {
-    <span class="kw">fn</span> <span class="ident">resolved_at</span>(<span class="self">self</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Span</span> {
+    <span class="kw">fn</span> <span class="ident">resolved_at</span>(<span class="self">self</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-&gt;</span> <span class="ident">Span</span> {
         <span class="self">self</span>.<span class="ident">unstable</span>().<span class="ident">resolved_at</span>(<span class="ident">span</span>.<span class="ident">unstable</span>()).<span class="ident">into</span>()
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;nightly&quot;</span>))]</span>
 <span class="kw">impl</span> <span class="ident">ResolvedAtExt</span> <span class="kw">for</span> <span class="ident">Span</span> {
-    <span class="kw">fn</span> <span class="ident">resolved_at</span>(<span class="self">self</span>, <span class="kw">_</span>: <span class="ident">Span</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Span</span> {
+    <span class="kw">fn</span> <span class="ident">resolved_at</span>(<span class="self">self</span>, <span class="kw">_</span>: <span class="ident">Span</span>) <span class="op">-&gt;</span> <span class="ident">Span</span> {
         <span class="self">self</span>
     }
 }

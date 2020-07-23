@@ -8,8 +8,8 @@ URI-safe. In practice, this means that the string must either be
 percent-encoded or consist only of characters that are alphanumeric, &quot;-&quot;,
 &quot;.&quot;, &quot;_&quot;, or &quot;~&quot; - the &quot;unreserved&quot; characters.</p>
 <h1 id="marker-generic-path-query" class="section-header"><a href="#marker-generic-path-query">Marker Generic: <code>Path</code>, <code>Query</code></a></h1>
-<p>The <a href="../../../rocket/http/uri/trait.UriPart.html"><code>UriPart</code></a> parameter <code>P</code> in <code>UriDisplay&lt;P&gt;</code> must be either <a href="../../../rocket/http/uri/enum.Path.html"><code>Path</code></a> or
-<a href="../../../rocket/http/uri/enum.Query.html"><code>Query</code></a> (see the <a href="../../../rocket/http/uri/trait.UriPart.html"><code>UriPart</code></a> documentation for how this is enforced),
+<p>The <a href="uri::UriPart"><code>UriPart</code></a> parameter <code>P</code> in <code>UriDisplay&lt;P&gt;</code> must be either <a href="uri::Path"><code>Path</code></a> or
+<a href="uri::Query"><code>Query</code></a> (see the <a href="uri::UriPart"><code>UriPart</code></a> documentation for how this is enforced),
 resulting in either <code>UriDisplay&lt;Path&gt;</code> or <code>UriDisplay&lt;Query&gt;</code>.</p>
 <p>As the names might imply, the <code>Path</code> version of the trait is used when
 displaying parameters in the path part of the URI while the <code>Query</code> version
@@ -33,7 +33,7 @@ kept generic. That is, implementations can take the form:</p>
 the route's <em>path</em> URI parameters must implement <code>UriDisplay&lt;Path&gt;</code>, while
 types in the route's query parameters must implement <code>UriDisplay&lt;Query&gt;</code>.
 Any parameters ignored with <code>_</code> must be of a type that implements
-<a href="../../../rocket/http/uri/trait.Ignorable.html"><code>Ignorable</code></a>. The <code>UriDisplay</code> implementation for these types is used when
+<a href="uri::Ignorable"><code>Ignorable</code></a>. The <code>UriDisplay</code> implementation for these types is used when
 generating the URI.</p>
 <p>To illustrate <code>UriDisplay</code>'s role in code generation for <code>uri!</code>, consider
 the following route:</p>
@@ -63,7 +63,7 @@ similar (in spirit) to the following:</p>
     <span class="kw-2">&amp;</span><span class="number">100</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="ident">UriDisplay</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;inbound&quot;</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="ident">UriDisplay</span><span class="op">&lt;</span><span class="ident">Query</span><span class="op">&gt;</span>));</pre></div>
 <p>For this expression to typecheck, <code>i32</code> must implement <code>UriDisplay&lt;Path&gt;</code>
 and <code>&amp;str</code> must implement <code>UriDisplay&lt;Query&gt;</code>. What's more, when <code>track</code> is
-ignored, <code>Option&lt;String&gt;</code> is required to implement <a href="../../../rocket/http/uri/trait.Ignorable.html"><code>Ignorable</code></a>. As can be
+ignored, <code>Option&lt;String&gt;</code> is required to implement <a href="uri::Ignorable"><code>Ignorable</code></a>. As can be
 seen, the implementations will be used to display the value in a URI-safe
 manner.</p>
 <h1 id="provided-implementations" class="section-header"><a href="#provided-implementations">Provided Implementations</a></h1>
@@ -111,7 +111,7 @@ several built-in types.</p>
 <p>Uses the implementation of <code>UriDisplay</code> for <code>T::Target</code>.</p>
 <p>In general, when a type of <code>Form&lt;T&gt;</code> is to be displayed as part of a
 URI's query, it suffices to derive <code>UriDisplay</code> for <code>T</code>. Note that any
-type that can be converted into a <code>T</code> using <a href="../../../rocket/http/uri/trait.FromUriParam.html"><code>FromUriParam</code></a> can be used
+type that can be converted into a <code>T</code> using <a href="uri::FromUriParam"><code>FromUriParam</code></a> can be used
 in place of a <code>Form&lt;T&gt;</code> in a <code>uri!</code> invocation.</p>
 </li>
 <li>
@@ -150,8 +150,8 @@ cases, deriving <code>UriDisplay</code> will suffice:</p>
 <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">uri_string</span>, <span class="string">&quot;Bob%20Smith&quot;</span>);</pre></div>
 <p>As long as every field in the structure (or enum) implements <code>UriDisplay</code>,
 the trait can be derived. The implementation calls
-<a href="../../../rocket/http/uri/struct.Formatter.html#method.write_named_value"><code>Formatter::write_named_value()</code></a> for every named field and
-<a href="../../../rocket/http/uri/struct.Formatter.html#method.write_value"><code>Formatter::write_value()</code></a> for every unnamed field. See the
+<a href="uri::Formatter::write_named_value()"><code>Formatter::write_named_value()</code></a> for every named field and
+<a href="uri::Formatter::write_value()"><code>Formatter::write_value()</code></a> for every unnamed field. See the
 <a href="../../derive.UriDisplayPath.html"><code>UriDisplay&lt;Path&gt;</code></a> and <a href="../../derive.UriDisplayQuery.html"><code>UriDisplay&lt;Query&gt;</code></a> derive documentation for full
 details.</p>
 <h1 id="implementing" class="section-header"><a href="#implementing">Implementing</a></h1>
@@ -164,7 +164,7 @@ consist only of characters that are alphanumeric, &quot;-&quot;, &quot;.&quot;, 
 existing implementations of <code>UriDisplay</code> as much as possible. In the example
 below, for instance, <code>Name</code>'s implementation defers to <code>String</code>'s
 implementation. To percent-encode a string, use
-<a href="../../../rocket/http/uri/enum.Uri.html#method.percent_encode"><code>Uri::percent_encode()</code></a>.</p>
+<a href="uri::Uri::percent_encode()"><code>Uri::percent_encode()</code></a>.</p>
 <h2 id="example" class="section-header"><a href="#example">Example</a></h2>
 <p>The following snippet consists of a <code>Name</code> type that implements both
 <code>FromParam</code> and <code>UriDisplay&lt;Path&gt;</code>. The <code>FromParam</code> implementation allows
@@ -187,9 +187,9 @@ implementation. To percent-encode a string, use
 
     <span class="doccomment">/// Validates parameters that start with &#39;name:&#39;, extracting the text</span>
     <span class="doccomment">/// after &#39;name:&#39; as long as there is at least one character.</span>
-    <span class="kw">fn</span> <span class="ident">from_param</span>(<span class="ident">param</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">RawStr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_param</span>(<span class="ident">param</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">RawStr</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">decoded</span> <span class="op">=</span> <span class="ident">param</span>.<span class="ident">percent_decode</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">param</span>)<span class="question-mark">?</span>;
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">decoded</span>.<span class="ident">starts_with</span>(<span class="ident">PREFIX</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">decoded</span>.<span class="ident">len</span>() <span class="op">&lt;</span> (<span class="ident">PREFIX</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>) {
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">decoded</span>.<span class="ident">starts_with</span>(<span class="ident">PREFIX</span>) <span class="op">||</span> <span class="ident">decoded</span>.<span class="ident">len</span>() <span class="op">&lt;</span> (<span class="ident">PREFIX</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>) {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">param</span>);
         }
 
@@ -208,7 +208,7 @@ implementation. To percent-encode a string, use
     <span class="comment">// call to `write_value` to ensure that the written string is</span>
     <span class="comment">// URI-safe. In this case, the string will be percent encoded.</span>
     <span class="comment">// Prefixes the inner name with `name:`.</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="ident">f</span>.<span class="ident">write_value</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;name:{}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>))
     }
 }
@@ -216,12 +216,12 @@ implementation. To percent-encode a string, use
 <span class="macro">impl_from_uri_param_identity</span><span class="macro">!</span>([<span class="ident">Path</span>] <span class="ident">Name</span>);
 
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/name/&lt;name&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">redirector</span>(<span class="ident">name</span>: <span class="ident">Name</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Redirect</span> {
+<span class="kw">fn</span> <span class="ident">redirector</span>(<span class="ident">name</span>: <span class="ident">Name</span>) <span class="op">-&gt;</span> <span class="ident">Redirect</span> {
     <span class="ident">Redirect</span>::<span class="ident">to</span>(<span class="macro">uri</span><span class="macro">!</span>(<span class="ident">real</span>: <span class="ident">name</span>))
 }
 
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&lt;name&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">real</span>(<span class="ident">name</span>: <span class="ident">Name</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">fn</span> <span class="ident">real</span>(<span class="ident">name</span>: <span class="ident">Name</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
     <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Hello, {}!&quot;</span>, <span class="ident">name</span>.<span class="number">0</span>)
 }
 

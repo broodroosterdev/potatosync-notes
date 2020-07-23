@@ -622,7 +622,7 @@
     <span class="kw">type</span> <span class="ident">Expression</span>: <span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>;
 
     <span class="doccomment">/// Perform the conversion</span>
-    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span>;
+    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span>;
 }
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
@@ -631,7 +631,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Expression</span><span class="op">&gt;</span> <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">SqlType</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="kw">type</span> <span class="ident">Expression</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">as_expression</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>
     }
 }
@@ -667,7 +667,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// There is no difference in behavior between `x.into_sql::&lt;Y&gt;()` and</span>
     <span class="doccomment">/// `AsExpression::&lt;Y&gt;::as_expression(x)`.</span>
-    <span class="kw">fn</span> <span class="ident">into_sql</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AsExprOf</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">into_sql</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">AsExprOf</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span>,
     {
@@ -678,7 +678,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// There is no difference in behavior between `x.as_sql::&lt;Y&gt;()` and</span>
     <span class="doccomment">/// `AsExpression::&lt;Y&gt;::as_expression(&amp;x)`.</span>
-    <span class="kw">fn</span> <span class="ident">as_sql</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AsExprOf</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">as_sql</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">AsExprOf</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>, <span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
     {
@@ -853,7 +853,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unstable&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">NonAggregate</span> <span class="op">=</span> <span class="ident">ValidGrouping</span><span class="op">&lt;</span>()<span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">ValidGrouping</span><span class="op">&lt;</span>()<span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">IsAggregate</span>:
+    <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">ValidGrouping</span><span class="op">&lt;</span>()<span class="op">&gt;&gt;</span>::<span class="ident">IsAggregate</span>:
         <span class="ident">MixedAggregates</span><span class="op">&lt;</span><span class="ident">is_aggregate</span>::<span class="ident">No</span>, <span class="ident">Output</span> <span class="op">=</span> <span class="ident">is_aggregate</span>::<span class="ident">No</span><span class="op">&gt;</span>;
 
 <span class="comment">// Note that these docs are similar to but slightly different than the unstable</span>
@@ -981,7 +981,7 @@
     <span class="kw">type</span> <span class="ident">Expression</span>;
 
     <span class="doccomment">/// Perform the conversion</span>
-    <span class="kw">fn</span> <span class="ident">as_expression_list</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span>;
+    <span class="kw">fn</span> <span class="ident">as_expression_list</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Expression</span>;
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "diesel";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

@@ -129,7 +129,7 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">migration_directory_from_given_path</span>(
     <span class="ident">given_path</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span><span class="op">&gt;&gt;</span> {
     <span class="kw">let</span> <span class="ident">cargo_toml_directory</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">cargo_manifest_path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">cargo_toml_directory</span>);
     <span class="kw">let</span> <span class="ident">migrations_path</span> <span class="op">=</span> <span class="ident">given_path</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="ident">Path</span>::<span class="ident">new</span>);
@@ -139,10 +139,10 @@
 <span class="kw">fn</span> <span class="ident">resolve_migrations_directory</span>(
     <span class="ident">cargo_manifest_dir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
     <span class="ident">relative_path_to_migrations</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span><span class="op">&gt;&gt;</span> {
     <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">relative_path_to_migrations</span> {
-        <span class="prelude-val">Some</span>(<span class="ident">dir</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cargo_manifest_dir</span>.<span class="ident">join</span>(<span class="ident">dir</span>),
-        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">dir</span>) <span class="op">=&gt;</span> <span class="ident">cargo_manifest_dir</span>.<span class="ident">join</span>(<span class="ident">dir</span>),
+        <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
             <span class="comment">// People commonly put their migrations in src/migrations</span>
             <span class="comment">// so start the search there rather than the project root</span>
             <span class="kw">let</span> <span class="ident">src_dir</span> <span class="op">=</span> <span class="ident">cargo_manifest_dir</span>.<span class="ident">join</span>(<span class="string">&quot;src&quot;</span>);

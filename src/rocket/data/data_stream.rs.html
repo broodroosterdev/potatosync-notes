@@ -62,7 +62,7 @@
 <span class="kw">use</span> <span class="ident">http</span>::<span class="ident">hyper</span>::<span class="ident">h1</span>::<span class="ident">HttpReader</span>;
 
 <span class="comment">//                          |-- peek buf --|</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">InnerStream</span> <span class="op">=</span> <span class="ident">Chain</span><span class="op">&lt;</span><span class="ident">Cursor</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">BodyReader</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">InnerStream</span> <span class="op">=</span> <span class="ident">Chain</span><span class="op">&lt;</span><span class="ident">Cursor</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;&gt;</span>, <span class="ident">BodyReader</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Raw data stream of a request body.</span>
 <span class="doccomment">///</span>
@@ -76,7 +76,7 @@
 <span class="comment">// possible since Hyper&#39;s `HttpReader` doesn&#39;t implement `BufRead`.</span>
 <span class="kw">impl</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">DataStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="macro">trace_</span><span class="macro">!</span>(<span class="string">&quot;DataStream::read()&quot;</span>);
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>(<span class="ident">buf</span>)
     }
@@ -86,21 +86,21 @@
     <span class="comment">// Only do the expensive reading if we&#39;re not sure we&#39;re done.</span>
     <span class="kw">use</span> <span class="self">self</span>::<span class="ident">HttpReader</span>::<span class="kw-2">*</span>;
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">stream</span> {
-        <span class="ident">SizedReader</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">|</span> <span class="ident">ChunkedReader</span>(<span class="kw">_</span>, <span class="prelude-val">Some</span>(<span class="ident">n</span>)) <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span> <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="comment">/* continue */</span> },
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span>
+        <span class="ident">SizedReader</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">|</span> <span class="ident">ChunkedReader</span>(<span class="kw">_</span>, <span class="prelude-val">Some</span>(<span class="ident">n</span>)) <span class="kw">if</span> <span class="ident">n</span> <span class="op">&gt;</span> <span class="number">0</span> <span class="op">=&gt;</span> { <span class="comment">/* continue */</span> },
+        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="kw">return</span>
     };
 
     <span class="comment">// Take &lt;= 1k from the stream. If there might be more data, force close.</span>
     <span class="kw">const</span> <span class="ident">FLUSH_LEN</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">1024</span>;
     <span class="kw">match</span> <span class="ident">io</span>::<span class="ident">copy</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stream</span>.<span class="ident">take</span>(<span class="ident">FLUSH_LEN</span>), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">sink</span>()) {
-        <span class="prelude-val">Ok</span>(<span class="ident">FLUSH_LEN</span>) <span class="op">|</span> <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">FLUSH_LEN</span>) <span class="op">|</span> <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {
             <span class="macro">warn_</span><span class="macro">!</span>(<span class="string">&quot;Data left unread. Force closing network stream.&quot;</span>);
             <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">network</span>) <span class="op">=</span> <span class="ident">stream</span>.<span class="ident">get_mut</span>().<span class="ident">get_mut</span>();
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">network</span>.<span class="ident">close</span>(<span class="ident">Shutdown</span>::<span class="ident">Read</span>) {
                 <span class="macro">error_</span><span class="macro">!</span>(<span class="string">&quot;Failed to close network stream: {:?}&quot;</span>, <span class="ident">e</span>);
             }
         }
-        <span class="prelude-val">Ok</span>(<span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;flushed {} unread bytes&quot;</span>, <span class="ident">n</span>)
+        <span class="prelude-val">Ok</span>(<span class="ident">n</span>) <span class="op">=&gt;</span> <span class="macro">debug</span><span class="macro">!</span>(<span class="string">&quot;flushed {} unread bytes&quot;</span>, <span class="ident">n</span>)
     }
 }
 

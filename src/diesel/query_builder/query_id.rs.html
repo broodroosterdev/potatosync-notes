@@ -201,7 +201,7 @@
     <span class="doccomment">/// Returns `None` otherwise.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// You should never need to override this method.</span>
-    <span class="kw">fn</span> <span class="ident">query_id</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TypeId</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">query_id</span>() <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TypeId</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">Self</span>::<span class="ident">HAS_STATIC_QUERY_ID</span> {
             <span class="prelude-val">Some</span>(<span class="ident">TypeId</span>::<span class="ident">of</span>::<span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">QueryId</span><span class="op">&gt;</span>())
         } <span class="kw">else</span> {
@@ -247,12 +247,12 @@
 
     <span class="macro">table</span><span class="macro">!</span> {
         <span class="ident">users</span> {
-            <span class="ident">id</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Integer</span>,
-            <span class="ident">name</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VarChar</span>,
+            <span class="ident">id</span> <span class="op">-&gt;</span> <span class="ident">Integer</span>,
+            <span class="ident">name</span> <span class="op">-&gt;</span> <span class="ident">VarChar</span>,
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">query_id</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">QueryId</span><span class="op">&gt;</span>(<span class="kw">_</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TypeId</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">query_id</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">QueryId</span><span class="op">&gt;</span>(<span class="kw">_</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TypeId</span><span class="op">&gt;</span> {
         <span class="ident">T</span>::<span class="ident">query_id</span>()
     }
 
