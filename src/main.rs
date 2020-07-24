@@ -46,45 +46,45 @@ use serde::de::value::Error;
 
 
 /// Route for saving note
-#[post("/api/notes", data = "<json_note>")]
+#[post("/note", data = "<json_note>")]
 fn save_note(json_note: Json<SavingNote>, token: Token, connection: db::Connection) -> ApiResponse {
     let note = json_note.0.to_note(token.sub.clone());
     note::controller::add(note, &connection)
 }
 
 /// Route for updating note
-#[put("/api/notes", data = "<json_note>")]
+#[put("/note", data = "<json_note>")]
 fn update_note(json_note: Json<SavingNote>, token: Token, connection: db::Connection) -> ApiResponse {
     let note = json_note.to_note(token.sub.clone());
     note::controller::update(note, token.sub, &connection)
 }
 
-#[patch("/api/notes/<note_id>", data = "<json_note>")]
+#[patch("/note/<note_id>", data = "<json_note>")]
 fn patch_note(note_id: String, json_note: Json<PatchingNote>, token: Token, connection: db::Connection) -> ApiResponse {
     let note = json_note.0;
     note::controller::patch(note, note_id, token.sub, &connection)
 }
 
 /// Route for deleting single note identified by id
-#[delete("/api/notes/<note_id>")]
+#[delete("/notes/<note_id>")]
 fn delete_note(note_id: String, token: Token, connection: db::Connection) -> ApiResponse {
     delete(note_id, token.sub, &connection)
 }
 
 /// Route for deleting all notes of an user
-#[delete("/api/notes/all")]
+#[delete("/note/all")]
 fn delete_all_notes(token: Token, connection: db::Connection) -> ApiResponse {
     delete_all(token.sub, &connection)
 }
 
 /// Route for getting all the notes which are updated after provided timestamp
-#[get("/api/notes/list?<last_updated>")]
+#[get("/note/list?<last_updated>")]
 fn get_notes(last_updated: i64, token: Token, connection: db::Connection) -> Result<NoteResponse, ApiResponse> {
     get_notes_by_account(token.sub, last_updated, &connection)
 }
 
 /// Route for getting a list of deleted notes based on a provided list of id's
-#[post("/api/notes/deleted", data="<id_list>")]
+#[post("/note/deleted", data="<id_list>")]
 fn get_deleted(id_list: Json<Vec<String>>, token: Token, connection: db::Connection) -> Result<DeletedResponse, ApiResponse> {
     get_deleted_by_account(token.sub.clone(), id_list.0, &connection)
 }
@@ -203,7 +203,7 @@ mod tests {
         let rocket = rocket::ignite().mount("/", routes![save_note]).manage(db::connect());
         let client = Client::new(rocket).expect("valid rocket instance");
         let json = good_note().to_string();
-        let mut response = client.post("/api/notes")
+        let mut response = client.post("/note")
             .header(Header::new("Authorization", "Bearer test"))
             .body(json)
             .dispatch();
@@ -220,7 +220,7 @@ mod tests {
         note_insert_if_empty.mock_safe(|_,_| MockResult::Return(Ok(1)));
         let rocket = rocket::ignite().mount("/", routes![save_note]).manage(db::connect()).register(catchers!(invalid_json));
         let client = Client::new(rocket).expect("valid rocket instance");
-        let mut response = client.post("/api/notes")
+        let mut response = client.post("/note")
             .header(Header::new("Authorization", "Bearer test"))
             .body(note.to_string())
             .dispatch();
