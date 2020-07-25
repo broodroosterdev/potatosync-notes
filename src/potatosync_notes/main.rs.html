@@ -297,7 +297,7 @@
 }
 
 <span class="doccomment">/// Route for deleting single note identified by id</span>
-<span class="attribute">#[<span class="ident">delete</span>(<span class="string">&quot;/notes/&lt;note_id&gt;&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">delete</span>(<span class="string">&quot;/note/&lt;note_id&gt;&quot;</span>)]</span>
 <span class="kw">fn</span> <span class="ident">delete_note</span>(<span class="ident">note_id</span>: <span class="ident">String</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-&gt;</span> <span class="ident">ApiResponse</span> {
     <span class="ident">delete</span>(<span class="ident">note_id</span>, <span class="ident">token</span>.<span class="ident">sub</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>)
 }
