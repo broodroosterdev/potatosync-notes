@@ -66,7 +66,7 @@ fn patch_note(note_id: String, json_note: Json<PatchingNote>, token: Token, conn
 }
 
 /// Route for deleting single note identified by id
-#[delete("/notes/<note_id>")]
+#[delete("/note/<note_id>")]
 fn delete_note(note_id: String, token: Token, connection: db::Connection) -> ApiResponse {
     delete(note_id, token.sub, &connection)
 }
