@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS notes
     list             bool        not null,
     list_content     text        not null,
     reminders        text        not null,
+    tags             text        not null,
     hide_content     bool        not null,
     lock_note        bool        not null,
     uses_biometrics  bool        not null,

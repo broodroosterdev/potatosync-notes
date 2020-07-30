@@ -1,5 +1,3 @@
-
-
 #![feature(proc_macro_hygiene, decl_macro)]
 #![feature(in_band_lifetimes)]
 #[macro_use]
@@ -160,6 +158,7 @@ mod tests {
             "list": false,
             "list_content": "[]",
             "reminders": "[]",
+            "tags": "[]",
             "hide_content": false,
             "lock_note": false,
             "uses_biometrics": false,

@@ -13,6 +13,7 @@ table! {
         list -> Bool,
         list_content -> Text,
         reminders -> Text,
+        tags -> Text,
         hide_content -> Bool,
         lock_note -> Bool,
         uses_biometrics -> Bool,
