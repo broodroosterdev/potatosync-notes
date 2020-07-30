@@ -217,6 +217,13 @@
 <span id="217">217</span>
 <span id="218">218</span>
 <span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">DateTime</span>, <span class="ident">Utc</span>, <span class="ident">TimeZone</span>};
 <span class="kw">use</span> <span class="ident">chrono</span>::<span class="ident">serde</span>::<span class="ident">ts_milliseconds</span>::<span class="kw-2">*</span>;
@@ -275,6 +282,7 @@
     <span class="kw">pub</span> <span class="ident">list</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span> <span class="ident">list_content</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">reminders</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">tags</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">hide_content</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span> <span class="ident">lock_note</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span> <span class="ident">uses_biometrics</span>: <span class="ident">bool</span>,
@@ -299,6 +307,7 @@
             <span class="ident">list</span>: <span class="bool-val">false</span>,
             <span class="ident">list_content</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
             <span class="ident">reminders</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">tags</span>: <span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>(),
             <span class="ident">hide_content</span>: <span class="bool-val">false</span>,
             <span class="ident">lock_note</span>: <span class="bool-val">false</span>,
             <span class="ident">uses_biometrics</span>: <span class="bool-val">false</span>,
@@ -328,6 +337,7 @@
     <span class="kw">pub</span> <span class="ident">list</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span> <span class="ident">list_content</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">reminders</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">tags</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">hide_content</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span> <span class="ident">lock_note</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span> <span class="ident">uses_biometrics</span>: <span class="ident">bool</span>,
@@ -352,6 +362,7 @@
             <span class="ident">list</span>: <span class="self">self</span>.<span class="ident">list</span>,
             <span class="ident">list_content</span>: <span class="self">self</span>.<span class="ident">list_content</span>.<span class="ident">clone</span>(),
             <span class="ident">reminders</span>: <span class="self">self</span>.<span class="ident">reminders</span>.<span class="ident">clone</span>(),
+            <span class="ident">tags</span>: <span class="self">self</span>.<span class="ident">tags</span>.<span class="ident">clone</span>(),
             <span class="ident">hide_content</span>: <span class="self">self</span>.<span class="ident">hide_content</span>,
             <span class="ident">lock_note</span>: <span class="self">self</span>.<span class="ident">lock_note</span>,
             <span class="ident">uses_biometrics</span>: <span class="self">self</span>.<span class="ident">uses_biometrics</span>,
@@ -377,6 +388,7 @@
     <span class="kw">pub</span> <span class="ident">list</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">list_content</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">reminders</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">tags</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">hide_content</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">lock_note</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">uses_biometrics</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
@@ -398,6 +410,7 @@
             <span class="ident">list</span>: <span class="prelude-val">None</span>,
             <span class="ident">list_content</span>: <span class="prelude-val">None</span>,
             <span class="ident">reminders</span>: <span class="prelude-val">None</span>,
+            <span class="ident">tags</span>: <span class="prelude-val">None</span>,
             <span class="ident">hide_content</span>: <span class="prelude-val">None</span>,
             <span class="ident">lock_note</span>: <span class="prelude-val">None</span>,
             <span class="ident">uses_biometrics</span>: <span class="prelude-val">None</span>,
@@ -417,6 +430,7 @@
             <span class="ident">list</span>: <span class="prelude-val">None</span>,
             <span class="ident">list_content</span>: <span class="prelude-val">None</span>,
             <span class="ident">reminders</span>: <span class="prelude-val">None</span>,
+            <span class="ident">tags</span>: <span class="prelude-val">None</span>,
             <span class="ident">hide_content</span>: <span class="prelude-val">None</span>,
             <span class="ident">lock_note</span>: <span class="prelude-val">None</span>,
             <span class="ident">uses_biometrics</span>: <span class="prelude-val">None</span>,
