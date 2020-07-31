@@ -1,9 +1,9 @@
 use diesel::PgConnection;
 use crate::responders::ApiResponse;
 use crate::setting::responses::{INVALID_KEY, SETTING_UPDATED, SETTING_DOESNT_EXIST};
-use crate::setting::repository::{update_or_insert_setting, setting_exists, get_setting_if_exists};
+use crate::setting::repository::{update_or_insert_setting, setting_exists, get_setting_if_exists, get_all_settings};
 use crate::setting::model::Setting;
-use chrono::Utc;
+use chrono::{Utc, TimeZone};
 use crate::responses::INTERNAL_DB_ERROR;
 
 /// Checks if the key is in snake_case.
@@ -57,4 +57,21 @@ pub(crate) fn get_setting(key: String, account_id: String, connection: &PgConnec
             Ok(value)
         }
     }
+}
+
+pub(crate) fn get_changed_settings(last_updated: i64, account_id: String, connection: &PgConnection) -> Result<String, ApiResponse> {
+    return match get_all_settings(&account_id, &connection) {
+        Err(error) => {
+            println!("Error getting changed settings: {}", error);
+            Err(INTERNAL_DB_ERROR)
+        },
+        Ok(settings) => {
+            let changed_settings: Vec<(String, String)> = settings.into_iter()
+                .filter(|setting| setting.last_modify_date.timestamp() >= last_updated)
+                .map(|setting| (setting.setting_key, setting.setting_value))
+                .collect();
+            Ok(serde_json::to_string(&changed_settings).unwrap())
+        }
+    }
+
 }

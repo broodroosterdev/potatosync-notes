@@ -36,6 +36,8 @@ use crate::token::Token;
 use crate::note::controller::*;
 use crate::note::model::{PatchingNote, SavingNote};
 use crate::responders::ApiResponse;
+use rocket::Data;
+use std::io::Read;
 
 
 /// Route for saving note
@@ -84,14 +86,22 @@ fn get_deleted(id_list: Json<Vec<String>>, token: Token, connection: db::Connect
 
 /// Route for changing setting
 #[put("/setting/<key>", data = "<value>")]
-fn change_setting(key: String, value: String, token: Token, connection: db::Connection) -> ApiResponse {
-    setting::controller::change_setting(key, value, token.sub, &*connection)
+fn change_setting(key: String, value: Data, token: Token, connection: db::Connection) -> ApiResponse {
+    let mut value_buffer = String::new();
+    value.open().read_to_string(&mut value_buffer).unwrap();
+    setting::controller::change_setting(key, value_buffer, token.sub, &*connection)
 }
 
 /// Route for getting setting
 #[get("/setting/<key>")]
 fn get_setting(key: String, token: Token, connection: db::Connection) -> Result<String, ApiResponse> {
     setting::controller::get_setting(key, token.sub, &*connection)
+}
+
+/// Route for getting changed key-value pairs of settings
+#[get("/setting/changed?<last_updated>")]
+fn get_changed_settings(last_updated: i64, token: Token, connection: db::Connection) -> Result<String, ApiResponse> {
+    setting::controller::get_changed_settings(last_updated, token.sub, &connection)
 }
 
 /// Route for checking connectivity
@@ -126,7 +136,7 @@ fn main() {
     rocket::ignite()
         .manage(db::connect())
         .mount("/", routes![save_note, update_note, patch_note, delete_note, delete_all_notes, get_notes, get_deleted])
-        .mount("/", routes![change_setting, get_setting])
+        .mount("/", routes![change_setting, get_setting, get_changed_settings])
         .mount("/", routes![ping, secure_ping])
         .register(catchers![token_error])
         .launch();

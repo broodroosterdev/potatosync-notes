@@ -38,3 +38,11 @@ pub fn get_setting_if_exists(key: &String, account_id: &String, connection: &PgC
         Ok(existing_list) => Ok(existing_list)
     }
 }
+
+#[cfg_attr(test, mockable)]
+pub fn get_all_settings(account_id: &String, connection: &PgConnection) -> Result<Vec<Setting>, String> {
+    let get_result = settings::dsl::settings
+        .filter(settings::account_id.eq(account_id))
+        .load::<Setting>(connection);
+    get_result.map_err(|err| err.to_string())
+}
