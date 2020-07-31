@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["get_setting_if_exists",""],["setting_exists",""],["update_or_insert_setting",""]]});
+initSidebarItems({"fn":[["get_all_settings",""],["get_setting_if_exists",""],["setting_exists",""],["update_or_insert_setting",""]]});
