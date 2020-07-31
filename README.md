@@ -1,5 +1,8 @@
-# potatosync-rust
-The potatosync api, but in rust with some added features for the v2 release
+# potatosync-notes
+Api that handles syncing of the PotatoSync app, written in rust.
+
+## Backstory
+This api is going to replace the [previous sync api](https://github.com/ATechnoHazard/potatosync).
 
 ## How to install
 #### Prerequisites
