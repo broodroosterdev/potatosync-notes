@@ -42,10 +42,6 @@
 <span id="42">42</span>
 <span id="43">43</span>
 <span id="44">44</span>
-<span id="45">45</span>
-<span id="46">46</span>
-<span id="47">47</span>
-<span id="48">48</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responders</span>::<span class="ident">ApiResponse</span>;
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">http</span>::<span class="ident">Status</span>;
@@ -65,10 +61,6 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">NOTE_MISSING_LAST_MODIFY</span>: <span class="ident">ApiResponse</span> <span class="op">=</span> <span class="ident">ApiResponse</span> {
     <span class="ident">body</span>: <span class="string">&quot;NoteMissingLastModifyDate&quot;</span>,
     <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">BadRequest</span>
-};
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">INTERNAL_DB_ERROR</span>: <span class="ident">ApiResponse</span> <span class="op">=</span> <span class="ident">ApiResponse</span> {
-    <span class="ident">body</span>: <span class="string">&quot;InternalDatabaseError&quot;</span>,
-    <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">InternalServerError</span>
 };
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">NOTE_ADD_SUCCESS</span>: <span class="ident">ApiResponse</span> <span class="op">=</span> <span class="ident">ApiResponse</span> {

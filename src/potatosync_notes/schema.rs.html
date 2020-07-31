@@ -21,6 +21,20 @@
 <span id="21">21</span>
 <span id="22">22</span>
 <span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="macro">table</span><span class="macro">!</span> {
     <span class="ident">notes</span> (<span class="ident">note_id</span>, <span class="ident">account_id</span>) {
@@ -45,5 +59,19 @@
         <span class="ident">archived</span> <span class="op">-&gt;</span> <span class="ident">Bool</span>,
     }
 }
+
+<span class="macro">table</span><span class="macro">!</span> {
+    <span class="ident">settings</span> (<span class="ident">setting_key</span>, <span class="ident">account_id</span>) {
+        <span class="ident">setting_key</span> <span class="op">-&gt;</span> <span class="ident">Text</span>,
+        <span class="ident">account_id</span> <span class="op">-&gt;</span> <span class="ident">Text</span>,
+        <span class="ident">setting_value</span> <span class="op">-&gt;</span> <span class="ident">Text</span>,
+        <span class="ident">last_modify_date</span> <span class="op">-&gt;</span> <span class="ident">Timestamptz</span>,
+    }
+}
+
+<span class="macro">allow_tables_to_appear_in_same_query</span><span class="macro">!</span>(
+    <span class="ident">notes</span>,
+    <span class="ident">settings</span>,
+);
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "potatosync_notes";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

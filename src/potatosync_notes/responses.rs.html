@@ -4,11 +4,13 @@
 <span id="4">4</span>
 <span id="5">5</span>
 <span id="6">6</span>
+<span id="7">7</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responders</span>::<span class="ident">ApiError</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responders</span>::{<span class="ident">ApiResponse</span>};
+<span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">http</span>::<span class="ident">Status</span>;
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">JSON_INVALID</span>: <span class="ident">ApiError</span> <span class="op">=</span> <span class="ident">ApiError</span> {
-    <span class="ident">description</span>: <span class="string">&quot;JsonInvalid&quot;</span>,
-    <span class="ident">code</span>: <span class="number">2</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">const</span> <span class="ident">INTERNAL_DB_ERROR</span>: <span class="ident">ApiResponse</span> <span class="op">=</span> <span class="ident">ApiResponse</span> {
+    <span class="ident">body</span>: <span class="string">&quot;InternalDatabaseError&quot;</span>,
+    <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">InternalServerError</span>
 };</pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "potatosync_notes";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["JSON_INVALID",""]]});
+initSidebarItems({"constant":[["INTERNAL_DB_ERROR",""]]});

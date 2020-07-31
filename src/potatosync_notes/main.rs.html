@@ -227,6 +227,7 @@
 <span id="227">227</span>
 <span id="228">228</span>
 <span id="229">229</span>
+<span id="230">230</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">proc_macro_hygiene</span>, <span class="ident">decl_macro</span>)]</span>
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">in_band_lifetimes</span>)]</span>
@@ -240,11 +241,9 @@
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rocket</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive</span>;
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_json</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">validator</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">validator_derive</span>;
-<span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">rocket_failure</span>;
 
 
@@ -256,6 +255,7 @@
 <span class="kw">use</span> <span class="ident">rocket_failure</span>::<span class="ident">errors</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">note</span>;
+<span class="kw">mod</span> <span class="ident">setting</span>;
 <span class="kw">mod</span> <span class="ident">schema</span>;
 <span class="kw">mod</span> <span class="ident">db</span>;
 <span class="kw">mod</span> <span class="ident">responders</span>;
@@ -266,11 +266,7 @@
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">token</span>::<span class="ident">Token</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">note</span>::<span class="ident">controller</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">note</span>::<span class="ident">model</span>::{<span class="ident">PatchingNote</span>, <span class="ident">SavingNote</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responders</span>::{<span class="ident">ApiError</span>, <span class="ident">ApiSuccess</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responders</span>::<span class="ident">ApiResponse</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">status_response</span>::<span class="ident">StatusResponse</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responses</span>::<span class="ident">JSON_INVALID</span>;
-<span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">de</span>::<span class="ident">value</span>::<span class="ident">Error</span>;
 
 
 <span class="doccomment">/// Route for saving note</span>
@@ -312,9 +308,21 @@
 }
 
 <span class="doccomment">/// Route for getting a list of deleted notes based on a provided list of id&#39;s</span>
-<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/note/deleted&quot;</span>, <span class="ident">data</span><span class="op">=</span><span class="string">&quot;&lt;id_list&gt;&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/note/deleted&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;id_list&gt;&quot;</span>)]</span>
 <span class="kw">fn</span> <span class="ident">get_deleted</span>(<span class="ident">id_list</span>: <span class="ident">Json</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">DeletedResponse</span>, <span class="ident">ApiResponse</span><span class="op">&gt;</span> {
     <span class="ident">get_deleted_by_account</span>(<span class="ident">token</span>.<span class="ident">sub</span>.<span class="ident">clone</span>(), <span class="ident">id_list</span>.<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">connection</span>)
+}
+
+<span class="doccomment">/// Route for changing setting</span>
+<span class="attribute">#[<span class="ident">put</span>(<span class="string">&quot;/setting/&lt;key&gt;&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;value&gt;&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">change_setting</span>(<span class="ident">key</span>: <span class="ident">String</span>, <span class="ident">value</span>: <span class="ident">String</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-&gt;</span> <span class="ident">ApiResponse</span> {
+    <span class="ident">setting</span>::<span class="ident">controller</span>::<span class="ident">change_setting</span>(<span class="ident">key</span>, <span class="ident">value</span>, <span class="ident">token</span>.<span class="ident">sub</span>, <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">connection</span>)
+}
+
+<span class="doccomment">/// Route for getting setting</span>
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/setting/&lt;key&gt;&quot;</span>)]</span>
+<span class="kw">fn</span> <span class="ident">get_setting</span>(<span class="ident">key</span>: <span class="ident">String</span>, <span class="ident">token</span>: <span class="ident">Token</span>, <span class="ident">connection</span>: <span class="ident">db</span>::<span class="ident">Connection</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">ApiResponse</span><span class="op">&gt;</span> {
+    <span class="ident">setting</span>::<span class="ident">controller</span>::<span class="ident">get_setting</span>(<span class="ident">key</span>, <span class="ident">token</span>.<span class="ident">sub</span>, <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">connection</span>)
 }
 
 <span class="doccomment">/// Route for checking connectivity</span>
@@ -325,7 +333,7 @@
 
 <span class="doccomment">/// Route for checking if the user is logged in</span>
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/secure-ping&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">secure_ping</span>(<span class="ident">_token</span>: <span class="ident">Token</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {<span class="kw">return</span> <span class="string">&quot;Pong!&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>();}
+<span class="kw">fn</span> <span class="ident">secure_ping</span>(<span class="ident">_token</span>: <span class="ident">Token</span>) <span class="op">-&gt;</span> <span class="ident">String</span> { <span class="kw">return</span> <span class="string">&quot;Pong!&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(); }
 
 <span class="doccomment">/// Route used for catching 401 errors e.g. invalid access token</span>
 <span class="attribute">#[<span class="ident">catch</span>(<span class="number">401</span>)]</span>
@@ -333,14 +341,6 @@
     <span class="ident">ApiResponse</span> {
         <span class="ident">body</span>: <span class="string">&quot;InvalidAuth&quot;</span>,
         <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">Unauthorized</span>,
-    }
-}
-
-<span class="attribute">#[<span class="ident">catch</span>(<span class="number">422</span>)]</span>
-<span class="kw">fn</span> <span class="ident">invalid_json</span>() <span class="op">-&gt;</span> <span class="ident">ApiResponse</span> {
-    <span class="ident">ApiResponse</span> {
-        <span class="ident">body</span>: <span class="ident">JSON_INVALID</span>.<span class="ident">description</span>,
-        <span class="ident">status</span>: <span class="ident">Status</span>::<span class="ident">UnprocessableEntity</span>
     }
 }
 
@@ -357,8 +357,9 @@
     <span class="ident">rocket</span>::<span class="ident">ignite</span>()
         .<span class="ident">manage</span>(<span class="ident">db</span>::<span class="ident">connect</span>())
         .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">save_note</span>, <span class="ident">update_note</span>, <span class="ident">patch_note</span>, <span class="ident">delete_note</span>, <span class="ident">delete_all_notes</span>, <span class="ident">get_notes</span>, <span class="ident">get_deleted</span>])
+        .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">change_setting</span>, <span class="ident">get_setting</span>])
         .<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">ping</span>, <span class="ident">secure_ping</span>])
-        .<span class="ident">register</span>(<span class="macro">catchers</span><span class="macro">!</span>[<span class="ident">token_error</span>, <span class="ident">invalid_json</span>])
+        .<span class="ident">register</span>(<span class="macro">catchers</span><span class="macro">!</span>[<span class="ident">token_error</span>])
         .<span class="ident">launch</span>();
 }
 
@@ -397,22 +398,23 @@
         });
     }
 
-    <span class="kw">fn</span> <span class="ident">allow_invalid_jwt</span>(){
+    <span class="kw">fn</span> <span class="ident">allow_invalid_jwt</span>() {
         <span class="ident">read_token</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="ident">Token</span> {
             <span class="ident">sub</span>: <span class="string">&quot;test&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
             <span class="ident">role</span>: <span class="string">&quot;user&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
             <span class="ident">token_type</span>: <span class="string">&quot;jwt&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
             <span class="ident">iat</span>: <span class="number">420</span>,
-            <span class="ident">exp</span>: <span class="number">420</span>
+            <span class="ident">exp</span>: <span class="number">420</span>,
         })));
     }
+
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_ping</span>(){
+    <span class="kw">fn</span> <span class="ident">test_ping</span>() {
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="string">&quot;Pong!&quot;</span>, <span class="ident">ping</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_secure_ping</span>(){
+    <span class="kw">fn</span> <span class="ident">test_secure_ping</span>() {
         <span class="ident">allow_invalid_jwt</span>();
         <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
         <span class="kw">let</span> <span class="ident">rocket</span> <span class="op">=</span> <span class="ident">rocket</span>::<span class="ident">ignite</span>().<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">secure_ping</span>]).<span class="ident">manage</span>(<span class="ident">db</span>::<span class="ident">connect</span>());
@@ -425,10 +427,10 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">save_note_which_is_good</span>(){
+    <span class="kw">fn</span> <span class="ident">save_note_which_is_good</span>() {
         <span class="ident">allow_invalid_jwt</span>();
         <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
-        <span class="ident">note_insert_if_empty</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>,<span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="number">1</span>)));
+        <span class="ident">note_insert_if_empty</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="number">1</span>)));
         <span class="kw">let</span> <span class="ident">rocket</span> <span class="op">=</span> <span class="ident">rocket</span>::<span class="ident">ignite</span>().<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">save_note</span>]).<span class="ident">manage</span>(<span class="ident">db</span>::<span class="ident">connect</span>());
         <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">Client</span>::<span class="ident">new</span>(<span class="ident">rocket</span>).<span class="ident">expect</span>(<span class="string">&quot;valid rocket instance&quot;</span>);
         <span class="kw">let</span> <span class="ident">json</span> <span class="op">=</span> <span class="ident">good_note</span>().<span class="ident">to_string</span>();
@@ -441,12 +443,12 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">dont_save_note_with_no_note_id</span>(){
+    <span class="kw">fn</span> <span class="ident">dont_save_note_with_no_note_id</span>() {
         <span class="ident">allow_invalid_jwt</span>();
         <span class="ident">dotenv</span>::<span class="ident">dotenv</span>().<span class="ident">ok</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">note</span> <span class="op">=</span> <span class="ident">good_note</span>();
         <span class="ident">note</span>[<span class="string">&quot;note_id&quot;</span>] <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">Null</span>;
-        <span class="ident">note_insert_if_empty</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>,<span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="number">1</span>)));
+        <span class="ident">note_insert_if_empty</span>.<span class="ident">mock_safe</span>(<span class="op">|</span><span class="kw">_</span>, <span class="kw">_</span><span class="op">|</span> <span class="ident">MockResult</span>::<span class="ident">Return</span>(<span class="prelude-val">Ok</span>(<span class="number">1</span>)));
         <span class="kw">let</span> <span class="ident">rocket</span> <span class="op">=</span> <span class="ident">rocket</span>::<span class="ident">ignite</span>().<span class="ident">mount</span>(<span class="string">&quot;/&quot;</span>, <span class="macro">routes</span><span class="macro">!</span>[<span class="ident">save_note</span>]).<span class="ident">manage</span>(<span class="ident">db</span>::<span class="ident">connect</span>()).<span class="ident">register</span>(<span class="macro">catchers</span><span class="macro">!</span>(<span class="ident">invalid_json</span>));
         <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">Client</span>::<span class="ident">new</span>(<span class="ident">rocket</span>).<span class="ident">expect</span>(<span class="string">&quot;valid rocket instance&quot;</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">client</span>.<span class="ident">post</span>(<span class="string">&quot;/note&quot;</span>)

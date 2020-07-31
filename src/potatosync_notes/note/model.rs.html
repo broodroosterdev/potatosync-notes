@@ -271,8 +271,8 @@
     <span class="kw">pub</span> <span class="ident">content</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">style_json</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">starred</span>: <span class="ident">bool</span>,
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;deserialize&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize&quot;</span>)]</span>
+<span class="comment">//    #[serde(deserialize_with = &quot;deserialize&quot;)]</span>
+<span class="comment">//    #[serde(serialize_with = &quot;serialize&quot;)]</span>
     <span class="kw">pub</span> <span class="ident">creation_date</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">deserialize_with</span> <span class="op">=</span> <span class="string">&quot;deserialize&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">serialize_with</span> <span class="op">=</span> <span class="string">&quot;serialize&quot;</span>)]</span>

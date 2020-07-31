@@ -358,17 +358,19 @@
 <span id="358">358</span>
 <span id="359">359</span>
 <span id="360">360</span>
+<span id="361">361</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">chrono</span>::{<span class="ident">TimeZone</span>, <span class="ident">Utc</span>};
 <span class="kw">use</span> <span class="ident">diesel</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">note</span>::<span class="ident">model</span>::{<span class="ident">Note</span>, <span class="ident">PatchingNote</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">note</span>::<span class="ident">repository</span>::{<span class="ident">note_delete</span>, <span class="ident">note_delete_all</span>, <span class="ident">note_exists</span>, <span class="ident">note_insert_if_empty</span>, <span class="ident">note_patch_if_exists</span>, <span class="ident">note_update_if_exists</span>, <span class="ident">notes_get_all</span>, <span class="ident">notes_get_existing</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">note</span>::<span class="ident">responses</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responders</span>::{<span class="ident">ApiSuccess</span>, <span class="ident">ApiError</span>, <span class="ident">ApiResponse</span>};
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responders</span>::{<span class="ident">ApiResponse</span>};
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">response</span>::<span class="ident">Responder</span>;
 <span class="kw">use</span> <span class="ident">rocket</span>::{<span class="ident">Response</span>, <span class="ident">Request</span>, <span class="ident">response</span>};
 <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">http</span>::<span class="ident">ContentType</span>;
 <span class="kw">use</span> <span class="ident">rocket_failure</span>::<span class="ident">errors</span>::<span class="ident">Status</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">responses</span>::<span class="ident">INTERNAL_DB_ERROR</span>;
 
 <span class="doccomment">///Adds note and if they already exist, it will do nothing</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">add</span>(<span class="ident">note</span>: <span class="ident">Note</span>, <span class="ident">connection</span>: <span class="kw-2">&amp;</span><span class="ident">PgConnection</span>) <span class="op">-&gt;</span> <span class="ident">ApiResponse</span> {

@@ -66,11 +66,11 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Deserialize</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Token</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">sub</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">role</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">role</span>: <span class="ident">String</span>,
     <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">token_type</span>: <span class="ident">String</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">iat</span>: <span class="ident">u64</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">exp</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">iat</span>: <span class="ident">u64</span>,
+    <span class="kw">pub</span> <span class="ident">exp</span>: <span class="ident">u64</span>,
 }
 
 <span class="doccomment">/// Get access_token from header and verify it</span>
