@@ -22,3 +22,12 @@ CREATE TABLE IF NOT EXISTS notes
     archived         bool        not null,
     PRIMARY KEY (note_id, account_id)
 );
+
+CREATE TABLE IF NOT EXISTS settings
+(
+    setting_key      text        not null,
+    account_id       text        not null,
+    setting_value    text        not null,
+    last_modify_date timestamptz not null,
+    PRIMARY KEY (setting_key, account_id)
+);

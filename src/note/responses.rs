@@ -17,10 +17,6 @@ pub(crate) const NOTE_MISSING_LAST_MODIFY: ApiResponse = ApiResponse {
     body: "NoteMissingLastModifyDate",
     status: Status::BadRequest
 };
-pub(crate) const INTERNAL_DB_ERROR: ApiResponse = ApiResponse {
-    body: "InternalDatabaseError",
-    status: Status::InternalServerError
-};
 
 pub(crate) const NOTE_ADD_SUCCESS: ApiResponse = ApiResponse {
     body: "NoteAddSuccess",

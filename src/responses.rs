@@ -1,6 +1,7 @@
-use crate::responders::ApiError;
+use crate::responders::{ApiResponse};
+use rocket::http::Status;
 
-pub(crate) const JSON_INVALID: ApiError = ApiError {
-    description: "JsonInvalid",
-    code: 2
+pub(crate) const INTERNAL_DB_ERROR: ApiResponse = ApiResponse {
+    body: "InternalDatabaseError",
+    status: Status::InternalServerError
 };

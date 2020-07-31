@@ -11,11 +11,11 @@ use mocktopus::macros::*;
 #[derive(Deserialize)]
 pub struct Token {
     pub(crate) sub: String,
-    pub(crate) role: String,
+    pub role: String,
     #[serde(rename = "type")]
     pub(crate) token_type: String,
-    pub(crate) iat: u64,
-    pub(crate) exp: u64,
+    pub iat: u64,
+    pub exp: u64,
 }
 
 /// Get access_token from header and verify it

@@ -3,11 +3,12 @@ use diesel::prelude::*;
 use crate::note::model::{Note, PatchingNote};
 use crate::note::repository::{note_delete, note_delete_all, note_exists, note_insert_if_empty, note_patch_if_exists, note_update_if_exists, notes_get_all, notes_get_existing};
 use crate::note::responses::*;
-use crate::responders::{ApiSuccess, ApiError, ApiResponse};
+use crate::responders::{ApiResponse};
 use rocket::response::Responder;
 use rocket::{Response, Request, response};
 use rocket::http::ContentType;
 use rocket_failure::errors::Status;
+use crate::responses::INTERNAL_DB_ERROR;
 
 ///Adds note and if they already exist, it will do nothing
 pub(crate) fn add(note: Note, connection: &PgConnection) -> ApiResponse {

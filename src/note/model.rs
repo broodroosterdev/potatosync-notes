@@ -44,8 +44,8 @@ pub struct Note {
     pub content: String,
     pub style_json: String,
     pub starred: bool,
-    #[serde(deserialize_with = "deserialize")]
-    #[serde(serialize_with = "serialize")]
+//    #[serde(deserialize_with = "deserialize")]
+//    #[serde(serialize_with = "serialize")]
     pub creation_date: DateTime<Utc>,
     #[serde(deserialize_with = "deserialize")]
     #[serde(serialize_with = "serialize")]

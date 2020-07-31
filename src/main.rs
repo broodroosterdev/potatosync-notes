@@ -10,11 +10,9 @@ extern crate openssl;
 extern crate rocket;
 #[macro_use]
 extern crate serde_derive;
-#[macro_use]
 extern crate serde_json;
 extern crate validator;
 extern crate validator_derive;
-#[macro_use]
 extern crate rocket_failure;
 
 
@@ -26,6 +24,7 @@ use rocket_contrib::json::Json;
 use rocket_failure::errors::*;
 
 mod note;
+mod setting;
 mod schema;
 mod db;
 mod responders;
@@ -36,11 +35,7 @@ mod token;
 use crate::token::Token;
 use crate::note::controller::*;
 use crate::note::model::{PatchingNote, SavingNote};
-use crate::responders::{ApiError, ApiSuccess};
 use crate::responders::ApiResponse;
-use crate::status_response::StatusResponse;
-use crate::responses::JSON_INVALID;
-use serde::de::value::Error;
 
 
 /// Route for saving note
@@ -82,9 +77,21 @@ fn get_notes(last_updated: i64, token: Token, connection: db::Connection) -> Res
 }
 
 /// Route for getting a list of deleted notes based on a provided list of id's
-#[post("/note/deleted", data="<id_list>")]
+#[post("/note/deleted", data = "<id_list>")]
 fn get_deleted(id_list: Json<Vec<String>>, token: Token, connection: db::Connection) -> Result<DeletedResponse, ApiResponse> {
     get_deleted_by_account(token.sub.clone(), id_list.0, &connection)
+}
+
+/// Route for changing setting
+#[put("/setting/<key>", data = "<value>")]
+fn change_setting(key: String, value: String, token: Token, connection: db::Connection) -> ApiResponse {
+    setting::controller::change_setting(key, value, token.sub, &*connection)
+}
+
+/// Route for getting setting
+#[get("/setting/<key>")]
+fn get_setting(key: String, token: Token, connection: db::Connection) -> Result<String, ApiResponse> {
+    setting::controller::get_setting(key, token.sub, &*connection)
 }
 
 /// Route for checking connectivity
@@ -95,7 +102,7 @@ fn ping() -> String {
 
 /// Route for checking if the user is logged in
 #[get("/secure-ping")]
-fn secure_ping(_token: Token) -> String {return "Pong!".parse().unwrap();}
+fn secure_ping(_token: Token) -> String { return "Pong!".parse().unwrap(); }
 
 /// Route used for catching 401 errors e.g. invalid access token
 #[catch(401)]
@@ -103,14 +110,6 @@ fn token_error() -> ApiResponse {
     ApiResponse {
         body: "InvalidAuth",
         status: Status::Unauthorized,
-    }
-}
-
-#[catch(422)]
-fn invalid_json() -> ApiResponse {
-    ApiResponse {
-        body: JSON_INVALID.description,
-        status: Status::UnprocessableEntity
     }
 }
 
@@ -127,8 +126,9 @@ fn main() {
     rocket::ignite()
         .manage(db::connect())
         .mount("/", routes![save_note, update_note, patch_note, delete_note, delete_all_notes, get_notes, get_deleted])
+        .mount("/", routes![change_setting, get_setting])
         .mount("/", routes![ping, secure_ping])
-        .register(catchers![token_error, invalid_json])
+        .register(catchers![token_error])
         .launch();
 }
 
@@ -167,22 +167,23 @@ mod tests {
         });
     }
 
-    fn allow_invalid_jwt(){
+    fn allow_invalid_jwt() {
         read_token.mock_safe(|_| MockResult::Return(Ok(Token {
             sub: "test".parse().unwrap(),
             role: "user".parse().unwrap(),
             token_type: "jwt".parse().unwrap(),
             iat: 420,
-            exp: 420
+            exp: 420,
         })));
     }
+
     #[test]
-    fn test_ping(){
+    fn test_ping() {
         assert_eq!("Pong!", ping());
     }
 
     #[test]
-    fn test_secure_ping(){
+    fn test_secure_ping() {
         allow_invalid_jwt();
         dotenv::dotenv().ok();
         let rocket = rocket::ignite().mount("/", routes![secure_ping]).manage(db::connect());
@@ -195,10 +196,10 @@ mod tests {
     }
 
     #[test]
-    fn save_note_which_is_good(){
+    fn save_note_which_is_good() {
         allow_invalid_jwt();
         dotenv::dotenv().ok();
-        note_insert_if_empty.mock_safe(|_,_| MockResult::Return(Ok(1)));
+        note_insert_if_empty.mock_safe(|_, _| MockResult::Return(Ok(1)));
         let rocket = rocket::ignite().mount("/", routes![save_note]).manage(db::connect());
         let client = Client::new(rocket).expect("valid rocket instance");
         let json = good_note().to_string();
@@ -211,12 +212,12 @@ mod tests {
     }
 
     #[test]
-    fn dont_save_note_with_no_note_id(){
+    fn dont_save_note_with_no_note_id() {
         allow_invalid_jwt();
         dotenv::dotenv().ok();
         let mut note = good_note();
         note["note_id"] = Value::Null;
-        note_insert_if_empty.mock_safe(|_,_| MockResult::Return(Ok(1)));
+        note_insert_if_empty.mock_safe(|_, _| MockResult::Return(Ok(1)));
         let rocket = rocket::ignite().mount("/", routes![save_note]).manage(db::connect()).register(catchers!(invalid_json));
         let client = Client::new(rocket).expect("valid rocket instance");
         let mut response = client.post("/note")

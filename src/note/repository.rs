@@ -18,8 +18,7 @@ pub fn note_exists(account_id: &String, note_id: &String, connection: &PgConnect
 pub fn note_insert_if_empty(note: Note, connection: &PgConnection) -> Result<usize, String> {
     let insert_result = diesel::insert_into(notes::table)
         .values(&note)
-        .on_conflict((notes::columns::note_id, notes::columns::account_id))
-        .do_nothing()
+        .on_conflict_do_nothing()
         .execute(connection);
     return if insert_result.is_err() {
         Err(insert_result.err().unwrap().to_string())

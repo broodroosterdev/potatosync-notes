@@ -21,3 +21,17 @@ table! {
         archived -> Bool,
     }
 }
+
+table! {
+    settings (setting_key, account_id) {
+        setting_key -> Text,
+        account_id -> Text,
+        setting_value -> Text,
+        last_modify_date -> Timestamptz,
+    }
+}
+
+allow_tables_to_appear_in_same_query!(
+    notes,
+    settings,
+);
