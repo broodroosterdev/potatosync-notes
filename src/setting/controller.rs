@@ -5,6 +5,7 @@ use crate::setting::repository::{update_or_insert_setting, setting_exists, get_s
 use crate::setting::model::Setting;
 use chrono::{Utc, TimeZone};
 use crate::responses::INTERNAL_DB_ERROR;
+use std::collections::HashMap;
 
 /// Checks if the key is in snake_case.
 fn is_valid_key(key: &str) -> bool {
@@ -66,7 +67,7 @@ pub(crate) fn get_changed_settings(last_updated: i64, account_id: String, connec
             Err(INTERNAL_DB_ERROR)
         },
         Ok(settings) => {
-            let changed_settings: Vec<(String, String)> = settings.into_iter()
+            let changed_settings: HashMap<String, String> = settings.into_iter()
                 .filter(|setting| setting.last_modify_date.timestamp() >= last_updated)
                 .map(|setting| (setting.setting_key, setting.setting_value))
                 .collect();
