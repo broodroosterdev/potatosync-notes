@@ -35,6 +35,18 @@
 <span id="35">35</span>
 <span id="36">36</span>
 <span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="macro">table</span><span class="macro">!</span> {
     <span class="ident">notes</span> (<span class="ident">note_id</span>, <span class="ident">account_id</span>) {
@@ -69,9 +81,21 @@
     }
 }
 
+<span class="macro">table</span><span class="macro">!</span> {
+    <span class="ident">tags</span> (<span class="ident">id</span>, <span class="ident">account_id</span>) {
+        <span class="ident">id</span> <span class="op">-&gt;</span> <span class="ident">Text</span>,
+        <span class="ident">account_id</span> <span class="op">-&gt;</span> <span class="ident">Text</span>,
+        <span class="attribute">#[<span class="ident">sql_name</span> <span class="op">=</span> <span class="string">&quot;tag_name&quot;</span>]</span>
+        <span class="ident">name</span> <span class="op">-&gt;</span> <span class="ident">Text</span>,
+        <span class="ident">color</span> <span class="op">-&gt;</span> <span class="ident">Int4</span>,
+        <span class="ident">last_modify_date</span> <span class="op">-&gt;</span> <span class="ident">Timestamptz</span>,
+    }
+}
+
 <span class="macro">allow_tables_to_appear_in_same_query</span><span class="macro">!</span>(
     <span class="ident">notes</span>,
     <span class="ident">settings</span>,
+    <span class="ident">tags</span>,
 );
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "potatosync_notes";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>

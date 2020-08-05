@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["controller",""],["model",""],["repository",""],["responses",""]]});
