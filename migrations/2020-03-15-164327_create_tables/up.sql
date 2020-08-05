@@ -31,3 +31,13 @@ CREATE TABLE IF NOT EXISTS settings
     last_modify_date timestamptz not null,
     PRIMARY KEY (setting_key, account_id)
 );
+
+CREATE TABLE IF NOT EXISTS tags
+(
+    id              text        not null,
+    account_id      text        not null,
+    tag_name        text        not null,
+    color           integer     not null,
+    last_modify_date timestamptz not null,
+    PRIMARY KEY (id, account_id)
+);

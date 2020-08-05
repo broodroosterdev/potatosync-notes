@@ -25,16 +25,19 @@ use rocket_failure::errors::*;
 
 mod note;
 mod setting;
+mod tag;
 mod schema;
 mod db;
 mod responders;
 mod responses;
 mod status_response;
 mod token;
+mod serde_helper;
 
 use crate::token::Token;
 use crate::note::controller::*;
 use crate::note::model::{PatchingNote, SavingNote};
+use crate::tag::model::{PatchingTag, SavingTag};
 use crate::responders::ApiResponse;
 use rocket::Data;
 use std::io::Read;
@@ -80,7 +83,7 @@ fn get_notes(last_updated: i64, token: Token, connection: db::Connection) -> Res
 
 /// Route for getting a list of deleted notes based on a provided list of id's
 #[post("/note/deleted", data = "<id_list>")]
-fn get_deleted(id_list: Json<Vec<String>>, token: Token, connection: db::Connection) -> Result<DeletedResponse, ApiResponse> {
+fn get_deleted_notes(id_list: Json<Vec<String>>, token: Token, connection: db::Connection) -> Result<DeletedResponse, ApiResponse> {
     get_deleted_by_account(token.sub.clone(), id_list.0, &connection)
 }
 
@@ -100,8 +103,34 @@ fn get_setting(key: String, token: Token, connection: db::Connection) -> Result<
 
 /// Route for getting changed key-value pairs of settings
 #[get("/setting/changed?<last_updated>")]
-fn get_changed_settings(last_updated: i64, token: Token, connection: db::Connection) -> Result<String, ApiResponse> {
-    setting::controller::get_changed_settings(last_updated, token.sub, &connection)
+fn get_changed_settings(last_updated: u64, token: Token, connection: db::Connection) -> Result<String, ApiResponse> {
+    setting::controller::get_changed_settings(last_updated as i64, token.sub, &connection)
+}
+
+#[post("/tag", data = "<json_tag>")]
+fn add_tag(json_tag: Json<SavingTag>, token: Token, connection: db::Connection) -> ApiResponse {
+    tag::controller::add_tag(json_tag.0, token.sub, &*connection)
+}
+
+#[patch("/tag/<tag_id>", data = "<json_tag>")]
+fn patch_tag(tag_id: String, json_tag: Json<PatchingTag>, token: Token, connection: db::Connection) -> ApiResponse {
+    tag::controller::update_tag(json_tag.0, tag_id, token.sub, &*connection)
+}
+
+#[delete("/tag/<tag_id>")]
+fn delete_tag(tag_id: String, token: Token, connection: db::Connection) -> ApiResponse {
+    tag::controller::delete_tag(tag_id, token.sub, &*connection)
+}
+
+#[get("/tag/list?<last_updated>")]
+fn get_tags(last_updated: u64, token: Token, connection: db::Connection) -> Result<String, ApiResponse> {
+    tag::controller::get_updated_tags(last_updated as i64, token.sub, &*connection)
+}
+
+/// Route for getting a list of deleted notes based on a provided list of id's
+#[post("/tag/deleted", data = "<id_list>")]
+fn get_deleted_tags(id_list: Json<Vec<String>>, token: Token, connection: db::Connection) -> Result<String, ApiResponse> {
+    tag::controller::get_deleted_tags(id_list.0, token.sub, &*connection)
 }
 
 /// Route for checking connectivity
@@ -135,8 +164,9 @@ fn main() {
 // Start webserver
     rocket::ignite()
         .manage(db::connect())
-        .mount("/", routes![save_note, update_note, patch_note, delete_note, delete_all_notes, get_notes, get_deleted])
+        .mount("/", routes![save_note, update_note, patch_note, delete_note, delete_all_notes, get_notes, get_deleted_notes])
         .mount("/", routes![change_setting, get_setting, get_changed_settings])
+        .mount("/", routes![add_tag, patch_tag, delete_tag, get_tags, get_deleted_tags])
         .mount("/", routes![ping, secure_ping])
         .register(catchers![token_error])
         .launch();

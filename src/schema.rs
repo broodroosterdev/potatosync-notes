@@ -31,7 +31,19 @@ table! {
     }
 }
 
+table! {
+    tags (id, account_id) {
+        id -> Text,
+        account_id -> Text,
+        #[sql_name = "tag_name"]
+        name -> Text,
+        color -> Int4,
+        last_modify_date -> Timestamptz,
+    }
+}
+
 allow_tables_to_appear_in_same_query!(
     notes,
     settings,
+    tags,
 );

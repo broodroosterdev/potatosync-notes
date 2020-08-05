@@ -3,7 +3,7 @@ use crate::responders::ApiResponse;
 use crate::setting::responses::{INVALID_KEY, SETTING_UPDATED, SETTING_DOESNT_EXIST};
 use crate::setting::repository::{update_or_insert_setting, setting_exists, get_setting_if_exists, get_all_settings};
 use crate::setting::model::Setting;
-use chrono::{Utc, TimeZone};
+use chrono::Utc;
 use crate::responses::INTERNAL_DB_ERROR;
 use std::collections::HashMap;
 
