@@ -1,3 +1,4 @@
 (function() {var implementors = {};
 implementors["potatosync_notes"] = [{"text":"impl&lt;'a, 'r&gt; FromRequest&lt;'a, 'r&gt; for Connection","synthetic":false,"types":[]},{"text":"impl&lt;'a, 'r&gt; FromRequest&lt;'a, 'r&gt; for Token","synthetic":false,"types":[]}];
+implementors["rocket_cors"] = [{"text":"impl&lt;'a, 'r&gt; FromRequest&lt;'a, 'r&gt; for Origin","synthetic":false,"types":[]},{"text":"impl&lt;'a, 'r&gt; FromRequest&lt;'a, 'r&gt; for AccessControlRequestMethod","synthetic":false,"types":[]},{"text":"impl&lt;'a, 'r&gt; FromRequest&lt;'a, 'r&gt; for AccessControlRequestHeaders","synthetic":false,"types":[]},{"text":"impl&lt;'a, 'r&gt; FromRequest&lt;'a, 'r&gt; for Guard&lt;'r&gt;","synthetic":false,"types":[]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

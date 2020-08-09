@@ -1,0 +1,160 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `unicase_serde` crate."><meta name="keywords" content="rust, rustlang, rust-lang, unicase_serde"><title>unicase_serde - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../unicase_serde/index.html'><div class='logo-container'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate unicase_serde</p><div class='block version'><p>Version 0.1.0</p></div><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all unicase_serde's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'unicase_serde', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/unicase_serde/lib.rs.html#2-497' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>unicase_serde</a></span></h1><div class='docblock'><p><a href="https://travis-ci.org/lawliet89/unicase_serde"><img src="https://travis-ci.org/lawliet89/unicase_serde.svg" alt="Build Status" /></a>
+<a href="https://crates.io/crates/unicase_serde"><img src="https://img.shields.io/crates/v/unicase_serde.svg" alt="Crates.io" /></a>
+<a href="https://github.com/lawliet89/unicase_serde"><img src="https://img.shields.io/github/tag/lawliet89/unicase_serde.svg" alt="Repository" /></a>
+<a href="https://docs.rs/unicase_serde"><img src="https://docs.rs/unicase_serde/badge.svg" alt="Documentation" /></a></p>
+<ul>
+<li>Documentation:  <a href="https://docs.rs/unicase_serde/">stable</a> | <a href="https://lawliet89.github.io/unicase_serde">master branch</a></li>
+</ul>
+<p>serde Serialization and Deserialization for <a href="https://crates.io/crates/unicase">UniCase</a> crate</p>
+<p>Support for serialization and deserialization using
+<a href="https://serde.rs/">serde</a>.</p>
+<h2 id="installation" class="section-header"><a href="#installation">Installation</a></h2>
+<p>Add the following to Cargo.toml:</p>
+<pre><code class="language-toml">serde = &quot;1.0&quot;
+serde_derive = &quot;1.0&quot;
+unicase=&quot;2.0&quot;
+unicase_serde = &quot;0.1.0&quot;
+</code></pre>
+<h2 id="usage" class="section-header"><a href="#usage">Usage</a></h2>
+<p>You will have to use the serde <code>with</code> <a href="https://serde.rs/field-attrs.html">field attribute</a> to
+annotate any <code>UniCase</code> or <code>Ascii</code> fields with the appropriate module. See examples below.</p>
+<h2 id="serialization" class="section-header"><a href="#serialization">Serialization</a></h2>
+<p>Serialization for any <code>UniCase&lt;S&gt;</code> and <code>Ascii&lt;S&gt;</code> where  <code>S: AsRef&lt;str&gt;</code> is
+implemented. Examples for <code>S</code> include <code>&amp;str</code>, <code>Cow&lt;'a, str&gt;</code>, and <code>String</code>.</p>
+<p>The same <code>Serialize</code> implementation is provided in all the modules.</p>
+<h2 id="deserialization" class="section-header"><a href="#deserialization">Deserialization</a></h2>
+<p>You can deserialize strings into <code>UniCase&lt;S&gt;</code> and <code>Ascii&lt;S&gt;</code> where</p>
+<ul>
+<li><code>S: FromStr + AsRef&lt;str&gt;</code></li>
+<li><code>S: From&lt;&amp;'de str&gt; + AsRef&lt;str&gt; + 'de</code></li>
+</ul>
+<h3 id="s-fromstr--asrefstr" class="section-header"><a href="#s-fromstr--asrefstr"><code>S: FromStr + AsRef&lt;str&gt;</code></a></h3>
+<p>The <code>Deserialize</code> implementation is provided in the <code>unicase_serde::unicase</code> and
+<code>unicase_serde::ascii</code> modules.
+Conversion is done using the <code>FromStr::from_str</code> function.</p>
+<p>Typically, you will use the this implementation for any Rust built in type that owns the data
+and does not borrow anything.
+Example include <code>String</code>.</p>
+<p>You will know when you need to use the second case
+when you get trait bound errors such
+&quot;as the trait bound <code>&amp;'a str: std::convert::From&lt;&amp;str&gt;</code> is not satisfied&quot;.</p>
+<h3 id="s-fromde-str--asrefstr--de" class="section-header"><a href="#s-fromde-str--asrefstr--de"><code>S: From&lt;&amp;'de str&gt; + AsRef&lt;str&gt; + 'de</code></a></h3>
+<p>The <code>Deserialize</code> implementation is provided in the <code>unicase_serde::unicase::borrowed</code> and
+<code>unicase_serde::ascii::borrowed</code> modules.</p>
+<p>The second case is meant for usage with Rust built in types that borrow data. Conversion
+is done using the <code>Into::into</code> function.</p>
+<p>If you use the second case with any type that owns data, you will get an error at runtime.</p>
+<h2 id="example-serialization-and-deserialization" class="section-header"><a href="#example-serialization-and-deserialization">Example Serialization and Deserialization</a></h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde</span>;
+<span class="attribute">#[<span class="ident">macro_use</span>]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">unicase</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">unicase_serde</span>;
+
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
+<span class="kw">use</span> <span class="ident">unicase</span>::{<span class="ident">UniCase</span>, <span class="ident">Ascii</span>};
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">struct</span> <span class="ident">TestUniCase</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;unicase_serde::unicase&quot;</span>)]</span>
+    <span class="ident">owned</span>: <span class="ident">UniCase</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">borrow</span>, <span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;unicase_serde::unicase::borrowed&quot;</span>)]</span>
+    <span class="ident">borrowed_str</span>: <span class="ident">UniCase</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">borrow</span>, <span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;unicase_serde::unicase::borrowed&quot;</span>)]</span>
+    <span class="ident">cow_str</span>: <span class="ident">UniCase</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>,
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>)]</span>
+<span class="kw">struct</span> <span class="ident">TestAscii</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;unicase_serde::ascii&quot;</span>)]</span>
+    <span class="ident">owned</span>: <span class="ident">Ascii</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">borrow</span>, <span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;unicase_serde::ascii::borrowed&quot;</span>)]</span>
+    <span class="ident">borrowed_str</span>: <span class="ident">Ascii</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">borrow</span>, <span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;unicase_serde::ascii::borrowed&quot;</span>)]</span>
+    <span class="ident">cow_str</span>: <span class="ident">Ascii</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>,
+}
+</pre></div>
+<h2 id="example-with-custom-string-types" class="section-header"><a href="#example-with-custom-string-types">Example with Custom &quot;string&quot; types</a></h2>
+<p>This example will demonstrate how you can use a &quot;custom&quot; string type and
+still use serialization and deserialization when wrapped inside a <code>UniCase</code> or <code>Ascii</code>. This
+is particularly useful for types like <code>UniCase&lt;Cow&lt;'a, String&gt;&gt;</code> or <code>UniCase&lt;&amp;'a String&gt;</code>
+because <code>&amp;String</code> does not implement <code>From::&lt;&amp;str&gt;</code>.</p>
+<p>As you can see from the example below, you can use the direct <code>Deserialize</code> implementation
+to deserialize borrowed data. This usually does not work with Rust built in types due to
+missing trait implementation. However, because the conversion is done using the
+<code>FromStr::from_str</code> function, and the function signature indicates that the <code>&amp;str</code> passed in
+might have an ephemeral lifetime, implementors will have to convert the <code>&amp;str</code> into an owned
+version. So you are better off using the borrowed deserializer.</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde</span>;
+<span class="attribute">#[<span class="ident">macro_use</span>]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_derive</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">unicase</span>;
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">unicase_serde</span>;
+
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
+<span class="kw">use</span> <span class="ident">unicase</span>::<span class="ident">UniCase</span>;
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">struct</span> <span class="ident">CustomStr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>);
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CustomStr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>()
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">CustomStr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> ();
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">CustomStr</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="ident">s</span>.<span class="ident">to_string</span>())))
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CustomStr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">CustomStr</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="ident">s</span>))
+    }
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">struct</span> <span class="ident">CustomString</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">String</span><span class="op">&gt;</span>);
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CustomString</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_ref</span>()
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">CustomString</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> ();
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">CustomString</span>(<span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">s</span>.<span class="ident">to_string</span>())))
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CustomString</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">CustomString</span>(<span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">s</span>.<span class="ident">to_string</span>()))
+    }
+}
+
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
+<span class="kw">struct</span> <span class="ident">TestCustomStruct</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">borrow</span>, <span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;unicase_serde::unicase::borrowed&quot;</span>)]</span>
+    <span class="ident">test_str</span>: <span class="ident">UniCase</span><span class="op">&lt;</span><span class="ident">CustomStr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">borrow</span>, <span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;unicase_serde::unicase::borrowed&quot;</span>)]</span>
+    <span class="ident">test_string</span>: <span class="ident">UniCase</span><span class="op">&lt;</span><span class="ident">CustomString</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">borrow</span>, <span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;unicase_serde::unicase::borrowed&quot;</span>)]</span>
+    <span class="ident">test_str_borrowed</span>: <span class="ident">UniCase</span><span class="op">&lt;</span><span class="ident">CustomStr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>,
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">borrow</span>, <span class="ident">with</span> <span class="op">=</span> <span class="string">&quot;unicase_serde::unicase::borrowed&quot;</span>)]</span>
+    <span class="ident">test_string_borrowed</span>: <span class="ident">UniCase</span><span class="op">&lt;</span><span class="ident">CustomString</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>,
+}
+</pre></div>
+</div><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table><tr class='module-item'><td><a class="mod" href="ascii/index.html" title='unicase_serde::ascii mod'>ascii</a></td><td class='docblock-short'><p>Serialization and Deserialization Implementation for <code>Ascii</code> that owns data</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="unicase/index.html" title='unicase_serde::unicase mod'>unicase</a></td><td class='docblock-short'><p>Serialization and Deserialization Implementation for <code>UniCase</code> that owns data</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../";window.currentCrate = "unicase_serde";</script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

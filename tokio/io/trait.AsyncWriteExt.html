@@ -41,9 +41,9 @@
     { ... }
 <div class='item-spacer'></div>    fn <a href='#method.write_i128_le' class='fnname'>write_i128_le</a>&lt;'a&gt;(&amp;'a mut self, n: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.i128.html">i128</a>) -&gt; WriteI128Le&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;'a mut </a>Self&gt;<br>&nbsp;&nbsp;&nbsp; <span class="where">where<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a></span>,
     { ... }
-<div class='item-spacer'></div>    fn <a href='#method.flush' class='fnname'>flush</a>(&amp;mut self) -&gt; Flush&lt;Self&gt;<br>&nbsp;&nbsp;&nbsp; <span class="where">where<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a></span>,
+<div class='item-spacer'></div>    fn <a href='#method.flush' class='fnname'>flush</a>(&amp;mut self) -&gt; Flush&lt;'_, Self&gt;<br>&nbsp;&nbsp;&nbsp; <span class="where">where<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a></span>,
     { ... }
-<div class='item-spacer'></div>    fn <a href='#method.shutdown' class='fnname'>shutdown</a>(&amp;mut self) -&gt; Shutdown&lt;Self&gt;<br>&nbsp;&nbsp;&nbsp; <span class="where">where<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a></span>,
+<div class='item-spacer'></div>    fn <a href='#method.shutdown' class='fnname'>shutdown</a>(&amp;mut self) -&gt; Shutdown&lt;'_, Self&gt;<br>&nbsp;&nbsp;&nbsp; <span class="where">where<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a></span>,
     { ... }
 }</pre></div><div class='docblock'><p>Writes bytes to a sink.</p>
 <p>Implemented as an extention trait, adding utility methods to all
@@ -652,7 +652,7 @@ syscalls.</p>
     ]);
     <span class="prelude-val">Ok</span>(())
 }</pre></div>
-</div><h3 id='method.flush' class='method'><code>fn <a href='#method.flush' class='fnname'>flush</a>(&amp;mut self) -&gt; Flush&lt;Self&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a>,&nbsp;</span></code></h3><div class='docblock'><p>Flushes this output stream, ensuring that all intermediately buffered
+</div><h3 id='method.flush' class='method'><code>fn <a href='#method.flush' class='fnname'>flush</a>(&amp;mut self) -&gt; Flush&lt;'_, Self&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a>,&nbsp;</span></code></h3><div class='docblock'><p>Flushes this output stream, ensuring that all intermediately buffered
 contents reach their destination.</p>
 <p>Equivalent to:</p>
 
@@ -675,7 +675,7 @@ I/O errors or EOF being reached.</p>
     <span class="ident">buffer</span>.<span class="ident">flush</span>().<span class="kw">await</span><span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(())
 }</pre></div>
-</div><h3 id='method.shutdown' class='method'><code>fn <a href='#method.shutdown' class='fnname'>shutdown</a>(&amp;mut self) -&gt; Shutdown&lt;Self&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a>,&nbsp;</span></code></h3><div class='docblock'><p>Shuts down the output stream, ensuring that the value can be dropped
+</div><h3 id='method.shutdown' class='method'><code>fn <a href='#method.shutdown' class='fnname'>shutdown</a>(&amp;mut self) -&gt; Shutdown&lt;'_, Self&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;Self: <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Unpin.html" title="trait core::marker::Unpin">Unpin</a>,&nbsp;</span></code></h3><div class='docblock'><p>Shuts down the output stream, ensuring that the value can be dropped
 cleanly.</p>
 <p>Equivalent to:</p>
 

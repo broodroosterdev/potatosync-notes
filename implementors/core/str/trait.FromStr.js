@@ -13,6 +13,7 @@ implementors["postgres"] = [{"text":"impl FromStr for Config","synthetic":false,
 implementors["proc_macro2"] = [{"text":"impl FromStr for TokenStream","synthetic":false,"types":[]}];
 implementors["regex"] = [{"text":"impl FromStr for Regex","synthetic":false,"types":[]},{"text":"impl FromStr for Regex","synthetic":false,"types":[]}];
 implementors["rocket"] = [{"text":"impl FromStr for LoggingLevel","synthetic":false,"types":[]},{"text":"impl FromStr for Environment","synthetic":false,"types":[]}];
+implementors["rocket_cors"] = [{"text":"impl FromStr for HeaderFieldName","synthetic":false,"types":[]},{"text":"impl FromStr for Origin","synthetic":false,"types":[]},{"text":"impl FromStr for AccessControlRequestMethod","synthetic":false,"types":[]},{"text":"impl FromStr for AccessControlRequestHeaders","synthetic":false,"types":[]},{"text":"impl FromStr for Method","synthetic":false,"types":[]}];
 implementors["rocket_http"] = [{"text":"impl FromStr for Method","synthetic":false,"types":[]},{"text":"impl FromStr for MediaType","synthetic":false,"types":[]},{"text":"impl FromStr for ContentType","synthetic":false,"types":[]},{"text":"impl FromStr for Accept","synthetic":false,"types":[]}];
 implementors["serde_json"] = [{"text":"impl FromStr for Number","synthetic":false,"types":[]},{"text":"impl FromStr for Value","synthetic":false,"types":[]}];
 implementors["tokio_postgres"] = [{"text":"impl FromStr for Config","synthetic":false,"types":[]}];

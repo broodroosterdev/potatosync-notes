@@ -30,6 +30,7 @@ implementors["regex"] = [{"text":"impl Error for Error","synthetic":false,"types
 implementors["regex_syntax"] = [{"text":"impl Error for Error","synthetic":false,"types":[]},{"text":"impl Error for Error","synthetic":false,"types":[]},{"text":"impl Error for Error","synthetic":false,"types":[]},{"text":"impl Error for CaseFoldError","synthetic":false,"types":[]},{"text":"impl Error for UnicodeWordError","synthetic":false,"types":[]}];
 implementors["ring"] = [{"text":"impl Error for Unspecified","synthetic":false,"types":[]},{"text":"impl Error for KeyRejected","synthetic":false,"types":[]}];
 implementors["rocket"] = [{"text":"impl Error for ConfigError","synthetic":false,"types":[]},{"text":"impl Error for LaunchError","synthetic":false,"types":[]}];
+implementors["rocket_cors"] = [{"text":"impl Error for Error","synthetic":false,"types":[]}];
 implementors["rocket_failure_errors"] = [{"text":"impl Error for ApiError","synthetic":false,"types":[]}];
 implementors["serde"] = [{"text":"impl Error for Error","synthetic":false,"types":[]}];
 implementors["serde_json"] = [{"text":"impl Error for Error","synthetic":false,"types":[]}];
