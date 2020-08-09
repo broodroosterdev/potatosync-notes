@@ -29,6 +29,8 @@ jobs:
           DOCKER_USERNAME: basmakes
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
+          echo Logging Into Docker
+          docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
           echo Building Containers and Publishing them
           docker pull potatosync-notes:arm || true
           docker buildx build --cache-from basmakes/potatosync-notes:arm --platform linux/arm --progress plain --pull -t "basmakes/potatosync-notes:arm" -f rpi.Dockerfile --push .
