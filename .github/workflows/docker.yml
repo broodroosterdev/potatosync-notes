@@ -33,6 +33,6 @@ jobs:
           docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
           echo Building Containers and Publishing them
           docker pull potatosync-notes:arm || true
-          docker buildx build --cache-from basmakes/potatosync-notes:arm --platform linux/arm --progress plain --pull -t "basmakes/potatosync-notes:arm" -f rpi.Dockerfile --push .
+          docker buildx build --cache-from basmakes/potatosync-notes:arm --platform linux/arm --progress plain --pull -t "basmakes/potatosync-notes:arm" -f rpi.Dockerfile --push . --build-arg BUILDKIT_INLINE_CACHE=1
           docker pull potatosync-notes:amd64 || true
-          docker buildx build --cache-from basmakes/potatosync-notes:amd64 --platform linux/amd64 --progress plain --pull -t "basmakes/potatosync-notes:amd64" -f amd64.Dockerfile --push .
+          docker buildx build --cache-from basmakes/potatosync-notes:amd64 --platform linux/amd64 --progress plain --pull -t "basmakes/potatosync-notes:amd64" -f amd64.Dockerfile --push . --build-arg BUILDKIT_INLINE_CACHE=1
