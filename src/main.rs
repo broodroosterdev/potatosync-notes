@@ -14,7 +14,7 @@ extern crate serde_json;
 extern crate validator;
 extern crate validator_derive;
 extern crate rocket_failure;
-
+extern crate rocket_cors;
 
 use std::path::Path;
 
@@ -22,6 +22,7 @@ use diesel_migrations::*;
 use dotenv::dotenv;
 use rocket_contrib::json::Json;
 use rocket_failure::errors::*;
+use rocket_cors::CorsOptions;
 
 mod note;
 mod setting;
@@ -161,8 +162,11 @@ fn main() {
     }
 // Run migration
     embedded_migrations::run_with_output(&db::connect().get().unwrap(), &mut std::io::stdout()).unwrap();
+// Setup CORS
+    let cors = CorsOptions::default().to_cors().unwrap();
 // Start webserver
     rocket::ignite()
+        .attach(cors)
         .manage(db::connect())
         .mount("/", routes![save_note, update_note, patch_note, delete_note, delete_all_notes, get_notes, get_deleted_notes])
         .mount("/", routes![change_setting, get_setting, get_changed_settings])
@@ -258,7 +262,7 @@ mod tests {
         let mut note = good_note();
         note["note_id"] = Value::Null;
         note_insert_if_empty.mock_safe(|_, _| MockResult::Return(Ok(1)));
-        let rocket = rocket::ignite().mount("/", routes![save_note]).manage(db::connect()).register(catchers!(invalid_json));
+        let rocket = rocket::ignite().mount("/", routes![save_note]).manage(db::connect());
         let client = Client::new(rocket).expect("valid rocket instance");
         let mut response = client.post("/note")
             .header(Header::new("Authorization", "Bearer test"))
