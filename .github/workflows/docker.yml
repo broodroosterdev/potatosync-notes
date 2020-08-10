@@ -26,4 +26,4 @@ jobs:
           password: "${{ secrets.DOCKER_PASSWORD }}"
           image_name: basmakes/potatosync-notes
           image_tag: arm
-          dockerfile: arm.Dockerfile
+          dockerfile: rpi.Dockerfile
