@@ -46,7 +46,7 @@ pub(crate) fn get_setting(key: String, account_id: String, connection: &PgConnec
     }
 
     if !setting_exists(&key, &account_id, &connection) {
-        return Err(SETTING_DOESNT_EXIST);
+        return Ok(json!(null).to_string());
     }
 
     return match get_setting_if_exists(&key, &account_id, connection) {

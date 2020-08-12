@@ -10,6 +10,7 @@ extern crate openssl;
 extern crate rocket;
 #[macro_use]
 extern crate serde_derive;
+#[macro_use]
 extern crate serde_json;
 extern crate validator;
 extern crate validator_derive;
