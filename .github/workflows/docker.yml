@@ -1,38 +1,29 @@
 name: Docker
 on:
   push:
-    branches: [ master ]
 
 jobs:
-  build:
+  build-amd64:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup docker
-        uses: docker-practice/actions-setup-docker@0.0.1
-      - name: Docker Buildx
-        uses: crazy-max/ghaction-docker-buildx@v1.0.5
-      - name: Setup docker builder
-        env:
-          DOCKER_USERNAME: basmakes
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          echo Logging Into Docker
-          docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-          echo Installing BuildX
-          update-binfmts --enable
-          docker buildx create --driver docker-container --use
-          docker buildx inspect --bootstrap
-          docker buildx ls
-      - name: Build docker image
-        env:
-          DOCKER_USERNAME: basmakes
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: |
-          echo Logging Into Docker
-          docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-          echo Building Containers and Publishing them
-          docker pull potatosync-notes:arm || true
-          docker buildx build --cache-from basmakes/potatosync-notes:arm --platform linux/arm --progress plain --pull -t "basmakes/potatosync-notes:arm" -f rpi.Dockerfile --push . --build-arg BUILDKIT_INLINE_CACHE=1
-          docker pull potatosync-notes:amd64 || true
-          docker buildx build --cache-from basmakes/potatosync-notes:amd64 --platform linux/amd64 --progress plain --pull -t "basmakes/potatosync-notes:amd64" -f amd64.Dockerfile --push . --build-arg BUILDKIT_INLINE_CACHE=1
+      - uses: whoan/docker-build-with-cache-action@v5
+        name: Build AMD64 Image
+        with:
+          username: basmakes
+          password: "${{ secrets.DOCKER_PASSWORD }}"
+          image_name: basmakes/potatosync-notes
+          image_tag: amd64
+          dockerfile: amd64.Dockerfile
+  build-arm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: whoan/docker-build-with-cache-action@v5
+        name: Build ARM Image
+        with:
+          username: basmakes
+          password: "${{ secrets.DOCKER_PASSWORD }}"
+          image_name: basmakes/potatosync-notes
+          image_tag: arm
+          dockerfile: rpi.Dockerfile
