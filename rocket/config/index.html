@@ -123,7 +123,7 @@ ROCKET_DICT={key=&quot;abc&quot;,val=123}
 <h2 id="retrieving-configuration-parameters" class="section-header"><a href="#retrieving-configuration-parameters">Retrieving Configuration Parameters</a></h2>
 <p>Configuration parameters for the currently active configuration environment
 can be retrieved via the <a href="../../rocket/struct.Rocket.html#method.config"><code>Rocket::config()</code></a> <code>Rocket</code> and <code>get_</code> methods on
-<a href="../../rocket/struct.Config.html" title="`Config`"><code>Config</code></a> structure.</p>
+<a href="../../rocket/struct.Config.html" title="Config"><code>Config</code></a> structure.</p>
 <p>The retrivial of configuration parameters usually occurs at launch time via
 a <a href="../../rocket/fairing/trait.Fairing.html">launch fairing</a>. If information about the
 configuraiton is needed later in the program, an attach fairing can be used
@@ -157,6 +157,6 @@ value:</p>
 </td></tr><tr class='module-item'><td><a class="enum" href="enum.Value.html" title='rocket::config::Value enum'>Value</a></td><td class='docblock-short'><p>Representation of a TOML value.</p>
 </td></tr></table><h2 id='types' class='section-header'><a href="#types">Type Definitions</a></h2>
 <table><tr class='module-item'><td><a class="type" href="type.Array.html" title='rocket::config::Array type'>Array</a></td><td class='docblock-short'><p>Type representing a TOML array, payload of the <code>Value::Array</code> variant</p>
-</td></tr><tr class='module-item'><td><a class="type" href="type.Result.html" title='rocket::config::Result type'>Result</a></td><td class='docblock-short'><p>Wraps <code>std::result</code> with the error type of <a href="../../rocket/config/enum.ConfigError.html" title="`ConfigError`"><code>ConfigError</code></a>.</p>
+</td></tr><tr class='module-item'><td><a class="type" href="type.Result.html" title='rocket::config::Result type'>Result</a></td><td class='docblock-short'><p>Wraps <code>std::result</code> with the error type of <a href="../../rocket/config/enum.ConfigError.html" title="ConfigError"><code>ConfigError</code></a>.</p>
 </td></tr><tr class='module-item'><td><a class="type" href="type.Table.html" title='rocket::config::Table type'>Table</a></td><td class='docblock-short'><p>Type representing a TOML table, payload of the <code>Value::Table</code> variant</p>
 </td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "rocket";</script><script src="../../main.js"></script><script defer src="../../search-index.js"></script></body></html>

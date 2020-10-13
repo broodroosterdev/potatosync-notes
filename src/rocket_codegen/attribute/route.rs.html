@@ -512,7 +512,7 @@
     <span class="attribute">#[<span class="ident">meta</span>(<span class="ident">naked</span>)]</span>
     <span class="ident">method</span>: <span class="ident">SpanWrapped</span><span class="op">&lt;</span><span class="ident">Method</span><span class="op">&gt;</span>,
     <span class="ident">path</span>: <span class="ident">RoutePath</span>,
-    <span class="ident">data</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SpanWrapped</span><span class="op">&lt;</span><span class="ident">DataSegment</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">data</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SpanWrapped</span><span class="op">&lt;</span><span class="ident">DataSegment</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">format</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MediaType</span><span class="op">&gt;</span>,
     <span class="ident">rank</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">isize</span><span class="op">&gt;</span>,
 }
@@ -522,7 +522,7 @@
 <span class="kw">struct</span> <span class="ident">MethodRouteAttribute</span> {
     <span class="attribute">#[<span class="ident">meta</span>(<span class="ident">naked</span>)]</span>
     <span class="ident">path</span>: <span class="ident">RoutePath</span>,
-    <span class="ident">data</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SpanWrapped</span><span class="op">&lt;</span><span class="ident">DataSegment</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">data</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SpanWrapped</span><span class="op">&lt;</span><span class="ident">DataSegment</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">format</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MediaType</span><span class="op">&gt;</span>,
     <span class="ident">rank</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">isize</span><span class="op">&gt;</span>,
 }
@@ -542,7 +542,7 @@
     <span class="ident">inputs</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">syn</span>::<span class="ident">Ident</span>, <span class="ident">syn</span>::<span class="ident">Ident</span>, <span class="ident">syn</span>::<span class="ident">Type</span>)<span class="op">&gt;</span>,
 }
 
-<span class="kw">fn</span> <span class="ident">parse_route</span>(<span class="ident">attr</span>: <span class="ident">RouteAttribute</span>, <span class="ident">function</span>: <span class="ident">syn</span>::<span class="ident">ItemFn</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Route</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">parse_route</span>(<span class="ident">attr</span>: <span class="ident">RouteAttribute</span>, <span class="ident">function</span>: <span class="ident">syn</span>::<span class="ident">ItemFn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Route</span><span class="op">&gt;</span> {
     <span class="comment">// Gather diagnostics as we proceed.</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics</span>::<span class="ident">new</span>();
 
@@ -561,7 +561,7 @@
     <span class="kw">fn</span> <span class="ident">dup_check</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">set</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">IndexSet</span><span class="op">&lt;</span><span class="ident">Segment</span><span class="op">&gt;</span>, <span class="ident">iter</span>: <span class="ident">I</span>, <span class="ident">diags</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Diagnostics</span>)
         <span class="kw">where</span> <span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">Segment</span><span class="op">&gt;</span>
     {
-        <span class="kw">for</span> <span class="ident">segment</span> <span class="kw">in</span> <span class="ident">iter</span>.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">kind</span> <span class="op">!=</span> <span class="ident">Kind</span>::<span class="ident">Static</span>) {
+        <span class="kw">for</span> <span class="ident">segment</span> <span class="kw">in</span> <span class="ident">iter</span>.<span class="ident">filter</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Kind</span>::<span class="ident">Static</span>) {
             <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">segment</span>.<span class="ident">span</span>;
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">previous</span>) <span class="op">=</span> <span class="ident">set</span>.<span class="ident">replace</span>(<span class="ident">segment</span>) {
                 <span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">span</span>.<span class="ident">error</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;duplicate parameter: `{}`&quot;</span>, <span class="ident">previous</span>.<span class="ident">name</span>))
@@ -581,19 +581,19 @@
         <span class="kw">let</span> <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;all handler arguments must be of the form: `ident: Type`&quot;</span>;
         <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">span</span>();
         <span class="kw">let</span> (<span class="ident">ident</span>, <span class="ident">ty</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">input</span> {
-            <span class="ident">syn</span>::<span class="ident">FnArg</span>::<span class="ident">Captured</span>(<span class="ident">arg</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="ident">arg</span>.<span class="ident">pat</span> {
-                <span class="ident">syn</span>::<span class="ident">Pat</span>::<span class="ident">Ident</span>(<span class="kw-2">ref</span> <span class="ident">pat</span>) <span class="op">=&gt;</span> (<span class="kw-2">&amp;</span><span class="ident">pat</span>.<span class="ident">ident</span>, <span class="kw-2">&amp;</span><span class="ident">arg</span>.<span class="ident">ty</span>),
-                <span class="ident">syn</span>::<span class="ident">Pat</span>::<span class="ident">Wild</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> {
+            <span class="ident">syn</span>::<span class="ident">FnArg</span>::<span class="ident">Captured</span>(<span class="ident">arg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">arg</span>.<span class="ident">pat</span> {
+                <span class="ident">syn</span>::<span class="ident">Pat</span>::<span class="ident">Ident</span>(<span class="kw-2">ref</span> <span class="ident">pat</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="ident">pat</span>.<span class="ident">ident</span>, <span class="kw-2">&amp;</span><span class="ident">arg</span>.<span class="ident">ty</span>),
+                <span class="ident">syn</span>::<span class="ident">Pat</span>::<span class="ident">Wild</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">span</span>.<span class="ident">error</span>(<span class="string">&quot;handler arguments cannot be ignored&quot;</span>).<span class="ident">help</span>(<span class="ident">help</span>));
                     <span class="kw">continue</span>;
                 }
-                <span class="kw">_</span> <span class="op">=&gt;</span> {
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">span</span>.<span class="ident">error</span>(<span class="string">&quot;invalid use of pattern&quot;</span>).<span class="ident">help</span>(<span class="ident">help</span>));
                     <span class="kw">continue</span>;
                 }
             }
             <span class="comment">// Other cases shouldn&#39;t happen since we parsed an `ItemFn`.</span>
-            <span class="kw">_</span> <span class="op">=&gt;</span> {
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">span</span>.<span class="ident">error</span>(<span class="string">&quot;invalid handler argument&quot;</span>).<span class="ident">help</span>(<span class="ident">help</span>));
                 <span class="kw">continue</span>;
             }
@@ -606,8 +606,8 @@
 
     <span class="comment">// Check that all of the declared parameters are function inputs.</span>
     <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">function</span>.<span class="ident">decl</span>.<span class="ident">inputs</span>.<span class="ident">is_empty</span>() {
-        <span class="bool-val">false</span> <span class="op">=&gt;</span> <span class="ident">function</span>.<span class="ident">decl</span>.<span class="ident">inputs</span>.<span class="ident">span</span>(),
-        <span class="bool-val">true</span> <span class="op">=&gt;</span> <span class="ident">function</span>.<span class="ident">span</span>()
+        <span class="bool-val">false</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">function</span>.<span class="ident">decl</span>.<span class="ident">inputs</span>.<span class="ident">span</span>(),
+        <span class="bool-val">true</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">function</span>.<span class="ident">span</span>()
     };
 
     <span class="kw">for</span> <span class="ident">missing</span> <span class="kw">in</span> <span class="ident">segments</span>.<span class="ident">difference</span>(<span class="kw-2">&amp;</span><span class="ident">fn_segments</span>) {
@@ -618,7 +618,7 @@
     <span class="ident">diags</span>.<span class="ident">head_err_or</span>(<span class="ident">Route</span> { <span class="ident">attribute</span>: <span class="ident">attr</span>, <span class="ident">function</span>, <span class="ident">inputs</span>, <span class="ident">segments</span> })
 }
 
-<span class="kw">fn</span> <span class="ident">param_expr</span>(<span class="ident">seg</span>: <span class="kw-2">&amp;</span><span class="ident">Segment</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Ident</span>, <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream2</span> {
+<span class="kw">fn</span> <span class="ident">param_expr</span>(<span class="ident">seg</span>: <span class="kw-2">&amp;</span><span class="ident">Segment</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Ident</span>, <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream2</span> {
     <span class="macro">define_vars_and_mods</span><span class="macro">!</span>(<span class="ident">req</span>, <span class="ident">data</span>, <span class="ident">error</span>, <span class="ident">log</span>, <span class="ident">request</span>, <span class="ident">_None</span>, <span class="ident">_Some</span>, <span class="ident">_Ok</span>, <span class="ident">_Err</span>, <span class="ident">Outcome</span>);
     <span class="kw">let</span> <span class="ident">i</span> <span class="op">=</span> <span class="ident">seg</span>.<span class="ident">index</span>.<span class="ident">expect</span>(<span class="string">&quot;dynamic parameters must be indexed&quot;</span>);
     <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">ident</span>.<span class="ident">span</span>().<span class="ident">unstable</span>().<span class="ident">join</span>(<span class="ident">ty</span>.<span class="ident">span</span>()).<span class="ident">unwrap</span>().<span class="ident">into</span>();
@@ -639,25 +639,25 @@
     });
 
     <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">seg</span>.<span class="ident">kind</span> {
-        <span class="ident">Kind</span>::<span class="ident">Single</span> <span class="op">=&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=&gt;</span>
+        <span class="ident">Kind</span>::<span class="ident">Single</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
             <span class="kw">match</span> #<span class="ident">req</span>.<span class="ident">raw_segment_str</span>(#<span class="ident">i</span>) {
-                #<span class="ident">_Some</span>(<span class="ident">__s</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="op">&lt;</span>#<span class="ident">ty</span> <span class="kw">as</span> #<span class="ident">request</span>::<span class="ident">FromParam</span><span class="op">&gt;</span>::<span class="ident">from_param</span>(<span class="ident">__s</span>) {
-                    #<span class="ident">_Ok</span>(<span class="ident">__v</span>) <span class="op">=&gt;</span> <span class="ident">__v</span>,
-                    #<span class="ident">_Err</span>(#<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="kw">return</span> #<span class="ident">parse_error</span>,
+                #<span class="ident">_Some</span>(<span class="ident">__s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="op">&lt;</span>#<span class="ident">ty</span> <span class="kw">as</span> #<span class="ident">request</span>::<span class="ident">FromParam</span><span class="op">&gt;</span>::<span class="ident">from_param</span>(<span class="ident">__s</span>) {
+                    #<span class="ident">_Ok</span>(<span class="ident">__v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">__v</span>,
+                    #<span class="ident">_Err</span>(#<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> #<span class="ident">parse_error</span>,
                 },
-                #<span class="ident">_None</span> <span class="op">=&gt;</span> <span class="kw">return</span> #<span class="ident">internal_error</span>
+                #<span class="ident">_None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> #<span class="ident">internal_error</span>
             }
         },
-        <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">=&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=&gt;</span>
+        <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
             <span class="kw">match</span> #<span class="ident">req</span>.<span class="ident">raw_segments</span>(#<span class="ident">i</span>) {
-                #<span class="ident">_Some</span>(<span class="ident">__s</span>) <span class="op">=&gt;</span> <span class="kw">match</span> <span class="op">&lt;</span>#<span class="ident">ty</span> <span class="kw">as</span> #<span class="ident">request</span>::<span class="ident">FromSegments</span><span class="op">&gt;</span>::<span class="ident">from_segments</span>(<span class="ident">__s</span>) {
-                    #<span class="ident">_Ok</span>(<span class="ident">__v</span>) <span class="op">=&gt;</span> <span class="ident">__v</span>,
-                    #<span class="ident">_Err</span>(#<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="kw">return</span> #<span class="ident">parse_error</span>,
+                #<span class="ident">_Some</span>(<span class="ident">__s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="op">&lt;</span>#<span class="ident">ty</span> <span class="kw">as</span> #<span class="ident">request</span>::<span class="ident">FromSegments</span><span class="op">&gt;</span>::<span class="ident">from_segments</span>(<span class="ident">__s</span>) {
+                    #<span class="ident">_Ok</span>(<span class="ident">__v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">__v</span>,
+                    #<span class="ident">_Err</span>(#<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> #<span class="ident">parse_error</span>,
                 },
-                #<span class="ident">_None</span> <span class="op">=&gt;</span> <span class="kw">return</span> #<span class="ident">internal_error</span>
+                #<span class="ident">_None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> #<span class="ident">internal_error</span>
             }
         },
-        <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="macro">quote</span><span class="macro">!</span>()
+        <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="macro">quote</span><span class="macro">!</span>()
     };
 
     <span class="macro">quote</span><span class="macro">!</span> {
@@ -666,45 +666,45 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">data_expr</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Ident</span>, <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream2</span> {
+<span class="kw">fn</span> <span class="ident">data_expr</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Ident</span>, <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream2</span> {
     <span class="macro">define_vars_and_mods</span><span class="macro">!</span>(<span class="ident">req</span>, <span class="ident">data</span>, <span class="ident">FromData</span>, <span class="ident">Outcome</span>, <span class="ident">Transform</span>);
     <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">ident</span>.<span class="ident">span</span>().<span class="ident">unstable</span>().<span class="ident">join</span>(<span class="ident">ty</span>.<span class="ident">span</span>()).<span class="ident">unwrap</span>().<span class="ident">into</span>();
-    <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=&gt;</span>
+    <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
         <span class="kw">let</span> <span class="ident">__transform</span> <span class="op">=</span> <span class="op">&lt;</span>#<span class="ident">ty</span> <span class="kw">as</span> #<span class="ident">FromData</span><span class="op">&gt;</span>::<span class="ident">transform</span>(#<span class="ident">req</span>, #<span class="ident">data</span>);
 
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_patterns</span>, <span class="ident">unreachable_code</span>)]</span>
         <span class="kw">let</span> <span class="ident">__outcome</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">__transform</span> {
-            #<span class="ident">Transform</span>::<span class="ident">Owned</span>(#<span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">__v</span>)) <span class="op">=&gt;</span> {
+            #<span class="ident">Transform</span>::<span class="ident">Owned</span>(#<span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">__v</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                 #<span class="ident">Transform</span>::<span class="ident">Owned</span>(#<span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">__v</span>))
             },
-            #<span class="ident">Transform</span>::<span class="ident">Borrowed</span>(#<span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="kw-2">ref</span> <span class="ident">__v</span>)) <span class="op">=&gt;</span> {
+            #<span class="ident">Transform</span>::<span class="ident">Borrowed</span>(#<span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="kw-2">ref</span> <span class="ident">__v</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                 #<span class="ident">Transform</span>::<span class="ident">Borrowed</span>(#<span class="ident">Outcome</span>::<span class="ident">Success</span>(::<span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Borrow</span>::<span class="ident">borrow</span>(<span class="ident">__v</span>)))
             },
-            #<span class="ident">Transform</span>::<span class="ident">Borrowed</span>(<span class="ident">__o</span>) <span class="op">=&gt;</span> #<span class="ident">Transform</span>::<span class="ident">Borrowed</span>(<span class="ident">__o</span>.<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
+            #<span class="ident">Transform</span>::<span class="ident">Borrowed</span>(<span class="ident">__o</span>) <span class="op">=</span><span class="op">&gt;</span> #<span class="ident">Transform</span>::<span class="ident">Borrowed</span>(<span class="ident">__o</span>.<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> {
                 <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;Borrowed(Success(..)) case handled in previous block&quot;</span>)
             })),
-            #<span class="ident">Transform</span>::<span class="ident">Owned</span>(<span class="ident">__o</span>) <span class="op">=&gt;</span> #<span class="ident">Transform</span>::<span class="ident">Owned</span>(<span class="ident">__o</span>),
+            #<span class="ident">Transform</span>::<span class="ident">Owned</span>(<span class="ident">__o</span>) <span class="op">=</span><span class="op">&gt;</span> #<span class="ident">Transform</span>::<span class="ident">Owned</span>(<span class="ident">__o</span>),
         };
 
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>, <span class="ident">unreachable_patterns</span>, <span class="ident">unreachable_code</span>)]</span>
         <span class="kw">let</span> #<span class="ident">ident</span>: #<span class="ident">ty</span> <span class="op">=</span> <span class="kw">match</span> <span class="op">&lt;</span>#<span class="ident">ty</span> <span class="kw">as</span> #<span class="ident">FromData</span><span class="op">&gt;</span>::<span class="ident">from_data</span>(#<span class="ident">req</span>, <span class="ident">__outcome</span>) {
-            #<span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">__d</span>) <span class="op">=&gt;</span> <span class="ident">__d</span>,
-            #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(<span class="ident">__d</span>) <span class="op">=&gt;</span> <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(<span class="ident">__d</span>),
-            #<span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">__c</span>, <span class="kw">_</span>)) <span class="op">=&gt;</span> <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Failure</span>(<span class="ident">__c</span>),
+            #<span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">__d</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">__d</span>,
+            #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(<span class="ident">__d</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(<span class="ident">__d</span>),
+            #<span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">__c</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Failure</span>(<span class="ident">__c</span>),
         };
     }
 }
 
-<span class="kw">fn</span> <span class="ident">query_exprs</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TokenStream2</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">query_exprs</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TokenStream2</span><span class="op">&gt;</span> {
     <span class="macro">define_vars_and_mods</span><span class="macro">!</span>(<span class="ident">_None</span>, <span class="ident">_Some</span>, <span class="ident">_Ok</span>, <span class="ident">_Err</span>, <span class="ident">_Option</span>);
     <span class="macro">define_vars_and_mods</span><span class="macro">!</span>(<span class="ident">data</span>, <span class="ident">trail</span>, <span class="ident">log</span>, <span class="ident">request</span>, <span class="ident">req</span>, <span class="ident">Outcome</span>, <span class="ident">SmallVec</span>, <span class="ident">Query</span>);
     <span class="kw">let</span> <span class="ident">query_segments</span> <span class="op">=</span> <span class="ident">route</span>.<span class="ident">attribute</span>.<span class="ident">path</span>.<span class="ident">query</span>.<span class="ident">as_ref</span>()<span class="question-mark">?</span>;
     <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">decls</span>, <span class="kw-2">mut</span> <span class="ident">matchers</span>, <span class="kw-2">mut</span> <span class="ident">builders</span>) <span class="op">=</span> (<span class="macro">vec</span><span class="macro">!</span>[], <span class="macro">vec</span><span class="macro">!</span>[], <span class="macro">vec</span><span class="macro">!</span>[]);
     <span class="kw">for</span> <span class="ident">segment</span> <span class="kw">in</span> <span class="ident">query_segments</span> {
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">segment</span>.<span class="ident">name</span>;
-        <span class="kw">let</span> (<span class="ident">ident</span>, <span class="ident">ty</span>, <span class="ident">span</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">segment</span>.<span class="ident">kind</span> <span class="op">!=</span> <span class="ident">Kind</span>::<span class="ident">Static</span> {
+        <span class="kw">let</span> (<span class="ident">ident</span>, <span class="ident">ty</span>, <span class="ident">span</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">segment</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Kind</span>::<span class="ident">Static</span> {
             <span class="kw">let</span> (<span class="ident">ident</span>, <span class="ident">ty</span>) <span class="op">=</span> <span class="ident">route</span>.<span class="ident">inputs</span>.<span class="ident">iter</span>()
-                .<span class="ident">find</span>(<span class="op">|</span>(<span class="ident">ident</span>, <span class="kw">_</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">ident</span> <span class="op">==</span> <span class="kw-2">&amp;</span><span class="ident">segment</span>.<span class="ident">name</span>)
+                .<span class="ident">find</span>(<span class="op">|</span>(<span class="ident">ident</span>, <span class="kw">_</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">ident</span> <span class="op">=</span><span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">segment</span>.<span class="ident">name</span>)
                 .<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">rocket_ident</span>, <span class="ident">ty</span>)<span class="op">|</span> (<span class="ident">rocket_ident</span>, <span class="ident">ty</span>))
                 .<span class="ident">unwrap</span>();
 
@@ -715,24 +715,24 @@
         };
 
         <span class="kw">let</span> <span class="ident">decl</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">segment</span>.<span class="ident">kind</span> {
-            <span class="ident">Kind</span>::<span class="ident">Single</span> <span class="op">=&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=&gt;</span>
+            <span class="ident">Kind</span>::<span class="ident">Single</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
                 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
                 <span class="kw">let</span> <span class="kw-2">mut</span> #<span class="ident">ident</span>: #<span class="ident">_Option</span><span class="op">&lt;</span>#<span class="ident">ty</span><span class="op">&gt;</span> <span class="op">=</span> #<span class="ident">_None</span>;
             },
-            <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">=&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=&gt;</span>
+            <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
                 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
                 <span class="kw">let</span> <span class="kw-2">mut</span> #<span class="ident">trail</span> <span class="op">=</span> #<span class="ident">SmallVec</span>::<span class="op">&lt;</span>[#<span class="ident">request</span>::<span class="ident">FormItem</span>; <span class="number">8</span>]<span class="op">&gt;</span>::<span class="ident">new</span>();
             },
-            <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="op">=&gt;</span> <span class="macro">quote</span><span class="macro">!</span>()
+            <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote</span><span class="macro">!</span>()
         };
 
         <span class="kw">let</span> <span class="ident">matcher</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">segment</span>.<span class="ident">kind</span> {
-            <span class="ident">Kind</span>::<span class="ident">Single</span> <span class="op">=&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=&gt;</span>
-                (<span class="kw">_</span>, #<span class="ident">name</span>, <span class="ident">__v</span>) <span class="op">=&gt;</span> {
+            <span class="ident">Kind</span>::<span class="ident">Single</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
+                (<span class="kw">_</span>, #<span class="ident">name</span>, <span class="ident">__v</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unreachable_patterns</span>, <span class="ident">unreachable_code</span>)]</span>
                     <span class="kw">let</span> <span class="ident">__v</span> <span class="op">=</span> <span class="kw">match</span> <span class="op">&lt;</span>#<span class="ident">ty</span> <span class="kw">as</span> #<span class="ident">request</span>::<span class="ident">FromFormValue</span><span class="op">&gt;</span>::<span class="ident">from_form_value</span>(<span class="ident">__v</span>) {
-                        #<span class="ident">_Ok</span>(<span class="ident">__v</span>) <span class="op">=&gt;</span> <span class="ident">__v</span>,
-                        #<span class="ident">_Err</span>(<span class="ident">__e</span>) <span class="op">=&gt;</span> {
+                        #<span class="ident">_Ok</span>(<span class="ident">__v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">__v</span>,
+                        #<span class="ident">_Err</span>(<span class="ident">__e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                             #<span class="ident">log</span>::<span class="ident">warn_</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Failed to parse &#39;{}&#39;: {:?}&quot;</span>, #<span class="ident">name</span>, <span class="ident">__e</span>));
                             <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(#<span class="ident">data</span>);
                         }
@@ -741,36 +741,36 @@
                     #<span class="ident">ident</span> <span class="op">=</span> #<span class="ident">_Some</span>(<span class="ident">__v</span>);
                 }
             },
-            <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="op">=&gt;</span> <span class="macro">quote</span><span class="macro">!</span> {
-                (#<span class="ident">name</span>, <span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=&gt;</span> <span class="kw">continue</span>,
+            <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote</span><span class="macro">!</span> {
+                (#<span class="ident">name</span>, <span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
             },
-            <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">=&gt;</span> <span class="macro">quote</span><span class="macro">!</span> {
-                <span class="kw">_</span> <span class="op">=&gt;</span> #<span class="ident">trail</span>.<span class="ident">push</span>(<span class="ident">__i</span>),
+            <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote</span><span class="macro">!</span> {
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> #<span class="ident">trail</span>.<span class="ident">push</span>(<span class="ident">__i</span>),
             }
         };
 
         <span class="kw">let</span> <span class="ident">builder</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">segment</span>.<span class="ident">kind</span> {
-            <span class="ident">Kind</span>::<span class="ident">Single</span> <span class="op">=&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=&gt;</span>
+            <span class="ident">Kind</span>::<span class="ident">Single</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
                 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
                 <span class="kw">let</span> #<span class="ident">ident</span> <span class="op">=</span> <span class="kw">match</span> #<span class="ident">ident</span>.<span class="ident">or_else</span>(<span class="op">&lt;</span>#<span class="ident">ty</span> <span class="kw">as</span> #<span class="ident">request</span>::<span class="ident">FromFormValue</span><span class="op">&gt;</span>::<span class="ident">default</span>) {
-                    #<span class="ident">_Some</span>(<span class="ident">__v</span>) <span class="op">=&gt;</span> <span class="ident">__v</span>,
-                    #<span class="ident">_None</span> <span class="op">=&gt;</span> {
+                    #<span class="ident">_Some</span>(<span class="ident">__v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">__v</span>,
+                    #<span class="ident">_None</span> <span class="op">=</span><span class="op">&gt;</span> {
                         #<span class="ident">log</span>::<span class="ident">warn_</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Missing required query parameter &#39;{}&#39;.&quot;</span>, #<span class="ident">name</span>));
                         <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(#<span class="ident">data</span>);
                     }
                 };
             },
-            <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">=&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=&gt;</span>
+            <span class="ident">Kind</span>::<span class="ident">Multi</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
                 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
                 <span class="kw">let</span> #<span class="ident">ident</span> <span class="op">=</span> <span class="kw">match</span> <span class="op">&lt;</span>#<span class="ident">ty</span> <span class="kw">as</span> #<span class="ident">request</span>::<span class="ident">FromQuery</span><span class="op">&gt;</span>::<span class="ident">from_query</span>(#<span class="ident">Query</span>(<span class="kw-2">&amp;</span>#<span class="ident">trail</span>)) {
-                    #<span class="ident">_Ok</span>(<span class="ident">__v</span>) <span class="op">=&gt;</span> <span class="ident">__v</span>,
-                    #<span class="ident">_Err</span>(<span class="ident">__e</span>) <span class="op">=&gt;</span> {
+                    #<span class="ident">_Ok</span>(<span class="ident">__v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">__v</span>,
+                    #<span class="ident">_Err</span>(<span class="ident">__e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         #<span class="ident">log</span>::<span class="ident">warn_</span>(<span class="kw-2">&amp;</span><span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;Failed to parse &#39;{}&#39;: {:?}&quot;</span>, #<span class="ident">name</span>, <span class="ident">__e</span>));
                         <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(#<span class="ident">data</span>);
                     }
                 };
             },
-            <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="op">=&gt;</span> <span class="macro">quote</span><span class="macro">!</span>()
+            <span class="ident">Kind</span>::<span class="ident">Static</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote</span><span class="macro">!</span>()
         };
 
         <span class="ident">decls</span>.<span class="ident">push</span>(<span class="ident">decl</span>);
@@ -778,7 +778,7 @@
         <span class="ident">builders</span>.<span class="ident">push</span>(<span class="ident">builder</span>);
     }
 
-    <span class="ident">matchers</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(<span class="kw">_</span> <span class="op">=&gt;</span> <span class="kw">continue</span>));
+    <span class="ident">matchers</span>.<span class="ident">push</span>(<span class="macro">quote</span><span class="macro">!</span>(<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>));
     <span class="prelude-val">Some</span>(<span class="macro">quote</span><span class="macro">!</span> {
         #(#<span class="ident">decls</span>)<span class="op">*</span>
 
@@ -800,25 +800,25 @@
     })
 }
 
-<span class="kw">fn</span> <span class="ident">request_guard_expr</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Ident</span>, <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream2</span> {
+<span class="kw">fn</span> <span class="ident">request_guard_expr</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Ident</span>, <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream2</span> {
     <span class="macro">define_vars_and_mods</span><span class="macro">!</span>(<span class="ident">req</span>, <span class="ident">data</span>, <span class="ident">request</span>, <span class="ident">Outcome</span>);
     <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">ident</span>.<span class="ident">span</span>().<span class="ident">unstable</span>().<span class="ident">join</span>(<span class="ident">ty</span>.<span class="ident">span</span>()).<span class="ident">unwrap</span>().<span class="ident">into</span>();
-    <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=&gt;</span>
+    <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">span</span> <span class="op">=</span><span class="op">&gt;</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>, <span class="ident">unreachable_patterns</span>, <span class="ident">unreachable_code</span>)]</span>
         <span class="kw">let</span> #<span class="ident">ident</span>: #<span class="ident">ty</span> <span class="op">=</span> <span class="kw">match</span> <span class="op">&lt;</span>#<span class="ident">ty</span> <span class="kw">as</span> #<span class="ident">request</span>::<span class="ident">FromRequest</span><span class="op">&gt;</span>::<span class="ident">from_request</span>(#<span class="ident">req</span>) {
-            #<span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">__v</span>) <span class="op">=&gt;</span> <span class="ident">__v</span>,
-            #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(#<span class="ident">data</span>),
-            #<span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">__c</span>, <span class="kw">_</span>)) <span class="op">=&gt;</span> <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Failure</span>(<span class="ident">__c</span>),
+            #<span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">__v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">__v</span>,
+            #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Forward</span>(#<span class="ident">data</span>),
+            #<span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">__c</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> #<span class="ident">Outcome</span>::<span class="ident">Failure</span>(<span class="ident">__c</span>),
         };
     }
 }
 
-<span class="kw">fn</span> <span class="ident">generate_internal_uri_macro</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream2</span> {
+<span class="kw">fn</span> <span class="ident">generate_internal_uri_macro</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream2</span> {
     <span class="kw">let</span> <span class="ident">dynamic_args</span> <span class="op">=</span> <span class="ident">route</span>.<span class="ident">segments</span>.<span class="ident">iter</span>()
-        .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">seg</span><span class="op">|</span> <span class="ident">seg</span>.<span class="ident">source</span> <span class="op">==</span> <span class="ident">Source</span>::<span class="ident">Path</span> <span class="op">||</span> <span class="ident">seg</span>.<span class="ident">source</span> <span class="op">==</span> <span class="ident">Source</span>::<span class="ident">Query</span>)
-        .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">seg</span><span class="op">|</span> <span class="ident">seg</span>.<span class="ident">kind</span> <span class="op">!=</span> <span class="ident">Kind</span>::<span class="ident">Static</span>)
+        .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">seg</span><span class="op">|</span> <span class="ident">seg</span>.<span class="ident">source</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Source</span>::<span class="ident">Path</span> <span class="op">|</span><span class="op">|</span> <span class="ident">seg</span>.<span class="ident">source</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Source</span>::<span class="ident">Query</span>)
+        .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">seg</span><span class="op">|</span> <span class="ident">seg</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Kind</span>::<span class="ident">Static</span>)
         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">seg</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">seg</span>.<span class="ident">name</span>)
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="ident">route</span>.<span class="ident">inputs</span>.<span class="ident">iter</span>().<span class="ident">find</span>(<span class="op">|</span>(<span class="ident">ident</span>, ..)<span class="op">|</span> <span class="ident">ident</span> <span class="op">==</span> <span class="ident">name</span>).<span class="ident">unwrap</span>())
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="ident">route</span>.<span class="ident">inputs</span>.<span class="ident">iter</span>().<span class="ident">find</span>(<span class="op">|</span>(<span class="ident">ident</span>, ..)<span class="op">|</span> <span class="ident">ident</span> <span class="op">=</span><span class="op">=</span> <span class="ident">name</span>).<span class="ident">unwrap</span>())
         .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">ident</span>, <span class="kw">_</span>, <span class="ident">ty</span>)<span class="op">|</span> <span class="macro">quote</span><span class="macro">!</span>(#<span class="ident">ident</span>: #<span class="ident">ty</span>));
 
     <span class="kw">let</span> <span class="ident">generated_macro_name</span> <span class="op">=</span> <span class="ident">route</span>.<span class="ident">function</span>.<span class="ident">ident</span>.<span class="ident">prepend</span>(<span class="ident">URI_MACRO_PREFIX</span>);
@@ -834,25 +834,25 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">generate_respond_expr</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream2</span> {
+<span class="kw">fn</span> <span class="ident">generate_respond_expr</span>(<span class="ident">route</span>: <span class="kw-2">&amp;</span><span class="ident">Route</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream2</span> {
     <span class="kw">let</span> <span class="ident">ret_span</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">route</span>.<span class="ident">function</span>.<span class="ident">decl</span>.<span class="ident">output</span> {
-        <span class="ident">syn</span>::<span class="ident">ReturnType</span>::<span class="ident">Default</span> <span class="op">=&gt;</span> <span class="ident">route</span>.<span class="ident">function</span>.<span class="ident">ident</span>.<span class="ident">span</span>(),
-        <span class="ident">syn</span>::<span class="ident">ReturnType</span>::<span class="ident">Type</span>(<span class="kw">_</span>, <span class="kw-2">ref</span> <span class="ident">ty</span>) <span class="op">=&gt;</span> <span class="ident">ty</span>.<span class="ident">span</span>().<span class="ident">into</span>()
+        <span class="ident">syn</span>::<span class="ident">ReturnType</span>::<span class="ident">Default</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">route</span>.<span class="ident">function</span>.<span class="ident">ident</span>.<span class="ident">span</span>(),
+        <span class="ident">syn</span>::<span class="ident">ReturnType</span>::<span class="ident">Type</span>(<span class="kw">_</span>, <span class="kw-2">ref</span> <span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ty</span>.<span class="ident">span</span>().<span class="ident">into</span>()
     };
 
     <span class="macro">define_vars_and_mods</span><span class="macro">!</span>(<span class="ident">req</span>);
-    <span class="macro">define_vars_and_mods</span><span class="macro">!</span>(<span class="ident">ret_span</span> <span class="op">=&gt;</span> <span class="ident">handler</span>);
+    <span class="macro">define_vars_and_mods</span><span class="macro">!</span>(<span class="ident">ret_span</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">handler</span>);
     <span class="kw">let</span> <span class="ident">user_handler_fn_name</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">route</span>.<span class="ident">function</span>.<span class="ident">ident</span>;
     <span class="kw">let</span> <span class="ident">parameter_names</span> <span class="op">=</span> <span class="ident">route</span>.<span class="ident">inputs</span>.<span class="ident">iter</span>()
         .<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">rocket_ident</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">rocket_ident</span>);
 
-    <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">ret_span</span> <span class="op">=&gt;</span>
+    <span class="macro">quote_spanned</span><span class="macro">!</span> { <span class="ident">ret_span</span> <span class="op">=</span><span class="op">&gt;</span>
         <span class="kw">let</span> <span class="ident">___responder</span> <span class="op">=</span> #<span class="ident">user_handler_fn_name</span>(#(#<span class="ident">parameter_names</span>),<span class="kw-2">*</span>);
         #<span class="ident">handler</span>::<span class="ident">Outcome</span>::<span class="ident">from</span>(#<span class="ident">req</span>, <span class="ident">___responder</span>)
     }
 }
 
-<span class="kw">fn</span> <span class="ident">codegen_route</span>(<span class="ident">route</span>: <span class="ident">Route</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">codegen_route</span>(<span class="ident">route</span>: <span class="ident">Route</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
     <span class="comment">// Generate the declarations for path, data, and request guard parameters.</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data_stmt</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">req_guard_definitions</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
@@ -860,15 +860,15 @@
     <span class="kw">for</span> (<span class="ident">ident</span>, <span class="ident">rocket_ident</span>, <span class="ident">ty</span>) <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">route</span>.<span class="ident">inputs</span> {
         <span class="kw">let</span> <span class="ident">fn_segment</span>: <span class="ident">Segment</span> <span class="op">=</span> <span class="ident">ident</span>.<span class="ident">into</span>();
         <span class="kw">match</span> <span class="ident">route</span>.<span class="ident">segments</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">fn_segment</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">seg</span>) <span class="kw">if</span> <span class="ident">seg</span>.<span class="ident">source</span> <span class="op">==</span> <span class="ident">Source</span>::<span class="ident">Path</span> <span class="op">=&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">seg</span>) <span class="kw">if</span> <span class="ident">seg</span>.<span class="ident">source</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Source</span>::<span class="ident">Path</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parameter_definitions</span>.<span class="ident">push</span>(<span class="ident">param_expr</span>(<span class="ident">seg</span>, <span class="ident">rocket_ident</span>, <span class="kw-2">&amp;</span><span class="ident">ty</span>));
             }
-            <span class="prelude-val">Some</span>(<span class="ident">seg</span>) <span class="kw">if</span> <span class="ident">seg</span>.<span class="ident">source</span> <span class="op">==</span> <span class="ident">Source</span>::<span class="ident">Data</span> <span class="op">=&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">seg</span>) <span class="kw">if</span> <span class="ident">seg</span>.<span class="ident">source</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Source</span>::<span class="ident">Data</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// the data statement needs to come last, so record it specially</span>
                 <span class="ident">data_stmt</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">data_expr</span>(<span class="ident">rocket_ident</span>, <span class="kw-2">&amp;</span><span class="ident">ty</span>));
             }
-            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="kw">continue</span>, <span class="comment">// handle query parameters later</span>
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>, <span class="comment">// handle query parameters later</span>
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">req_guard_definitions</span>.<span class="ident">push</span>(<span class="ident">request_guard_expr</span>(<span class="ident">rocket_ident</span>, <span class="kw-2">&amp;</span><span class="ident">ty</span>));
             }
         };
@@ -900,7 +900,7 @@
         #<span class="ident">vis</span> <span class="kw">fn</span> #<span class="ident">generated_fn_name</span><span class="op">&lt;</span><span class="lifetime">&#39;_b</span><span class="op">&gt;</span>(
             #<span class="ident">req</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;_b</span> #<span class="ident">Request</span>,
             #<span class="ident">data</span>: #<span class="ident">Data</span>
-        ) <span class="op">-&gt;</span> #<span class="ident">handler</span>::<span class="ident">Outcome</span><span class="op">&lt;</span><span class="lifetime">&#39;_b</span><span class="op">&gt;</span> {
+        ) <span class="op">-</span><span class="op">&gt;</span> #<span class="ident">handler</span>::<span class="ident">Outcome</span><span class="op">&lt;</span><span class="lifetime">&#39;_b</span><span class="op">&gt;</span> {
             #(#<span class="ident">req_guard_definitions</span>)<span class="op">*</span>
             #(#<span class="ident">parameter_definitions</span>)<span class="op">*</span>
             #<span class="ident">data_stmt</span>
@@ -925,15 +925,15 @@
     }.<span class="ident">into</span>())
 }
 
-<span class="kw">fn</span> <span class="ident">complete_route</span>(<span class="ident">args</span>: <span class="ident">TokenStream2</span>, <span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">complete_route</span>(<span class="ident">args</span>: <span class="ident">TokenStream2</span>, <span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">function</span>: <span class="ident">syn</span>::<span class="ident">ItemFn</span> <span class="op">=</span> <span class="ident">syn</span>::<span class="ident">parse</span>(<span class="ident">input</span>).<span class="ident">map_err</span>(<span class="ident">syn_to_diag</span>)
         .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">diag</span><span class="op">|</span> <span class="ident">diag</span>.<span class="ident">help</span>(<span class="string">&quot;`#[route]` can only be used on functions&quot;</span>))<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="ident">full_attr</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>(<span class="attribute">#[<span class="ident">route</span>(#<span class="ident">args</span>)]</span>);
     <span class="kw">let</span> <span class="ident">attrs</span> <span class="op">=</span> <span class="ident">Attribute</span>::<span class="ident">parse_outer</span>.<span class="ident">parse2</span>(<span class="ident">full_attr</span>).<span class="ident">map_err</span>(<span class="ident">syn_to_diag</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">attribute</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">RouteAttribute</span>::<span class="ident">from_attrs</span>(<span class="string">&quot;route&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">attrs</span>) {
-        <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=&gt;</span> <span class="ident">result</span><span class="question-mark">?</span>,
-        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Span</span>::<span class="ident">call_site</span>().<span class="ident">error</span>(<span class="string">&quot;internal error: bad attribute&quot;</span>))
+        <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">result</span><span class="question-mark">?</span>,
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Span</span>::<span class="ident">call_site</span>().<span class="ident">error</span>(<span class="string">&quot;internal error: bad attribute&quot;</span>))
     };
 
     <span class="ident">codegen_route</span>(<span class="ident">parse_route</span>(<span class="ident">attribute</span>, <span class="ident">function</span>)<span class="question-mark">?</span>)
@@ -943,7 +943,7 @@
     <span class="ident">method</span>: ::<span class="ident">http</span>::<span class="ident">Method</span>,
     <span class="ident">args</span>: <span class="ident">TokenStream2</span>,
     <span class="ident">input</span>: <span class="ident">TokenStream</span>
-) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">method_str</span> <span class="op">=</span> <span class="ident">method</span>.<span class="ident">to_string</span>().<span class="ident">to_lowercase</span>();
     <span class="comment">// FIXME(proc_macro): there should be a way to get this `Span`.</span>
     <span class="kw">let</span> <span class="ident">method_span</span> <span class="op">=</span> <span class="ident">StringLit</span>::<span class="ident">new</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;#[{}]&quot;</span>, <span class="ident">method</span>), <span class="ident">Span</span>::<span class="ident">call_site</span>())
@@ -957,8 +957,8 @@
     <span class="kw">let</span> <span class="ident">full_attr</span> <span class="op">=</span> <span class="macro">quote</span><span class="macro">!</span>(<span class="attribute">#[#<span class="ident">method_ident</span>(#<span class="ident">args</span>)]</span>);
     <span class="kw">let</span> <span class="ident">attrs</span> <span class="op">=</span> <span class="ident">Attribute</span>::<span class="ident">parse_outer</span>.<span class="ident">parse2</span>(<span class="ident">full_attr</span>).<span class="ident">map_err</span>(<span class="ident">syn_to_diag</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">method_attribute</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">MethodRouteAttribute</span>::<span class="ident">from_attrs</span>(<span class="kw-2">&amp;</span><span class="ident">method_str</span>, <span class="kw-2">&amp;</span><span class="ident">attrs</span>) {
-        <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=&gt;</span> <span class="ident">result</span><span class="question-mark">?</span>,
-        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Span</span>::<span class="ident">call_site</span>().<span class="ident">error</span>(<span class="string">&quot;internal error: bad attribute&quot;</span>))
+        <span class="prelude-val">Some</span>(<span class="ident">result</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">result</span><span class="question-mark">?</span>,
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Span</span>::<span class="ident">call_site</span>().<span class="ident">error</span>(<span class="string">&quot;internal error: bad attribute&quot;</span>))
     };
 
     <span class="kw">let</span> <span class="ident">attribute</span> <span class="op">=</span> <span class="ident">RouteAttribute</span> {
@@ -974,14 +974,14 @@
     <span class="ident">codegen_route</span>(<span class="ident">parse_route</span>(<span class="ident">attribute</span>, <span class="ident">function</span>)<span class="question-mark">?</span>)
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">route_attribute</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>::<span class="ident">http</span>::<span class="ident">Method</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>(
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">route_attribute</span><span class="op">&lt;</span><span class="ident">M</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span>::<span class="ident">http</span>::<span class="ident">Method</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(
     <span class="ident">method</span>: <span class="ident">M</span>,
     <span class="ident">args</span>: <span class="ident">TokenStream</span>,
     <span class="ident">input</span>: <span class="ident">TokenStream</span>
-) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">method</span>.<span class="ident">into</span>() {
-        <span class="prelude-val">Some</span>(<span class="ident">method</span>) <span class="op">=&gt;</span> <span class="ident">incomplete_route</span>(<span class="ident">method</span>, <span class="ident">args</span>.<span class="ident">into</span>(), <span class="ident">input</span>),
-        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">complete_route</span>(<span class="ident">args</span>.<span class="ident">into</span>(), <span class="ident">input</span>)
+        <span class="prelude-val">Some</span>(<span class="ident">method</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">incomplete_route</span>(<span class="ident">method</span>, <span class="ident">args</span>.<span class="ident">into</span>(), <span class="ident">input</span>),
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">complete_route</span>(<span class="ident">args</span>.<span class="ident">into</span>(), <span class="ident">input</span>)
     };
 
     <span class="ident">result</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">diag</span><span class="op">|</span> { <span class="ident">diag</span>.<span class="ident">emit</span>(); <span class="ident">TokenStream</span>::<span class="ident">new</span>() })

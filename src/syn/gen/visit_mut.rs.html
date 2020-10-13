@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/syn-0.15.44/src/gen/visit_mut.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>visit_mut.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../syn/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/syn-0.15.44/src/gen/visit_mut.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>visit_mut.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../syn/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
@@ -3290,19 +3292,19 @@
 <span class="kw">use</span> <span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">full</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>
     };
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)))]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">full</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="macro">unreachable</span><span class="macro">!</span>()
     };
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>))]</span>
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">skip</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=&gt;</span> {};
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {};
 }
 <span class="doccomment">/// Syntax tree traversal to mutate an exclusive borrow of a syntax tree in</span>
 <span class="doccomment">/// place.</span>
@@ -4173,8 +4175,8 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_attr_style_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AttrStyle</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">AttrStyle</span>::<span class="ident">Outer</span> <span class="op">=&gt;</span> {}
-        <span class="ident">AttrStyle</span>::<span class="ident">Inner</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">AttrStyle</span>::<span class="ident">Outer</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        <span class="ident">AttrStyle</span>::<span class="ident">Inner</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
     }
@@ -4198,10 +4200,10 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_bare_fn_arg_name_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BareFnArgName</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">BareFnArgName</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BareFnArgName</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_ident_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">BareFnArgName</span>::<span class="ident">Wild</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BareFnArgName</span>::<span class="ident">Wild</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
     }
@@ -4209,88 +4211,88 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_bin_op_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BinOp</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">BinOp</span>::<span class="ident">Add</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Add</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Sub</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Sub</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Mul</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Mul</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Div</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Div</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Rem</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Rem</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">And</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">And</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Or</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Or</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">BitXor</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">BitXor</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">BitAnd</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">BitAnd</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">BitOr</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">BitOr</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Shl</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Shl</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Shr</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Shr</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Eq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Eq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Lt</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Lt</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Le</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Le</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Ne</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Ne</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Ge</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Ge</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">Gt</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">Gt</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">AddEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">AddEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">SubEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">SubEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">MulEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">MulEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">DivEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">DivEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">RemEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">RemEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">BitXorEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">BitXorEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">BitAndEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">BitAndEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">BitOrEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">BitOrEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">ShlEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">ShlEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">BinOp</span>::<span class="ident">ShrEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">BinOp</span>::<span class="ident">ShrEq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
     }
@@ -4346,13 +4348,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_data_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Data</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Data</span>::<span class="ident">Struct</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Data</span>::<span class="ident">Struct</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_data_struct_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Data</span>::<span class="ident">Enum</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Data</span>::<span class="ident">Enum</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_data_enum_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Data</span>::<span class="ident">Union</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Data</span>::<span class="ident">Union</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_data_union_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -4392,124 +4394,124 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_expr_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Expr</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Expr</span>::<span class="ident">Box</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Box</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_box_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">InPlace</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">InPlace</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_in_place_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Array</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Array</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_array_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Call</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Call</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_call_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Expr</span>::<span class="ident">MethodCall</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">MethodCall</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_method_call_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Tuple</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Tuple</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_tuple_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Binary</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Binary</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_binary_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Expr</span>::<span class="ident">Unary</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Unary</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_unary_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Expr</span>::<span class="ident">Lit</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Lit</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_lit_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Expr</span>::<span class="ident">Cast</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Cast</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_cast_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Expr</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_type_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Let</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Let</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_let_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">If</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">If</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_if_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">While</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">While</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_while_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">ForLoop</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">ForLoop</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_for_loop_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Loop</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Loop</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_loop_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Match</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_match_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Closure</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Closure</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_closure_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Unsafe</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Unsafe</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_unsafe_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Block</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Block</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_block_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Assign</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Assign</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_assign_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">AssignOp</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">AssignOp</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_assign_op_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Field</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Field</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_field_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Expr</span>::<span class="ident">Index</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Index</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_index_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Expr</span>::<span class="ident">Range</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Range</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_range_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_path_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Expr</span>::<span class="ident">Reference</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Reference</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_reference_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Break</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Break</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_break_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Continue</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Continue</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_continue_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Return</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Return</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_return_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_macro_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Struct</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Struct</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_struct_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Repeat</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Repeat</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_repeat_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Paren</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Paren</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_paren_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Expr</span>::<span class="ident">Group</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Group</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_group_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Try</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Try</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_try_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Async</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Async</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_async_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">TryBlock</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">TryBlock</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_try_block_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Yield</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Yield</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">full</span><span class="macro">!</span>(<span class="ident">_visitor</span>.<span class="ident">visit_expr_yield_mut</span>(<span class="ident">_binding_0</span>));
         }
-        <span class="ident">Expr</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Expr</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_verbatim_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -4974,13 +4976,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_fields_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Fields</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Fields</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Fields</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_fields_named_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Fields</span>::<span class="ident">Unnamed</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Fields</span>::<span class="ident">Unnamed</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_fields_unnamed_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Fields</span>::<span class="ident">Unit</span> <span class="op">=&gt;</span> {}
+        <span class="ident">Fields</span>::<span class="ident">Unit</span> <span class="op">=</span><span class="op">&gt;</span> {}
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -5012,19 +5014,19 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_fn_arg_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FnArg</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">FnArg</span>::<span class="ident">SelfRef</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">FnArg</span>::<span class="ident">SelfRef</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_arg_self_ref_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">FnArg</span>::<span class="ident">SelfValue</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">FnArg</span>::<span class="ident">SelfValue</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_arg_self_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">FnArg</span>::<span class="ident">Captured</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">FnArg</span>::<span class="ident">Captured</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_arg_captured_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">FnArg</span>::<span class="ident">Inferred</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">FnArg</span>::<span class="ident">Inferred</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">FnArg</span>::<span class="ident">Ignored</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">FnArg</span>::<span class="ident">Ignored</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5046,19 +5048,19 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_foreign_item_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ForeignItem</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">ForeignItem</span>::<span class="ident">Fn</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ForeignItem</span>::<span class="ident">Fn</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_foreign_item_fn_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">ForeignItem</span>::<span class="ident">Static</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ForeignItem</span>::<span class="ident">Static</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_foreign_item_static_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">ForeignItem</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ForeignItem</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_foreign_item_type_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">ForeignItem</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ForeignItem</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_foreign_item_macro_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">ForeignItem</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ForeignItem</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_foreign_item_verbatim_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5130,19 +5132,19 @@
     <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GenericArgument</span>,
 ) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">GenericArgument</span>::<span class="ident">Lifetime</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">GenericArgument</span>::<span class="ident">Lifetime</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lifetime_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">GenericArgument</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">GenericArgument</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">GenericArgument</span>::<span class="ident">Binding</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">GenericArgument</span>::<span class="ident">Binding</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_binding_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">GenericArgument</span>::<span class="ident">Constraint</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">GenericArgument</span>::<span class="ident">Constraint</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_constraint_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">GenericArgument</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">GenericArgument</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5153,10 +5155,10 @@
     <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GenericMethodArgument</span>,
 ) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">GenericMethodArgument</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">GenericMethodArgument</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">GenericMethodArgument</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">GenericMethodArgument</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5164,13 +5166,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_generic_param_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">GenericParam</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">GenericParam</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">GenericParam</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_param_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">GenericParam</span>::<span class="ident">Lifetime</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">GenericParam</span>::<span class="ident">Lifetime</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lifetime_def_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">GenericParam</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">GenericParam</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_const_param_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5194,22 +5196,22 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_impl_item_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ImplItem</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">ImplItem</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ImplItem</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_impl_item_const_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">ImplItem</span>::<span class="ident">Method</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ImplItem</span>::<span class="ident">Method</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_impl_item_method_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">ImplItem</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ImplItem</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_impl_item_type_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">ImplItem</span>::<span class="ident">Existential</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ImplItem</span>::<span class="ident">Existential</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_impl_item_existential_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">ImplItem</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ImplItem</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_impl_item_macro_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">ImplItem</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ImplItem</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_impl_item_verbatim_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5305,58 +5307,58 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_item_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Item</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Item</span>::<span class="ident">ExternCrate</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">ExternCrate</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_extern_crate_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Use</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Use</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_use_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Static</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Static</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_static_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_const_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Fn</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Fn</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_fn_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Mod</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Mod</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_mod_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">ForeignMod</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">ForeignMod</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_foreign_mod_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_type_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Existential</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Existential</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_existential_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Struct</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Struct</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_struct_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Enum</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Enum</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_enum_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Union</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Union</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_union_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Trait</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Trait</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_trait_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">TraitAlias</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">TraitAlias</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_trait_alias_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Impl</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Impl</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_impl_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_macro_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Macro2</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Macro2</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_macro2_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Item</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Item</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_verbatim_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5674,28 +5676,28 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_lit_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Lit</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Lit</span>::<span class="ident">Str</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Lit</span>::<span class="ident">Str</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lit_str_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Lit</span>::<span class="ident">ByteStr</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Lit</span>::<span class="ident">ByteStr</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lit_byte_str_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Lit</span>::<span class="ident">Byte</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Lit</span>::<span class="ident">Byte</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lit_byte_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Lit</span>::<span class="ident">Char</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Lit</span>::<span class="ident">Char</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lit_char_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Lit</span>::<span class="ident">Int</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Lit</span>::<span class="ident">Int</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lit_int_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Lit</span>::<span class="ident">Float</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Lit</span>::<span class="ident">Float</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lit_float_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Lit</span>::<span class="ident">Bool</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Lit</span>::<span class="ident">Bool</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lit_bool_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Lit</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Lit</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lit_verbatim_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5751,13 +5753,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_macro_delimiter_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MacroDelimiter</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">MacroDelimiter</span>::<span class="ident">Paren</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">MacroDelimiter</span>::<span class="ident">Paren</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">span</span>);
         }
-        <span class="ident">MacroDelimiter</span>::<span class="ident">Brace</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">MacroDelimiter</span>::<span class="ident">Brace</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">span</span>);
         }
-        <span class="ident">MacroDelimiter</span>::<span class="ident">Bracket</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">MacroDelimiter</span>::<span class="ident">Bracket</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">span</span>);
         }
     }
@@ -5765,10 +5767,10 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_member_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Member</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Member</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Member</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_ident_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Member</span>::<span class="ident">Unnamed</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Member</span>::<span class="ident">Unnamed</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_index_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5776,13 +5778,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_meta_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Meta</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Meta</span>::<span class="ident">Word</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Meta</span>::<span class="ident">Word</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_ident_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Meta</span>::<span class="ident">List</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Meta</span>::<span class="ident">List</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_meta_list_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Meta</span>::<span class="ident">NameValue</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Meta</span>::<span class="ident">NameValue</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_meta_name_value_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5835,10 +5837,10 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_nested_meta_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">NestedMeta</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">NestedMeta</span>::<span class="ident">Meta</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">NestedMeta</span>::<span class="ident">Meta</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_meta_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">NestedMeta</span>::<span class="ident">Literal</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">NestedMeta</span>::<span class="ident">Literal</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lit_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -5858,43 +5860,43 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_pat_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Pat</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Pat</span>::<span class="ident">Wild</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Wild</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_wild_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Ident</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Ident</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_ident_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Struct</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Struct</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_struct_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">TupleStruct</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">TupleStruct</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_tuple_struct_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_path_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Tuple</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Tuple</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_tuple_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Box</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Box</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_box_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Ref</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Ref</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_ref_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Lit</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Lit</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_lit_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Range</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Range</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_range_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Slice</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Slice</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_slice_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_macro_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Pat</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Pat</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_pat_verbatim_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -6024,11 +6026,11 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_path_arguments_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">PathArguments</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">PathArguments</span>::<span class="prelude-val">None</span> <span class="op">=&gt;</span> {}
-        <span class="ident">PathArguments</span>::<span class="ident">AngleBracketed</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">PathArguments</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        <span class="ident">PathArguments</span>::<span class="ident">AngleBracketed</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_angle_bracketed_generic_arguments_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">PathArguments</span>::<span class="ident">Parenthesized</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">PathArguments</span>::<span class="ident">Parenthesized</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_parenthesized_generic_arguments_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -6081,10 +6083,10 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_range_limits_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">RangeLimits</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">RangeLimits</span>::<span class="ident">HalfOpen</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">RangeLimits</span>::<span class="ident">HalfOpen</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">RangeLimits</span>::<span class="ident">Closed</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">RangeLimits</span>::<span class="ident">Closed</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
     }
@@ -6092,8 +6094,8 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_return_type_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ReturnType</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">ReturnType</span>::<span class="ident">Default</span> <span class="op">=&gt;</span> {}
-        <span class="ident">ReturnType</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>, <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_1</span>) <span class="op">=&gt;</span> {
+        <span class="ident">ReturnType</span>::<span class="ident">Default</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        <span class="ident">ReturnType</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>, <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_1</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
             <span class="ident">_visitor</span>.<span class="ident">visit_type_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">_binding_1</span>);
         }
@@ -6102,16 +6104,16 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_stmt_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Stmt</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Stmt</span>::<span class="ident">Local</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Stmt</span>::<span class="ident">Local</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_local_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Stmt</span>::<span class="ident">Item</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Stmt</span>::<span class="ident">Item</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_item_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Stmt</span>::<span class="ident">Expr</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Stmt</span>::<span class="ident">Expr</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Stmt</span>::<span class="ident">Semi</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>, <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_1</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Stmt</span>::<span class="ident">Semi</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>, <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_1</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_expr_mut</span>(<span class="ident">_binding_0</span>);
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_1</span>.<span class="ident">spans</span>);
         }
@@ -6134,8 +6136,8 @@
     <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TraitBoundModifier</span>,
 ) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">TraitBoundModifier</span>::<span class="prelude-val">None</span> <span class="op">=&gt;</span> {}
-        <span class="ident">TraitBoundModifier</span>::<span class="ident">Maybe</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">TraitBoundModifier</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        <span class="ident">TraitBoundModifier</span>::<span class="ident">Maybe</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
     }
@@ -6143,19 +6145,19 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_trait_item_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TraitItem</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">TraitItem</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">TraitItem</span>::<span class="ident">Const</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_trait_item_const_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">TraitItem</span>::<span class="ident">Method</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">TraitItem</span>::<span class="ident">Method</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_trait_item_method_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">TraitItem</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">TraitItem</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_trait_item_type_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">TraitItem</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">TraitItem</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_trait_item_macro_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">TraitItem</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">TraitItem</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_trait_item_verbatim_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -6232,49 +6234,49 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_type_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Type</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Type</span>::<span class="ident">Slice</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Slice</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_slice_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Array</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Array</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_array_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Ptr</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Ptr</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_ptr_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Reference</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Reference</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_reference_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">BareFn</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">BareFn</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_bare_fn_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Never</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Never</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_never_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Tuple</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Tuple</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_tuple_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_path_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">TraitObject</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">TraitObject</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_trait_object_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">ImplTrait</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">ImplTrait</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_impl_trait_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Paren</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Paren</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_paren_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Group</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Group</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_group_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Infer</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Infer</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_infer_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Macro</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_macro_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Type</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Type</span>::<span class="ident">Verbatim</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_type_verbatim_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -6356,10 +6358,10 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_type_param_bound_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TypeParamBound</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">TypeParamBound</span>::<span class="ident">Trait</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">TypeParamBound</span>::<span class="ident">Trait</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_trait_bound_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">TypeParamBound</span>::<span class="ident">Lifetime</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">TypeParamBound</span>::<span class="ident">Lifetime</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_lifetime_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -6431,13 +6433,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_un_op_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">UnOp</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">UnOp</span>::<span class="ident">Deref</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">UnOp</span>::<span class="ident">Deref</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">UnOp</span>::<span class="ident">Not</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">UnOp</span>::<span class="ident">Not</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
-        <span class="ident">UnOp</span>::<span class="ident">Neg</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">UnOp</span>::<span class="ident">Neg</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">tokens_helper</span>(<span class="ident">_visitor</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">_binding_0</span>.<span class="ident">spans</span>);
         }
     }
@@ -6473,19 +6475,19 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_use_tree_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">UseTree</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">UseTree</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">UseTree</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_use_path_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">UseTree</span>::<span class="ident">Name</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">UseTree</span>::<span class="ident">Name</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_use_name_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">UseTree</span>::<span class="ident">Rename</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">UseTree</span>::<span class="ident">Rename</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_use_rename_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">UseTree</span>::<span class="ident">Glob</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">UseTree</span>::<span class="ident">Glob</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_use_glob_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">UseTree</span>::<span class="ident">Group</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">UseTree</span>::<span class="ident">Group</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_use_group_mut</span>(<span class="ident">_binding_0</span>);
         }
     }
@@ -6522,16 +6524,16 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_visibility_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Visibility</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">Visibility</span>::<span class="ident">Public</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Visibility</span>::<span class="ident">Public</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_vis_public_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Visibility</span>::<span class="ident">Crate</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Visibility</span>::<span class="ident">Crate</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_vis_crate_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Visibility</span>::<span class="ident">Restricted</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Visibility</span>::<span class="ident">Restricted</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_vis_restricted_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">Visibility</span>::<span class="ident">Inherited</span> <span class="op">=&gt;</span> {}
+        <span class="ident">Visibility</span>::<span class="ident">Inherited</span> <span class="op">=</span><span class="op">&gt;</span> {}
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
@@ -6545,13 +6547,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;derive&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;full&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">visit_where_predicate_mut</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">VisitMut</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span>(<span class="ident">_visitor</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">V</span>, <span class="ident">_i</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">WherePredicate</span>) {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">_i</span> {
-        <span class="ident">WherePredicate</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">WherePredicate</span>::<span class="ident">Type</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_predicate_type_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">WherePredicate</span>::<span class="ident">Lifetime</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">WherePredicate</span>::<span class="ident">Lifetime</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_predicate_lifetime_mut</span>(<span class="ident">_binding_0</span>);
         }
-        <span class="ident">WherePredicate</span>::<span class="ident">Eq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=&gt;</span> {
+        <span class="ident">WherePredicate</span>::<span class="ident">Eq</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">_binding_0</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">_visitor</span>.<span class="ident">visit_predicate_eq_mut</span>(<span class="ident">_binding_0</span>);
         }
     }

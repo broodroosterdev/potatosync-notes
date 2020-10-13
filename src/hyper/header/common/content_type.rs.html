@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.10.16/src/header/common/content_type.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>content_type.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../hyper/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.10.16/src/header/common/content_type.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>content_type.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../hyper/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
@@ -141,7 +143,7 @@
     <span class="doccomment">///                      vec![(Attr::Charset, Value::Utf8)]))</span>
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
-    (<span class="ident">ContentType</span>, <span class="string">&quot;Content-Type&quot;</span>) <span class="op">=&gt;</span> [<span class="ident">Mime</span>]
+    (<span class="ident">ContentType</span>, <span class="string">&quot;Content-Type&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> [<span class="ident">Mime</span>]
 
     <span class="ident">test_content_type</span> {
         <span class="macro">test_header</span><span class="macro">!</span>(
@@ -159,36 +161,36 @@
 <span class="kw">impl</span> <span class="ident">ContentType</span> {
     <span class="doccomment">/// A constructor  to easily create a `Content-Type: application/json` header.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">json</span>() <span class="op">-&gt;</span> <span class="ident">ContentType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">json</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ContentType</span> {
         <span class="ident">ContentType</span>(<span class="macro">mime</span><span class="macro">!</span>(<span class="ident">Application</span><span class="op">/</span><span class="ident">Json</span>))
     }
 
     <span class="doccomment">/// A constructor  to easily create a `Content-Type: text/plain; charset=utf-8` header.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plaintext</span>() <span class="op">-&gt;</span> <span class="ident">ContentType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">plaintext</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ContentType</span> {
         <span class="ident">ContentType</span>(<span class="macro">mime</span><span class="macro">!</span>(<span class="ident">Text</span><span class="op">/</span><span class="ident">Plain</span>; <span class="ident">Charset</span><span class="op">=</span><span class="ident">Utf8</span>))
     }
 
     <span class="doccomment">/// A constructor  to easily create a `Content-Type: text/html; charset=utf-8` header.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">html</span>() <span class="op">-&gt;</span> <span class="ident">ContentType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">html</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ContentType</span> {
         <span class="ident">ContentType</span>(<span class="macro">mime</span><span class="macro">!</span>(<span class="ident">Text</span><span class="op">/</span><span class="ident">Html</span>; <span class="ident">Charset</span><span class="op">=</span><span class="ident">Utf8</span>))
     }
 
     <span class="doccomment">/// A constructor  to easily create a `Content-Type: application/www-form-url-encoded` header.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">form_url_encoded</span>() <span class="op">-&gt;</span> <span class="ident">ContentType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">form_url_encoded</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ContentType</span> {
         <span class="ident">ContentType</span>(<span class="macro">mime</span><span class="macro">!</span>(<span class="ident">Application</span><span class="op">/</span><span class="ident">WwwFormUrlEncoded</span>))
     }
     <span class="doccomment">/// A constructor  to easily create a `Content-Type: image/jpeg` header.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">jpeg</span>() <span class="op">-&gt;</span> <span class="ident">ContentType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">jpeg</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ContentType</span> {
         <span class="ident">ContentType</span>(<span class="macro">mime</span><span class="macro">!</span>(<span class="ident">Image</span><span class="op">/</span><span class="ident">Jpeg</span>))
     }
 
     <span class="doccomment">/// A constructor  to easily create a `Content-Type: image/png` header.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">png</span>() <span class="op">-&gt;</span> <span class="ident">ContentType</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">png</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ContentType</span> {
         <span class="ident">ContentType</span>(<span class="macro">mime</span><span class="macro">!</span>(<span class="ident">Image</span><span class="op">/</span><span class="ident">Png</span>))
     }
 }

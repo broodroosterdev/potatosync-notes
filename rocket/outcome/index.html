@@ -19,7 +19,7 @@ For example, consider the following handler:</p>
 
 <div class='information'><div class='tooltip ignore'>ⓘ<span class='tooltiptext'>This example is not tested</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
 <span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;my_val&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">hello</span>(<span class="ident">my_val</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> ... {  }</pre></div>
+<span class="kw">fn</span> <span class="ident">hello</span>(<span class="ident">my_val</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> ... {  }</pre></div>
 <p>The <a href="../../rocket/data/trait.FromData.html"><code>FromData</code></a> implementation for the type <code>S</code> returns an <code>Outcome</code> with a
 <code>Success(S)</code>. If <code>from_data</code> returns a <code>Success</code>, the <code>Success</code> value will
 be unwrapped and the value will be used as the value of <code>my_val</code>.</p>
@@ -35,7 +35,7 @@ like:</p>
 
 <div class='information'><div class='tooltip ignore'>ⓘ<span class='tooltiptext'>This example is not tested</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
 <span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;my_val&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">hello</span>(<span class="ident">my_val</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> ... {  }</pre></div>
+<span class="kw">fn</span> <span class="ident">hello</span>(<span class="ident">my_val</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S</span>, <span class="ident">E</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> ... {  }</pre></div>
 <p>The <a href="../../rocket/data/trait.FromData.html"><code>FromData</code></a> implementation for the type <code>S</code> returns an <code>Outcome</code> with a
 <code>Success(S)</code> and <code>Failure(E)</code>. If <code>from_data</code> returns a <code>Failure</code>, the
 <code>Failure</code> value will be unwrapped and the value will be used as the <code>Err</code>
@@ -51,7 +51,7 @@ handler:</p>
 
 <div class='information'><div class='tooltip ignore'>ⓘ<span class='tooltiptext'>This example is not tested</span></div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
 <span class="attribute">#[<span class="ident">post</span>(<span class="string">&quot;/&quot;</span>, <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;&lt;my_val&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">hello</span>(<span class="ident">my_val</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> ... {  }</pre></div>
+<span class="kw">fn</span> <span class="ident">hello</span>(<span class="ident">my_val</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> ... {  }</pre></div>
 <p>The <a href="../../rocket/data/trait.FromData.html"><code>FromData</code></a> implementation for the type <code>S</code> returns an <code>Outcome</code> with a
 <code>Success(S)</code>, <code>Failure(E)</code>, and <code>Forward(F)</code>. If the <code>Outcome</code> is a
 <code>Forward</code>, the <code>hello</code> handler isn't called. Instead, the incoming request

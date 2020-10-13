@@ -8,7 +8,7 @@ route, a colon, and one argument for each dynamic parameter (parameters in
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/person/&lt;name&gt;?&lt;age&gt;&quot;</span>)]</span>
-<span class="kw">fn</span> <span class="ident">person</span>(<span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">age</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
+<span class="kw">fn</span> <span class="ident">person</span>(<span class="ident">name</span>: <span class="ident">String</span>, <span class="ident">age</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
     ...
 }</pre></div>
 <p>A URI can be created as follows:</p>

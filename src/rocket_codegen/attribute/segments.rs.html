@@ -170,11 +170,11 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Segment</span> {
-    <span class="kw">fn</span> <span class="ident">from</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">UriPart</span><span class="op">&gt;</span>(<span class="ident">segment</span>: <span class="ident">RouteSegment</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-&gt;</span> <span class="ident">Segment</span> {
+    <span class="kw">fn</span> <span class="ident">from</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">UriPart</span><span class="op">&gt;</span>(<span class="ident">segment</span>: <span class="ident">RouteSegment</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Segment</span> {
         <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">P</span>::<span class="ident">DELIMITER</span> {
-            <span class="string">&#39;/&#39;</span> <span class="op">=&gt;</span> <span class="ident">Source</span>::<span class="ident">Path</span>,
-            <span class="string">&#39;&amp;&#39;</span> <span class="op">=&gt;</span> <span class="ident">Source</span>::<span class="ident">Query</span>,
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;only paths and queries&quot;</span>)
+            <span class="string">&#39;/&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Source</span>::<span class="ident">Path</span>,
+            <span class="string">&#39;&amp;&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Source</span>::<span class="ident">Query</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;only paths and queries&quot;</span>)
         };
 
         <span class="kw">let</span> (<span class="ident">kind</span>, <span class="ident">index</span>) <span class="op">=</span> (<span class="ident">segment</span>.<span class="ident">kind</span>, <span class="ident">segment</span>.<span class="ident">index</span>);
@@ -183,7 +183,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">syn</span>::<span class="ident">Ident</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Segment</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Ident</span>) <span class="op">-&gt;</span> <span class="ident">Segment</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Ident</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Segment</span> {
         <span class="ident">Segment</span> {
             <span class="ident">kind</span>: <span class="ident">Kind</span>::<span class="ident">Static</span>,
             <span class="ident">source</span>: <span class="ident">Source</span>::<span class="ident">Unknown</span>,
@@ -195,8 +195,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">Segment</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Segment</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">name</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">name</span>
+    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">Segment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="self">self</span>.<span class="ident">name</span> <span class="op">=</span><span class="op">=</span> <span class="ident">other</span>.<span class="ident">name</span>
     }
 }
 
@@ -208,12 +208,12 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">subspan</span>(<span class="ident">needle</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-&gt;</span> <span class="ident">Span</span> {
+<span class="kw">fn</span> <span class="ident">subspan</span>(<span class="ident">needle</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Span</span> {
     <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">needle</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span> <span class="op">-</span> <span class="ident">haystack</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>;
     <span class="ident">StringLit</span>::<span class="ident">new</span>(<span class="ident">haystack</span>, <span class="ident">span</span>).<span class="ident">subspan</span>(<span class="ident">index</span>..<span class="ident">index</span> <span class="op">+</span> <span class="ident">needle</span>.<span class="ident">len</span>())
 }
 
-<span class="kw">fn</span> <span class="ident">trailspan</span>(<span class="ident">needle</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-&gt;</span> <span class="ident">Span</span> {
+<span class="kw">fn</span> <span class="ident">trailspan</span>(<span class="ident">needle</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">haystack</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Span</span> {
     <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">needle</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span> <span class="op">-</span> <span class="ident">haystack</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span>;
     <span class="kw">let</span> <span class="ident">lit</span> <span class="op">=</span> <span class="ident">StringLit</span>::<span class="ident">new</span>(<span class="ident">haystack</span>, <span class="ident">span</span>);
     <span class="kw">if</span> <span class="ident">needle</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span> <span class="op">&gt;</span> <span class="ident">haystack</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span> {
@@ -228,35 +228,35 @@
     <span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,  <span class="comment">// The haystack where `segment` can be found.</span>
     <span class="ident">span</span>: <span class="ident">Span</span>,    <span class="comment">// The `Span` of `Source`.</span>
     <span class="ident">error</span>: <span class="kw-2">&amp;</span><span class="ident">Error</span>,  <span class="comment">// The error.</span>
-) <span class="op">-&gt;</span> <span class="ident">Diagnostic</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Diagnostic</span> {
     <span class="kw">let</span> <span class="ident">seg_span</span> <span class="op">=</span> <span class="ident">subspan</span>(<span class="ident">segment</span>, <span class="ident">source</span>, <span class="ident">span</span>);
     <span class="kw">match</span> <span class="ident">error</span> {
-        <span class="ident">Error</span>::<span class="ident">Empty</span> <span class="op">=&gt;</span> {
+        <span class="ident">Error</span>::<span class="ident">Empty</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">seg_span</span>.<span class="ident">error</span>(<span class="string">&quot;parameter names cannot be empty&quot;</span>)
         }
-        <span class="ident">Error</span>::<span class="ident">Ident</span>(<span class="ident">name</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Error</span>::<span class="ident">Ident</span>(<span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">seg_span</span>.<span class="ident">error</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;`{}` is not a valid identifier&quot;</span>, <span class="ident">name</span>))
                 .<span class="ident">help</span>(<span class="string">&quot;parameter names must be valid identifiers&quot;</span>)
         }
-        <span class="ident">Error</span>::<span class="ident">Ignored</span> <span class="op">=&gt;</span> {
+        <span class="ident">Error</span>::<span class="ident">Ignored</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">seg_span</span>.<span class="ident">error</span>(<span class="string">&quot;parameters must be named&quot;</span>)
                 .<span class="ident">help</span>(<span class="string">&quot;use a name such as `_guard` or `_param`&quot;</span>)
         }
-        <span class="ident">Error</span>::<span class="ident">MissingClose</span> <span class="op">=&gt;</span> {
+        <span class="ident">Error</span>::<span class="ident">MissingClose</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">seg_span</span>.<span class="ident">error</span>(<span class="string">&quot;parameter is missing a closing bracket&quot;</span>)
                 .<span class="ident">help</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;did you mean &#39;{}&gt;&#39;?&quot;</span>, <span class="ident">segment</span>))
         }
-        <span class="ident">Error</span>::<span class="ident">Malformed</span> <span class="op">=&gt;</span> {
+        <span class="ident">Error</span>::<span class="ident">Malformed</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">seg_span</span>.<span class="ident">error</span>(<span class="string">&quot;malformed parameter or identifier&quot;</span>)
                 .<span class="ident">help</span>(<span class="string">&quot;parameters must be of the form &#39;&lt;param&gt;&#39;&quot;</span>)
                 .<span class="ident">help</span>(<span class="string">&quot;identifiers cannot contain &#39;&lt;&#39; or &#39;&gt;&#39;&quot;</span>)
         }
-        <span class="ident">Error</span>::<span class="ident">Uri</span> <span class="op">=&gt;</span> {
+        <span class="ident">Error</span>::<span class="ident">Uri</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">seg_span</span>.<span class="ident">error</span>(<span class="string">&quot;component contains invalid URI characters&quot;</span>)
                 .<span class="ident">note</span>(<span class="string">&quot;components cannot contain reserved characters&quot;</span>)
                 .<span class="ident">help</span>(<span class="string">&quot;reserved characters include: &#39;%&#39;, &#39;+&#39;, &#39;&amp;&#39;, etc.&quot;</span>)
         }
-        <span class="ident">Error</span>::<span class="ident">Trailing</span>(<span class="ident">multi</span>) <span class="op">=&gt;</span> {
+        <span class="ident">Error</span>::<span class="ident">Trailing</span>(<span class="ident">multi</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">multi_span</span> <span class="op">=</span> <span class="ident">subspan</span>(<span class="ident">multi</span>, <span class="ident">source</span>, <span class="ident">span</span>);
             <span class="ident">trailspan</span>(<span class="ident">segment</span>, <span class="ident">source</span>, <span class="ident">span</span>)
                 .<span class="ident">error</span>(<span class="string">&quot;unexpected trailing text after a &#39;..&#39; param&quot;</span>)
@@ -266,8 +266,8 @@
     }
 }
 
-<span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">parse_data_segment</span>(<span class="ident">segment</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-&gt;</span> <span class="ident">PResult</span><span class="op">&lt;</span><span class="ident">Segment</span><span class="op">&gt;</span> {
-    <span class="op">&lt;</span><span class="ident">RouteSegment</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;&gt;</span>::<span class="ident">parse_one</span>(<span class="ident">segment</span>)
+<span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">parse_data_segment</span>(<span class="ident">segment</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PResult</span><span class="op">&lt;</span><span class="ident">Segment</span><span class="op">&gt;</span> {
+    <span class="op">&lt;</span><span class="ident">RouteSegment</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">parse_one</span>(<span class="ident">segment</span>)
         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">segment</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">seg</span> <span class="op">=</span> <span class="ident">Segment</span>::<span class="ident">from</span>(<span class="ident">segment</span>, <span class="ident">span</span>);
             <span class="ident">seg</span>.<span class="ident">source</span> <span class="op">=</span> <span class="ident">Source</span>::<span class="ident">Data</span>;
@@ -280,11 +280,11 @@
 <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">parse_segments</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">UriPart</span><span class="op">&gt;</span>(
     <span class="ident">string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     <span class="ident">span</span>: <span class="ident">Span</span>
-) <span class="op">-&gt;</span> <span class="ident">DResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Segment</span><span class="op">&gt;&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Segment</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">segments</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics</span>::<span class="ident">new</span>();
 
-    <span class="kw">for</span> <span class="ident">result</span> <span class="kw">in</span> <span class="op">&lt;</span><span class="ident">RouteSegment</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;&gt;</span>::<span class="ident">parse_many</span>(<span class="ident">string</span>) {
+    <span class="kw">for</span> <span class="ident">result</span> <span class="kw">in</span> <span class="op">&lt;</span><span class="ident">RouteSegment</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">parse_many</span>(<span class="ident">string</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>((<span class="ident">segment_string</span>, <span class="ident">error</span>)) <span class="op">=</span> <span class="ident">result</span> {
             <span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">into_diagnostic</span>(<span class="ident">segment_string</span>, <span class="ident">string</span>, <span class="ident">span</span>, <span class="kw-2">&amp;</span><span class="ident">error</span>));
             <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Error</span>::<span class="ident">Trailing</span>(..) <span class="op">=</span> <span class="ident">error</span> {

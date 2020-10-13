@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rocket_cors-0.5.2/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../rocket_cors/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/rocket_cors-0.5.2/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../rocket_cors/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
@@ -3314,101 +3316,101 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 }
 
 <span class="kw">impl</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">status</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Status</span> {
+    <span class="kw">fn</span> <span class="ident">status</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="ident">Error</span>::<span class="ident">MissingOrigin</span>
             <span class="op">|</span> <span class="ident">Error</span>::<span class="ident">OriginNotAllowed</span>(<span class="kw">_</span>)
             <span class="op">|</span> <span class="ident">Error</span>::<span class="ident">MethodNotAllowed</span>(<span class="kw">_</span>)
-            <span class="op">|</span> <span class="ident">Error</span>::<span class="ident">HeadersNotAllowed</span> <span class="op">=&gt;</span> <span class="ident">Status</span>::<span class="ident">Forbidden</span>,
+            <span class="op">|</span> <span class="ident">Error</span>::<span class="ident">HeadersNotAllowed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Status</span>::<span class="ident">Forbidden</span>,
             <span class="ident">Error</span>::<span class="ident">CredentialsWithWildcardOrigin</span>
             <span class="op">|</span> <span class="ident">Error</span>::<span class="ident">MissingCorsInRocketState</span>
-            <span class="op">|</span> <span class="ident">Error</span>::<span class="ident">MissingInjectedHeader</span> <span class="op">=&gt;</span> <span class="ident">Status</span>::<span class="ident">InternalServerError</span>,
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
+            <span class="op">|</span> <span class="ident">Error</span>::<span class="ident">MissingInjectedHeader</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Status</span>::<span class="ident">InternalServerError</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Status</span>::<span class="ident">BadRequest</span>,
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Error</span>::<span class="ident">MissingOrigin</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
+            <span class="ident">Error</span>::<span class="ident">MissingOrigin</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;The request header `Origin` is \
                  required but is missing&quot;</span>
             ),
-            <span class="ident">Error</span>::<span class="ident">BadOrigin</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;The request header `Origin` contains an invalid URL&quot;</span>),
-            <span class="ident">Error</span>::<span class="ident">MissingRequestMethod</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
+            <span class="ident">Error</span>::<span class="ident">BadOrigin</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;The request header `Origin` contains an invalid URL&quot;</span>),
+            <span class="ident">Error</span>::<span class="ident">MissingRequestMethod</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;The request header `Access-Control-Request-Method` \
                  is required but is missing&quot;</span>
             ),
-            <span class="ident">Error</span>::<span class="ident">BadRequestMethod</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
+            <span class="ident">Error</span>::<span class="ident">BadRequestMethod</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;The request header `Access-Control-Request-Method` has an invalid value&quot;</span>
             ),
-            <span class="ident">Error</span>::<span class="ident">MissingRequestHeaders</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
+            <span class="ident">Error</span>::<span class="ident">MissingRequestHeaders</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;The request header `Access-Control-Request-Headers` \
                  is required but is missing&quot;</span>
             ),
-            <span class="ident">Error</span>::<span class="ident">OriginNotAllowed</span>(<span class="ident">origin</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
+            <span class="ident">Error</span>::<span class="ident">OriginNotAllowed</span>(<span class="ident">origin</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;Origin &#39;{}&#39; is \
                  not allowed to request&quot;</span>,
                 <span class="ident">origin</span>
             ),
-            <span class="ident">Error</span>::<span class="ident">MethodNotAllowed</span>(<span class="ident">method</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Method &#39;{}&#39; is not allowed&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">method</span>),
-            <span class="ident">Error</span>::<span class="ident">HeadersNotAllowed</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Headers are not allowed&quot;</span>),
-            <span class="ident">Error</span>::<span class="ident">CredentialsWithWildcardOrigin</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
+            <span class="ident">Error</span>::<span class="ident">MethodNotAllowed</span>(<span class="ident">method</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Method &#39;{}&#39; is not allowed&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">method</span>),
+            <span class="ident">Error</span>::<span class="ident">HeadersNotAllowed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Headers are not allowed&quot;</span>),
+            <span class="ident">Error</span>::<span class="ident">CredentialsWithWildcardOrigin</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;Credentials are allowed, but the Origin is set to \&quot;*\&quot;. \
                  This is not allowed by W3C&quot;</span>
             ),
-            <span class="ident">Error</span>::<span class="ident">MissingCorsInRocketState</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
+            <span class="ident">Error</span>::<span class="ident">MissingCorsInRocketState</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;A CORS Request Guard was used, but no CORS Options \
                  was available in Rocket&#39;s state&quot;</span>
             ),
-            <span class="ident">Error</span>::<span class="ident">MissingInjectedHeader</span> <span class="op">=&gt;</span> {
+            <span class="ident">Error</span>::<span class="ident">MissingInjectedHeader</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>,
                 <span class="string">&quot;The `on_response` handler of Fairing could not find the injected header from the \
                  Request. Either some other fairing has removed it, or this is a bug.&quot;</span>)
             }
-            <span class="ident">Error</span>::<span class="ident">OpaqueAllowedOrigin</span>(<span class="kw-2">ref</span> <span class="ident">origins</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
+            <span class="ident">Error</span>::<span class="ident">OpaqueAllowedOrigin</span>(<span class="kw-2">ref</span> <span class="ident">origins</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;The configured Origins &#39;{}&#39; are Opaque Origins. \
                  Use regex instead.&quot;</span>,
                 <span class="ident">origins</span>.<span class="ident">join</span>(<span class="string">&quot;; &quot;</span>)
             ),
-            <span class="ident">Error</span>::<span class="ident">RegexError</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">e</span>),
+            <span class="ident">Error</span>::<span class="ident">RegexError</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">e</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">cause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">cause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">dyn</span> <span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Error</span>::<span class="ident">BadOrigin</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">e</span>),
-            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="self">self</span>),
+            <span class="ident">Error</span>::<span class="ident">BadOrigin</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">e</span>),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="self">self</span>),
         }
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
         <span class="macro">error_</span><span class="macro">!</span>(<span class="string">&quot;CORS Error: {}&quot;</span>, <span class="self">self</span>);
         <span class="prelude-val">Err</span>(<span class="self">self</span>.<span class="ident">status</span>())
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">url</span>::<span class="ident">ParseError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">url</span>::<span class="ident">ParseError</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">url</span>::<span class="ident">ParseError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Error</span>::<span class="ident">BadOrigin</span>(<span class="ident">error</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">regex</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">regex</span>::<span class="ident">Error</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">error</span>: <span class="ident">regex</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Error</span>::<span class="ident">RegexError</span>(<span class="ident">error</span>)
     }
 }
@@ -3429,22 +3431,22 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">AllOrSome</span>::<span class="ident">All</span>
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Returns whether this is an `All` variant</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_all</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="bool-val">false</span>,
+            <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
 
     <span class="doccomment">/// Returns whether this is a `Some` variant</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_some</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="op">!</span><span class="self">self</span>.<span class="ident">is_all</span>()
     }
 
@@ -3452,10 +3454,10 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Panics</span>
     <span class="doccomment">/// Panics if the variant is `All`</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwrap</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwrap</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Attempting to unwrap an `All`&quot;</span>),
-            <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">inner</span>) <span class="op">=&gt;</span> <span class="ident">inner</span>,
+            <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Attempting to unwrap an `All`&quot;</span>),
+            <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">inner</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">inner</span>,
         }
     }
 }
@@ -3467,7 +3469,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">Method</span> {
     <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">method</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">from_str</span>(<span class="ident">s</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">Method</span>(<span class="ident">method</span>))
     }
@@ -3476,19 +3478,19 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">Method</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">http</span>::<span class="ident">Method</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">http</span>::<span class="ident">Method</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Method</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">method</span>: <span class="ident">http</span>::<span class="ident">Method</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">method</span>: <span class="ident">http</span>::<span class="ident">Method</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Method</span>(<span class="ident">method</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Method</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="ident">fmt</span>::<span class="ident">Display</span>::<span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="ident">f</span>)
     }
 }
@@ -3503,7 +3505,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Method</span>;
 
     <span class="kw">impl</span> <span class="ident">Serialize</span> <span class="kw">for</span> <span class="ident">Method</span> {
-        <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="prelude-val">Ok</span>, <span class="ident">S</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+        <span class="kw">fn</span> <span class="ident">serialize</span><span class="op">&lt;</span><span class="ident">S</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">serializer</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">S</span>::<span class="prelude-val">Ok</span>, <span class="ident">S</span>::<span class="ident">Error</span><span class="op">&gt;</span>
         <span class="kw">where</span>
             <span class="ident">S</span>: <span class="ident">serde</span>::<span class="ident">Serializer</span>,
         {
@@ -3512,7 +3514,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     }
 
     <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Deserialize</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Method</span> {
-        <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Method</span>, <span class="ident">D</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+        <span class="kw">fn</span> <span class="ident">deserialize</span><span class="op">&lt;</span><span class="ident">D</span><span class="op">&gt;</span>(<span class="ident">deserializer</span>: <span class="ident">D</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Method</span>, <span class="ident">D</span>::<span class="ident">Error</span><span class="op">&gt;</span>
         <span class="kw">where</span>
             <span class="ident">D</span>: <span class="ident">serde</span>::<span class="ident">Deserializer</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
         {
@@ -3522,17 +3524,17 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
             <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="ident">Visitor</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MethodVisitor</span> {
                 <span class="kw">type</span> <span class="ident">Value</span> <span class="op">=</span> <span class="ident">Method</span>;
 
-                <span class="kw">fn</span> <span class="ident">expecting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+                <span class="kw">fn</span> <span class="ident">expecting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
                     <span class="ident">formatter</span>.<span class="ident">write_str</span>(<span class="string">&quot;a string containing a HTTP Verb&quot;</span>)
                 }
 
-                <span class="kw">fn</span> <span class="ident">visit_str</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Value</span>, <span class="ident">E</span><span class="op">&gt;</span>
+                <span class="kw">fn</span> <span class="ident">visit_str</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Value</span>, <span class="ident">E</span><span class="op">&gt;</span>
                 <span class="kw">where</span>
                     <span class="ident">E</span>: <span class="ident">de</span>::<span class="ident">Error</span>,
                 {
                     <span class="kw">match</span> <span class="self">Self</span>::<span class="ident">Value</span>::<span class="ident">from_str</span>(<span class="ident">s</span>) {
-                        <span class="prelude-val">Ok</span>(<span class="ident">value</span>) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">value</span>),
-                        <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">custom</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">e</span>))),
+                        <span class="prelude-val">Ok</span>(<span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">value</span>),
+                        <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">de</span>::<span class="ident">Error</span>::<span class="ident">custom</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">e</span>))),
                     }
                 }
             }
@@ -3615,7 +3617,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="doccomment">/// then it is permitted to match anywhere in the text. You are encouraged to use the anchors when</span>
     <span class="doccomment">/// crafting your Regex expressions.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">needless_lifetimes</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">S1</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">S2</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">exact</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">S1</span>], <span class="ident">regex</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> [<span class="ident">S2</span>]) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>, <span class="ident">S1</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">S2</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">exact</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">S1</span>], <span class="ident">regex</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> [<span class="ident">S2</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">Origins</span> {
             <span class="ident">exact</span>: <span class="prelude-val">Some</span>(<span class="ident">exact</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>()).<span class="ident">collect</span>()),
             <span class="ident">regex</span>: <span class="prelude-val">Some</span>(<span class="ident">regex</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>()).<span class="ident">collect</span>()),
@@ -3636,7 +3638,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="doccomment">/// method to see how an Opaque Origin is determined. Examples of Opaque origins might include</span>
     <span class="doccomment">/// schemes like `file://` or Browser specific schemes like `&quot;moz-extension://` or</span>
     <span class="doccomment">/// `chrome-extension://`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some_exact</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">exact</span>: <span class="kw-2">&amp;</span>[<span class="ident">S</span>]) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some_exact</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">exact</span>: <span class="kw-2">&amp;</span>[<span class="ident">S</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">Origins</span> {
             <span class="ident">exact</span>: <span class="prelude-val">Some</span>(<span class="ident">exact</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>()).<span class="ident">collect</span>()),
             ..<span class="ident">Default</span>::<span class="ident">default</span>()
@@ -3658,7 +3660,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="doccomment">/// This means that if the regex does not start with `^` or `\A`, or end with `$` or `\z`,</span>
     <span class="doccomment">/// then it is permitted to match anywhere in the text. You are encouraged to use the anchors when</span>
     <span class="doccomment">/// crafting your Regex expressions.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some_regex</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">regex</span>: <span class="kw-2">&amp;</span>[<span class="ident">S</span>]) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some_regex</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">regex</span>: <span class="kw-2">&amp;</span>[<span class="ident">S</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">Origins</span> {
             <span class="ident">regex</span>: <span class="prelude-val">Some</span>(<span class="ident">regex</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">as_ref</span>().<span class="ident">to_string</span>()).<span class="ident">collect</span>()),
             ..<span class="ident">Default</span>::<span class="ident">default</span>()
@@ -3666,7 +3668,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     }
 
     <span class="doccomment">/// Allow some `null` origins</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some_null</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some_null</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">Origins</span> {
             <span class="ident">allow_null</span>: <span class="bool-val">true</span>,
             ..<span class="ident">Default</span>::<span class="ident">default</span>()
@@ -3674,7 +3676,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     }
 
     <span class="doccomment">/// Allows all origins</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">AllOrSome</span>::<span class="ident">All</span>
     }
 }
@@ -3740,7 +3742,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="doccomment">/// Opaque Origins cannot be matched exactly. You must use Regex to match Opaque Origins. If you</span>
     <span class="doccomment">/// attempt to create [`Cors`] from [`CorsOptions`], you will get an error.</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serialization&quot;</span>, <span class="ident">serde</span>(<span class="ident">default</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">exact</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">exact</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Origins that will be matched via __any__ regex in this list.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// These __must__ be valid Regex that will be parsed and validated when creating [`Cors`].</span>
@@ -3760,7 +3762,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="doccomment">/// By default, regex expressions are</span>
     <span class="doccomment">/// [unanchored](https://docs.rs/regex/1.1.2/regex/struct.RegexSet.html#method.is_match).</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serialization&quot;</span>, <span class="ident">serde</span>(<span class="ident">default</span>))]</span>
-    <span class="kw">pub</span> <span class="ident">regex</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">regex</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Parsed set of configured allowed origins</span>
@@ -3772,13 +3774,13 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 }
 
 <span class="kw">impl</span> <span class="ident">ParsedAllowedOrigins</span> {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">origins</span>: <span class="kw-2">&amp;</span><span class="ident">Origins</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">origins</span>: <span class="kw-2">&amp;</span><span class="ident">Origins</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">exact</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">url</span>::<span class="ident">Origin</span>)<span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">origins</span>.<span class="ident">exact</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">exact</span>) <span class="op">=&gt;</span> <span class="ident">exact</span>
+            <span class="prelude-val">Some</span>(<span class="ident">exact</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">exact</span>
                 .<span class="ident">iter</span>()
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">url</span><span class="op">|</span> <span class="prelude-val">Ok</span>((<span class="ident">url</span>.<span class="ident">as_str</span>(), <span class="ident">to_origin</span>(<span class="ident">url</span>.<span class="ident">as_str</span>())<span class="question-mark">?</span>)))
                 .<span class="ident">collect</span>(),
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Default</span>::<span class="ident">default</span>()),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Default</span>::<span class="ident">default</span>()),
         };
         <span class="kw">let</span> <span class="ident">exact</span> <span class="op">=</span> <span class="ident">exact</span><span class="question-mark">?</span>;
 
@@ -3798,8 +3800,8 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
         <span class="kw">let</span> <span class="ident">exact</span> <span class="op">=</span> <span class="ident">tuple</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">url</span>)<span class="op">|</span> <span class="ident">url</span>).<span class="ident">collect</span>();
 
         <span class="kw">let</span> <span class="ident">regex</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">origins</span>.<span class="ident">regex</span> {
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
-            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">regex</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RegexSet</span>::<span class="ident">new</span>(<span class="ident">regex</span>)<span class="question-mark">?</span>),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">regex</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RegexSet</span>::<span class="ident">new</span>(<span class="ident">regex</span>)<span class="question-mark">?</span>),
         };
 
         <span class="prelude-val">Ok</span>(<span class="self">Self</span> {
@@ -3809,14 +3811,14 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
         })
     }
 
-    <span class="kw">fn</span> <span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">Origin</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">Origin</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="macro">info_</span><span class="macro">!</span>(<span class="string">&quot;Verifying origin: {}&quot;</span>, <span class="ident">origin</span>);
         <span class="kw">match</span> <span class="ident">origin</span> {
-            <span class="ident">Origin</span>::<span class="ident">Null</span> <span class="op">=&gt;</span> {
+            <span class="ident">Origin</span>::<span class="ident">Null</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">info_</span><span class="macro">!</span>(<span class="string">&quot;Origin is null. Allowing? {}&quot;</span>, <span class="self">self</span>.<span class="ident">allow_null</span>);
                 <span class="self">self</span>.<span class="ident">allow_null</span>
             }
-            <span class="ident">Origin</span>::<span class="ident">Parsed</span>(<span class="kw-2">ref</span> <span class="ident">parsed</span>) <span class="op">=&gt;</span> {
+            <span class="ident">Origin</span>::<span class="ident">Parsed</span>(<span class="kw-2">ref</span> <span class="ident">parsed</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">assert</span><span class="macro">!</span>(
                     <span class="ident">parsed</span>.<span class="ident">is_tuple</span>(),
                     <span class="string">&quot;Parsed Origin is not tuple. This is a bug. Please report&quot;</span>
@@ -3836,7 +3838,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
                 <span class="macro">info</span><span class="macro">!</span>(<span class="string">&quot;Origin does not match anything&quot;</span>);
                 <span class="bool-val">false</span>
             }
-            <span class="ident">Origin</span>::<span class="ident">Opaque</span>(<span class="kw-2">ref</span> <span class="ident">opaque</span>) <span class="op">=&gt;</span> {
+            <span class="ident">Origin</span>::<span class="ident">Opaque</span>(<span class="kw-2">ref</span> <span class="ident">opaque</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">regex_set</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">regex</span> {
                     <span class="kw">let</span> <span class="ident">regex_match</span> <span class="op">=</span> <span class="ident">regex_set</span>.<span class="ident">is_match</span>(<span class="ident">opaque</span>);
                     <span class="macro">debug_</span><span class="macro">!</span>(<span class="string">&quot;Matching against regex set {:#?}&quot;</span>, <span class="ident">regex_set</span>);
@@ -3877,16 +3879,16 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="doccomment">/// let all_headers = AllowedHeaders::all();</span>
 <span class="doccomment">/// let some_headers = AllowedHeaders::some(&amp;[&quot;Authorization&quot;, &quot;Accept&quot;]);</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AllowedHeaders</span> <span class="op">=</span> <span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">HeaderFieldName</span><span class="op">&gt;&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">AllowedHeaders</span> <span class="op">=</span> <span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">HeaderFieldName</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">AllowedHeaders</span> {
     <span class="doccomment">/// Allow some headers</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some</span>(<span class="ident">headers</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>]) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">some</span>(<span class="ident">headers</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">headers</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">s</span>).<span class="ident">to_string</span>().<span class="ident">into</span>()).<span class="ident">collect</span>())
     }
 
     <span class="doccomment">/// Allows all headers</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">AllOrSome</span>::<span class="ident">All</span>
     }
 }
@@ -4074,7 +4076,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">CorsOptions</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">allowed_origins</span>: <span class="ident">Default</span>::<span class="ident">default</span>(),
             <span class="ident">allowed_methods</span>: <span class="self">Self</span>::<span class="ident">default_allowed_methods</span>(),
@@ -4090,7 +4092,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 }
 
 <span class="kw">impl</span> <span class="ident">CorsOptions</span> {
-    <span class="kw">fn</span> <span class="ident">default_allowed_methods</span>() <span class="op">-&gt;</span> <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Method</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">default_allowed_methods</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Method</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">rocket</span>::<span class="ident">http</span>::<span class="ident">Method</span>;
 
         <span class="macro">vec</span><span class="macro">!</span>[
@@ -4107,16 +4109,16 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
         .<span class="ident">collect</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">default_fairing_route_base</span>() <span class="op">-&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">default_fairing_route_base</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
         <span class="string">&quot;/cors&quot;</span>.<span class="ident">to_string</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">default_fairing_route_rank</span>() <span class="op">-&gt;</span> <span class="ident">isize</span> {
+    <span class="kw">fn</span> <span class="ident">default_fairing_route_rank</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">isize</span> {
         <span class="number">0</span>
     }
 
     <span class="doccomment">/// Validates if any of the settings are disallowed, incorrect, or illegal</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">validate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">validate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">allowed_origins</span>.<span class="ident">is_all</span>() <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">send_wildcard</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">allow_credentials</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">CredentialsWithWildcardOrigin</span>);
         }
@@ -4125,60 +4127,60 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     }
 
     <span class="doccomment">/// Creates a [`Cors`] struct that can be used to respond to requests or as a Rocket Fairing</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_cors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cors</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_cors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cors</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">Cors</span>::<span class="ident">from_options</span>(<span class="self">self</span>)
     }
 
     <span class="doccomment">/// Sets the allowed origins</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allowed_origins</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">allowed_origins</span>: <span class="ident">AllowedOrigins</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allowed_origins</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">allowed_origins</span>: <span class="ident">AllowedOrigins</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">allowed_origins</span> <span class="op">=</span> <span class="ident">allowed_origins</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Sets the allowed methodes</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allowed_methods</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">allowed_methods</span>: <span class="ident">AllowedMethods</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allowed_methods</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">allowed_methods</span>: <span class="ident">AllowedMethods</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">allowed_methods</span> <span class="op">=</span> <span class="ident">allowed_methods</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Sets the allowed headers</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allowed_headers</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">allowed_headers</span>: <span class="ident">AllowedHeaders</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allowed_headers</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">allowed_headers</span>: <span class="ident">AllowedHeaders</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">allowed_headers</span> <span class="op">=</span> <span class="ident">allowed_headers</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Marks if credentials are allowed</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allow_credentials</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">allow_credentials</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">allow_credentials</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">allow_credentials</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">allow_credentials</span> <span class="op">=</span> <span class="ident">allow_credentials</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Sets the expose headers</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expose_headers</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">expose_headers</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expose_headers</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">expose_headers</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">expose_headers</span> <span class="op">=</span> <span class="ident">expose_headers</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Sets the max age</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_age</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">max_age</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">max_age</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">max_age</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">max_age</span> <span class="op">=</span> <span class="ident">max_age</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Marks if wildcards are send</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_wildcard</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">send_wildcard</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_wildcard</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">send_wildcard</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">send_wildcard</span> <span class="op">=</span> <span class="ident">send_wildcard</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Sets the base of the fairing route</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fairing_route_base</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fairing_route_base</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fairing_route_base</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fairing_route_base</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">fairing_route_base</span> <span class="op">=</span> <span class="ident">fairing_route_base</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Sets the rank of the fairing route</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fairing_route_rank</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fairing_route_rank</span>: <span class="ident">isize</span>) <span class="op">-&gt;</span>  <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fairing_route_rank</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fairing_route_rank</span>: <span class="ident">isize</span>) <span class="op">-</span><span class="op">&gt;</span>  <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">fairing_route_rank</span> <span class="op">=</span> <span class="ident">fairing_route_rank</span>;
         <span class="self">self</span>
     }
@@ -4194,7 +4196,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Cors</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">allowed_origins</span>: <span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">ParsedAllowedOrigins</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">allowed_methods</span>: <span class="ident">AllowedMethods</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">allowed_headers</span>: <span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">HeaderFieldName</span><span class="op">&gt;&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">allowed_headers</span>: <span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">HeaderFieldName</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">allow_credentials</span>: <span class="ident">bool</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">expose_headers</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">max_age</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
@@ -4205,7 +4207,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 
 <span class="kw">impl</span> <span class="ident">Cors</span> {
     <span class="doccomment">/// Create a `Cors` struct from a [`CorsOptions`]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_options</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">CorsOptions</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_options</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">CorsOptions</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">options</span>.<span class="ident">validate</span>()<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">allowed_origins</span> <span class="op">=</span> <span class="ident">parse_allowed_origins</span>(<span class="kw-2">&amp;</span><span class="ident">options</span>.<span class="ident">allowed_origins</span>)<span class="question-mark">?</span>;
@@ -4233,9 +4235,9 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="doccomment">/// passed in to include the CORS headers.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See the documentation at the [crate root](index.html) for usage information.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">respond_owned</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ManualResponder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">respond_owned</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">handler</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ManualResponder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">R</span> <span class="op">+</span> <span class="lifetime">&#39;r</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span> <span class="op">+</span> <span class="lifetime">&#39;r</span>,
         <span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>,
     {
         <span class="prelude-val">Ok</span>(<span class="ident">ManualResponder</span>::<span class="ident">new</span>(<span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="self">self</span>), <span class="ident">handler</span>))
@@ -4256,9 +4258,9 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">respond_borrowed</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="self">self</span>,
         <span class="ident">handler</span>: <span class="ident">F</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ManualResponder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ManualResponder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">R</span> <span class="op">+</span> <span class="lifetime">&#39;r</span>,
+        <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span> <span class="op">+</span> <span class="lifetime">&#39;r</span>,
         <span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>,
     {
         <span class="prelude-val">Ok</span>(<span class="ident">ManualResponder</span>::<span class="ident">new</span>(<span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="self">self</span>), <span class="ident">handler</span>))
@@ -4280,7 +4282,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="doccomment">/// You can get this struct by using `Cors::validate_request` in an ad-hoc manner.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Eq</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Response</span> {
-    <span class="ident">allow_origin</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">allow_origin</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">allow_methods</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Method</span><span class="op">&gt;</span>,
     <span class="ident">allow_headers</span>: <span class="ident">HeaderFieldNamesSet</span>,
     <span class="ident">allow_credentials</span>: <span class="ident">bool</span>,
@@ -4291,7 +4293,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 
 <span class="kw">impl</span> <span class="ident">Response</span> {
     <span class="doccomment">/// Create an empty `Response`</span>
-    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">allow_origin</span>: <span class="prelude-val">None</span>,
             <span class="ident">allow_headers</span>: <span class="ident">HashSet</span>::<span class="ident">new</span>(),
@@ -4304,55 +4306,55 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     }
 
     <span class="doccomment">/// Consumes the `Response` and return an altered response with origin and `vary_origin` set</span>
-    <span class="kw">fn</span> <span class="ident">origin</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">vary_origin</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">origin</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">vary_origin</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">allow_origin</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">origin</span>.<span class="ident">to_string</span>()));
         <span class="self">self</span>.<span class="ident">vary_origin</span> <span class="op">=</span> <span class="ident">vary_origin</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Consumes the `Response` and return an altered response with origin set to &quot;*&quot;</span>
-    <span class="kw">fn</span> <span class="ident">any</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">any</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">allow_origin</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">AllOrSome</span>::<span class="ident">All</span>);
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Consumes the Response and set credentials</span>
-    <span class="kw">fn</span> <span class="ident">credentials</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">credentials</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">allow_credentials</span> <span class="op">=</span> <span class="ident">value</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Consumes the CORS, set expose_headers to</span>
     <span class="doccomment">/// passed headers and returns changed CORS</span>
-    <span class="kw">fn</span> <span class="ident">exposed_headers</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">headers</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>]) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">exposed_headers</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">headers</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">expose_headers</span> <span class="op">=</span> <span class="ident">headers</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">s</span>).<span class="ident">to_string</span>().<span class="ident">into</span>()).<span class="ident">collect</span>();
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Consumes the CORS, set max_age to</span>
     <span class="doccomment">/// passed value and returns changed CORS</span>
-    <span class="kw">fn</span> <span class="ident">max_age</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">max_age</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">max_age</span> <span class="op">=</span> <span class="ident">value</span>;
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Consumes the CORS, set allow_methods to</span>
     <span class="doccomment">/// passed methods and returns changed CORS</span>
-    <span class="kw">fn</span> <span class="ident">methods</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">methods</span>: <span class="kw-2">&amp;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Method</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">methods</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">methods</span>: <span class="kw-2">&amp;</span><span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">Method</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">allow_methods</span> <span class="op">=</span> <span class="ident">methods</span>.<span class="ident">clone</span>();
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Consumes the CORS, set allow_headers to</span>
     <span class="doccomment">/// passed headers and returns changed CORS</span>
-    <span class="kw">fn</span> <span class="ident">headers</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">headers</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>]) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">headers</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">headers</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">allow_headers</span> <span class="op">=</span> <span class="ident">headers</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> (<span class="kw-2">*</span><span class="ident">s</span>).<span class="ident">to_string</span>().<span class="ident">into</span>()).<span class="ident">collect</span>();
         <span class="self">self</span>
     }
 
     <span class="doccomment">/// Consumes the `Response` and return  a `Responder` that wraps a</span>
     <span class="doccomment">/// provided `rocket:response::Responder` with CORS headers</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">responder</span>: <span class="ident">R</span>) <span class="op">-&gt;</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">responder</span>: <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span><span class="op">&gt;</span> {
         <span class="ident">Responder</span>::<span class="ident">new</span>(<span class="ident">responder</span>, <span class="self">self</span>)
     }
 
@@ -4360,7 +4362,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="doccomment">/// of a route to return a value for the route.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This will overwrite any existing CORS headers</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">base</span>: <span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">base</span>: <span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">response</span>::<span class="ident">Response</span>::<span class="ident">build_from</span>(<span class="ident">base</span>).<span class="ident">finalize</span>();
         <span class="self">self</span>.<span class="ident">merge</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">response</span>);
         <span class="ident">response</span>
@@ -4372,16 +4374,16 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="kw">fn</span> <span class="ident">merge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">response</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) {
         <span class="comment">// TODO: We should be able to remove this</span>
         <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">allow_origin</span> {
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// This is not a CORS response</span>
                 <span class="kw">return</span>;
             }
-            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">origin</span>) <span class="op">=&gt;</span> <span class="ident">origin</span>,
+            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">origin</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">origin</span>,
         };
 
         <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">origin</span> {
-            <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=&gt;</span> <span class="string">&quot;*&quot;</span>.<span class="ident">to_string</span>(),
-            <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">origin</span>) <span class="op">=&gt;</span> <span class="ident">origin</span>.<span class="ident">to_string</span>(),
+            <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;*&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">origin</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">origin</span>.<span class="ident">to_string</span>(),
         };
 
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">set_raw_header</span>(<span class="string">&quot;Access-Control-Allow-Origin&quot;</span>, <span class="ident">origin</span>);
@@ -4443,7 +4445,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">validate_and_build</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;r</span><span class="op">&gt;</span>(
         <span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Cors</span>,
         <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">validate_and_build</span>(<span class="ident">options</span>, <span class="ident">request</span>)
     }
 }
@@ -4464,7 +4466,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">response</span>: <span class="ident">Response</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">response</span>: <span class="ident">Response</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">response</span>,
             <span class="ident">marker</span>: <span class="ident">PhantomData</span>,
@@ -4473,7 +4475,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 
     <span class="doccomment">/// Consumes the Guard and return  a `Responder` that wraps a</span>
     <span class="doccomment">/// provided `rocket:response::Responder` with CORS headers</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">responder</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">responder</span>: <span class="ident">R</span>) <span class="op">-&gt;</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">responder</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">responder</span>: <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">responder</span>(<span class="ident">responder</span>)
     }
 
@@ -4481,7 +4483,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="doccomment">/// of a route to return a value for the route.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This will overwrite any existing CORS headers</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">base</span>: <span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">response</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">base</span>: <span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">response</span>::<span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">response</span>(<span class="ident">base</span>)
     }
 }
@@ -4489,18 +4491,18 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">FromRequest</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span>;
 
-    <span class="kw">fn</span> <span class="ident">from_request</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">rocket</span>::<span class="ident">request</span>::<span class="ident">Outcome</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">request</span>.<span class="ident">guard</span>::<span class="op">&lt;</span><span class="ident">State</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Cors</span><span class="op">&gt;&gt;</span>() {
-            <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">options</span>) <span class="op">=&gt;</span> <span class="ident">options</span>,
-            <span class="kw">_</span> <span class="op">=&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_request</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">rocket</span>::<span class="ident">request</span>::<span class="ident">Outcome</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">options</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">request</span>.<span class="ident">guard</span>::<span class="op">&lt;</span><span class="ident">State</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Cors</span><span class="op">&gt;</span><span class="op">&gt;</span>() {
+            <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">options</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">options</span>,
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">Error</span>::<span class="ident">MissingCorsInRocketState</span>;
                 <span class="kw">return</span> <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">error</span>.<span class="ident">status</span>(), <span class="ident">error</span>));
             }
         };
 
         <span class="kw">match</span> <span class="ident">Response</span>::<span class="ident">validate_and_build</span>(<span class="kw-2">&amp;</span><span class="ident">options</span>, <span class="ident">request</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">response</span>) <span class="op">=&gt;</span> <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">response</span>)),
-            <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=&gt;</span> <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">error</span>.<span class="ident">status</span>(), <span class="ident">error</span>)),
+            <span class="prelude-val">Ok</span>(<span class="ident">response</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">response</span>)),
+            <span class="prelude-val">Err</span>(<span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">error</span>.<span class="ident">status</span>(), <span class="ident">error</span>)),
         }
     }
 }
@@ -4525,11 +4527,11 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span><span class="op">&gt;</span> {
     <span class="ident">responder</span>: <span class="ident">R</span>,
     <span class="ident">cors_response</span>: <span class="ident">Response</span>,
-    <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;&gt;</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">responder</span>: <span class="ident">R</span>, <span class="ident">cors_response</span>: <span class="ident">Response</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">responder</span>: <span class="ident">R</span>, <span class="ident">cors_response</span>: <span class="ident">Response</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">responder</span>,
             <span class="ident">cors_response</span>,
@@ -4538,15 +4540,15 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     }
 
     <span class="doccomment">/// Respond to a request</span>
-    <span class="kw">fn</span> <span class="ident">respond</span>(<span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">response</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">respond</span>(<span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">response</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">response</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">responder</span>.<span class="ident">respond_to</span>(<span class="ident">request</span>)<span class="question-mark">?</span>; <span class="comment">// handle status errors?</span>
         <span class="self">self</span>.<span class="ident">cors_response</span>.<span class="ident">merge</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">response</span>);
         <span class="prelude-val">Ok</span>(<span class="ident">response</span>)
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;&gt;</span> <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">response</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">R</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">response</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">respond</span>(<span class="ident">request</span>)
     }
 }
@@ -4562,14 +4564,14 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="ident">ManualResponder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">R</span> <span class="op">+</span> <span class="lifetime">&#39;r</span>,
+    <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span> <span class="op">+</span> <span class="lifetime">&#39;r</span>,
     <span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>,
 {
     <span class="doccomment">/// Create a new manual responder by passing in either a borrowed or owned `Cors` option.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A borrowed `Cors` option must live for the entirety of the `&#39;r` lifetime which is the</span>
     <span class="doccomment">/// lifetime of the entire Rocket request.</span>
-    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">options</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">Cors</span><span class="op">&gt;</span>, <span class="ident">handler</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">options</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">Cors</span><span class="op">&gt;</span>, <span class="ident">handler</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">marker</span> <span class="op">=</span> <span class="ident">PhantomData</span>;
         <span class="self">Self</span> {
             <span class="ident">options</span>,
@@ -4578,7 +4580,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">build_guard</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">build_guard</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">Response</span>::<span class="ident">validate_and_build</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">options</span>, <span class="ident">request</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">Guard</span>::<span class="ident">new</span>(<span class="ident">response</span>))
     }
@@ -4586,13 +4588,13 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ManualResponder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="ident">F</span>, <span class="ident">R</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">R</span> <span class="op">+</span> <span class="lifetime">&#39;r</span>,
+    <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span> <span class="op">+</span> <span class="lifetime">&#39;r</span>,
     <span class="ident">R</span>: <span class="ident">response</span>::<span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>,
 {
-    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">response</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">response</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">build_guard</span>(<span class="ident">request</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">guard</span>) <span class="op">=&gt;</span> <span class="ident">guard</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">guard</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">guard</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">error_</span><span class="macro">!</span>(<span class="string">&quot;CORS error: {}&quot;</span>, <span class="ident">err</span>);
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>.<span class="ident">status</span>());
             }
@@ -4619,17 +4621,17 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 }
 
 <span class="doccomment">/// Convert a str to a URL Origin</span>
-<span class="kw">fn</span> <span class="ident">to_origin</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">origin</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">url</span>::<span class="ident">Origin</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">to_origin</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">origin</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">url</span>::<span class="ident">Origin</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="prelude-val">Ok</span>(<span class="ident">url</span>::<span class="ident">Url</span>::<span class="ident">parse</span>(<span class="ident">origin</span>.<span class="ident">as_ref</span>())<span class="question-mark">?</span>.<span class="ident">origin</span>())
 }
 
 <span class="doccomment">/// Parse and process allowed origins</span>
 <span class="kw">fn</span> <span class="ident">parse_allowed_origins</span>(
     <span class="ident">origins</span>: <span class="kw-2">&amp;</span><span class="ident">AllowedOrigins</span>,
-) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">ParsedAllowedOrigins</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">ParsedAllowedOrigins</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">origins</span> {
-        <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AllOrSome</span>::<span class="ident">All</span>),
-        <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">origins</span>) <span class="op">=&gt;</span> {
+        <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AllOrSome</span>::<span class="ident">All</span>),
+        <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">origins</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">parsed</span> <span class="op">=</span> <span class="ident">ParsedAllowedOrigins</span>::<span class="ident">parse</span>(<span class="ident">origins</span>)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="ident">parsed</span>))
         }
@@ -4637,34 +4639,34 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 }
 
 <span class="doccomment">/// Validates a request for CORS and returns a CORS Response</span>
-<span class="kw">fn</span> <span class="ident">validate_and_build</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">Cors</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">validate_and_build</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">Cors</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">validate</span>(<span class="ident">options</span>, <span class="ident">request</span>)<span class="question-mark">?</span>;
 
     <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">result</span> {
-        <span class="ident">ValidationResult</span>::<span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">Response</span>::<span class="ident">new</span>(),
-        <span class="ident">ValidationResult</span>::<span class="ident">Preflight</span> { <span class="ident">origin</span>, <span class="ident">headers</span> } <span class="op">=&gt;</span> {
+        <span class="ident">ValidationResult</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Response</span>::<span class="ident">new</span>(),
+        <span class="ident">ValidationResult</span>::<span class="ident">Preflight</span> { <span class="ident">origin</span>, <span class="ident">headers</span> } <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">preflight_response</span>(<span class="ident">options</span>, <span class="kw-2">&amp;</span><span class="ident">origin</span>, <span class="ident">headers</span>.<span class="ident">as_ref</span>())
         }
-        <span class="ident">ValidationResult</span>::<span class="ident">Request</span> { <span class="ident">origin</span> } <span class="op">=&gt;</span> <span class="ident">actual_request_response</span>(<span class="ident">options</span>, <span class="kw-2">&amp;</span><span class="ident">origin</span>),
+        <span class="ident">ValidationResult</span>::<span class="ident">Request</span> { <span class="ident">origin</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">actual_request_response</span>(<span class="ident">options</span>, <span class="kw-2">&amp;</span><span class="ident">origin</span>),
     })
 }
 
 <span class="doccomment">/// Validate a CORS request</span>
-<span class="kw">fn</span> <span class="ident">validate</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">Cors</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ValidationResult</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">validate</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">Cors</span>, <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ValidationResult</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="comment">// 1. If the Origin header is not present terminate this set of steps.</span>
     <span class="comment">// The request is outside the scope of this specification.</span>
     <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="ident">origin</span>(<span class="ident">request</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">origin</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">origin</span> {
-        <span class="prelude-val">None</span> <span class="op">=&gt;</span> {
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// Not a CORS request</span>
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ValidationResult</span>::<span class="prelude-val">None</span>);
         }
-        <span class="prelude-val">Some</span>(<span class="ident">origin</span>) <span class="op">=&gt;</span> <span class="ident">origin</span>,
+        <span class="prelude-val">Some</span>(<span class="ident">origin</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">origin</span>,
     };
 
     <span class="comment">// Check if the request verb is an OPTION or something else</span>
     <span class="kw">match</span> <span class="ident">request</span>.<span class="ident">method</span>() {
-        <span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">Options</span> <span class="op">=&gt;</span> {
+        <span class="ident">http</span>::<span class="ident">Method</span>::<span class="ident">Options</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">method</span> <span class="op">=</span> <span class="ident">request_method</span>(<span class="ident">request</span>)<span class="question-mark">?</span>;
             <span class="kw">let</span> <span class="ident">headers</span> <span class="op">=</span> <span class="ident">request_headers</span>(<span class="ident">request</span>)<span class="question-mark">?</span>;
             <span class="ident">preflight_validate</span>(<span class="ident">options</span>, <span class="kw-2">&amp;</span><span class="ident">origin</span>, <span class="kw-2">&amp;</span><span class="ident">method</span>, <span class="kw-2">&amp;</span><span class="ident">headers</span>)<span class="question-mark">?</span>;
@@ -4673,7 +4675,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
                 <span class="ident">headers</span>,
             })
         }
-        <span class="kw">_</span> <span class="op">=&gt;</span> {
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">actual_request_validate</span>(<span class="ident">options</span>, <span class="kw-2">&amp;</span><span class="ident">origin</span>)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">ValidationResult</span>::<span class="ident">Request</span> {
                 <span class="ident">origin</span>: <span class="ident">origin</span>.<span class="ident">to_string</span>(),
@@ -4688,11 +4690,11 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="kw">fn</span> <span class="ident">validate_origin</span>(
     <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">Origin</span>,
     <span class="ident">allowed_origins</span>: <span class="kw-2">&amp;</span><span class="ident">AllOrSome</span><span class="op">&lt;</span><span class="ident">ParsedAllowedOrigins</span><span class="op">&gt;</span>,
-) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">allowed_origins</span> {
         <span class="comment">// Always matching is acceptable since the list of origins can be unbounded.</span>
-        <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(()),
-        <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">allowed_origins</span>) <span class="op">=&gt;</span> {
+        <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
+        <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">allowed_origins</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">if</span> <span class="ident">allowed_origins</span>.<span class="ident">verify</span>(<span class="ident">origin</span>) {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else</span> {
@@ -4706,9 +4708,9 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="kw">fn</span> <span class="ident">validate_allowed_method</span>(
     <span class="ident">method</span>: <span class="kw-2">&amp;</span><span class="ident">AccessControlRequestMethod</span>,
     <span class="ident">allowed_methods</span>: <span class="kw-2">&amp;</span><span class="ident">AllowedMethods</span>,
-) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">&amp;</span><span class="ident">AccessControlRequestMethod</span>(<span class="kw-2">ref</span> <span class="ident">request_method</span>) <span class="op">=</span> <span class="ident">method</span>;
-    <span class="kw">if</span> <span class="op">!</span><span class="ident">allowed_methods</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span> <span class="op">==</span> <span class="ident">request_method</span>) {
+    <span class="kw">if</span> <span class="op">!</span><span class="ident">allowed_methods</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span> <span class="op">=</span><span class="op">=</span> <span class="ident">request_method</span>) {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">MethodNotAllowed</span>(<span class="ident">method</span>.<span class="number">0</span>.<span class="ident">to_string</span>()));
     }
 
@@ -4720,12 +4722,12 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="kw">fn</span> <span class="ident">validate_allowed_headers</span>(
     <span class="ident">headers</span>: <span class="kw-2">&amp;</span><span class="ident">AccessControlRequestHeaders</span>,
     <span class="ident">allowed_headers</span>: <span class="kw-2">&amp;</span><span class="ident">AllowedHeaders</span>,
-) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">&amp;</span><span class="ident">AccessControlRequestHeaders</span>(<span class="kw-2">ref</span> <span class="ident">headers</span>) <span class="op">=</span> <span class="ident">headers</span>;
 
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">allowed_headers</span> {
-        <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(()),
-        <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">allowed_headers</span>) <span class="op">=&gt;</span> {
+        <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
+        <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">allowed_headers</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">if</span> <span class="op">!</span><span class="ident">headers</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">headers</span>.<span class="ident">is_subset</span>(<span class="ident">allowed_headers</span>) {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">HeadersNotAllowed</span>);
             }
@@ -4735,29 +4737,29 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 }
 
 <span class="doccomment">/// Gets the `Origin` request header from the request</span>
-<span class="kw">fn</span> <span class="ident">origin</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Origin</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">origin</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Origin</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">Origin</span>::<span class="ident">from_request</span>(<span class="ident">request</span>) {
-        <span class="ident">Outcome</span>::<span class="ident">Forward</span>(()) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
-        <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">origin</span>) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">origin</span>)),
-        <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="kw">_</span>, <span class="ident">err</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+        <span class="ident">Outcome</span>::<span class="ident">Forward</span>(()) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+        <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">origin</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">origin</span>)),
+        <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="kw">_</span>, <span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
     }
 }
 
 <span class="doccomment">/// Gets the `Access-Control-Request-Method` request header from the request</span>
-<span class="kw">fn</span> <span class="ident">request_method</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccessControlRequestMethod</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">request_method</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccessControlRequestMethod</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">AccessControlRequestMethod</span>::<span class="ident">from_request</span>(<span class="ident">request</span>) {
-        <span class="ident">Outcome</span>::<span class="ident">Forward</span>(()) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
-        <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">method</span>) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">method</span>)),
-        <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="kw">_</span>, <span class="ident">err</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+        <span class="ident">Outcome</span>::<span class="ident">Forward</span>(()) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+        <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">method</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">method</span>)),
+        <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="kw">_</span>, <span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
     }
 }
 
 <span class="doccomment">/// Gets the `Access-Control-Request-Headers` request header from the request</span>
-<span class="kw">fn</span> <span class="ident">request_headers</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccessControlRequestHeaders</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">request_headers</span>(<span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccessControlRequestHeaders</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">AccessControlRequestHeaders</span>::<span class="ident">from_request</span>(<span class="ident">request</span>) {
-        <span class="ident">Outcome</span>::<span class="ident">Forward</span>(()) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
-        <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">geaders</span>) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">geaders</span>)),
-        <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="kw">_</span>, <span class="ident">err</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+        <span class="ident">Outcome</span>::<span class="ident">Forward</span>(()) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
+        <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">geaders</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">geaders</span>)),
+        <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="kw">_</span>, <span class="ident">err</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
     }
 }
 
@@ -4771,7 +4773,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">Origin</span>,
     <span class="ident">method</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccessControlRequestMethod</span><span class="op">&gt;</span>,
     <span class="ident">headers</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">AccessControlRequestHeaders</span><span class="op">&gt;</span>,
-) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="comment">// Note: All header parse failures are dealt with in the `FromRequest` trait implementation</span>
 
     <span class="comment">// 2. If the value of the Origin header is not a case-sensitive match for any of the values</span>
@@ -4784,7 +4786,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="comment">// do not set any additional headers and terminate this set of steps.</span>
     <span class="comment">// The request is outside the scope of this specification.</span>
 
-    <span class="kw">let</span> <span class="ident">method</span> <span class="op">=</span> <span class="ident">method</span>.<span class="ident">as_ref</span>().<span class="ident">ok_or_else</span>(<span class="op">||</span> <span class="ident">Error</span>::<span class="ident">MissingRequestMethod</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">method</span> <span class="op">=</span> <span class="ident">method</span>.<span class="ident">as_ref</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Error</span>::<span class="ident">MissingRequestMethod</span>)<span class="question-mark">?</span>;
 
     <span class="comment">// 4. Let header field-names be the values as result of parsing the</span>
     <span class="comment">// Access-Control-Request-Headers headers.</span>
@@ -4818,7 +4820,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">Cors</span>,
     <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     <span class="ident">headers</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">AccessControlRequestHeaders</span><span class="op">&gt;</span>,
-) <span class="op">-&gt;</span> <span class="ident">Response</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Response</span> {
     <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">Response</span>::<span class="ident">new</span>();
 
     <span class="comment">// 7. If the resource supports credentials add a single Access-Control-Allow-Origin header,</span>
@@ -4831,14 +4833,14 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 
     <span class="comment">// Validation has been done in options.validate</span>
     <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">options</span>.<span class="ident">allowed_origins</span> {
-        <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=&gt;</span> {
+        <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">if</span> <span class="ident">options</span>.<span class="ident">send_wildcard</span> {
                 <span class="ident">response</span>.<span class="ident">any</span>()
             } <span class="kw">else</span> {
                 <span class="ident">response</span>.<span class="ident">origin</span>(<span class="ident">origin</span>, <span class="bool-val">true</span>)
             }
         }
-        <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">response</span>.<span class="ident">origin</span>(<span class="ident">origin</span>, <span class="bool-val">false</span>),
+        <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">response</span>.<span class="ident">origin</span>(<span class="ident">origin</span>, <span class="bool-val">false</span>),
     };
     <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">credentials</span>(<span class="ident">options</span>.<span class="ident">allow_credentials</span>);
 
@@ -4874,7 +4876,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
             <span class="ident">headers</span>
                 .<span class="ident">iter</span>()
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">s</span>.<span class="ident">deref</span>())
-                .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>()
+                .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>()
                 .<span class="ident">as_slice</span>(),
         )
     } <span class="kw">else</span> {
@@ -4887,7 +4889,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="doccomment">/// This implementation references the</span>
 <span class="doccomment">/// [W3C recommendation](https://www.w3.org/TR/cors/#resource-requests)</span>
 <span class="doccomment">/// and [Fetch specification](https://fetch.spec.whatwg.org/#cors-preflight-fetch).</span>
-<span class="kw">fn</span> <span class="ident">actual_request_validate</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">Cors</span>, <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">Origin</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">actual_request_validate</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">Cors</span>, <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">Origin</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="comment">// Note: All header parse failures are dealt with in the `FromRequest` trait implementation</span>
 
     <span class="comment">// 2. If the value of the Origin header is not a case-sensitive match for any of the values</span>
@@ -4904,7 +4906,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="doccomment">/// This implementation references the</span>
 <span class="doccomment">/// [W3C recommendation](https://www.w3.org/TR/cors/#resource-requests)</span>
 <span class="doccomment">/// and [Fetch specification](https://fetch.spec.whatwg.org/#cors-preflight-fetch)</span>
-<span class="kw">fn</span> <span class="ident">actual_request_response</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">Cors</span>, <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">Response</span> {
+<span class="kw">fn</span> <span class="ident">actual_request_response</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span><span class="ident">Cors</span>, <span class="ident">origin</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Response</span> {
     <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">Response</span>::<span class="ident">new</span>();
 
     <span class="comment">// 3. If the resource supports credentials add a single Access-Control-Allow-Origin header,</span>
@@ -4918,14 +4920,14 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="comment">// Validation has been done in options.validate</span>
 
     <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">options</span>.<span class="ident">allowed_origins</span> {
-        <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=&gt;</span> {
+        <span class="ident">AllOrSome</span>::<span class="ident">All</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">if</span> <span class="ident">options</span>.<span class="ident">send_wildcard</span> {
                 <span class="ident">response</span>.<span class="ident">any</span>()
             } <span class="kw">else</span> {
                 <span class="ident">response</span>.<span class="ident">origin</span>(<span class="ident">origin</span>, <span class="bool-val">true</span>)
             }
         }
-        <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">response</span>.<span class="ident">origin</span>(<span class="ident">origin</span>, <span class="bool-val">false</span>),
+        <span class="ident">AllOrSome</span>::<span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">response</span>.<span class="ident">origin</span>(<span class="ident">origin</span>, <span class="bool-val">false</span>),
     };
 
     <span class="kw">let</span> <span class="ident">response</span> <span class="op">=</span> <span class="ident">response</span>.<span class="ident">credentials</span>(<span class="ident">options</span>.<span class="ident">allow_credentials</span>);
@@ -4942,7 +4944,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
             .<span class="ident">expose_headers</span>
             .<span class="ident">iter</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">s</span>)
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>()
+            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>()
             .<span class="ident">as_slice</span>(),
     )
 }
@@ -4955,7 +4957,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="doccomment">/// so you can define your own to override this route&#39;s behaviour.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See the documentation at the [crate root](index.html) for usage information.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">catch_all_options_routes</span>() <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">rocket</span>::<span class="ident">Route</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">catch_all_options_routes</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">rocket</span>::<span class="ident">Route</span><span class="op">&gt;</span> {
     <span class="macro">vec</span><span class="macro">!</span>[
         <span class="ident">rocket</span>::<span class="ident">Route</span>::<span class="ident">ranked</span>(
             <span class="ident">isize</span>::<span class="ident">max_value</span>(),
@@ -4976,11 +4978,11 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
 <span class="kw">fn</span> <span class="ident">catch_all_options_route_handler</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>(
     <span class="ident">request</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
     <span class="kw">_</span>: <span class="ident">rocket</span>::<span class="ident">Data</span>,
-) <span class="op">-&gt;</span> <span class="ident">rocket</span>::<span class="ident">handler</span>::<span class="ident">Outcome</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">rocket</span>::<span class="ident">handler</span>::<span class="ident">Outcome</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">guard</span>: <span class="ident">Guard</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">request</span>.<span class="ident">guard</span>() {
-        <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">guard</span>) <span class="op">=&gt;</span> <span class="ident">guard</span>,
-        <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">status</span>, <span class="kw">_</span>)) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="ident">rocket</span>::<span class="ident">handler</span>::<span class="ident">Outcome</span>::<span class="ident">failure</span>(<span class="ident">status</span>),
-        <span class="ident">Outcome</span>::<span class="ident">Forward</span>(()) <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;Should not be reachable&quot;</span>),
+        <span class="ident">Outcome</span>::<span class="ident">Success</span>(<span class="ident">guard</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">guard</span>,
+        <span class="ident">Outcome</span>::<span class="ident">Failure</span>((<span class="ident">status</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">rocket</span>::<span class="ident">handler</span>::<span class="ident">Outcome</span>::<span class="ident">failure</span>(<span class="ident">status</span>),
+        <span class="ident">Outcome</span>::<span class="ident">Forward</span>(()) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(<span class="string">&quot;Should not be reachable&quot;</span>),
     };
 
     <span class="macro">info_</span><span class="macro">!</span>(
@@ -5003,11 +5005,11 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">http</span>::<span class="ident">Method</span>;
 
-    <span class="kw">fn</span> <span class="ident">to_parsed_origin</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;&gt;</span>(<span class="ident">origin</span>: <span class="ident">S</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Origin</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">to_parsed_origin</span><span class="op">&lt;</span><span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">origin</span>: <span class="ident">S</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Origin</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="ident">Origin</span>::<span class="ident">from_str</span>(<span class="ident">origin</span>.<span class="ident">as_ref</span>())
     }
 
-    <span class="kw">fn</span> <span class="ident">make_cors_options</span>() <span class="op">-&gt;</span> <span class="ident">CorsOptions</span> {
+    <span class="kw">fn</span> <span class="ident">make_cors_options</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CorsOptions</span> {
         <span class="kw">let</span> <span class="ident">allowed_origins</span> <span class="op">=</span> <span class="ident">AllowedOrigins</span>::<span class="ident">some_exact</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;https://www.acme.com&quot;</span>]);
 
         <span class="ident">CorsOptions</span> {
@@ -5026,7 +5028,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">make_invalid_options</span>() <span class="op">-&gt;</span> <span class="ident">CorsOptions</span> {
+    <span class="kw">fn</span> <span class="ident">make_invalid_options</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CorsOptions</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cors</span> <span class="op">=</span> <span class="ident">make_cors_options</span>();
         <span class="ident">cors</span>.<span class="ident">allow_credentials</span> <span class="op">=</span> <span class="bool-val">true</span>;
         <span class="ident">cors</span>.<span class="ident">allowed_origins</span> <span class="op">=</span> <span class="ident">AllOrSome</span>::<span class="ident">All</span>;
@@ -5035,7 +5037,7 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
     }
 
     <span class="doccomment">/// Make a client with no routes for unit testing</span>
-    <span class="kw">fn</span> <span class="ident">make_client</span>() <span class="op">-&gt;</span> <span class="ident">Client</span> {
+    <span class="kw">fn</span> <span class="ident">make_client</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Client</span> {
         <span class="kw">let</span> <span class="ident">rocket</span> <span class="op">=</span> <span class="ident">rocket</span>::<span class="ident">ignite</span>();
         <span class="ident">Client</span>::<span class="ident">new</span>(<span class="ident">rocket</span>).<span class="ident">expect</span>(<span class="string">&quot;valid rocket instance&quot;</span>)
     }
@@ -5182,14 +5184,14 @@ See the [example](https://github.com/lawliet89/rocket_cors/blob/master/examples/
         .<span class="ident">unwrap_err</span>();
 
         <span class="kw">match</span> <span class="ident">error</span> {
-            <span class="ident">Error</span>::<span class="ident">OpaqueAllowedOrigin</span>(<span class="kw-2">mut</span> <span class="ident">origins</span>) <span class="op">=&gt;</span> {
+            <span class="ident">Error</span>::<span class="ident">OpaqueAllowedOrigin</span>(<span class="kw-2">mut</span> <span class="ident">origins</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">origins</span>.<span class="ident">sort</span>();
                 <span class="macro">assert_eq</span><span class="macro">!</span>(
                     <span class="ident">origins</span>,
                     [<span class="string">&quot;chrome-extension://something&quot;</span>, <span class="string">&quot;moz-extension://something&quot;</span>]
                 );
             }
-            <span class="ident">others</span> <span class="op">=&gt;</span> {
+            <span class="ident">others</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;Unexpected error: {:#?}&quot;</span>, <span class="ident">others</span>);
             }
         };

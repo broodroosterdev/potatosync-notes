@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/pg/connection/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../diesel/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/pg/connection/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script src="../../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../../diesel/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -524,7 +526,7 @@
 
 <span class="kw">impl</span> <span class="ident">PgConnection</span> {
     <span class="doccomment">/// Get a reference to the inner `postgres::Client`</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner_connection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">postgresql</span>::<span class="ident">Client</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner_connection</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">RefCell</span><span class="op">&lt;</span><span class="ident">postgresql</span>::<span class="ident">Client</span><span class="op">&gt;</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">conn</span>
     }
 }
@@ -532,7 +534,7 @@
 <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">postgresql</span>::<span class="ident">Client</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PgConnection</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">ConnectionError</span>;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">client</span>: <span class="ident">postgresql</span>::<span class="ident">Client</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PgConnection</span>, <span class="ident">ConnectionError</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">client</span>: <span class="ident">postgresql</span>::<span class="ident">Client</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PgConnection</span>, <span class="ident">ConnectionError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="self">Self</span> {
             <span class="ident">conn</span>: <span class="ident">RefCell</span>::<span class="ident">new</span>(<span class="ident">client</span>),
             <span class="ident">transaction_manager</span>: <span class="ident">AnsiTransactionManager</span>::<span class="ident">new</span>(),
@@ -547,7 +549,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">SimpleConnection</span> <span class="kw">for</span> <span class="ident">PgConnection</span> {
-    <span class="kw">fn</span> <span class="ident">batch_execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">query</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">batch_execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">query</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">conn</span>.<span class="ident">borrow_mut</span>().<span class="ident">simple_query</span>(<span class="ident">query</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
@@ -557,7 +559,7 @@
     <span class="kw">type</span> <span class="ident">Backend</span> <span class="op">=</span> <span class="kw">super</span>::<span class="ident">Pg</span>;
     <span class="kw">type</span> <span class="ident">TransactionManager</span> <span class="op">=</span> <span class="ident">AnsiTransactionManager</span>;
 
-    <span class="kw">fn</span> <span class="ident">establish</span>(<span class="ident">database_url</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">ConnectionResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">establish</span>(<span class="ident">database_url</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ConnectionResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">postgresql</span>::<span class="ident">tls</span>::<span class="ident">NoTls</span>;
 
         <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">postgresql</span>::<span class="ident">Client</span>::<span class="ident">connect</span>(<span class="ident">database_url</span>, <span class="ident">NoTls</span>)
@@ -575,12 +577,12 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">query</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">query</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">conn</span>.<span class="ident">borrow_mut</span>().<span class="ident">execute</span>(<span class="ident">query</span>, <span class="kw-2">&amp;</span>[])<span class="question-mark">?</span> <span class="kw">as</span> <span class="ident">usize</span>)
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">query_by_index</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">source</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;&gt;</span>
+    <span class="kw">fn</span> <span class="ident">query_by_index</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">source</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">AsQuery</span>,
         <span class="ident">T</span>::<span class="ident">Query</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Backend</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">QueryId</span>,
@@ -591,8 +593,8 @@
         <span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">params</span>
             .<span class="ident">into_iter</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">bytes</span><span class="op">|</span> <span class="ident">DieselToSqlWrapper</span> { <span class="ident">bytes</span> })
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
-        <span class="kw">let</span> <span class="ident">bind_params</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">ToSql</span>);
+            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+        <span class="kw">let</span> <span class="ident">bind_params</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="ident">dyn</span> <span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">ToSql</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">conn</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">conn</span>.<span class="ident">borrow_mut</span>();
         <span class="kw">let</span> <span class="ident">result_iter</span> <span class="op">=</span> <span class="ident">conn</span>.<span class="ident">query_raw</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">query</span>, <span class="ident">bind_params</span>)<span class="question-mark">?</span>;
@@ -606,7 +608,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">query_by_name</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;&gt;</span>
+    <span class="kw">fn</span> <span class="ident">query_by_name</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Backend</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">QueryId</span>,
         <span class="ident">U</span>: <span class="ident">QueryableByName</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Backend</span><span class="op">&gt;</span>,
@@ -615,8 +617,8 @@
         <span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">params</span>
             .<span class="ident">into_iter</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">bytes</span><span class="op">|</span> <span class="ident">DieselToSqlWrapper</span> { <span class="ident">bytes</span> })
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
-        <span class="kw">let</span> <span class="ident">bind_params</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">ToSql</span>);
+            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
+        <span class="kw">let</span> <span class="ident">bind_params</span> <span class="op">=</span> <span class="ident">params</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="ident">dyn</span> <span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">ToSql</span>);
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">conn</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">conn</span>.<span class="ident">borrow_mut</span>();
         <span class="kw">let</span> <span class="ident">result_iter</span> <span class="op">=</span> <span class="ident">conn</span>.<span class="ident">query_raw</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">query</span>, <span class="ident">bind_params</span>)<span class="question-mark">?</span>;
@@ -629,7 +631,7 @@
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">execute_returning_count</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">execute_returning_count</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Backend</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">QueryId</span>,
     {
@@ -637,11 +639,11 @@
         <span class="kw">let</span> <span class="ident">params</span> <span class="op">=</span> <span class="ident">params</span>
             .<span class="ident">into_iter</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">bytes</span><span class="op">|</span> <span class="ident">DieselToSqlWrapper</span> { <span class="ident">bytes</span> })
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
+            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="kw">let</span> <span class="ident">bind_params</span> <span class="op">=</span> <span class="ident">params</span>
             .<span class="ident">iter</span>()
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span> <span class="kw">as</span> <span class="kw-2">&amp;</span>(<span class="kw">dyn</span> <span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">ToSql</span> <span class="op">+</span> <span class="ident">Sync</span>))
-            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span> <span class="kw">as</span> <span class="kw-2">&amp;</span>(<span class="ident">dyn</span> <span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">ToSql</span> <span class="op">+</span> <span class="ident">Sync</span>))
+            .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
         <span class="prelude-val">Ok</span>(<span class="self">self</span>
             .<span class="ident">conn</span>
             .<span class="ident">borrow_mut</span>()
@@ -649,7 +651,7 @@
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">a</span><span class="op">|</span> <span class="ident">a</span> <span class="kw">as</span> <span class="ident">usize</span>)<span class="question-mark">?</span>)
     }
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">transaction_manager</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">TransactionManager</span> {
+    <span class="kw">fn</span> <span class="ident">transaction_manager</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">TransactionManager</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">transaction_manager</span>
     }
 }
@@ -658,7 +660,7 @@
     <span class="kw">fn</span> <span class="ident">prepare_query</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">QueryId</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">source</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>(<span class="ident">MaybeCached</span><span class="op">&lt;</span><span class="ident">Statement</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>)<span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>(<span class="ident">MaybeCached</span><span class="op">&lt;</span><span class="ident">Statement</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bind_collector</span> <span class="op">=</span> <span class="ident">RawBytesBindCollector</span>::<span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span>::<span class="ident">new</span>();
         <span class="ident">source</span>.<span class="ident">collect_binds</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bind_collector</span>, <span class="ident">PgMetadataLookup</span>::<span class="ident">new</span>(<span class="self">self</span>))<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">bind_collector</span>.<span class="ident">metadata</span>;
@@ -678,7 +680,7 @@
                 <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="ident">metadata</span>
                     .<span class="ident">iter</span>()
                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">tpe_meta</span><span class="op">|</span> {
-                        <span class="ident">Type</span>::<span class="ident">from_oid</span>(<span class="ident">tpe_meta</span>.<span class="ident">oid</span>).<span class="ident">unwrap_or_else</span>(<span class="op">||</span> {
+                        <span class="ident">Type</span>::<span class="ident">from_oid</span>(<span class="ident">tpe_meta</span>.<span class="ident">oid</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
                             <span class="kw">use</span> <span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">Kind</span>;
                             <span class="ident">Type</span>::<span class="ident">new</span>(
                                 <span class="ident">tpe_meta</span>.<span class="ident">oid</span>.<span class="ident">to_string</span>(),
@@ -688,20 +690,20 @@
                             )
                         })
                     })
-                    .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;&gt;</span>();
+                    .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
                 <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">conn</span>.<span class="ident">borrow_mut</span>().<span class="ident">prepare_typed</span>(<span class="ident">sql</span>, <span class="kw-2">&amp;</span><span class="ident">metadata</span>)<span class="question-mark">?</span>)
             });
 
         <span class="prelude-val">Ok</span>((<span class="ident">query</span><span class="question-mark">?</span>, <span class="ident">binds</span>))
     }
 
-    <span class="kw">fn</span> <span class="ident">set_config_options</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">set_config_options</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">execute</span>(<span class="string">&quot;SET TIME ZONE &#39;UTC&#39;&quot;</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">execute</span>(<span class="string">&quot;SET CLIENT_ENCODING TO &#39;UTF8&#39;&quot;</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">get_metadata_cache</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PgMetadataCache</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">get_metadata_cache</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">PgMetadataCache</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">metadata_cache</span>
     }
 
@@ -728,14 +730,14 @@
     <span class="doccomment">///     .run(|| Ok(()))</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">TransactionBuilder</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build_transaction</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TransactionBuilder</span> {
         <span class="ident">TransactionBuilder</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">struct</span> <span class="ident">DieselToSqlWrapper</span> {
-    <span class="ident">bytes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">bytes</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">ToSql</span> <span class="kw">for</span> <span class="ident">DieselToSqlWrapper</span> {
@@ -743,25 +745,25 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">_ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>,
         <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">IsNull</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">IsNull</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">bytes</span> {
-            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">bytes</span>) <span class="op">=&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">bytes</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">out</span>.<span class="ident">extend</span>(<span class="ident">bytes</span>);
                 <span class="prelude-val">Ok</span>(<span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">IsNull</span>::<span class="ident">No</span>)
             }
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">IsNull</span>::<span class="ident">Yes</span>),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">IsNull</span>::<span class="ident">Yes</span>),
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">accepts</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
-        <span class="ident">ty</span>.<span class="ident">oid</span>() <span class="op">!=</span> <span class="number">0</span>
+    <span class="kw">fn</span> <span class="ident">accepts</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="ident">ty</span>.<span class="ident">oid</span>() <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
     <span class="kw">fn</span> <span class="ident">to_sql_checked</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>,
         <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">BytesMut</span>,
-    ) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">IsNull</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">IsNull</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="self">Self</span>::<span class="ident">accepts</span>(<span class="ident">ty</span>) {
             <span class="macro">todo</span><span class="macro">!</span>(<span class="string">&quot;write a proper error message&quot;</span>)
         }
@@ -775,14 +777,14 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Row</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PostgresRow</span> {
-    <span class="kw">fn</span> <span class="ident">take</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">take</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">current_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">col_idx</span>;
-        <span class="self">self</span>.<span class="ident">col_idx</span> <span class="op">+=</span> <span class="number">1</span>;
+        <span class="self">self</span>.<span class="ident">col_idx</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
         <span class="kw">let</span> <span class="ident">DieselFromSqlWrapper</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">row</span>.<span class="ident">get</span>(<span class="ident">current_index</span>);
         <span class="ident">value</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">next_is_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">next_is_null</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">count</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         (<span class="number">0</span>..<span class="ident">count</span>).<span class="ident">all</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">DieselFromSqlWrapper</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">row</span>.<span class="ident">get</span>(<span class="self">self</span>.<span class="ident">col_idx</span> <span class="op">+</span> <span class="ident">i</span>);
             <span class="ident">value</span>.<span class="ident">is_none</span>()
@@ -790,10 +792,10 @@
     }
 }
 
-<span class="kw">struct</span> <span class="ident">DieselFromSqlWrapper</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;&gt;</span>);
+<span class="kw">struct</span> <span class="ident">DieselFromSqlWrapper</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">postgresql</span>::<span class="ident">types</span>::<span class="ident">FromSql</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DieselFromSqlWrapper</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">from_sql</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>, <span class="ident">raw</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_sql</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>, <span class="ident">raw</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">NonZeroU32</span>;
 
         <span class="prelude-val">Ok</span>(<span class="ident">DieselFromSqlWrapper</span>(<span class="prelude-val">Some</span>(<span class="ident">PgValue</span>::<span class="ident">new</span>(
@@ -802,11 +804,11 @@
         ))))
     }
 
-    <span class="kw">fn</span> <span class="ident">accepts</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
-        <span class="ident">ty</span>.<span class="ident">oid</span>() <span class="op">!=</span> <span class="number">0</span>
+    <span class="kw">fn</span> <span class="ident">accepts</span>(<span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+        <span class="ident">ty</span>.<span class="ident">oid</span>() <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">from_sql_null</span>(<span class="ident">_ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_sql_null</span>(<span class="ident">_ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="ident">Send</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">DieselFromSqlWrapper</span>(<span class="prelude-val">None</span>))
     }
 }
@@ -816,36 +818,36 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NamedRow</span><span class="op">&lt;</span><span class="ident">Pg</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">NamedPostgresRow</span> {
-    <span class="kw">fn</span> <span class="ident">index_of</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">column_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">index_of</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">column_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">row</span>
             .<span class="ident">columns</span>()
             .<span class="ident">iter</span>()
-            .<span class="ident">position</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span>.<span class="ident">name</span>() <span class="op">==</span> <span class="ident">column_name</span>)
+            .<span class="ident">position</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span>.<span class="ident">name</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">column_name</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">get_raw_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_raw_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PgValue</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">DieselFromSqlWrapper</span>(<span class="ident">value</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">row</span>.<span class="ident">get</span>(<span class="ident">index</span>);
         <span class="ident">value</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">postgresql</span>::<span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw">crate</span>::<span class="ident">result</span>::<span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">postgresql</span>::<span class="ident">error</span>::<span class="ident">Error</span>) <span class="op">-&gt;</span> <span class="kw">crate</span>::<span class="ident">result</span>::<span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">postgresql</span>::<span class="ident">error</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="ident">result</span>::<span class="ident">Error</span> {
         <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">result</span>::<span class="ident">DatabaseErrorKind</span>::<span class="kw-2">*</span>;
         <span class="kw">use</span> <span class="ident">postgresql</span>::<span class="ident">error</span>::<span class="ident">SqlState</span>;
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">code</span>) <span class="op">=</span> <span class="ident">e</span>.<span class="ident">code</span>() {
-            <span class="kw">let</span> <span class="ident">kind</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">==</span> <span class="ident">SqlState</span>::<span class="ident">UNIQUE_VIOLATION</span> {
+            <span class="kw">let</span> <span class="ident">kind</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SqlState</span>::<span class="ident">UNIQUE_VIOLATION</span> {
                 <span class="ident">UniqueViolation</span>
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">==</span> <span class="ident">SqlState</span>::<span class="ident">FOREIGN_KEY_VIOLATION</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SqlState</span>::<span class="ident">FOREIGN_KEY_VIOLATION</span> {
                 <span class="ident">ForeignKeyViolation</span>
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">==</span> <span class="ident">SqlState</span>::<span class="ident">T_R_SERIALIZATION_FAILURE</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SqlState</span>::<span class="ident">T_R_SERIALIZATION_FAILURE</span> {
                 <span class="ident">SerializationFailure</span>
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">==</span> <span class="ident">SqlState</span>::<span class="ident">READ_ONLY_SQL_TRANSACTION</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SqlState</span>::<span class="ident">READ_ONLY_SQL_TRANSACTION</span> {
                 <span class="ident">ReadOnlyTransaction</span>
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">==</span> <span class="ident">SqlState</span>::<span class="ident">NOT_NULL_VIOLATION</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SqlState</span>::<span class="ident">NOT_NULL_VIOLATION</span> {
                 <span class="ident">NotNullViolation</span>
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">==</span> <span class="ident">SqlState</span>::<span class="ident">CHECK_VIOLATION</span> {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">code</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SqlState</span>::<span class="ident">CHECK_VIOLATION</span> {
                 <span class="ident">CheckViolation</span>
             } <span class="kw">else</span> {
                 <span class="ident">__Unknown</span>
@@ -864,27 +866,27 @@
 }
 
 <span class="kw">impl</span> <span class="kw">crate</span>::<span class="ident">result</span>::<span class="ident">DatabaseErrorInformation</span> <span class="kw">for</span> <span class="ident">postgresql</span>::<span class="ident">error</span>::<span class="ident">DbError</span> {
-    <span class="kw">fn</span> <span class="ident">message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">message</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="self">self</span>.<span class="ident">message</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">details</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">details</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">detail</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">hint</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">table_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">table_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">table</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">column_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">column_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">column</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">constraint_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">constraint_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">constraint</span>()
     }
 }
@@ -937,7 +939,7 @@
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">2</span>, <span class="ident">connection</span>.<span class="ident">statement_cache</span>.<span class="ident">len</span>());
     }
 
-    <span class="macro">sql_function</span><span class="macro">!</span>(<span class="kw">fn</span> <span class="ident">lower</span>(<span class="ident">x</span>: <span class="ident">VarChar</span>) <span class="op">-&gt;</span> <span class="ident">VarChar</span>);
+    <span class="macro">sql_function</span><span class="macro">!</span>(<span class="kw">fn</span> <span class="ident">lower</span>(<span class="ident">x</span>: <span class="ident">VarChar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VarChar</span>);
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">queries_with_identical_types_and_binds_but_different_sql_are_cached_separately</span>() {
@@ -962,7 +964,7 @@
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="number">0</span>, <span class="ident">connection</span>.<span class="ident">statement_cache</span>.<span class="ident">len</span>());
     }
 
-    <span class="kw">fn</span> <span class="ident">connection</span>() <span class="op">-&gt;</span> <span class="ident">PgConnection</span> {
+    <span class="kw">fn</span> <span class="ident">connection</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PgConnection</span> {
         <span class="ident">dotenv</span>().<span class="ident">ok</span>();
         <span class="kw">let</span> <span class="ident">database_url</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;PG_DATABASE_URL&quot;</span>)
             .<span class="ident">or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;DATABASE_URL&quot;</span>))

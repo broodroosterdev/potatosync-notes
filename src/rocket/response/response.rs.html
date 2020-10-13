@@ -1221,43 +1221,43 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Body</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Returns a new `Body` with a mutable borrow to `self`&#39;s inner type.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Body</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Body</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=&gt;</span> <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="ident">n</span>),
-            <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=&gt;</span> <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="ident">n</span>)
+            <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="ident">n</span>),
+            <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="ident">n</span>)
         }
     }
 
     <span class="doccomment">/// Consumes `self`. Passes the inner type as a parameter to `f` and</span>
     <span class="doccomment">/// constructs a new body with the size of `self` and the return value of</span>
     <span class="doccomment">/// the call to `f`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-&gt;</span> <span class="ident">Body</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">map</span><span class="op">&lt;</span><span class="ident">U</span>, <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Body</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=&gt;</span> <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">f</span>(<span class="ident">b</span>), <span class="ident">n</span>),
-            <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=&gt;</span> <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">f</span>(<span class="ident">b</span>), <span class="ident">n</span>)
+            <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">f</span>(<span class="ident">b</span>), <span class="ident">n</span>),
+            <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">f</span>(<span class="ident">b</span>), <span class="ident">n</span>)
         }
     }
 
     <span class="doccomment">/// Consumes `self` and returns the inner body.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="kw">_</span>) <span class="op">|</span> <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="kw">_</span>) <span class="op">=&gt;</span> <span class="ident">b</span>
+            <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="kw">_</span>) <span class="op">|</span> <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">b</span>
         }
     }
 
     <span class="doccomment">/// Returns `true` if `self` is a `Body::Sized`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_sized</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_sized</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Body</span>::<span class="ident">Sized</span>(..) <span class="op">=&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">Body</span>::<span class="ident">Chunked</span>(..) <span class="op">=&gt;</span> <span class="bool-val">false</span>,
+            <span class="ident">Body</span>::<span class="ident">Sized</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">Body</span>::<span class="ident">Chunked</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
 
     <span class="doccomment">/// Returns `true` if `self` is a `Body::Chunked`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_chunked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_chunked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Body</span>::<span class="ident">Chunked</span>(..) <span class="op">=&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">Body</span>::<span class="ident">Sized</span>(..) <span class="op">=&gt;</span> <span class="bool-val">false</span>,
+            <span class="ident">Body</span>::<span class="ident">Chunked</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">Body</span>::<span class="ident">Sized</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
 }
@@ -1265,7 +1265,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">io</span>::<span class="ident">Read</span><span class="op">&gt;</span> <span class="ident">Body</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Attempts to read `self` into a `Vec` and returns it. If reading fails,</span>
     <span class="doccomment">/// returns `None`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_bytes</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_bytes</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vec</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">body</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">into_inner</span>();
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="ident">body</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">vec</span>) {
@@ -1278,11 +1278,11 @@
 
     <span class="doccomment">/// Attempts to read `self` into a `String` and returns it. If reading or</span>
     <span class="doccomment">/// conversion fails, returns `None`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_string</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_string</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">into_bytes</span>()
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">bytes</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="ident">bytes</span>) {
-                <span class="prelude-val">Ok</span>(<span class="ident">string</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">string</span>),
-                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">string</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">string</span>),
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">error_</span><span class="macro">!</span>(<span class="string">&quot;Body is invalid UTF-8: {}&quot;</span>, <span class="ident">e</span>);
                     <span class="prelude-val">None</span>
                 }
@@ -1291,10 +1291,10 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Body</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">=&gt;</span> <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Sized Body [{} bytes]&quot;</span>, <span class="ident">n</span>),
-            <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">=&gt;</span> <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Chunked Body [{} bytes]&quot;</span>, <span class="ident">n</span>),
+            <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Sized Body [{} bytes]&quot;</span>, <span class="ident">n</span>),
+            <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Chunked Body [{} bytes]&quot;</span>, <span class="ident">n</span>),
         }
     }
 }
@@ -1375,7 +1375,7 @@
     <span class="doccomment">/// let builder = ResponseBuilder::new(Response::new());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">base</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">base</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="ident">ResponseBuilder</span> {
             <span class="ident">response</span>: <span class="ident">base</span>
         }
@@ -1395,7 +1395,7 @@
     <span class="doccomment">///     .finalize();</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">status</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">status</span>: <span class="ident">Status</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">status</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">status</span>: <span class="ident">Status</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">set_status</span>(<span class="ident">status</span>);
         <span class="self">self</span>
     }
@@ -1415,7 +1415,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">raw_status</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">code</span>: <span class="ident">u16</span>, <span class="ident">reason</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>)
-            <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+            <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">set_raw_status</span>(<span class="ident">code</span>, <span class="ident">reason</span>);
         <span class="self">self</span>
     }
@@ -1443,8 +1443,8 @@
     <span class="doccomment">/// assert_eq!(response.headers().get(&quot;Content-Type&quot;).count(), 1);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>: <span class="lifetime">&#39;r</span>, <span class="ident">H</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="ident">H</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">H</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span><span class="op">&gt;&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>: <span class="lifetime">&#39;r</span>, <span class="ident">H</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="ident">H</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">H</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span><span class="op">&gt;</span><span class="op">&gt;</span>
     {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">set_header</span>(<span class="ident">header</span>);
         <span class="self">self</span>
@@ -1473,8 +1473,8 @@
     <span class="doccomment">/// assert_eq!(response.headers().get(&quot;Accept&quot;).count(), 2);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">header_adjoin</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>: <span class="lifetime">&#39;r</span>, <span class="ident">H</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="ident">H</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">H</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span><span class="op">&gt;&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">header_adjoin</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>: <span class="lifetime">&#39;r</span>, <span class="ident">H</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="ident">H</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">H</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span><span class="op">&gt;</span><span class="op">&gt;</span>
     {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">adjoin_header</span>(<span class="ident">header</span>);
         <span class="self">self</span>
@@ -1499,8 +1499,8 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">raw_header</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;r</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;r</span>, <span class="ident">N</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="ident">N</span>, <span class="ident">value</span>: <span class="ident">V</span>)
-            <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>, <span class="ident">V</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>
+            <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">V</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
     {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">set_raw_header</span>(<span class="ident">name</span>, <span class="ident">value</span>);
         <span class="self">self</span>
@@ -1526,8 +1526,8 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">raw_header_adjoin</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;r</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;r</span>, <span class="ident">N</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="ident">N</span>, <span class="ident">value</span>: <span class="ident">V</span>)
-            <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
-        <span class="kw">where</span> <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>, <span class="ident">V</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>
+            <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
+        <span class="kw">where</span> <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">V</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
     {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">adjoin_raw_header</span>(<span class="ident">name</span>, <span class="ident">value</span>);
         <span class="self">self</span>
@@ -1552,7 +1552,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sized_body</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">body</span>: <span class="ident">B</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sized_body</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">body</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="ident">B</span>: <span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Seek</span> <span class="op">+</span> <span class="lifetime">&#39;r</span>
     {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">set_sized_body</span>(<span class="ident">body</span>);
@@ -1578,7 +1578,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">streamed_body</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">body</span>: <span class="ident">B</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">streamed_body</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">body</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
         <span class="kw">where</span> <span class="ident">B</span>: <span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="lifetime">&#39;r</span>
     {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">set_streamed_body</span>(<span class="ident">body</span>);
@@ -1606,7 +1606,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chunked_body</span><span class="op">&lt;</span><span class="ident">B</span>: <span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="lifetime">&#39;r</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">body</span>: <span class="ident">B</span>, <span class="ident">chunk_size</span>: <span class="ident">u64</span>)
-            <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
+            <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
     {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">set_chunked_body</span>(<span class="ident">body</span>, <span class="ident">chunk_size</span>);
         <span class="self">self</span>
@@ -1629,7 +1629,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">raw_body</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="lifetime">&#39;r</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">body</span>: <span class="ident">Body</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>)
-            <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
+            <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>
     {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">set_raw_body</span>(<span class="ident">body</span>);
         <span class="self">self</span>
@@ -1673,7 +1673,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">merge</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">merge</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">merge</span>(<span class="ident">other</span>);
         <span class="self">self</span>
     }
@@ -1717,7 +1717,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">join</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">join</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">other</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">response</span>.<span class="ident">join</span>(<span class="ident">other</span>);
         <span class="self">self</span>
     }
@@ -1735,7 +1735,7 @@
     <span class="doccomment">///     .finalize();</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">finalize</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">finalize</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">response</span>, <span class="ident">Response</span>::<span class="ident">new</span>())
     }
 
@@ -1753,7 +1753,7 @@
     <span class="doccomment">/// assert!(response.is_ok());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ok</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>, <span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ok</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>, <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="self">self</span>.<span class="ident">finalize</span>())
     }
 }
@@ -1763,7 +1763,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
     <span class="ident">status</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Status</span><span class="op">&gt;</span>,
     <span class="ident">headers</span>: <span class="ident">HeaderMap</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>,
-    <span class="ident">body</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="lifetime">&#39;r</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">body</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="lifetime">&#39;r</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
@@ -1785,7 +1785,7 @@
     <span class="doccomment">/// assert!(response.body().is_none());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-&gt;</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="ident">Response</span> {
             <span class="ident">status</span>: <span class="prelude-val">None</span>,
             <span class="ident">headers</span>: <span class="ident">HeaderMap</span>::<span class="ident">new</span>(),
@@ -1804,7 +1804,7 @@
     <span class="doccomment">/// let builder = Response::build();</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span>() <span class="op">-&gt;</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="ident">Response</span>::<span class="ident">build_from</span>(<span class="ident">Response</span>::<span class="ident">new</span>())
     }
 
@@ -1820,7 +1820,7 @@
     <span class="doccomment">/// let builder = Response::build_from(other);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build_from</span>(<span class="ident">other</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build_from</span>(<span class="ident">other</span>: <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ResponseBuilder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="ident">ResponseBuilder</span>::<span class="ident">new</span>(<span class="ident">other</span>)
     }
 
@@ -1839,7 +1839,7 @@
     <span class="doccomment">/// assert_eq!(response.status(), Status::NotFound);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">status</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Status</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">status</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Status</span> {
         <span class="self">self</span>.<span class="ident">status</span>.<span class="ident">unwrap_or</span>(<span class="ident">Status</span>::<span class="prelude-val">Ok</span>)
     }
 
@@ -1874,7 +1874,7 @@
     <span class="doccomment">/// assert_eq!(response.content_type(), Some(ContentType::HTML));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">content_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ContentType</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">content_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ContentType</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">headers</span>().<span class="ident">get_one</span>(<span class="string">&quot;Content-Type&quot;</span>).<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">parse</span>().<span class="ident">ok</span>())
     }
 
@@ -1910,7 +1910,7 @@
     <span class="doccomment">/// response.set_header(Cookie::new(&quot;hello&quot;, &quot;world!&quot;));</span>
     <span class="doccomment">/// assert_eq!(response.cookies(), vec![Cookie::new(&quot;hello&quot;, &quot;world!&quot;)]);</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cookies</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Cookie</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">cookies</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Cookie</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cookies</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[];
         <span class="kw">for</span> <span class="ident">header</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">headers</span>().<span class="ident">get</span>(<span class="string">&quot;Set-Cookie&quot;</span>) {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">cookie</span>) <span class="op">=</span> <span class="ident">Cookie</span>::<span class="ident">parse_encoded</span>(<span class="ident">header</span>) {
@@ -1939,7 +1939,7 @@
     <span class="doccomment">/// assert_eq!(custom_headers.next(), None);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">headers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">HeaderMap</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">headers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">HeaderMap</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">headers</span>
     }
 
@@ -1966,7 +1966,7 @@
     <span class="doccomment">/// assert_eq!(response.headers().len(), 1);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>: <span class="lifetime">&#39;r</span>, <span class="ident">H</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="ident">H</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>: <span class="lifetime">&#39;r</span>, <span class="ident">H</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="ident">H</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">headers</span>.<span class="ident">replace</span>(<span class="ident">header</span>)
     }
 
@@ -1992,8 +1992,8 @@
     <span class="doccomment">/// assert_eq!(response.headers().len(), 1);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_raw_header</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;r</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;r</span>, <span class="ident">N</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="ident">N</span>, <span class="ident">value</span>: <span class="ident">V</span>) <span class="op">-&gt;</span> <span class="ident">bool</span>
-        <span class="kw">where</span> <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>, <span class="ident">V</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_raw_header</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;r</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;r</span>, <span class="ident">N</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="ident">N</span>, <span class="ident">value</span>: <span class="ident">V</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>
+        <span class="kw">where</span> <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">V</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
     {
         <span class="self">self</span>.<span class="ident">set_header</span>(<span class="ident">Header</span>::<span class="ident">new</span>(<span class="ident">name</span>, <span class="ident">value</span>))
     }
@@ -2021,7 +2021,7 @@
     <span class="doccomment">/// assert_eq!(accept_headers.next(), None);</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">adjoin_header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>: <span class="lifetime">&#39;r</span>, <span class="ident">H</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="ident">H</span>) {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">adjoin_header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span>: <span class="lifetime">&#39;r</span>, <span class="ident">H</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Header</span><span class="op">&lt;</span><span class="lifetime">&#39;h</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">header</span>: <span class="ident">H</span>) {
         <span class="self">self</span>.<span class="ident">headers</span>.<span class="ident">add</span>(<span class="ident">header</span>)
     }
 
@@ -2049,7 +2049,7 @@
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">adjoin_raw_header</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;r</span>, <span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;r</span>, <span class="ident">N</span>, <span class="ident">V</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="ident">N</span>, <span class="ident">value</span>: <span class="ident">V</span>)
-        <span class="kw">where</span> <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>, <span class="ident">V</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">str</span><span class="op">&gt;&gt;</span>
+        <span class="kw">where</span> <span class="ident">N</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">V</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span>
     {
         <span class="self">self</span>.<span class="ident">adjoin_header</span>(<span class="ident">Header</span>::<span class="ident">new</span>(<span class="ident">name</span>, <span class="ident">value</span>));
     }
@@ -2092,14 +2092,14 @@
     <span class="doccomment">/// assert_eq!(response.body_string(), Some(&quot;Hello, world!&quot;.to_string()));</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">body</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">Read</span><span class="op">&gt;&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">body</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">Read</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="comment">// Looks crazy, right? Needed so Rust infers lifetime correctly. Weird.</span>
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">body</span>.<span class="ident">as_mut</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">body</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="kw">match</span> <span class="ident">body</span>.<span class="ident">as_mut</span>() {
-                <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="ident">size</span>) <span class="op">=&gt;</span> <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="ident">size</span>),
-                <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="ident">chunk_size</span>) <span class="op">=&gt;</span> <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="ident">chunk_size</span>),
+            <span class="prelude-val">Some</span>(<span class="ident">body</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw">match</span> <span class="ident">body</span>.<span class="ident">as_mut</span>() {
+                <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="ident">size</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="ident">size</span>),
+                <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="ident">chunk_size</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="ident">chunk_size</span>),
             }),
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>
         }
     }
 
@@ -2122,7 +2122,7 @@
     <span class="doccomment">/// assert!(response.body().is_none());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">body_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">body_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">take_body</span>().<span class="ident">and_then</span>(<span class="ident">Body</span>::<span class="ident">into_string</span>)
     }
 
@@ -2144,7 +2144,7 @@
     <span class="doccomment">/// assert!(response.body().is_none());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">body_bytes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">body_bytes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">take_body</span>().<span class="ident">and_then</span>(<span class="ident">Body</span>::<span class="ident">into_bytes</span>)
     }
 
@@ -2169,7 +2169,7 @@
     <span class="doccomment">/// assert!(response.body().is_none());</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_body</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="lifetime">&#39;r</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take_body</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Body</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="lifetime">&#39;r</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">body</span>.<span class="ident">take</span>()
     }
 
@@ -2179,8 +2179,8 @@
     <span class="kw">crate</span> <span class="kw">fn</span> <span class="ident">strip_body</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">body</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">take_body</span>() {
             <span class="self">self</span>.<span class="ident">body</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">body</span> {
-                <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">empty</span>()), <span class="ident">n</span>)),
-                <span class="ident">Body</span>::<span class="ident">Chunked</span>(..) <span class="op">=&gt;</span> <span class="prelude-val">None</span>
+                <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">io</span>::<span class="ident">empty</span>()), <span class="ident">n</span>)),
+                <span class="ident">Body</span>::<span class="ident">Chunked</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>
             };
         }
     }
@@ -2275,8 +2275,8 @@
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_raw_body</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="lifetime">&#39;r</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">body</span>: <span class="ident">Body</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) {
         <span class="self">self</span>.<span class="ident">body</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw">match</span> <span class="ident">body</span> {
-            <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=&gt;</span> <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">b</span>.<span class="ident">take</span>(<span class="ident">n</span>)), <span class="ident">n</span>),
-            <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=&gt;</span> <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">b</span>), <span class="ident">n</span>),
+            <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Body</span>::<span class="ident">Sized</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">b</span>.<span class="ident">take</span>(<span class="ident">n</span>)), <span class="ident">n</span>),
+            <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">b</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Body</span>::<span class="ident">Chunked</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">b</span>), <span class="ident">n</span>),
         });
     }
 
@@ -2380,7 +2380,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">status</span>())<span class="question-mark">?</span>;
 
         <span class="kw">for</span> <span class="ident">header</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">headers</span>().<span class="ident">iter</span>() {
@@ -2388,8 +2388,8 @@
         }
 
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">body</span> {
-            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">body</span>) <span class="op">=&gt;</span> <span class="ident">body</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Empty Body&quot;</span>)
+            <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">body</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">body</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">writeln</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;Empty Body&quot;</span>)
         }
     }
 }
@@ -2398,7 +2398,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="ident">Responder</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span> {
     <span class="doccomment">/// This is the identity implementation. It simply returns `Ok(self)`.</span>
-    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">respond_to</span>(<span class="self">self</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Request</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span><span class="op">&gt;</span>, <span class="ident">Status</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="self">self</span>)
     }
 }

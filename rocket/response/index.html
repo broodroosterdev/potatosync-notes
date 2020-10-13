@@ -2,7 +2,7 @@
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../../src/rocket/response/mod.rs.html#1-50' title='goto source code'>[src]</a></span><span class='in-band'>Module <a href='../index.html'>rocket</a>::<wbr><a class="mod" href=''>response</a></span></h1><div class='docblock'><p>Types and traits to build and send responses.</p>
 <p>The return type of a Rocket handler can be any type that implements the
 <a href="../../rocket/response/trait.Responder.html"><code>Responder</code></a> trait, which means that the type knows
-how to generate a <a href="../../rocket/struct.Response.html" title="`Response`"><code>Response</code></a>. Among other things, this module contains
+how to generate a <a href="../../rocket/struct.Response.html" title="Response"><code>Response</code></a>. Among other things, this module contains
 several such types.</p>
 <h1 id="composing" class="section-header"><a href="#composing">Composing</a></h1>
 <p>Many of the built-in <code>Responder</code> types <em>chain</em> responses: they take in
@@ -22,11 +22,11 @@ response.</p>
 <table><tr class='module-item'><td><a class="struct" href="struct.Content.html" title='rocket::response::Content struct'>Content</a></td><td class='docblock-short'><p>Sets the Content-Type of a <code>Responder</code> to a chosen value.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Debug.html" title='rocket::response::Debug struct'>Debug</a></td><td class='docblock-short'><p>Debug prints the internal value before responding with a 500 error.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Flash.html" title='rocket::response::Flash struct'>Flash</a></td><td class='docblock-short'><p>Sets a &quot;flash&quot; cookie that will be removed when it is accessed. The
-analogous request type is <a href="../../rocket/request/type.FlashMessage.html" title="`FlashMessage`"><code>FlashMessage</code></a>.</p>
+analogous request type is <a href="../../rocket/request/type.FlashMessage.html" title="FlashMessage"><code>FlashMessage</code></a>.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.NamedFile.html" title='rocket::response::NamedFile struct'>NamedFile</a></td><td class='docblock-short'><p>A file with an associated name; responds with the Content-Type based on the
 file extension.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Redirect.html" title='rocket::response::Redirect struct'>Redirect</a></td><td class='docblock-short'><p>An empty redirect response to a given URL.</p>
-</td></tr><tr class='module-item'><td><a class="struct" href="struct.Response.html" title='rocket::response::Response struct'>Response</a></td><td class='docblock-short'><p>A response, as returned by types implementing <a href="../../rocket/response/trait.Responder.html" title="`Responder`"><code>Responder</code></a>.</p>
+</td></tr><tr class='module-item'><td><a class="struct" href="struct.Response.html" title='rocket::response::Response struct'>Response</a></td><td class='docblock-short'><p>A response, as returned by types implementing <a href="../../rocket/response/trait.Responder.html" title="Responder"><code>Responder</code></a>.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.ResponseBuilder.html" title='rocket::response::ResponseBuilder struct'>ResponseBuilder</a></td><td class='docblock-short'><p>Type for easily building <code>Response</code>s.</p>
 </td></tr><tr class='module-item'><td><a class="struct" href="struct.Stream.html" title='rocket::response::Stream struct'>Stream</a></td><td class='docblock-short'><p>Streams a response to a client from an arbitrary <code>Read</code>er type.</p>
 </td></tr></table><h2 id='enums' class='section-header'><a href="#enums">Enums</a></h2>

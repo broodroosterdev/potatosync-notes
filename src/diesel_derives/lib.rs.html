@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel_derives/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../diesel_derives/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel_derives/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../diesel_derives/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -904,7 +906,7 @@
     <span class="ident">AsChangeset</span>,
     <span class="ident">attributes</span>(<span class="ident">table_name</span>, <span class="ident">primary_key</span>, <span class="ident">column_name</span>, <span class="ident">changeset_options</span>)
 )]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_as_changeset</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_as_changeset</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">as_changeset</span>::<span class="ident">derive</span>)
 }
 
@@ -936,7 +938,7 @@
 <span class="doccomment">/// * `#[diesel(not_sized)]`, to skip generating impls that require</span>
 <span class="doccomment">///   that the type is `Sized`</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">AsExpression</span>, <span class="ident">attributes</span>(<span class="ident">diesel</span>, <span class="ident">sql_type</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_as_expression</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_as_expression</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">as_expression</span>::<span class="ident">derive</span>)
 }
 
@@ -973,13 +975,13 @@
 <span class="doccomment">/// as column name. Only useful for the foreign key field.</span>
 <span class="doccomment">///</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">Associations</span>, <span class="ident">attributes</span>(<span class="ident">belongs_to</span>, <span class="ident">column_name</span>, <span class="ident">table_name</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_associations</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_associations</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">associations</span>::<span class="ident">derive</span>)
 }
 
 <span class="doccomment">/// Implement numeric operators for the current query node</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">DieselNumericOps</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_diesel_numeric_ops</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_diesel_numeric_ops</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">diesel_numeric_ops</span>::<span class="ident">derive</span>)
 }
 
@@ -990,7 +992,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// There are no options or special considerations needed for this derive.</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">FromSqlRow</span>, <span class="ident">attributes</span>(<span class="ident">diesel</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_from_sql_row</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_from_sql_row</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">from_sql_row</span>::<span class="ident">derive</span>)
 }
 
@@ -1027,7 +1029,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">///</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">Identifiable</span>, <span class="ident">attributes</span>(<span class="ident">table_name</span>, <span class="ident">primary_key</span>, <span class="ident">column_name</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_identifiable</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_identifiable</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">identifiable</span>::<span class="ident">derive</span>)
 }
 
@@ -1066,13 +1068,13 @@
 <span class="doccomment">/// * `#[diesel(embed)]`, specifies that the current field maps not only</span>
 <span class="doccomment">/// to single database field, but is a struct that implements `Insertable`</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">Insertable</span>, <span class="ident">attributes</span>(<span class="ident">table_name</span>, <span class="ident">column_name</span>, <span class="ident">diesel</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_insertable</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_insertable</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">insertable</span>::<span class="ident">derive</span>)
 }
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">NonAggregate</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_non_aggregate</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_non_aggregate</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="macro">eprintln</span><span class="macro">!</span>(
         <span class="string">&quot;#[derive(NonAggregate)] is deprecated. Please use \
          `#[derive(ValidGrouping)]` instead.)&quot;</span>
@@ -1115,7 +1117,7 @@
 <span class="doccomment">/// you should not derive this trait.</span>
 <span class="doccomment">/// In that case you should implement it manually instead.</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">QueryId</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_query_id</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_query_id</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">query_id</span>::<span class="ident">derive</span>)
 }
 
@@ -1144,7 +1146,7 @@
 <span class="doccomment">///   Then `Type` is converted via `.into()` into the field type. By default</span>
 <span class="doccomment">///   this derive will deserialize directly into the field type</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">Queryable</span>, <span class="ident">attributes</span>(<span class="ident">column_name</span>, <span class="ident">diesel</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_queryable</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_queryable</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">queryable</span>::<span class="ident">derive</span>)
 }
 
@@ -1201,7 +1203,7 @@
 <span class="doccomment">///   single database column, but is a type that implements</span>
 <span class="doccomment">///   `QueryableByName` on it&#39;s own</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">QueryableByName</span>, <span class="ident">attributes</span>(<span class="ident">table_name</span>, <span class="ident">column_name</span>, <span class="ident">sql_type</span>, <span class="ident">diesel</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_queryable_by_name</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_queryable_by_name</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">queryable_by_name</span>::<span class="ident">derive</span>)
 }
 
@@ -1243,7 +1245,7 @@
 <span class="doccomment">/// with the given name. `TypeName` needs to be one of the possible values</span>
 <span class="doccomment">/// in `MysqlType`</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">SqlType</span>, <span class="ident">attributes</span>(<span class="ident">postgres</span>, <span class="ident">sqlite_type</span>, <span class="ident">mysql_type</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_sql_type</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_sql_type</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">sql_type</span>::<span class="ident">derive</span>)
 }
 
@@ -1287,7 +1289,7 @@
 <span class="doccomment">/// * `#[diesel(aggregate)]` for cases where the type represents an aggregating</span>
 <span class="doccomment">///   SQL expression</span>
 <span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">ValidGrouping</span>, <span class="ident">attributes</span>(<span class="ident">diesel</span>))]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_valid_grouping</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">derive_valid_grouping</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">valid_grouping</span>::<span class="ident">derive</span>)
 }
 
@@ -1603,18 +1605,18 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sql_function_proc</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sql_function_proc</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="ident">expand_proc_macro</span>(<span class="ident">input</span>, <span class="ident">sql_function</span>::<span class="ident">expand</span>)
 }
 
 <span class="kw">fn</span> <span class="ident">expand_proc_macro</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">syn</span>::<span class="ident">parse</span>::<span class="ident">Parse</span><span class="op">&gt;</span>(
     <span class="ident">input</span>: <span class="ident">TokenStream</span>,
-    <span class="ident">f</span>: <span class="kw">fn</span>(<span class="ident">T</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span>,
-) <span class="op">-&gt;</span> <span class="ident">TokenStream</span> {
+    <span class="ident">f</span>: <span class="kw">fn</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span>, <span class="ident">Diagnostic</span><span class="op">&gt;</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="ident">syn</span>::<span class="ident">parse</span>(<span class="ident">input</span>).<span class="ident">unwrap</span>();
     <span class="kw">match</span> <span class="ident">f</span>(<span class="ident">item</span>) {
-        <span class="prelude-val">Ok</span>(<span class="ident">x</span>) <span class="op">=&gt;</span> <span class="ident">x</span>.<span class="ident">into</span>(),
-        <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> {
+        <span class="prelude-val">Ok</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>.<span class="ident">into</span>(),
+        <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">e</span>.<span class="ident">emit</span>();
             <span class="string">&quot;&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()
         }

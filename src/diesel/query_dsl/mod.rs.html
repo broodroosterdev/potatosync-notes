@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/query_dsl/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/query_dsl/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
@@ -1409,7 +1411,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">distinct</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Distinct</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">distinct</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Distinct</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">DistinctDsl</span>,
     {
@@ -1464,7 +1466,7 @@
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;postgres&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">distinct_on</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="ident">DistinctOn</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Expr</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">distinct_on</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DistinctOn</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Expr</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">DistinctOnDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>,
     {
@@ -1584,7 +1586,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">select</span><span class="op">&lt;</span><span class="ident">Selection</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-&gt;</span> <span class="ident">Select</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Selection</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">select</span><span class="op">&lt;</span><span class="ident">Selection</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">selection</span>: <span class="ident">Selection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Select</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Selection</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">Selection</span>: <span class="ident">Expression</span>,
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">SelectDsl</span><span class="op">&lt;</span><span class="ident">Selection</span><span class="op">&gt;</span>,
@@ -1606,7 +1608,7 @@
     <span class="doccomment">/// assert_eq!(Ok(2), count);</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">count</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Select</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">CountStar</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">count</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Select</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">CountStar</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">SelectDsl</span><span class="op">&lt;</span><span class="ident">CountStar</span><span class="op">&gt;</span>,
     {
@@ -1722,7 +1724,7 @@
     <span class="doccomment">/// assert_eq!(Ok(expected_data), data);</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">inner_join</span><span class="op">&lt;</span><span class="ident">Rhs</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Rhs</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>
+    <span class="kw">fn</span> <span class="ident">inner_join</span><span class="op">&lt;</span><span class="ident">Rhs</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Rhs</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">JoinWithImplicitOnClause</span><span class="op">&lt;</span><span class="ident">Rhs</span>, <span class="ident">joins</span>::<span class="ident">Inner</span><span class="op">&gt;</span>,
     {
@@ -1735,7 +1737,7 @@
     <span class="doccomment">/// instead. See [`inner_join`] for usage examples.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`inner_join`]: #method.inner_join</span>
-    <span class="kw">fn</span> <span class="ident">left_outer_join</span><span class="op">&lt;</span><span class="ident">Rhs</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Rhs</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>
+    <span class="kw">fn</span> <span class="ident">left_outer_join</span><span class="op">&lt;</span><span class="ident">Rhs</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Rhs</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">JoinWithImplicitOnClause</span><span class="op">&lt;</span><span class="ident">Rhs</span>, <span class="ident">joins</span>::<span class="ident">LeftOuter</span><span class="op">&gt;</span>,
     {
@@ -1745,7 +1747,7 @@
     <span class="doccomment">/// Alias for [`left_outer_join`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`left_outer_join`]: #method.left_outer_join</span>
-    <span class="kw">fn</span> <span class="ident">left_join</span><span class="op">&lt;</span><span class="ident">Rhs</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Rhs</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>
+    <span class="kw">fn</span> <span class="ident">left_join</span><span class="op">&lt;</span><span class="ident">Rhs</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Rhs</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">JoinWithImplicitOnClause</span><span class="op">&lt;</span><span class="ident">Rhs</span>, <span class="ident">joins</span>::<span class="ident">LeftOuter</span><span class="op">&gt;</span>,
     {
@@ -1772,7 +1774,7 @@
     <span class="doccomment">/// assert_eq!(Ok(2), tess_id);</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">filter</span><span class="op">&lt;</span><span class="ident">Predicate</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="ident">Filter</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Predicate</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">filter</span><span class="op">&lt;</span><span class="ident">Predicate</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Filter</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Predicate</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">FilterDsl</span><span class="op">&lt;</span><span class="ident">Predicate</span><span class="op">&gt;</span>,
     {
@@ -1820,7 +1822,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">or_filter</span><span class="op">&lt;</span><span class="ident">Predicate</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-&gt;</span> <span class="ident">OrFilter</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Predicate</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">or_filter</span><span class="op">&lt;</span><span class="ident">Predicate</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">predicate</span>: <span class="ident">Predicate</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OrFilter</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Predicate</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">OrFilterDsl</span><span class="op">&lt;</span><span class="ident">Predicate</span><span class="op">&gt;</span>,
     {
@@ -1845,7 +1847,7 @@
     <span class="doccomment">/// assert_eq!(Err::&lt;(i32, String), _&gt;(NotFound), users.find(3).first(&amp;connection));</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">find</span><span class="op">&lt;</span><span class="ident">PK</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">id</span>: <span class="ident">PK</span>) <span class="op">-&gt;</span> <span class="ident">Find</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">PK</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">find</span><span class="op">&lt;</span><span class="ident">PK</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">id</span>: <span class="ident">PK</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Find</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">PK</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">FindDsl</span><span class="op">&lt;</span><span class="ident">PK</span><span class="op">&gt;</span>,
     {
@@ -1906,7 +1908,7 @@
     <span class="doccomment">/// #    Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">order</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="ident">Order</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Expr</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">order</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Order</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Expr</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">Expr</span>: <span class="ident">Expression</span>,
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">OrderDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>,
@@ -1915,7 +1917,7 @@
     }
 
     <span class="doccomment">/// Alias for `order`</span>
-    <span class="kw">fn</span> <span class="ident">order_by</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-&gt;</span> <span class="ident">Order</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Expr</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">order_by</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">expr</span>: <span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Order</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Expr</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">Expr</span>: <span class="ident">Expression</span>,
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">OrderDsl</span><span class="op">&lt;</span><span class="ident">Expr</span><span class="op">&gt;</span>,
@@ -1968,7 +1970,7 @@
     <span class="doccomment">/// #    Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">then_order_by</span><span class="op">&lt;</span><span class="ident">Order</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">order</span>: <span class="ident">Order</span>) <span class="op">-&gt;</span> <span class="ident">ThenOrderBy</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Order</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">then_order_by</span><span class="op">&lt;</span><span class="ident">Order</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">order</span>: <span class="ident">Order</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ThenOrderBy</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Order</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">ThenOrderDsl</span><span class="op">&lt;</span><span class="ident">Order</span><span class="op">&gt;</span>,
     {
@@ -2017,7 +2019,7 @@
     <span class="doccomment">/// #    Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">limit</span>(<span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">i64</span>) <span class="op">-&gt;</span> <span class="ident">Limit</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">limit</span>(<span class="self">self</span>, <span class="ident">limit</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Limit</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">LimitDsl</span>,
     {
@@ -2068,7 +2070,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">offset</span>(<span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">i64</span>) <span class="op">-&gt;</span> <span class="ident">Offset</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">offset</span>(<span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Offset</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">OffsetDsl</span>,
     {
@@ -2090,7 +2092,7 @@
     <span class="doccomment">/// // Executes `SELECT * FROM users FOR UPDATE`</span>
     <span class="doccomment">/// users.for_update().load(&amp;connection)</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">for_update</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ForUpdate</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">for_update</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ForUpdate</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">LockingDsl</span><span class="op">&lt;</span><span class="ident">lock</span>::<span class="ident">ForUpdate</span><span class="op">&gt;</span>,
     {
@@ -2113,7 +2115,7 @@
     <span class="doccomment">/// // Executes `SELECT * FROM users FOR NO KEY UPDATE`</span>
     <span class="doccomment">/// users.for_no_key_update().load(&amp;connection)</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">for_no_key_update</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ForNoKeyUpdate</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">for_no_key_update</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ForNoKeyUpdate</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">LockingDsl</span><span class="op">&lt;</span><span class="ident">lock</span>::<span class="ident">ForNoKeyUpdate</span><span class="op">&gt;</span>,
     {
@@ -2135,7 +2137,7 @@
     <span class="doccomment">/// // Executes `SELECT * FROM users FOR SHARE`</span>
     <span class="doccomment">/// users.for_share().load(&amp;connection)</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">for_share</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ForShare</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">for_share</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ForShare</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">LockingDsl</span><span class="op">&lt;</span><span class="ident">lock</span>::<span class="ident">ForShare</span><span class="op">&gt;</span>,
     {
@@ -2158,7 +2160,7 @@
     <span class="doccomment">/// // Executes `SELECT * FROM users FOR KEY SHARE`</span>
     <span class="doccomment">/// users.for_key_share().load(&amp;connection)</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">for_key_share</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">ForKeyShare</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">for_key_share</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ForKeyShare</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">LockingDsl</span><span class="op">&lt;</span><span class="ident">lock</span>::<span class="ident">ForKeyShare</span><span class="op">&gt;</span>,
     {
@@ -2175,7 +2177,7 @@
     <span class="doccomment">/// // Executes `SELECT * FROM users FOR UPDATE SKIP LOCKED`</span>
     <span class="doccomment">/// users.for_update().skip_locked().load(&amp;connection)</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">skip_locked</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">SkipLocked</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">skip_locked</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SkipLocked</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">ModifyLockDsl</span><span class="op">&lt;</span><span class="ident">lock</span>::<span class="ident">SkipLocked</span><span class="op">&gt;</span>,
     {
@@ -2192,7 +2194,7 @@
     <span class="doccomment">/// // Executes `SELECT * FROM users FOR UPDATE NOWAIT`</span>
     <span class="doccomment">/// users.for_update().no_wait().load(&amp;connection)</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">no_wait</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">NoWait</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">no_wait</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NoWait</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">ModifyLockDsl</span><span class="op">&lt;</span><span class="ident">lock</span>::<span class="ident">NoWait</span><span class="op">&gt;</span>,
     {
@@ -2256,7 +2258,7 @@
     <span class="doccomment">/// assert_eq!(Ok(2), users_by_name(&quot;Tess&quot;).select(users::id).first(&amp;connection));</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">into_boxed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">IntoBoxed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">DB</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">into_boxed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IntoBoxed</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="self">Self</span>, <span class="ident">DB</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">DB</span>: <span class="ident">Backend</span>,
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">BoxedDsl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">DB</span><span class="op">&gt;</span>,
@@ -2301,7 +2303,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">single_value</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">SingleValue</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">single_value</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SingleValue</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">SingleValueDsl</span>,
     {
@@ -2341,7 +2343,7 @@
     <span class="doccomment">/// ).load(&amp;connection)?;</span>
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
-    <span class="kw">fn</span> <span class="ident">nullable</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">NullableSelect</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">nullable</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NullableSelect</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">SelectNullableDsl</span>,
     {
@@ -2387,7 +2389,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">execute</span>(<span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">execute</span>(<span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">Conn</span>: <span class="ident">Connection</span>,
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">ExecuteDsl</span><span class="op">&lt;</span><span class="ident">Conn</span><span class="op">&gt;</span>,
@@ -2488,7 +2490,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">load</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;&gt;</span>
+    <span class="kw">fn</span> <span class="ident">load</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">LoadQuery</span><span class="op">&lt;</span><span class="ident">Conn</span>, <span class="ident">U</span><span class="op">&gt;</span>,
     {
@@ -2537,7 +2539,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">get_result</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">get_result</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">LoadQuery</span><span class="op">&lt;</span><span class="ident">Conn</span>, <span class="ident">U</span><span class="op">&gt;</span>,
     {
@@ -2550,7 +2552,7 @@
     <span class="doccomment">/// sense for insert, update, and delete statements.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`load`]: #method.load</span>
-    <span class="kw">fn</span> <span class="ident">get_results</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;&gt;</span>
+    <span class="kw">fn</span> <span class="ident">get_results</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">LoadQuery</span><span class="op">&lt;</span><span class="ident">Conn</span>, <span class="ident">U</span><span class="op">&gt;</span>,
     {
@@ -2590,7 +2592,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">first</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">first</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">conn</span>: <span class="kw-2">&amp;</span><span class="ident">Conn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QueryResult</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="self">Self</span>: <span class="ident">methods</span>::<span class="ident">LimitDsl</span>,
         <span class="ident">Limit</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>: <span class="ident">LoadQuery</span><span class="op">&lt;</span><span class="ident">Conn</span>, <span class="ident">U</span><span class="op">&gt;</span>,

@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `rocket_cors` crate."><meta name="keywords" content="rust, rustlang, rust-lang, rocket_cors"><title>rocket_cors - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../rocket_cors/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate rocket_cors</p><div class='block version'><p>Version 0.5.2</p></div><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all rocket_cors's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'rocket_cors', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `rocket_cors` crate."><meta name="keywords" content="rust, rustlang, rust-lang, rocket_cors"><title>rocket_cors - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../rocket_cors/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><p class='location'>Crate rocket_cors</p><div class='block version'><p>Version 0.5.2</p></div><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all rocket_cors's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'rocket_cors', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/rocket_cors/lib.rs.html#1-2975' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>rocket_cors</a></span></h1><div class='docblock'><p><a href="https://travis-ci.org/lawliet89/rocket_cors"><img src="https://travis-ci.org/lawliet89/rocket_cors.svg" alt="Build Status" /></a>
 <a href="https://github.com/lawliet89/rocket_cors"><img src="https://img.shields.io/github/tag/lawliet89/rocket_cors.svg" alt="Repository" /></a>
 <a href="https://crates.io/crates/rocket_cors"><img src="https://img.shields.io/crates/v/rocket_cors.svg" alt="Crates.io" /></a></p>
@@ -28,14 +30,14 @@ might work, but they are subject to the minimum that Rocket sets.</p>
 </code></pre>
 <h2 id="features" class="section-header"><a href="#features">Features</a></h2>
 <p>By default, a <code>serialization</code> feature is enabled in this crate that allows you to (de)serialize
-the <a href="../rocket_cors/struct.CorsOptions.html" title="`CorsOptions`"><code>CorsOptions</code></a> struct that is described below. If you would like to disable this, simply
+the <a href="../rocket_cors/struct.CorsOptions.html" title="CorsOptions"><code>CorsOptions</code></a> struct that is described below. If you would like to disable this, simply
 change your <code>Cargo.toml</code> to:</p>
 <pre><code class="language-toml">rocket_cors = { version = &quot;0.5.1&quot;, default-features = false }
 </code></pre>
 <h2 id="usage" class="section-header"><a href="#usage">Usage</a></h2>
-<p>Before you can add CORS responses to your application, you need to create a <a href="../rocket_cors/struct.CorsOptions.html" title="`CorsOptions`"><code>CorsOptions</code></a>
-struct that will hold the settings. Then, you need to create a <a href="../rocket_cors/struct.Cors.html" title="`Cors`"><code>Cors</code></a> struct using
-<a href="../rocket_cors/struct.CorsOptions.html#method.to_cors" title="`CorsOptions::to_cors`"><code>CorsOptions::to_cors</code></a> which will validate and optimise the settings for Rocket to use.</p>
+<p>Before you can add CORS responses to your application, you need to create a <a href="../rocket_cors/struct.CorsOptions.html" title="CorsOptions"><code>CorsOptions</code></a>
+struct that will hold the settings. Then, you need to create a <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> struct using
+<a href="../rocket_cors/struct.CorsOptions.html#method.to_cors" title="CorsOptions::to_cors"><code>CorsOptions::to_cors</code></a> which will validate and optimise the settings for Rocket to use.</p>
 <p>Each of the examples can be run off the repository via <code>cargo run --example xxx</code> where <code>xxx</code> is</p>
 <ul>
 <li><code>fairing</code></li>
@@ -43,14 +45,14 @@ struct that will hold the settings. Then, you need to create a <a href="../rocke
 <li><code>manual</code></li>
 </ul>
 <h3 id="corsoptions-struct" class="section-header"><a href="#corsoptions-struct"><code>CorsOptions</code> Struct</a></h3>
-<p>The <a href="../rocket_cors/struct.CorsOptions.html" title="`CorsOptions`"><code>CorsOptions</code></a> struct contains the settings for CORS requests to be validated
+<p>The <a href="../rocket_cors/struct.CorsOptions.html" title="CorsOptions"><code>CorsOptions</code></a> struct contains the settings for CORS requests to be validated
 and for responses to be generated. Defaults are defined for every field in the struct, and
-are documented on the <a href="../rocket_cors/struct.CorsOptions.html" title="`CorsOptions`"><code>CorsOptions</code></a> page. You can also deserialize
+are documented on the <a href="../rocket_cors/struct.CorsOptions.html" title="CorsOptions"><code>CorsOptions</code></a> page. You can also deserialize
 the struct from some format like JSON, YAML or TOML when the default <code>serialization</code> feature
 is enabled.</p>
 <h3 id="cors-struct" class="section-header"><a href="#cors-struct"><code>Cors</code> Struct</a></h3>
-<p>The <a href="../rocket_cors/struct.Cors.html" title="`Cors`"><code>Cors</code></a> struct is what will be used with Rocket. After creating or deserializing a
-<a href="../rocket_cors/struct.CorsOptions.html" title="`CorsOptions`"><code>CorsOptions</code></a> struct, use <a href="../rocket_cors/struct.CorsOptions.html#method.to_cors" title="`CorsOptions::to_cors`"><code>CorsOptions::to_cors</code></a> to create a <a href="../rocket_cors/struct.Cors.html" title="`Cors`"><code>Cors</code></a> struct.</p>
+<p>The <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> struct is what will be used with Rocket. After creating or deserializing a
+<a href="../rocket_cors/struct.CorsOptions.html" title="CorsOptions"><code>CorsOptions</code></a> struct, use <a href="../rocket_cors/struct.CorsOptions.html#method.to_cors" title="CorsOptions::to_cors"><code>CorsOptions::to_cors</code></a> to create a <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> struct.</p>
 <h3 id="three-modes-of-operation" class="section-header"><a href="#three-modes-of-operation">Three modes of operation</a></h3>
 <p>You can add CORS to your routes via one of three ways, in descending order of ease and in
 ascending order of flexibility.</p>
@@ -75,7 +77,7 @@ get executed.</p>
 routes for your application, and the checks are done transparently.</p>
 <p>However, you can only have one set of settings that must apply to all routes. You cannot opt
 any route out of CORS checks.</p>
-<p>To use this, simply create a <a href="../rocket_cors/struct.Cors.html" title="`Cors`"><code>Cors</code></a> from <a href="../rocket_cors/struct.CorsOptions.html#method.to_cors" title="`CorsOptions::to_cors`"><code>CorsOptions::to_cors</code></a> and then
+<p>To use this, simply create a <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> from <a href="../rocket_cors/struct.CorsOptions.html#method.to_cors" title="CorsOptions::to_cors"><code>CorsOptions::to_cors</code></a> and then
 <a href="https://api.rocket.rs/rocket/struct.Rocket.html#method.attach"><code>attach</code></a> it to Rocket.</p>
 <p>Refer to the <a href="https://github.com/lawliet89/rocket_cors/blob/master/examples/fairing.rs">example</a>.</p>
 <h4 id="injected-route" class="section-header"><a href="#injected-route">Injected Route</a></h4>
@@ -92,7 +94,7 @@ to</p>
 <p>The only way to do this is to hijack the request and route it to our own injected route to
 handle errors. Rocket does not allow Fairings to stop the processing of a route.</p>
 <p>You can configure the behaviour of the injected route through a couple of fields in the
-<a href="../rocket_cors/struct.CorsOptions.html" title="`CorsOptions`"><code>CorsOptions</code></a>.</p>
+<a href="../rocket_cors/struct.CorsOptions.html" title="CorsOptions"><code>CorsOptions</code></a>.</p>
 <h3 id="request-guard" class="section-header"><a href="#request-guard">Request Guard</a></h3>
 <p>Using request guard requires you to sacrifice the convenience of Fairings for being able to
 opt some routes out of CORS checks and enforcement. <em>BUT</em> you are still restricted to only
@@ -100,7 +102,7 @@ one set of CORS settings and you have to mount additional routes to catch and pr
 requests. The <code>OPTIONS</code> routes are used for CORS preflight checks.</p>
 <p>You will have to do the following:</p>
 <ul>
-<li>Create a <a href="../rocket_cors/struct.Cors.html" title="`Cors`"><code>Cors</code></a> from <a href="../rocket_cors/struct.CorsOptions.html" title="`CorsOptions`"><code>CorsOptions</code></a> and during Rocket's ignite, add the struct to
+<li>Create a <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> from <a href="../rocket_cors/struct.CorsOptions.html" title="CorsOptions"><code>CorsOptions</code></a> and during Rocket's ignite, add the struct to
 Rocket's <a href="https://rocket.rs/guide/state/#managed-state">managed state</a>.</li>
 <li>For all the routes that you want to enforce CORS on, you can mount either some
 <a href="../rocket_cors/fn.catch_all_options_routes.html">catch all route</a> or define your own route for the OPTIONS
@@ -129,17 +131,17 @@ has been validated. If validation fails, the closure will not be run. You should
 that has any side effects or with an appreciable computation cost inside this handler.</p>
 <h3 id="steps-to-perform" class="section-header"><a href="#steps-to-perform">Steps to perform:</a></h3>
 <ul>
-<li>You will first need to have a <a href="../rocket_cors/struct.Cors.html" title="`Cors`"><code>Cors</code></a> struct ready. This struct can be borrowed with a lifetime
+<li>You will first need to have a <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> struct ready. This struct can be borrowed with a lifetime
 at least as long as <code>'r</code> which is the lifetime of a Rocket request. <code>'static</code> works too.
 In this case, you might as well use the <code>Guard</code> method above and place the <code>Cors</code> struct in
 Rocket's <a href="https://rocket.rs/guide/state/">state</a>.
-Alternatively, you can create a <a href="../rocket_cors/struct.Cors.html" title="`Cors`"><code>Cors</code></a> struct directly in the route.</li>
+Alternatively, you can create a <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> struct directly in the route.</li>
 <li>Your routes <em>might</em> need to have a <code>'r</code> lifetime and return <code>impl Responder&lt;'r&gt;</code>. See below.</li>
-<li>Using the <a href="../rocket_cors/struct.Cors.html" title="`Cors`"><code>Cors</code></a> struct, use either the
-<a href="../rocket_cors/struct.Cors.html#method.respond_owned" title="`Cors::respond_owned`"><code>Cors::respond_owned</code></a> or
-<a href="../rocket_cors/struct.Cors.html#method.respond_borrowed" title="`Cors::respond_borrowed`"><code>Cors::respond_borrowed</code></a> function and pass in a handler
+<li>Using the <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> struct, use either the
+<a href="../rocket_cors/struct.Cors.html#method.respond_owned" title="Cors::respond_owned"><code>Cors::respond_owned</code></a> or
+<a href="../rocket_cors/struct.Cors.html#method.respond_borrowed" title="Cors::respond_borrowed"><code>Cors::respond_borrowed</code></a> function and pass in a handler
 that will be executed once CORS validation is successful.</li>
-<li>Your handler will be passed a <a href="../rocket_cors/struct.Guard.html" title="`Guard`"><code>Guard</code></a> which you will have to use to
+<li>Your handler will be passed a <a href="../rocket_cors/struct.Guard.html" title="Guard"><code>Guard</code></a> which you will have to use to
 add CORS headers into your own response.</li>
 <li>You will have to manually define your own <code>OPTIONS</code> routes.</li>
 </ul>

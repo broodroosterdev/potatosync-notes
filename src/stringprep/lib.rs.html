@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/stringprep-0.1.2/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="shortcut icon" href="../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../stringprep/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/stringprep-0.1.2/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../stringprep/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -339,16 +341,16 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Error</span>(<span class="ident">ErrorCause</span>);
 
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="ident">ErrorCause</span>::<span class="ident">ProhibitedCharacter</span>(<span class="ident">c</span>) <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">fmt</span>, <span class="string">&quot;prohibited character `{}`&quot;</span>, <span class="ident">c</span>),
-            <span class="ident">ErrorCause</span>::<span class="ident">ProhibitedBidirectionalText</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">fmt</span>, <span class="string">&quot;prohibited bidirectional text&quot;</span>),
+            <span class="ident">ErrorCause</span>::<span class="ident">ProhibitedCharacter</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">fmt</span>, <span class="string">&quot;prohibited character `{}`&quot;</span>, <span class="ident">c</span>),
+            <span class="ident">ErrorCause</span>::<span class="ident">ProhibitedBidirectionalText</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">fmt</span>, <span class="string">&quot;prohibited bidirectional text&quot;</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">description</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
+    <span class="kw">fn</span> <span class="ident">description</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
         <span class="string">&quot;error performing stringprep algorithm&quot;</span>
     }
 }
@@ -358,7 +360,7 @@
 <span class="doccomment">/// SASLprep is defined in [RFC 4013][].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [RFC 4013]: https://tools.ietf.org/html/rfc4013</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">saslprep</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">saslprep</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="comment">// fast path for ascii text</span>
     <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">chars</span>()
            .<span class="ident">all</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">c</span>.<span class="ident">is_ascii</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">tables</span>::<span class="ident">ascii_control_character</span>(<span class="ident">c</span>)) {
@@ -381,15 +383,15 @@
     <span class="kw">let</span> <span class="ident">prohibited</span> <span class="op">=</span> <span class="ident">normalized</span>
         .<span class="ident">chars</span>()
         .<span class="ident">find</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">c</span><span class="op">|</span> {
-            <span class="ident">tables</span>::<span class="ident">non_ascii_space_character</span>(<span class="ident">c</span>) <span class="comment">/* C.1.2 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.1 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">non_ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.2 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">private_use</span>(<span class="ident">c</span>) <span class="comment">/* C.3 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">non_character_code_point</span>(<span class="ident">c</span>) <span class="comment">/* C.4 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">surrogate_code</span>(<span class="ident">c</span>) <span class="comment">/* C.5 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">inappropriate_for_plain_text</span>(<span class="ident">c</span>) <span class="comment">/* C.6 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">inappropriate_for_canonical_representation</span>(<span class="ident">c</span>) <span class="comment">/* C.7 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">change_display_properties_or_deprecated</span>(<span class="ident">c</span>) <span class="comment">/* C.8 */</span> <span class="op">||</span>
+            <span class="ident">tables</span>::<span class="ident">non_ascii_space_character</span>(<span class="ident">c</span>) <span class="comment">/* C.1.2 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.1 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">non_ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.2 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">private_use</span>(<span class="ident">c</span>) <span class="comment">/* C.3 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">non_character_code_point</span>(<span class="ident">c</span>) <span class="comment">/* C.4 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">surrogate_code</span>(<span class="ident">c</span>) <span class="comment">/* C.5 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">inappropriate_for_plain_text</span>(<span class="ident">c</span>) <span class="comment">/* C.6 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">inappropriate_for_canonical_representation</span>(<span class="ident">c</span>) <span class="comment">/* C.7 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">change_display_properties_or_deprecated</span>(<span class="ident">c</span>) <span class="comment">/* C.8 */</span> <span class="op">|</span><span class="op">|</span>
             <span class="ident">tables</span>::<span class="ident">tagging_character</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span>
         });
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">c</span>) <span class="op">=</span> <span class="ident">prohibited</span> {
@@ -413,7 +415,7 @@
 }
 
 <span class="comment">// RFC3454, 6. Bidirectional Characters</span>
-<span class="kw">fn</span> <span class="ident">is_prohibited_bidirectional_text</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">is_prohibited_bidirectional_text</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
     <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">contains</span>(<span class="ident">tables</span>::<span class="ident">bidi_r_or_al</span>) {
         <span class="comment">// 2) If a string contains any RandALCat character, the string</span>
         <span class="comment">// MUST NOT contain any LCat character.</span>
@@ -424,7 +426,7 @@
         <span class="comment">// 3) If a string contains any RandALCat character, a RandALCat</span>
         <span class="comment">// character MUST be the first character of the string, and a</span>
         <span class="comment">// RandALCat character MUST be the last character of the string.</span>
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">tables</span>::<span class="ident">bidi_r_or_al</span>(<span class="ident">s</span>.<span class="ident">chars</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>()) <span class="op">||</span>
+        <span class="kw">if</span> <span class="op">!</span><span class="ident">tables</span>::<span class="ident">bidi_r_or_al</span>(<span class="ident">s</span>.<span class="ident">chars</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>()) <span class="op">|</span><span class="op">|</span>
            <span class="op">!</span><span class="ident">tables</span>::<span class="ident">bidi_r_or_al</span>(<span class="ident">s</span>.<span class="ident">chars</span>().<span class="ident">next_back</span>().<span class="ident">unwrap</span>()) {
             <span class="kw">return</span> <span class="bool-val">true</span>;
         }
@@ -438,7 +440,7 @@
 <span class="doccomment">/// Nameprep is defined in [RFC 3491][].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [RFC 3491]: https://tools.ietf.org/html/rfc3491</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nameprep</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nameprep</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="comment">// 3. Mapping</span>
     <span class="kw">let</span> <span class="ident">mapped</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">chars</span>()
         .<span class="ident">filter</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">c</span><span class="op">|</span> <span class="op">!</span><span class="ident">tables</span>::<span class="ident">commonly_mapped_to_nothing</span>(<span class="ident">c</span>))
@@ -451,14 +453,14 @@
     <span class="kw">let</span> <span class="ident">prohibited</span> <span class="op">=</span> <span class="ident">normalized</span>
         .<span class="ident">chars</span>()
         .<span class="ident">find</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">c</span><span class="op">|</span> {
-            <span class="ident">tables</span>::<span class="ident">non_ascii_space_character</span>(<span class="ident">c</span>) <span class="comment">/* C.1.2 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">non_ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.2 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">private_use</span>(<span class="ident">c</span>) <span class="comment">/* C.3 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">non_character_code_point</span>(<span class="ident">c</span>) <span class="comment">/* C.4 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">surrogate_code</span>(<span class="ident">c</span>) <span class="comment">/* C.5 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">inappropriate_for_plain_text</span>(<span class="ident">c</span>) <span class="comment">/* C.6 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">inappropriate_for_canonical_representation</span>(<span class="ident">c</span>) <span class="comment">/* C.7 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">change_display_properties_or_deprecated</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span> <span class="op">||</span>
+            <span class="ident">tables</span>::<span class="ident">non_ascii_space_character</span>(<span class="ident">c</span>) <span class="comment">/* C.1.2 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">non_ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.2 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">private_use</span>(<span class="ident">c</span>) <span class="comment">/* C.3 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">non_character_code_point</span>(<span class="ident">c</span>) <span class="comment">/* C.4 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">surrogate_code</span>(<span class="ident">c</span>) <span class="comment">/* C.5 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">inappropriate_for_plain_text</span>(<span class="ident">c</span>) <span class="comment">/* C.6 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">inappropriate_for_canonical_representation</span>(<span class="ident">c</span>) <span class="comment">/* C.7 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">change_display_properties_or_deprecated</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span> <span class="op">|</span><span class="op">|</span>
             <span class="ident">tables</span>::<span class="ident">tagging_character</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span>
         });
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">c</span>) <span class="op">=</span> <span class="ident">prohibited</span> {
@@ -486,7 +488,7 @@
 <span class="doccomment">/// Nameprep is defined in [RFC 3920, Appendix A][].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [RFC 3920, Appendix A]: https://tools.ietf.org/html/rfc3920#appendix-A</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nodeprep</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nodeprep</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="comment">// A.3. Mapping</span>
     <span class="kw">let</span> <span class="ident">mapped</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">chars</span>()
         .<span class="ident">filter</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">c</span><span class="op">|</span> <span class="op">!</span><span class="ident">tables</span>::<span class="ident">commonly_mapped_to_nothing</span>(<span class="ident">c</span>))
@@ -499,17 +501,17 @@
     <span class="kw">let</span> <span class="ident">prohibited</span> <span class="op">=</span> <span class="ident">normalized</span>
         .<span class="ident">chars</span>()
         .<span class="ident">find</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">c</span><span class="op">|</span> {
-            <span class="ident">tables</span>::<span class="ident">ascii_space_character</span>(<span class="ident">c</span>) <span class="comment">/* C.1.1 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">non_ascii_space_character</span>(<span class="ident">c</span>) <span class="comment">/* C.1.2 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.1 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">non_ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.2 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">private_use</span>(<span class="ident">c</span>) <span class="comment">/* C.3 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">non_character_code_point</span>(<span class="ident">c</span>) <span class="comment">/* C.4 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">surrogate_code</span>(<span class="ident">c</span>) <span class="comment">/* C.5 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">inappropriate_for_plain_text</span>(<span class="ident">c</span>) <span class="comment">/* C.6 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">inappropriate_for_canonical_representation</span>(<span class="ident">c</span>) <span class="comment">/* C.7 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">change_display_properties_or_deprecated</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">tagging_character</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span> <span class="op">||</span>
+            <span class="ident">tables</span>::<span class="ident">ascii_space_character</span>(<span class="ident">c</span>) <span class="comment">/* C.1.1 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">non_ascii_space_character</span>(<span class="ident">c</span>) <span class="comment">/* C.1.2 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.1 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">non_ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.2 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">private_use</span>(<span class="ident">c</span>) <span class="comment">/* C.3 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">non_character_code_point</span>(<span class="ident">c</span>) <span class="comment">/* C.4 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">surrogate_code</span>(<span class="ident">c</span>) <span class="comment">/* C.5 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">inappropriate_for_plain_text</span>(<span class="ident">c</span>) <span class="comment">/* C.6 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">inappropriate_for_canonical_representation</span>(<span class="ident">c</span>) <span class="comment">/* C.7 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">change_display_properties_or_deprecated</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">tagging_character</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span> <span class="op">|</span><span class="op">|</span>
             <span class="ident">prohibited_node_character</span>(<span class="ident">c</span>)
         });
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">c</span>) <span class="op">=</span> <span class="ident">prohibited</span> {
@@ -532,10 +534,10 @@
 }
 
 <span class="comment">// Additional characters not allowed in JID nodes, by RFC3920.</span>
-<span class="kw">fn</span> <span class="ident">prohibited_node_character</span>(<span class="ident">c</span>: <span class="ident">char</span>) <span class="op">-&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">prohibited_node_character</span>(<span class="ident">c</span>: <span class="ident">char</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
     <span class="kw">match</span> <span class="ident">c</span> {
-        <span class="string">&#39;&quot;&#39;</span> <span class="op">|</span> <span class="string">&#39;&amp;&#39;</span> <span class="op">|</span> <span class="string">&#39;\&#39;&#39;</span> <span class="op">|</span> <span class="string">&#39;/&#39;</span> <span class="op">|</span> <span class="string">&#39;:&#39;</span> <span class="op">|</span> <span class="string">&#39;&lt;&#39;</span> <span class="op">|</span> <span class="string">&#39;&gt;&#39;</span> <span class="op">|</span> <span class="string">&#39;@&#39;</span> <span class="op">=&gt;</span> <span class="bool-val">true</span>,
-        <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>
+        <span class="string">&#39;&quot;&#39;</span> <span class="op">|</span> <span class="string">&#39;&amp;&#39;</span> <span class="op">|</span> <span class="string">&#39;\&#39;&#39;</span> <span class="op">|</span> <span class="string">&#39;/&#39;</span> <span class="op">|</span> <span class="string">&#39;:&#39;</span> <span class="op">|</span> <span class="string">&#39;&lt;&#39;</span> <span class="op">|</span> <span class="string">&#39;&gt;&#39;</span> <span class="op">|</span> <span class="string">&#39;@&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>
     }
 }
 
@@ -544,7 +546,7 @@
 <span class="doccomment">/// Nameprep is defined in [RFC 3920, Appendix B][].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [RFC 3920, Appendix B]: https://tools.ietf.org/html/rfc3920#appendix-B</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resourceprep</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">resourceprep</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
     <span class="comment">// B.3. Mapping</span>
     <span class="kw">let</span> <span class="ident">mapped</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">chars</span>()
         .<span class="ident">filter</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">c</span><span class="op">|</span> <span class="op">!</span><span class="ident">tables</span>::<span class="ident">commonly_mapped_to_nothing</span>(<span class="ident">c</span>))
@@ -557,15 +559,15 @@
     <span class="kw">let</span> <span class="ident">prohibited</span> <span class="op">=</span> <span class="ident">normalized</span>
         .<span class="ident">chars</span>()
         .<span class="ident">find</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">c</span><span class="op">|</span> {
-            <span class="ident">tables</span>::<span class="ident">non_ascii_space_character</span>(<span class="ident">c</span>) <span class="comment">/* C.1.2 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.1 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">non_ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.2 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">private_use</span>(<span class="ident">c</span>) <span class="comment">/* C.3 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">non_character_code_point</span>(<span class="ident">c</span>) <span class="comment">/* C.4 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">surrogate_code</span>(<span class="ident">c</span>) <span class="comment">/* C.5 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">inappropriate_for_plain_text</span>(<span class="ident">c</span>) <span class="comment">/* C.6 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">inappropriate_for_canonical_representation</span>(<span class="ident">c</span>) <span class="comment">/* C.7 */</span> <span class="op">||</span>
-            <span class="ident">tables</span>::<span class="ident">change_display_properties_or_deprecated</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span> <span class="op">||</span>
+            <span class="ident">tables</span>::<span class="ident">non_ascii_space_character</span>(<span class="ident">c</span>) <span class="comment">/* C.1.2 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.1 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">non_ascii_control_character</span>(<span class="ident">c</span>) <span class="comment">/* C.2.2 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">private_use</span>(<span class="ident">c</span>) <span class="comment">/* C.3 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">non_character_code_point</span>(<span class="ident">c</span>) <span class="comment">/* C.4 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">surrogate_code</span>(<span class="ident">c</span>) <span class="comment">/* C.5 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">inappropriate_for_plain_text</span>(<span class="ident">c</span>) <span class="comment">/* C.6 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">inappropriate_for_canonical_representation</span>(<span class="ident">c</span>) <span class="comment">/* C.7 */</span> <span class="op">|</span><span class="op">|</span>
+            <span class="ident">tables</span>::<span class="ident">change_display_properties_or_deprecated</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span> <span class="op">|</span><span class="op">|</span>
             <span class="ident">tables</span>::<span class="ident">tagging_character</span>(<span class="ident">c</span>) <span class="comment">/* C.9 */</span>
         });
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">c</span>) <span class="op">=</span> <span class="ident">prohibited</span> {
@@ -593,8 +595,8 @@
 
 	<span class="kw">fn</span> <span class="ident">assert_prohibited_character</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">result</span>: <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Error</span><span class="op">&gt;</span>) {
 		<span class="kw">match</span> <span class="ident">result</span> {
-			<span class="prelude-val">Err</span>(<span class="ident">Error</span>(<span class="ident">ErrorCause</span>::<span class="ident">ProhibitedCharacter</span>(<span class="kw">_</span>))) <span class="op">=&gt;</span> (),
-			<span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">assert</span><span class="macro">!</span>(<span class="bool-val">false</span>)
+			<span class="prelude-val">Err</span>(<span class="ident">Error</span>(<span class="ident">ErrorCause</span>::<span class="ident">ProhibitedCharacter</span>(<span class="kw">_</span>))) <span class="op">=</span><span class="op">&gt;</span> (),
+			<span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert</span><span class="macro">!</span>(<span class="bool-val">false</span>)
 		}
 	}
 

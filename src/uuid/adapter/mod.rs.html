@@ -1050,7 +1050,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Hyphenated`]: adapter/struct.Hyphenated.html</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_hyphenated</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Hyphenated</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_hyphenated</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Hyphenated</span> {
         <span class="ident">Hyphenated</span>::<span class="ident">from_uuid</span>(<span class="self">self</span>)
     }
 
@@ -1058,7 +1058,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`HyphenatedRef`]: adapter/struct.HyphenatedRef.html</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_hyphenated_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">HyphenatedRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_hyphenated_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HyphenatedRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="ident">HyphenatedRef</span>::<span class="ident">from_uuid_ref</span>(<span class="self">self</span>)
     }
 
@@ -1066,7 +1066,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Simple`]: adapter/struct.Simple.html</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_simple</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Simple</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_simple</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Simple</span> {
         <span class="ident">Simple</span>::<span class="ident">from_uuid</span>(<span class="self">self</span>)
     }
 
@@ -1074,7 +1074,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`SimpleRef`]: adapter/struct.SimpleRef.html</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_simple_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">SimpleRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_simple_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SimpleRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="ident">SimpleRef</span>::<span class="ident">from_uuid_ref</span>(<span class="self">self</span>)
     }
 
@@ -1083,7 +1083,7 @@
     <span class="doccomment">/// [`Uuid`]: ../struct.Uuid.html</span>
     <span class="doccomment">/// [`Urn`]: adapter/struct.Urn.html</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_urn</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Urn</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_urn</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Urn</span> {
         <span class="ident">Urn</span>::<span class="ident">from_uuid</span>(<span class="self">self</span>)
     }
 
@@ -1092,7 +1092,7 @@
     <span class="doccomment">/// [`Uuid`]: ../struct.Uuid.html</span>
     <span class="doccomment">/// [`UrnRef`]: adapter/struct.UrnRef.html</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_urn_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">UrnRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_urn_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UrnRef</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="ident">UrnRef</span>::<span class="ident">from_uuid_ref</span>(<span class="self">self</span>)
     }
 }
@@ -1124,7 +1124,7 @@
     <span class="ident">uuid</span>: <span class="kw-2">&amp;</span><span class="ident">Uuid</span>,
     <span class="ident">hyphens</span>: <span class="ident">bool</span>,
     <span class="ident">upper</span>: <span class="ident">bool</span>,
-) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
     <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">hyphens</span> { <span class="number">36</span> } <span class="kw">else</span> { <span class="number">32</span> };
 
     {
@@ -1143,11 +1143,11 @@
                 <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">bytes</span>[<span class="ident">idx</span>];
                 <span class="kw">let</span> <span class="ident">out_idx</span> <span class="op">=</span> <span class="ident">hyphens_before</span> <span class="op">+</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">idx</span>;
 
-                <span class="ident">buffer</span>[<span class="ident">out_idx</span>] <span class="op">=</span> <span class="ident">hex</span>[(<span class="ident">b</span> <span class="op">&gt;&gt;</span> <span class="number">4</span>) <span class="kw">as</span> <span class="ident">usize</span>];
+                <span class="ident">buffer</span>[<span class="ident">out_idx</span>] <span class="op">=</span> <span class="ident">hex</span>[(<span class="ident">b</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">4</span>) <span class="kw">as</span> <span class="ident">usize</span>];
                 <span class="ident">buffer</span>[<span class="ident">out_idx</span> <span class="op">+</span> <span class="number">1</span>] <span class="op">=</span> <span class="ident">hex</span>[(<span class="ident">b</span> <span class="op">&amp;</span> <span class="number">0b1111</span>) <span class="kw">as</span> <span class="ident">usize</span>];
             }
 
-            <span class="kw">if</span> <span class="ident">group</span> <span class="op">!=</span> <span class="number">4</span> <span class="op">&amp;&amp;</span> <span class="ident">hyphens</span> {
+            <span class="kw">if</span> <span class="ident">group</span> <span class="op">!</span><span class="op">=</span> <span class="number">4</span> <span class="op">&amp;&amp;</span> <span class="ident">hyphens</span> {
                 <span class="ident">buffer</span>[<span class="ident">HYPHEN_POSITIONS</span>[<span class="ident">group</span>]] <span class="op">=</span> <span class="string">b&#39;-&#39;</span>;
             }
         }
@@ -1167,7 +1167,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Uuid`]: ../struct.Uuid.html</span>
     <span class="doccomment">/// [`Hyphenated`]: struct.Hyphenated.html</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid</span>(<span class="ident">uuid</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid</span>(<span class="ident">uuid</span>: <span class="ident">Uuid</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Hyphenated</span>(<span class="ident">uuid</span>)
     }
 
@@ -1213,7 +1213,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">0</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>)
     }
 
@@ -1259,7 +1259,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">0</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>)
     }
 }
@@ -1274,7 +1274,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Uuid`]: ../struct.Uuid.html</span>
     <span class="doccomment">/// [`HyphenatedRef`]: struct.HyphenatedRef.html</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid_ref</span>(<span class="ident">uuid</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid_ref</span>(<span class="ident">uuid</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Uuid</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">HyphenatedRef</span>(<span class="ident">uuid</span>)
     }
 
@@ -1324,7 +1324,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">0</span>, <span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>)
     }
 
@@ -1373,7 +1373,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">0</span>, <span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>)
     }
 }
@@ -1388,7 +1388,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Uuid`]: ../struct.Uuid.html</span>
     <span class="doccomment">/// [`Simple`]: struct.Simple.html</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid</span>(<span class="ident">uuid</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid</span>(<span class="ident">uuid</span>: <span class="ident">Uuid</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Simple</span>(<span class="ident">uuid</span>)
     }
 
@@ -1435,7 +1435,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">0</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)
     }
 
@@ -1478,7 +1478,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">0</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>)
     }
 }
@@ -1493,7 +1493,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Uuid`]: ../struct.Uuid.html</span>
     <span class="doccomment">/// [`SimpleRef`]: struct.SimpleRef.html</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid_ref</span>(<span class="ident">uuid</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid_ref</span>(<span class="ident">uuid</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Uuid</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">SimpleRef</span>(<span class="ident">uuid</span>)
     }
 
@@ -1540,7 +1540,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">0</span>, <span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>)
     }
 
@@ -1583,7 +1583,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">0</span>, <span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>)
     }
 }
@@ -1598,7 +1598,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Uuid`]: ../struct.Uuid.html</span>
     <span class="doccomment">/// [`Urn`]: struct.Urn.html</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid</span>(<span class="ident">uuid</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid</span>(<span class="ident">uuid</span>: <span class="ident">Uuid</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Urn</span>(<span class="ident">uuid</span>)
     }
 
@@ -1647,7 +1647,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">buffer</span>[..<span class="number">9</span>].<span class="ident">copy_from_slice</span>(<span class="string">b&quot;urn:uuid:&quot;</span>);
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">9</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>)
     }
@@ -1696,7 +1696,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">buffer</span>[..<span class="number">9</span>].<span class="ident">copy_from_slice</span>(<span class="string">b&quot;urn:uuid:&quot;</span>);
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">9</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>)
     }
@@ -1712,7 +1712,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Uuid`]: ../struct.Uuid.html</span>
     <span class="doccomment">/// [`UrnRef`]: struct.UrnRef.html</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid_ref</span>(<span class="ident">uuid</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">from_uuid_ref</span>(<span class="ident">uuid</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Uuid</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">UrnRef</span>(<span class="kw-2">&amp;</span><span class="ident">uuid</span>)
     }
 
@@ -1761,7 +1761,7 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_lower</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">buffer</span>[..<span class="number">9</span>].<span class="ident">copy_from_slice</span>(<span class="string">b&quot;urn:uuid:&quot;</span>);
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">9</span>, <span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">true</span>, <span class="bool-val">false</span>)
     }
@@ -1810,30 +1810,30 @@
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// */</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encode_upper</span><span class="op">&lt;</span><span class="lifetime">&#39;buf</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;buf</span> <span class="kw-2">mut</span> <span class="ident">str</span> {
         <span class="ident">buffer</span>[..<span class="number">9</span>].<span class="ident">copy_from_slice</span>(<span class="string">b&quot;urn:uuid:&quot;</span>);
         <span class="ident">encode</span>(<span class="ident">buffer</span>, <span class="number">9</span>, <span class="self">self</span>.<span class="number">0</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>)
     }
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">impl_adapter_traits</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>:<span class="ident">ident</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>:<span class="ident">lifetime</span>),<span class="kw-2">*</span><span class="op">&gt;</span>),<span class="op">+</span>) <span class="op">=&gt;</span> {$(
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>:<span class="ident">ident</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>:<span class="ident">lifetime</span>),<span class="kw-2">*</span><span class="op">&gt;</span>),<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> {$(
         <span class="kw">impl</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>),<span class="kw-2">*</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>),<span class="kw-2">*</span><span class="op">&gt;</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
                 <span class="ident">fmt</span>::<span class="ident">LowerHex</span>::<span class="ident">fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>),<span class="kw-2">*</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">LowerHex</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>),<span class="kw-2">*</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
                 <span class="comment">// TODO: Self doesn&#39;t work https://github.com/rust-lang/rust/issues/52808</span>
                 <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="self">self</span>.<span class="ident">encode_lower</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>::<span class="ident">LENGTH</span>]))
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>),<span class="kw-2">*</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">UpperHex</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>),<span class="kw-2">*</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
                 <span class="comment">// TODO: Self doesn&#39;t work https://github.com/rust-lang/rust/issues/52808</span>
                 <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="self">self</span>.<span class="ident">encode_upper</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="number">0</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>::<span class="ident">LENGTH</span>]))
             }
@@ -1844,18 +1844,18 @@
 }
 
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">impl_adapter_from</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>:<span class="ident">ident</span><span class="op">&lt;</span><span class="op">&gt;</span>) <span class="op">=&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>:<span class="ident">ident</span><span class="op">&lt;</span><span class="op">&gt;</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Uuid</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">f</span>: <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">f</span>: <span class="ident">Uuid</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>::<span class="ident">from_uuid</span>(<span class="ident">f</span>)
             }
         }
     };
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>:<span class="ident">ident</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>:<span class="ident">lifetime</span><span class="op">&gt;</span>) <span class="op">=&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>:<span class="ident">ident</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span>:<span class="ident">lifetime</span><span class="op">&gt;</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">impl</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span> <span class="ident">Uuid</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span><span class="op">&gt;</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span> <span class="ident">Uuid</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">a</span> <span class="ident">Uuid</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>::<span class="ident">from_uuid_ref</span>(<span class="ident">f</span>)
             }
         }
@@ -1880,7 +1880,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="string">b&#39;x&#39;</span>; <span class="number">100</span>];
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">Uuid</span>::<span class="ident">nil</span>().<span class="ident">to_hyphenated</span>().<span class="ident">encode_lower</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>).<span class="ident">len</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">len</span>, <span class="kw">super</span>::<span class="ident">Hyphenated</span>::<span class="ident">LENGTH</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">==</span> <span class="string">b&#39;x&#39;</span>));
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;x&#39;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1888,7 +1888,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="string">b&#39;x&#39;</span>; <span class="number">100</span>];
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">Uuid</span>::<span class="ident">nil</span>().<span class="ident">to_hyphenated</span>().<span class="ident">encode_lower</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>).<span class="ident">len</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">len</span>, <span class="kw">super</span>::<span class="ident">HyphenatedRef</span>::<span class="ident">LENGTH</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">==</span> <span class="string">b&#39;x&#39;</span>));
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;x&#39;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1896,7 +1896,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="string">b&#39;x&#39;</span>; <span class="number">100</span>];
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">Uuid</span>::<span class="ident">nil</span>().<span class="ident">to_simple</span>().<span class="ident">encode_lower</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>).<span class="ident">len</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">len</span>, <span class="kw">super</span>::<span class="ident">Simple</span>::<span class="ident">LENGTH</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">==</span> <span class="string">b&#39;x&#39;</span>));
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;x&#39;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1904,7 +1904,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="string">b&#39;x&#39;</span>; <span class="number">100</span>];
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">Uuid</span>::<span class="ident">nil</span>().<span class="ident">to_simple</span>().<span class="ident">encode_lower</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>).<span class="ident">len</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">len</span>, <span class="kw">super</span>::<span class="ident">SimpleRef</span>::<span class="ident">LENGTH</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">==</span> <span class="string">b&#39;x&#39;</span>));
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;x&#39;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1912,7 +1912,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="string">b&#39;x&#39;</span>; <span class="number">100</span>];
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">Uuid</span>::<span class="ident">nil</span>().<span class="ident">to_urn</span>().<span class="ident">encode_lower</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>).<span class="ident">len</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">len</span>, <span class="kw">super</span>::<span class="ident">Urn</span>::<span class="ident">LENGTH</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">==</span> <span class="string">b&#39;x&#39;</span>));
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;x&#39;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1920,7 +1920,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="string">b&#39;x&#39;</span>; <span class="number">100</span>];
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">Uuid</span>::<span class="ident">nil</span>().<span class="ident">to_urn</span>().<span class="ident">encode_lower</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>).<span class="ident">len</span>();
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">len</span>, <span class="kw">super</span>::<span class="ident">UrnRef</span>::<span class="ident">LENGTH</span>);
-        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">==</span> <span class="string">b&#39;x&#39;</span>));
+        <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">buf</span>[<span class="ident">len</span>..].<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;x&#39;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>

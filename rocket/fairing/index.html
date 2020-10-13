@@ -7,11 +7,11 @@ callbacks that Rocket will run at requested points in a program. You can use
 fairings to rewrite or record information about requests and responses, or
 to perform an action once a Rocket application has launched.</p>
 <p>To learn more about writing a fairing, see the <a href="../../rocket/fairing/trait.Fairing.html"><code>Fairing</code></a> trait
-documentation. You can also use <a href="../../rocket/fairing/struct.AdHoc.html" title="`AdHoc`"><code>AdHoc</code></a> to create a fairing on-the-fly
+documentation. You can also use <a href="../../rocket/fairing/struct.AdHoc.html" title="AdHoc"><code>AdHoc</code></a> to create a fairing on-the-fly
 from a closure or function.</p>
 <h2 id="attaching" class="section-header"><a href="#attaching">Attaching</a></h2>
 <p>You must inform Rocket about fairings that you wish to be active by calling
-<a href="../../rocket/struct.Rocket.html#method.attach" title="`Rocket::attach()`"><code>Rocket::attach()</code></a> method on the application's <a href="../../rocket/struct.Rocket.html" title="`Rocket`"><code>Rocket</code></a> instance and
+<a href="../../rocket/struct.Rocket.html#method.attach" title="Rocket::attach()"><code>Rocket::attach()</code></a> method on the application's <a href="../../rocket/struct.Rocket.html" title="Rocket"><code>Rocket</code></a> instance and
 passing in the appropriate <a href="../../rocket/fairing/trait.Fairing.html"><code>Fairing</code></a>. For instance, to attach fairings
 named <code>req_fairing</code> and <code>res_fairing</code> to a new Rocket instance, you might
 write:</p>

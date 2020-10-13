@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/expression_methods/global_expression_methods.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>global_expression_methods.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="shortcut icon" href="../../../favicon.ico"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/expression_methods/global_expression_methods.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>global_expression_methods.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -454,7 +456,7 @@
     <span class="doccomment">/// assert_eq!(Ok(1), data.first(&amp;connection));</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">eq</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">Eq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">eq</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Eq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
         <span class="ident">Eq</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">other</span>.<span class="ident">as_expression</span>())
     }
 
@@ -472,7 +474,7 @@
     <span class="doccomment">/// assert_eq!(Ok(2), data.first(&amp;connection));</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">ne</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">NotEq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">ne</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NotEq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
         <span class="ident">NotEq</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">other</span>.<span class="ident">as_expression</span>())
     }
 
@@ -501,7 +503,7 @@
     <span class="doccomment">/// assert_eq!(Ok(vec![]), data.load::&lt;i32&gt;(&amp;connection));</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">eq_any</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">values</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">In</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">InExpression</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">eq_any</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">values</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">In</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">InExpression</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">AsInExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span>,
     {
@@ -536,7 +538,7 @@
     <span class="doccomment">/// assert_eq!(Ok(vec![1, 2, 3]), data.load(&amp;connection));</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">ne_all</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">values</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">NotIn</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">InExpression</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">ne_all</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">values</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NotIn</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">InExpression</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">AsInExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span>,
     {
@@ -565,7 +567,7 @@
     <span class="doccomment">/// assert_eq!(&quot;spider&quot;, data);</span>
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
-    <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">IsNull</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">is_null</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IsNull</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">IsNull</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 
@@ -591,7 +593,7 @@
     <span class="doccomment">/// assert_eq!(&quot;dog&quot;, data);</span>
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
-    <span class="kw">fn</span> <span class="ident">is_not_null</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">IsNotNull</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">is_not_null</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IsNotNull</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">IsNotNull</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 
@@ -617,7 +619,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">gt</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">Gt</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">gt</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Gt</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
         <span class="ident">Gt</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">other</span>.<span class="ident">as_expression</span>())
     }
 
@@ -643,7 +645,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">ge</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">GtEq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">ge</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">GtEq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
         <span class="ident">GtEq</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">other</span>.<span class="ident">as_expression</span>())
     }
 
@@ -669,7 +671,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">lt</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">Lt</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">lt</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Lt</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
         <span class="ident">Lt</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">other</span>.<span class="ident">as_expression</span>())
     }
 
@@ -694,7 +696,7 @@
     <span class="doccomment">/// assert_eq!(&quot;Sean&quot;, data);</span>
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
-    <span class="kw">fn</span> <span class="ident">le</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="ident">LtEq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">le</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">other</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LtEq</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">T</span>::<span class="ident">Expression</span><span class="op">&gt;</span> {
         <span class="ident">LtEq</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">other</span>.<span class="ident">as_expression</span>())
     }
 
@@ -718,7 +720,7 @@
     <span class="doccomment">/// assert_eq!(Ok(&quot;dog&quot;.to_string()), data);</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">between</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">lower</span>: <span class="ident">T</span>, <span class="ident">upper</span>: <span class="ident">U</span>) <span class="op">-&gt;</span> <span class="ident">Between</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">And</span><span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Expression</span>, <span class="ident">U</span>::<span class="ident">Expression</span><span class="op">&gt;&gt;</span>
+    <span class="kw">fn</span> <span class="ident">between</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">lower</span>: <span class="ident">T</span>, <span class="ident">upper</span>: <span class="ident">U</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Between</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">And</span><span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Expression</span>, <span class="ident">U</span>::<span class="ident">Expression</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span>,
         <span class="ident">U</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span>,
@@ -753,7 +755,7 @@
         <span class="self">self</span>,
         <span class="ident">lower</span>: <span class="ident">T</span>,
         <span class="ident">upper</span>: <span class="ident">U</span>,
-    ) <span class="op">-&gt;</span> <span class="ident">NotBetween</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">And</span><span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Expression</span>, <span class="ident">U</span>::<span class="ident">Expression</span><span class="op">&gt;&gt;</span>
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NotBetween</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">And</span><span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Expression</span>, <span class="ident">U</span>::<span class="ident">Expression</span><span class="op">&gt;</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span>,
         <span class="ident">U</span>: <span class="ident">AsExpression</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">SqlType</span><span class="op">&gt;</span>,
@@ -785,7 +787,7 @@
     <span class="doccomment">/// #     Ok(())</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">desc</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Desc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">desc</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Desc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">Desc</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 
@@ -812,7 +814,7 @@
     <span class="doccomment">///     };</span>
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">asc</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Asc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">asc</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Asc</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">Asc</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 }
@@ -860,7 +862,7 @@
     <span class="doccomment">///     println!(&quot;{:?}&quot;, data);</span>
     <span class="doccomment">/// }</span>
     <span class="doccomment">/// ```</span>
-    <span class="kw">fn</span> <span class="ident">nullable</span>(<span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">nullable</span>::<span class="ident">Nullable</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">nullable</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">nullable</span>::<span class="ident">Nullable</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">nullable</span>::<span class="ident">Nullable</span>::<span class="ident">new</span>(<span class="self">self</span>)
     }
 }
