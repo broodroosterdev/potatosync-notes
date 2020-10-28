@@ -35,4 +35,4 @@ default-features = false
 features = ["json"]
 
 [dev-dependencies]
-mocktopus = "0.7.0"
+mocktopus = "0.7.6"
