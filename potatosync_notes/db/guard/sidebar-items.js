@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Connection","Connection request guard type: a wrapper around an r2d2 pooled connection."]]});

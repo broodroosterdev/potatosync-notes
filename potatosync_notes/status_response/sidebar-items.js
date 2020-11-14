@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["StatusResponse","Sent back on every request to indicate status and in case it has failed an error of the request"]]});

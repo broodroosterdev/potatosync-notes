@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Note","General Note struct used for retrieving from db and updating notes"]]});

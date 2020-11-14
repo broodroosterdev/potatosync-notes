@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["controller","Controller to handle the notes"],["model","Models used for handling notes"],["repository","Repository to abstract database layer"],["responses","Reponse messages"]]});
