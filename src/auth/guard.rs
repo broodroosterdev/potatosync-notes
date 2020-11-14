@@ -4,19 +4,11 @@ use rocket::outcome::Outcome;
 use rocket::request::FromRequest;
 use rocket_failure::errors::Status;
 use jsonwebtoken::{Validation, decode, DecodingKey};
-use serde::Deserialize;
+use crate::auth::claims::Token;
 #[cfg(test)]
 use mocktopus::macros::*;
-/// Claims for access_token
-#[derive(Deserialize)]
-pub struct Token {
-    pub(crate) sub: String,
-    pub role: String,
-    #[serde(rename = "type")]
-    pub(crate) token_type: String,
-    pub iat: u64,
-    pub exp: u64,
-}
+
+
 
 /// Get access_token from header and verify it
 #[cfg_attr(test, mockable)]
@@ -52,3 +44,4 @@ impl<'a, 'r> FromRequest<'a, 'r> for Token {
         };
     }
 }
+

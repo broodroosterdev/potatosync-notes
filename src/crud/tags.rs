@@ -1,8 +1,9 @@
 use diesel::{PgConnection, RunQueryDsl, ExpressionMethods};
-use crate::tag::model::{Tag, PatchingTag};
 use crate::schema::tags;
 use diesel::query_dsl::filter_dsl::FilterDsl;
 use diesel::query_dsl::select_dsl::SelectDsl;
+use crate::models::tags::Tag;
+use crate::schemas::tags::PatchingTag;
 
 #[cfg_attr(test, mockable)]
 pub fn tag_insert_if_empty(tag: Tag, connection: &PgConnection) -> Result<usize, String>{

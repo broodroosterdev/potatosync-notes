@@ -3,7 +3,7 @@ use diesel::prelude::*;
 use mocktopus::macros::*;
 
 use crate::schema::settings;
-use crate::setting::model::Setting;
+use crate::models::settings::Setting;
 
 #[cfg_attr(test, mockable)]
 pub fn update_or_insert_setting(setting: Setting, connection: &PgConnection) -> Result<usize, String>{

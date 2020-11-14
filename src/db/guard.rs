@@ -1,21 +1,10 @@
-use std::env;
-use std::ops::Deref;
-
-use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
-use rocket::{Outcome, Request, State};
+use diesel::r2d2::{PooledConnection, ConnectionManager};
+use rocket::request::FromRequest;
+use rocket::{Request, request, State, Outcome};
 use rocket::http::Status;
-use rocket::request::{self, FromRequest};
 use diesel::PgConnection;
-
-/// An alias to the type for a pool of Diesel Postgres Connection
-pub type PgPool = Pool<ConnectionManager<PgConnection>>;
-
-/// Initialize the database pool.
-pub fn connect() -> PgPool {
-    let database_url = env::var("DATABASE_URL").expect("Could not find DATABASE URL in .env");
-    let manager = ConnectionManager::<PgConnection>::new(database_url);
-    Pool::new(manager).expect("Failed to create pool")
-}
+use std::ops::Deref;
+use crate::db::pool::PgPool;
 
 /// Connection request guard type: a wrapper around an r2d2 pooled connection.
 pub struct Connection(pub PooledConnection<ConnectionManager<PgConnection>>);
@@ -41,18 +30,5 @@ impl Deref for Connection {
 
     fn deref(&self) -> &Self::Target {
         &self.0
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use diesel::Connection;
-
-    use super::*;
-
-    #[test]
-    fn check_connect() {
-        dotenv::dotenv().ok();
-        connect();
     }
 }

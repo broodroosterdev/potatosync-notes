@@ -1,9 +1,9 @@
-use diesel::prelude::*;
 #[cfg(test)]
 use mocktopus::macros::*;
-
-use crate::note::model::{Note, PatchingNote};
+use diesel::prelude::*;
 use crate::schema::notes;
+use crate::models::notes::Note;
+use crate::schemas::notes::PatchingNote;
 
 #[cfg_attr(test, mockable)]
 pub fn note_exists(account_id: &String, note_id: &String, connection: &PgConnection) -> bool {
