@@ -7,7 +7,7 @@
 <code>reader</code> returns EOF.</p>
 <p>On success, the total number of bytes that were copied from <code>reader</code> to
 <code>writer</code> is returned.</p>
-<p>This is an asynchronous version of <a href="https://doc.rust-lang.org/nightly/std/io/util/fn.copy.html"><code>std::io::copy</code></a>.</p>
+<p>This is an asynchronous version of <a href="https://doc.rust-lang.org/nightly/std/io/copy/fn.copy.html"><code>std::io::copy</code></a>.</p>
 <h1 id="errors" class="section-header"><a href="#errors">Errors</a></h1>
 <p>The returned future will finish with an error will return an error
 immediately if any call to <code>poll_read</code> or <code>poll_write</code> returns an error.</p>

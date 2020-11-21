@@ -382,7 +382,7 @@
 <span id="379">379</span>
 <span id="380">380</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Useful traits for manipulating sequences of data stored in `GenericArray`s</span>
+<span class="doccomment">//! Useful traits for manipulating sequences of data stored in `GenericArray`s</span>
 
 <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ops</span>::{<span class="ident">Add</span>, <span class="ident">Sub</span>};
@@ -390,20 +390,20 @@
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ptr</span>;
 <span class="kw">use</span> <span class="ident">typenum</span>::<span class="ident">operator_aliases</span>::<span class="kw-2">*</span>;
 
-<span class="doccomment">/// Defines some sequence with an associated length and iteration capabilities.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This is useful for passing N-length generic arrays as generics.</span>
+<span class="doccomment">/// Defines some sequence with an associated length and iteration capabilities.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This is useful for passing N-length generic arrays as generics.</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">IntoIterator</span> {
-    <span class="doccomment">/// `GenericArray` associated length</span>
+    <span class="doccomment">/// `GenericArray` associated length</span>
     <span class="kw">type</span> <span class="ident">Length</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// Concrete sequence type used in conjuction with reference implementations of `GenericSequence`</span>
+    <span class="doccomment">/// Concrete sequence type used in conjuction with reference implementations of `GenericSequence`</span>
     <span class="kw">type</span> <span class="ident">Sequence</span>: <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Length</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Length</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// Initializes a new sequence instance using the given function.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the generator function panics while initializing the sequence,</span>
-    <span class="doccomment">/// any already initialized elements will be dropped.</span>
+    <span class="doccomment">/// Initializes a new sequence instance using the given function.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If the generator function panics while initializing the sequence,</span>
+    <span class="doccomment">/// any already initialized elements will be dropped.</span>
     <span class="kw">fn</span> <span class="ident">generate</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Sequence</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>;
@@ -450,10 +450,10 @@
     }
 }
 
-<span class="doccomment">/// Accessor for `GenericSequence` item type, which is really `IntoIterator::Item`</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// For deeply nested generic mapped sequence types, like shown in `tests/generics.rs`,</span>
-<span class="doccomment">/// this can be useful for keeping things organized.</span>
+<span class="doccomment">/// Accessor for `GenericSequence` item type, which is really `IntoIterator::Item`</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// For deeply nested generic mapped sequence types, like shown in `tests/generics.rs`,</span>
+<span class="doccomment">/// this can be useful for keeping things organized.</span>
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">SequenceItem</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">IntoIterator</span><span class="op">&gt;</span>::<span class="ident">Item</span>;
 
 <span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span>, <span class="ident">S</span>: <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">S</span>
@@ -488,86 +488,86 @@
     }
 }
 
-<span class="doccomment">/// Defines any `GenericSequence` which can be lengthened or extended by appending</span>
-<span class="doccomment">/// or prepending an element to it.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Any lengthened sequence can be shortened back to the original using `pop_front` or `pop_back`</span>
+<span class="doccomment">/// Defines any `GenericSequence` which can be lengthened or extended by appending</span>
+<span class="doccomment">/// or prepending an element to it.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Any lengthened sequence can be shortened back to the original using `pop_front` or `pop_back`</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">Lengthen</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// `GenericSequence` that has one more element than `Self`</span>
+    <span class="doccomment">/// `GenericSequence` that has one more element than `Self`</span>
     <span class="kw">type</span> <span class="ident">Longer</span>: <span class="ident">Shorten</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Shorter</span> <span class="op">=</span> <span class="self">Self</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// Returns a new array with the given element appended to the end of it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Example:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # use generic_array::{arr, sequence::Lengthen};</span>
-    <span class="doccomment">/// # fn main() {</span>
-    <span class="doccomment">/// let a = arr![i32; 1, 2, 3];</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let b = a.append(4);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// assert_eq!(b, arr![i32; 1, 2, 3, 4]);</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// Returns a new array with the given element appended to the end of it.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Example:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// # use generic_array::{arr, sequence::Lengthen};</span>
+    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// let a = arr![i32; 1, 2, 3];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let b = a.append(4);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(b, arr![i32; 1, 2, 3, 4]);</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">fn</span> <span class="ident">append</span>(<span class="self">self</span>, <span class="ident">last</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Longer</span>;
 
-    <span class="doccomment">/// Returns a new array with the given element prepended to the front of it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Example:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # use generic_array::{arr, sequence::Lengthen};</span>
-    <span class="doccomment">/// # fn main() {</span>
-    <span class="doccomment">/// let a = arr![i32; 1, 2, 3];</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let b = a.prepend(4);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// assert_eq!(b, arr![i32; 4, 1, 2, 3]);</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// Returns a new array with the given element prepended to the front of it.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Example:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// # use generic_array::{arr, sequence::Lengthen};</span>
+    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// let a = arr![i32; 1, 2, 3];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let b = a.prepend(4);</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(b, arr![i32; 4, 1, 2, 3]);</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">fn</span> <span class="ident">prepend</span>(<span class="self">self</span>, <span class="ident">first</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Longer</span>;
 }
 
-<span class="doccomment">/// Defines a `GenericSequence` which can be shortened by removing the first or last element from it.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Additionally, any shortened sequence can be lengthened by</span>
-<span class="doccomment">/// appending or prepending an element to it.</span>
+<span class="doccomment">/// Defines a `GenericSequence` which can be shortened by removing the first or last element from it.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Additionally, any shortened sequence can be lengthened by</span>
+<span class="doccomment">/// appending or prepending an element to it.</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">Shorten</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>: <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="doccomment">/// `GenericSequence` that has one less element than `Self`</span>
+    <span class="doccomment">/// `GenericSequence` that has one less element than `Self`</span>
     <span class="kw">type</span> <span class="ident">Shorter</span>: <span class="ident">Lengthen</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Longer</span> <span class="op">=</span> <span class="self">Self</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// Returns a new array without the last element, and the last element.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Example:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # use generic_array::{arr, sequence::Shorten};</span>
-    <span class="doccomment">/// # fn main() {</span>
-    <span class="doccomment">/// let a = arr![i32; 1, 2, 3, 4];</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let (init, last) = a.pop_back();</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// assert_eq!(init, arr![i32; 1, 2, 3]);</span>
-    <span class="doccomment">/// assert_eq!(last, 4);</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// Returns a new array without the last element, and the last element.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Example:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// # use generic_array::{arr, sequence::Shorten};</span>
+    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// let a = arr![i32; 1, 2, 3, 4];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let (init, last) = a.pop_back();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(init, arr![i32; 1, 2, 3]);</span>
+    <span class="doccomment">/// assert_eq!(last, 4);</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">fn</span> <span class="ident">pop_back</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">Shorter</span>, <span class="ident">T</span>);
 
-    <span class="doccomment">/// Returns a new array without the first element, and the first element.</span>
-    <span class="doccomment">/// Example:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```rust</span>
-    <span class="doccomment">/// # use generic_array::{arr, sequence::Shorten};</span>
-    <span class="doccomment">/// # fn main() {</span>
-    <span class="doccomment">/// let a = arr![i32; 1, 2, 3, 4];</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let (head, tail) = a.pop_front();</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// assert_eq!(head, 1);</span>
-    <span class="doccomment">/// assert_eq!(tail, arr![i32; 2, 3, 4]);</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// Returns a new array without the first element, and the first element.</span>
+    <span class="doccomment">/// Example:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```rust</span>
+    <span class="doccomment">/// # use generic_array::{arr, sequence::Shorten};</span>
+    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// let a = arr![i32; 1, 2, 3, 4];</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let (head, tail) = a.pop_front();</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// assert_eq!(head, 1);</span>
+    <span class="doccomment">/// assert_eq!(tail, arr![i32; 2, 3, 4]);</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// ```</span>
     <span class="kw">fn</span> <span class="ident">pop_front</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">T</span>, <span class="self">Self</span>::<span class="ident">Shorter</span>);
 }
 
@@ -583,13 +583,13 @@
     <span class="kw">fn</span> <span class="ident">append</span>(<span class="self">self</span>, <span class="ident">last</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Longer</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">longer</span>: <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Longer</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="ident">uninit</span>();
 
-        <span class="comment">// Note this is *mut Self, so add(1) increments by the whole array</span>
+        <span class="comment">// Note this is *mut Self, so add(1) increments by the whole array</span>
         <span class="kw">let</span> <span class="ident">out_ptr</span> <span class="op">=</span> <span class="ident">longer</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>;
 
         <span class="kw">unsafe</span> {
-            <span class="comment">// write self first</span>
+            <span class="comment">// write self first</span>
             <span class="ident">ptr</span>::<span class="ident">write</span>(<span class="ident">out_ptr</span>, <span class="self">self</span>);
-            <span class="comment">// increment past self, then write the last</span>
+            <span class="comment">// increment past self, then write the last</span>
             <span class="ident">ptr</span>::<span class="ident">write</span>(<span class="ident">out_ptr</span>.<span class="ident">add</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">last</span>);
 
             <span class="ident">longer</span>.<span class="ident">assume_init</span>()
@@ -599,13 +599,13 @@
     <span class="kw">fn</span> <span class="ident">prepend</span>(<span class="self">self</span>, <span class="ident">first</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Longer</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">longer</span>: <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Longer</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="ident">uninit</span>();
 
-        <span class="comment">// Note this is *mut T, so add(1) increments by a single T</span>
+        <span class="comment">// Note this is *mut T, so add(1) increments by a single T</span>
         <span class="kw">let</span> <span class="ident">out_ptr</span> <span class="op">=</span> <span class="ident">longer</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>;
 
         <span class="kw">unsafe</span> {
-            <span class="comment">// write the first at the start</span>
+            <span class="comment">// write the first at the start</span>
             <span class="ident">ptr</span>::<span class="ident">write</span>(<span class="ident">out_ptr</span>, <span class="ident">first</span>);
-            <span class="comment">// increment past the first, then write self</span>
+            <span class="comment">// increment past the first, then write self</span>
             <span class="ident">ptr</span>::<span class="ident">write</span>(<span class="ident">out_ptr</span>.<span class="ident">add</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>, <span class="self">self</span>);
 
             <span class="ident">longer</span>.<span class="ident">assume_init</span>()
@@ -634,7 +634,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">pop_front</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">T</span>, <span class="self">Self</span>::<span class="ident">Shorter</span>) {
-        <span class="comment">// ensure this doesn&#39;t get dropped</span>
+        <span class="comment">// ensure this doesn&#39;t get dropped</span>
         <span class="kw">let</span> <span class="ident">whole</span> <span class="op">=</span> <span class="ident">ManuallyDrop</span>::<span class="ident">new</span>(<span class="self">self</span>);
 
         <span class="kw">unsafe</span> {
@@ -646,17 +646,17 @@
     }
 }
 
-<span class="doccomment">/// Defines a `GenericSequence` that can be split into two parts at a given pivot index.</span>
+<span class="doccomment">/// Defines a `GenericSequence` that can be split into two parts at a given pivot index.</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">Split</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">K</span><span class="op">&gt;</span>: <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">K</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 {
-    <span class="doccomment">/// First part of the resulting split array</span>
+    <span class="doccomment">/// First part of the resulting split array</span>
     <span class="kw">type</span> <span class="ident">First</span>: <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
-    <span class="doccomment">/// Second part of the resulting split array</span>
+    <span class="doccomment">/// Second part of the resulting split array</span>
     <span class="kw">type</span> <span class="ident">Second</span>: <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// Splits an array at the given index, returning the separate parts of the array.</span>
+    <span class="doccomment">/// Splits an array at the given index, returning the separate parts of the array.</span>
     <span class="kw">fn</span> <span class="ident">split</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">First</span>, <span class="self">Self</span>::<span class="ident">Second</span>);
 }
 
@@ -672,7 +672,7 @@
 
     <span class="kw">fn</span> <span class="ident">split</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="self">Self</span>::<span class="ident">First</span>, <span class="self">Self</span>::<span class="ident">Second</span>) {
         <span class="kw">unsafe</span> {
-            <span class="comment">// ensure this doesn&#39;t get dropped</span>
+            <span class="comment">// ensure this doesn&#39;t get dropped</span>
             <span class="kw">let</span> <span class="ident">whole</span> <span class="op">=</span> <span class="ident">ManuallyDrop</span>::<span class="ident">new</span>(<span class="self">self</span>);
 
             <span class="kw">let</span> <span class="ident">head</span> <span class="op">=</span> <span class="ident">ptr</span>::<span class="ident">read</span>(<span class="ident">whole</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">_</span>);
@@ -723,18 +723,18 @@
     }
 }
 
-<span class="doccomment">/// Defines `GenericSequence`s which can be joined together, forming a larger array.</span>
+<span class="doccomment">/// Defines `GenericSequence`s which can be joined together, forming a larger array.</span>
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">trait</span> <span class="ident">Concat</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">M</span><span class="op">&gt;</span>: <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">M</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 {
-    <span class="doccomment">/// Sequence to be concatenated with `self`</span>
+    <span class="doccomment">/// Sequence to be concatenated with `self`</span>
     <span class="kw">type</span> <span class="ident">Rest</span>: <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Length</span> <span class="op">=</span> <span class="ident">M</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// Resulting sequence formed by the concatenation.</span>
+    <span class="doccomment">/// Resulting sequence formed by the concatenation.</span>
     <span class="kw">type</span> <span class="ident">Output</span>: <span class="ident">GenericSequence</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="doccomment">/// Concatenate, or join, two sequences.</span>
+    <span class="doccomment">/// Concatenate, or join, two sequences.</span>
     <span class="kw">fn</span> <span class="ident">concat</span>(<span class="self">self</span>, <span class="ident">rest</span>: <span class="self">Self</span>::<span class="ident">Rest</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
 }
 
@@ -753,9 +753,9 @@
         <span class="kw">let</span> <span class="ident">out_ptr</span> <span class="op">=</span> <span class="ident">output</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>;
 
         <span class="kw">unsafe</span> {
-            <span class="comment">// write all of self to the pointer</span>
+            <span class="comment">// write all of self to the pointer</span>
             <span class="ident">ptr</span>::<span class="ident">write</span>(<span class="ident">out_ptr</span>, <span class="self">self</span>);
-            <span class="comment">// increment past self, then write the rest</span>
+            <span class="comment">// increment past self, then write the rest</span>
             <span class="ident">ptr</span>::<span class="ident">write</span>(<span class="ident">out_ptr</span>.<span class="ident">add</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>, <span class="ident">rest</span>);
 
             <span class="ident">output</span>.<span class="ident">assume_init</span>()

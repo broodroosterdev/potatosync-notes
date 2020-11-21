@@ -10,7 +10,7 @@ trait are guaranteed to be executable on their own.</p>
 <p>A type which doesn't implement this trait may still represent a complete SQL
 query. For example, an <code>INSERT</code> statement without a <code>RETURNING</code> clause will
 not implement this trait, but can still be executed.</p>
-</div><h2 id="associated-types" class="small-section-header">Associated Types<a href="#associated-types" class="anchor"></a></h2><div class="methods"><h3 id="associatedtype.SqlType" class="method"><code>type <a href="#associatedtype.SqlType" class="type">SqlType</a></code></h3><div class="docblock"><p>The SQL type that this query represents.</p>
+</div><h2 id="associated-types" class="small-section-header">Associated Types<a href="#associated-types" class="anchor"></a></h2><div class="methods"><h3 id="associatedtype.SqlType" class="method"><code>type <a href="#associatedtype.SqlType" class="type">SqlType</a></code><a class="srclink" href="../../src/diesel/query_builder/mod.rs.html#110" title="goto source code">[src]</a></h3><div class="docblock"><p>The SQL type that this query represents.</p>
 <p>This is the SQL type of the <code>SELECT</code> clause for select statements, and
 the SQL type of the <code>RETURNING</code> clause for insert, update, or delete
 statements.</p>

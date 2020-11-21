@@ -145,7 +145,7 @@
 <span id="142">142</span>
 <span id="143">143</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! Safe wrappers for memory-accessing functions like `std::ptr::copy()`.</span>
+<span class="doccomment">//! Safe wrappers for memory-accessing functions like `std::ptr::copy()`.</span>
 
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 
@@ -172,14 +172,14 @@
     }
 );
 
-<span class="doccomment">/// Copy `len` elements from `src_idx` to `dest_idx`. Ranges may overlap.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Safe wrapper for `memmove()`/`std::ptr::copy()`.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ###Panics</span>
-<span class="doccomment">/// * If either `src_idx` or `dest_idx` are out of bounds, or if either of these plus `len` is out of</span>
-<span class="doccomment">/// bounds.</span>
-<span class="doccomment">/// * If `src_idx + len` or `dest_idx + len` overflows.</span>
+<span class="doccomment">/// Copy `len` elements from `src_idx` to `dest_idx`. Ranges may overlap.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Safe wrapper for `memmove()`/`std::ptr::copy()`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ###Panics</span>
+<span class="doccomment">/// * If either `src_idx` or `dest_idx` are out of bounds, or if either of these plus `len` is out of</span>
+<span class="doccomment">/// bounds.</span>
+<span class="doccomment">/// * If `src_idx + len` or `dest_idx + len` overflows.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">copy_over</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>], <span class="ident">src_idx</span>: <span class="ident">usize</span>, <span class="ident">dest_idx</span>: <span class="ident">usize</span>, <span class="ident">len</span>: <span class="ident">usize</span>) {
     <span class="kw">if</span> <span class="ident">slice</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">0</span> { <span class="kw">return</span>; }
 
@@ -188,8 +188,8 @@
     <span class="macro">len_check</span><span class="macro">!</span>(<span class="ident">slice</span>, <span class="ident">src_idx</span>, <span class="ident">len</span>);
     <span class="macro">len_check</span><span class="macro">!</span>(<span class="ident">slice</span>, <span class="ident">dest_idx</span>, <span class="ident">len</span>);
 
-    <span class="comment">// At any point a Rust reference exists, the compiler is free to do this.</span>
-    <span class="comment">// So we explicitely add it to be caught by miri.</span>
+    <span class="comment">// At any point a Rust reference exists, the compiler is free to do this.</span>
+    <span class="comment">// So we explicitely add it to be caught by miri.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">miri</span>)]</span>
     <span class="ident">slice</span>.<span class="ident">iter</span>().<span class="ident">copied</span>().<span class="ident">for_each</span>(<span class="ident">drop</span>);
 
@@ -200,45 +200,45 @@
     }
 }
 
-<span class="doccomment">/// Safe wrapper for `std::ptr::write_bytes()`/`memset()`.</span>
+<span class="doccomment">/// Safe wrapper for `std::ptr::write_bytes()`/`memset()`.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_bytes</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="ident">byte</span>: <span class="ident">u8</span>) {
     <span class="kw">unsafe</span> {
         <span class="ident">ptr</span>::<span class="ident">write_bytes</span>(<span class="ident">slice</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">byte</span>, <span class="ident">slice</span>.<span class="ident">len</span>());
     }
 }
 
-<span class="doccomment">/// Prepend `elems` to `vec`, resizing if necessary.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Panics</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If `vec.len() + elems.len()` overflows.</span>
+<span class="doccomment">/// Prepend `elems` to `vec`, resizing if necessary.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ### Panics</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// If `vec.len() + elems.len()` overflows.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">prepend</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">elems</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="ident">vec</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) {
-    <span class="kw">let</span> <span class="ident">elems_len</span> <span class="op">=</span> <span class="ident">elems</span>.<span class="ident">len</span>(); <span class="comment">// `&lt;= isize::MAX as usize`</span>
+    <span class="kw">let</span> <span class="ident">elems_len</span> <span class="op">=</span> <span class="ident">elems</span>.<span class="ident">len</span>(); <span class="comment">// `&lt;= isize::MAX as usize`</span>
     <span class="kw">if</span> <span class="ident">elems_len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> { <span class="kw">return</span>; }
 
-    <span class="kw">let</span> <span class="ident">old_len</span> <span class="op">=</span> <span class="ident">vec</span>.<span class="ident">len</span>(); <span class="comment">// `&lt;= isize::MAX as usize`</span>
+    <span class="kw">let</span> <span class="ident">old_len</span> <span class="op">=</span> <span class="ident">vec</span>.<span class="ident">len</span>(); <span class="comment">// `&lt;= isize::MAX as usize`</span>
     <span class="kw">if</span> <span class="ident">old_len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-        <span class="comment">// Prepend = append: delegate to Rust&#39;s stdlib implementation.</span>
+        <span class="comment">// Prepend = append: delegate to Rust&#39;s stdlib implementation.</span>
         <span class="ident">vec</span>.<span class="ident">extend_from_slice</span>(<span class="ident">elems</span>);
     } <span class="kw">else</span> {
-        <span class="comment">// Our overflow check occurs here, no need to do it ourselves.</span>
+        <span class="comment">// Our overflow check occurs here, no need to do it ourselves.</span>
         <span class="ident">vec</span>.<span class="ident">reserve</span>(<span class="ident">elems_len</span>);
         <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">vec</span>.<span class="ident">as_mut_ptr</span>();
         <span class="kw">unsafe</span> {
-            <span class="comment">// Move the old elements down to the end.</span>
+            <span class="comment">// Move the old elements down to the end.</span>
             <span class="ident">ptr</span>::<span class="ident">copy</span>(
                 <span class="ident">ptr</span>,
                 <span class="ident">ptr</span>.<span class="ident">offset</span>(<span class="ident">elems_len</span> <span class="kw">as</span> <span class="ident">isize</span>),
                 <span class="ident">old_len</span>,
             );
-            <span class="comment">// Copy the input elements to the start</span>
+            <span class="comment">// Copy the input elements to the start</span>
             <span class="ident">ptr</span>::<span class="ident">copy_nonoverlapping</span>(
                 <span class="ident">elems</span>.<span class="ident">as_ptr</span>(),
                 <span class="ident">ptr</span>,
                 <span class="ident">elems_len</span>,
             );
-            <span class="comment">// Set the len *after* having initialized the elements.</span>
+            <span class="comment">// Set the len *after* having initialized the elements.</span>
             <span class="ident">vec</span>.<span class="ident">set_len</span>(<span class="ident">old_len</span> <span class="op">+</span> <span class="ident">elems_len</span>);
         }
     }
@@ -278,7 +278,7 @@
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">vec</span>, <span class="kw-2">&amp;</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]);
     }
 
-    <span class="doccomment">/// Detect potential uninit values when running miri</span>
+    <span class="doccomment">/// Detect potential uninit values when running miri</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(
         <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>,

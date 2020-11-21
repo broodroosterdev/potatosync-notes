@@ -186,12 +186,12 @@
 <span id="183">183</span>
 <span id="184">184</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! This crate provides a configuration loader in the style of the [ruby dotenv</span>
-<span class="doccomment">//! gem](https://github.com/bkeepers/dotenv). This library is meant to be used</span>
-<span class="doccomment">//! on development or testing environments in which setting environment</span>
-<span class="doccomment">//! variables is not practical. It loads environment variables from a .env</span>
-<span class="doccomment">//! file, if available, and mashes those with the actual environment variables</span>
-<span class="doccomment">//! provided by the operating system.</span>
+<span class="doccomment">//! This crate provides a configuration loader in the style of the [ruby dotenv</span>
+<span class="doccomment">//! gem](https://github.com/bkeepers/dotenv). This library is meant to be used</span>
+<span class="doccomment">//! on development or testing environments in which setting environment</span>
+<span class="doccomment">//! variables is not practical. It loads environment variables from a .env</span>
+<span class="doccomment">//! file, if available, and mashes those with the actual environment variables</span>
+<span class="doccomment">//! provided by the operating system.</span>
 
 <span class="kw">mod</span> <span class="ident">parse</span>;
 <span class="kw">mod</span> <span class="ident">errors</span>;
@@ -210,20 +210,20 @@
 
 <span class="kw">static</span> <span class="ident">START</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">ONCE_INIT</span>;
 
-<span class="doccomment">/// After loading the dotenv file, fetches the environment variable key from the current process.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The returned result is Ok(s) if the environment variable is present and is valid unicode. If the</span>
-<span class="doccomment">/// environment variable is not present, or it is not valid unicode, then Err will be returned.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Examples:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```no_run</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// use dotenv;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let key = &quot;FOO&quot;;</span>
-<span class="doccomment">/// let value= dotenv::var(key).unwrap();</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// After loading the dotenv file, fetches the environment variable key from the current process.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The returned result is Ok(s) if the environment variable is present and is valid unicode. If the</span>
+<span class="doccomment">/// environment variable is not present, or it is not valid unicode, then Err will be returned.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Examples:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// use dotenv;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let key = &quot;FOO&quot;;</span>
+<span class="doccomment">/// let value= dotenv::var(key).unwrap();</span>
+<span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">var</span><span class="op">&lt;</span><span class="ident">K</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">OsStr</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">key</span>: <span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
     <span class="ident">START</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
         <span class="ident">dotenv</span>().<span class="ident">ok</span>();
@@ -231,22 +231,22 @@
     <span class="ident">env</span>::<span class="ident">var</span>(<span class="ident">key</span>).<span class="ident">map_err</span>(<span class="ident">Error</span>::<span class="ident">EnvVar</span>)
 }
 
-<span class="doccomment">/// After loading the dotenv file, returns an iterator of (variable, value) pairs of strings,</span>
-<span class="doccomment">/// for all the environment variables of the current process.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The returned iterator contains a snapshot of the process&#39;s environment variables at the</span>
-<span class="doccomment">/// time of this invocation, modifications to environment variables afterwards will not be</span>
-<span class="doccomment">/// reflected in the returned iterator.</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// Examples:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```no_run</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// use dotenv;</span>
-<span class="doccomment">/// use std::io;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let result: Vec&lt;(String, String)&gt; = dotenv::vars().collect();</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// After loading the dotenv file, returns an iterator of (variable, value) pairs of strings,</span>
+<span class="doccomment">/// for all the environment variables of the current process.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The returned iterator contains a snapshot of the process&#39;s environment variables at the</span>
+<span class="doccomment">/// time of this invocation, modifications to environment variables afterwards will not be</span>
+<span class="doccomment">/// reflected in the returned iterator.</span>
+<span class="doccomment">/// </span>
+<span class="doccomment">/// Examples:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// use dotenv;</span>
+<span class="doccomment">/// use std::io;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let result: Vec&lt;(String, String)&gt; = dotenv::vars().collect();</span>
+<span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">vars</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vars</span> {
     <span class="ident">START</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> {
         <span class="ident">dotenv</span>().<span class="ident">ok</span>();
@@ -254,117 +254,117 @@
     <span class="ident">env</span>::<span class="ident">vars</span>()
 }
 
-<span class="doccomment">/// Loads the file at the specified absolute path.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use dotenv;</span>
-<span class="doccomment">/// use std::env;</span>
-<span class="doccomment">/// use std::path::{Path};</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let my_path = env::home_dir().and_then(|a| Some(a.join(&quot;/.env&quot;))).unwrap();</span>
-<span class="doccomment">/// dotenv::from_path(my_path.as_path());</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// Loads the file at the specified absolute path.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use dotenv;</span>
+<span class="doccomment">/// use std::env;</span>
+<span class="doccomment">/// use std::path::{Path};</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let my_path = env::home_dir().and_then(|a| Some(a.join(&quot;/.env&quot;))).unwrap();</span>
+<span class="doccomment">/// dotenv::from_path(my_path.as_path());</span>
+<span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_path</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">Iter</span>::<span class="ident">new</span>(<span class="ident">File</span>::<span class="ident">open</span>(<span class="ident">path</span>).<span class="ident">map_err</span>(<span class="ident">Error</span>::<span class="ident">Io</span>)<span class="question-mark">?</span>);
     <span class="ident">iter</span>.<span class="ident">load</span>()
 }
 
-<span class="doccomment">/// Like `from_path`, but returns an iterator over variables instead of loading into environment.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```no_run</span>
-<span class="doccomment">/// use dotenv;</span>
-<span class="doccomment">/// use std::env;</span>
-<span class="doccomment">/// use std::path::{Path};</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let my_path = env::home_dir().and_then(|a| Some(a.join(&quot;/.env&quot;))).unwrap();</span>
-<span class="doccomment">/// let iter = dotenv::from_path_iter(my_path.as_path()).unwrap();</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// for item in iter {</span>
-<span class="doccomment">///   let (key, val) = item.unwrap();</span>
-<span class="doccomment">///   println!(&quot;{}={}&quot;, key, val);</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// Like `from_path`, but returns an iterator over variables instead of loading into environment.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Examples</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// use dotenv;</span>
+<span class="doccomment">/// use std::env;</span>
+<span class="doccomment">/// use std::path::{Path};</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// let my_path = env::home_dir().and_then(|a| Some(a.join(&quot;/.env&quot;))).unwrap();</span>
+<span class="doccomment">/// let iter = dotenv::from_path_iter(my_path.as_path()).unwrap();</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// for item in iter {</span>
+<span class="doccomment">///   let (key, val) = item.unwrap();</span>
+<span class="doccomment">///   println!(&quot;{}={}&quot;, key, val);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.14.1&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;please use `from_path` in conjunction with `var` instead&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_path_iter</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Iter</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="prelude-val">Ok</span>(<span class="ident">Iter</span>::<span class="ident">new</span>(<span class="ident">File</span>::<span class="ident">open</span>(<span class="ident">path</span>).<span class="ident">map_err</span>(<span class="ident">Error</span>::<span class="ident">Io</span>)<span class="question-mark">?</span>))
 }
 
-<span class="doccomment">/// Loads the specified file from the environment&#39;s current directory or its parents in sequence.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use dotenv;</span>
-<span class="doccomment">/// dotenv::from_filename(&quot;custom.env&quot;).ok();</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// It is also possible to do the following, but it is equivalent to using `dotenv::dotenv()`,</span>
-<span class="doccomment">/// which is preferred.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use dotenv;</span>
-<span class="doccomment">/// dotenv::from_filename(&quot;.env&quot;).ok();</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// Loads the specified file from the environment&#39;s current directory or its parents in sequence.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use dotenv;</span>
+<span class="doccomment">/// dotenv::from_filename(&quot;custom.env&quot;).ok();</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// It is also possible to do the following, but it is equivalent to using `dotenv::dotenv()`,</span>
+<span class="doccomment">/// which is preferred.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use dotenv;</span>
+<span class="doccomment">/// dotenv::from_filename(&quot;.env&quot;).ok();</span>
+<span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_filename</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">filename</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
     <span class="kw">let</span> (<span class="ident">path</span>, <span class="ident">iter</span>) <span class="op">=</span> <span class="ident">Finder</span>::<span class="ident">new</span>().<span class="ident">filename</span>(<span class="ident">filename</span>.<span class="ident">as_ref</span>()).<span class="ident">find</span>()<span class="question-mark">?</span>;
     <span class="ident">iter</span>.<span class="ident">load</span>()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">path</span>)
 }
 
-<span class="doccomment">/// Like `from_filename`, but returns an iterator over variables instead of loading into environment.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use dotenv;</span>
-<span class="doccomment">/// dotenv::from_filename(&quot;custom.env&quot;).ok();</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// It is also possible to do the following, but it is equivalent to using `dotenv::dotenv()`,</span>
-<span class="doccomment">/// which is preferred.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```no_run</span>
-<span class="doccomment">/// use dotenv;</span>
-<span class="doccomment">/// let iter = dotenv::from_filename_iter(&quot;.env&quot;).unwrap();</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// for item in iter {</span>
-<span class="doccomment">///   let (key, val) = item.unwrap();</span>
-<span class="doccomment">///   println!(&quot;{}={}&quot;, key, val);</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// Like `from_filename`, but returns an iterator over variables instead of loading into environment.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use dotenv;</span>
+<span class="doccomment">/// dotenv::from_filename(&quot;custom.env&quot;).ok();</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// It is also possible to do the following, but it is equivalent to using `dotenv::dotenv()`,</span>
+<span class="doccomment">/// which is preferred.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// use dotenv;</span>
+<span class="doccomment">/// let iter = dotenv::from_filename_iter(&quot;.env&quot;).unwrap();</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// for item in iter {</span>
+<span class="doccomment">///   let (key, val) = item.unwrap();</span>
+<span class="doccomment">///   println!(&quot;{}={}&quot;, key, val);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.14.1&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;please use `from_path` in conjunction with `var` instead&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_filename_iter</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">filename</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Iter</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">iter</span>) <span class="op">=</span> <span class="ident">Finder</span>::<span class="ident">new</span>().<span class="ident">filename</span>(<span class="ident">filename</span>.<span class="ident">as_ref</span>()).<span class="ident">find</span>()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">iter</span>)
 }
 
-<span class="doccomment">/// This is usually what you want.</span>
-<span class="doccomment">/// It loads the .env file located in the environment&#39;s current directory or its parents in sequence.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use dotenv;</span>
-<span class="doccomment">/// dotenv::dotenv().ok();</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// This is usually what you want.</span>
+<span class="doccomment">/// It loads the .env file located in the environment&#39;s current directory or its parents in sequence.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">/// ```</span>
+<span class="doccomment">/// use dotenv;</span>
+<span class="doccomment">/// dotenv::dotenv().ok();</span>
+<span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dotenv</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
     <span class="kw">let</span> (<span class="ident">path</span>, <span class="ident">iter</span>) <span class="op">=</span> <span class="ident">Finder</span>::<span class="ident">new</span>().<span class="ident">find</span>()<span class="question-mark">?</span>;
     <span class="ident">iter</span>.<span class="ident">load</span>()<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">path</span>)
 }
 
-<span class="doccomment">/// Like `dotenv`, but returns an iterator over variables instead of loading into environment.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">/// ```no_run</span>
-<span class="doccomment">/// use dotenv;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// for item in dotenv::dotenv_iter().unwrap() {</span>
-<span class="doccomment">///   let (key, val) = item.unwrap();</span>
-<span class="doccomment">///   println!(&quot;{}={}&quot;, key, val);</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
+<span class="doccomment">/// Like `dotenv`, but returns an iterator over variables instead of loading into environment.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// # Examples</span>
+<span class="doccomment">/// ```no_run</span>
+<span class="doccomment">/// use dotenv;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// for item in dotenv::dotenv_iter().unwrap() {</span>
+<span class="doccomment">///   let (key, val) = item.unwrap();</span>
+<span class="doccomment">///   println!(&quot;{}={}&quot;, key, val);</span>
+<span class="doccomment">/// }</span>
+<span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;0.14.1&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;please use `from_path` in conjunction with `var` instead&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">dotenv_iter</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">iter</span>::<span class="ident">Iter</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">iter</span>) <span class="op">=</span> <span class="ident">Finder</span>::<span class="ident">new</span>().<span class="ident">find</span>()<span class="question-mark">?</span>;

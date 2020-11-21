@@ -259,18 +259,18 @@
 <span id="256">256</span>
 <span id="257">257</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="doccomment">//! `GenericArray` iterator implementation.</span>
+<span class="doccomment">//! `GenericArray` iterator implementation.</span>
 
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">ArrayLength</span>, <span class="ident">GenericArray</span>};
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">iter</span>::<span class="ident">FusedIterator</span>;
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>::{<span class="ident">MaybeUninit</span>, <span class="ident">ManuallyDrop</span>};
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">cmp</span>, <span class="ident">fmt</span>, <span class="ident">ptr</span>, <span class="ident">mem</span>};
 
-<span class="doccomment">/// An iterator that moves out of a `GenericArray`</span>
+<span class="doccomment">/// An iterator that moves out of a `GenericArray`</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GenericArrayIter</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">N</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="comment">// Invariants: index &lt;= index_back &lt;= N</span>
-    <span class="comment">// Only values in array[index..index_back] are alive at any given time.</span>
-    <span class="comment">// Values from array[..index] and array[index_back..] are already moved/dropped.</span>
+    <span class="comment">// Invariants: index &lt;= index_back &lt;= N</span>
+    <span class="comment">// Only values in array[index..index_back] are alive at any given time.</span>
+    <span class="comment">// Values from array[..index] and array[index_back..] are already moved/dropped.</span>
     <span class="ident">array</span>: <span class="ident">ManuallyDrop</span><span class="op">&lt;</span><span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">index</span>: <span class="ident">usize</span>,
     <span class="ident">index_back</span>: <span class="ident">usize</span>,
@@ -292,13 +292,13 @@
 <span class="kw">where</span>
     <span class="ident">N</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 {
-    <span class="doccomment">/// Returns the remaining items of this iterator as a slice</span>
+    <span class="doccomment">/// Returns the remaining items of this iterator as a slice</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">T</span>] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">array</span>.<span class="ident">as_slice</span>()[<span class="self">self</span>.<span class="ident">index</span>..<span class="self">self</span>.<span class="ident">index_back</span>]
     }
 
-    <span class="doccomment">/// Returns the remaining items of this iterator as a mutable slice</span>
+    <span class="doccomment">/// Returns the remaining items of this iterator as a mutable slice</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>] {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">array</span>.<span class="ident">as_mut_slice</span>()[<span class="self">self</span>.<span class="ident">index</span>..<span class="self">self</span>.<span class="ident">index_back</span>]
@@ -321,7 +321,7 @@
     }
 }
 
-<span class="comment">// Based on work in rust-lang/rust#49000</span>
+<span class="comment">// Based on work in rust-lang/rust#49000</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">GenericArrayIter</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">N</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
@@ -340,7 +340,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">if</span> <span class="ident">mem</span>::<span class="ident">needs_drop</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
-            <span class="comment">// Drop values that are still alive.</span>
+            <span class="comment">// Drop values that are still alive.</span>
             <span class="kw">for</span> <span class="ident">p</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">as_mut_slice</span>() {
                 <span class="kw">unsafe</span> {
                     <span class="ident">ptr</span>::<span class="ident">drop_in_place</span>(<span class="ident">p</span>);
@@ -350,14 +350,14 @@
     }
 }
 
-<span class="comment">// Based on work in rust-lang/rust#49000</span>
+<span class="comment">// Based on work in rust-lang/rust#49000</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Clone</span>, <span class="ident">N</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">GenericArrayIter</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">N</span>: <span class="ident">ArrayLength</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 {
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="comment">// This places all cloned elements at the start of the new array iterator,</span>
-        <span class="comment">// not at their original indices.</span>
+        <span class="comment">// This places all cloned elements at the start of the new array iterator,</span>
+        <span class="comment">// not at their original indices.</span>
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">array</span>: <span class="ident">MaybeUninit</span><span class="op">&lt;</span><span class="ident">GenericArray</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">N</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">MaybeUninit</span>::<span class="ident">uninit</span>();
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">index_back</span> <span class="op">=</span> <span class="number">0</span>;
@@ -418,7 +418,7 @@
             })
         };
 
-        <span class="comment">// ensure the drop happens here after iteration</span>
+        <span class="comment">// ensure the drop happens here after iteration</span>
         <span class="ident">drop</span>(<span class="self">self</span>);
 
         <span class="ident">ret</span>
@@ -436,7 +436,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">nth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="comment">// First consume values prior to the nth.</span>
+        <span class="comment">// First consume values prior to the nth.</span>
         <span class="kw">let</span> <span class="ident">ndrop</span> <span class="op">=</span> <span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">n</span>, <span class="self">self</span>.<span class="ident">len</span>());
 
         <span class="kw">for</span> <span class="ident">p</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">array</span>[<span class="self">self</span>.<span class="ident">index</span>..<span class="self">self</span>.<span class="ident">index</span> <span class="op">+</span> <span class="ident">ndrop</span>] {
@@ -452,7 +452,7 @@
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">last</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="comment">// Note, everything else will correctly drop first as `self` leaves scope.</span>
+        <span class="comment">// Note, everything else will correctly drop first as `self` leaves scope.</span>
         <span class="self">self</span>.<span class="ident">next_back</span>()
     }
 }
@@ -493,7 +493,7 @@
             })
         };
 
-        <span class="comment">// ensure the drop happens here after iteration</span>
+        <span class="comment">// ensure the drop happens here after iteration</span>
         <span class="ident">drop</span>(<span class="self">self</span>);
 
         <span class="ident">ret</span>
@@ -515,6 +515,6 @@
 {
 }
 
-<span class="comment">// TODO: Implement `TrustedLen` when stabilized</span>
+<span class="comment">// TODO: Implement `TrustedLen` when stabilized</span>
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../";window.currentCrate = "generic_array";</script><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script><script defer src="../../search-index.js"></script></body></html>
