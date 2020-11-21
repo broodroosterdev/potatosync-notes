@@ -110,18 +110,18 @@ impl<'r> Responder<'r> for NoteResponse {
 }
 
 /// Route for getting all the notes which are updated after provided timestamp
-#[get("/list?<timestamp_last_updated>")]
-fn get_updated(timestamp_last_updated: i64, token: Token, connection: Connection) -> Result<NoteResponse, ApiResponse> {
+#[get("/list?<last_updated>")]
+fn get_updated(last_updated: i64, token: Token, connection: Connection) -> Result<NoteResponse, ApiResponse> {
     return match notes_get_all(&token.sub, &*connection) {
         Err(error) => {
             println!("Unable to get notes: {}", error);
             Err(INTERNAL_DB_ERROR)
         }
         Ok(synced_notes) => {
-            let last_updated = Utc.timestamp(timestamp_last_updated / 1000, 0);
+            let last_updated_datetime = Utc.timestamp(last_updated / 1000, 0);
             let mut updated_notes: Vec<Note> = vec![];
             for note in synced_notes {
-                if !note.last_modify_date.le(&last_updated) {
+                if !note.last_modify_date.le(&last_updated_datetime) {
                     updated_notes.push(note);
                 }
             }
