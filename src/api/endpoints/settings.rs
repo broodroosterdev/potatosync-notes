@@ -9,6 +9,7 @@ use crate::models::settings::Setting;
 use chrono::Utc;
 use crate::crud::settings::{update_or_insert_setting, setting_exists, get_setting_if_exists, get_all_settings};
 use std::collections::HashMap;
+use rocket_contrib::json::Json;
 
 pub fn fuel(rocket: Rocket) -> Rocket {
     rocket.mount("/setting", routes![
@@ -76,7 +77,7 @@ fn get_setting(key: String, token: Token, connection: Connection) -> Result<Stri
 
 /// Route for getting changed key-value pairs of settings
 #[get("/changed?<last_updated>")]
-fn get_changed_settings(last_updated: u64, token: Token, connection: Connection) -> Result<String, ApiResponse> {
+fn get_changed_settings(last_updated: u64, token: Token, connection: Connection) -> Result<Json<HashMap<String, String>>, ApiResponse> {
     return match get_all_settings(&token.sub, &connection) {
         Err(error) => {
             println!("Error getting changed settings: {}", error);
@@ -87,7 +88,7 @@ fn get_changed_settings(last_updated: u64, token: Token, connection: Connection)
                 .filter(|setting| setting.last_modify_date.timestamp() >= last_updated as i64)
                 .map(|setting| (setting.setting_key, setting.setting_value))
                 .collect();
-            Ok(serde_json::to_string(&changed_settings).unwrap())
+            Ok(Json(changed_settings))
         }
     }
 }

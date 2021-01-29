@@ -1,4 +1,4 @@
-use rocket::{Rocket, Request, response, Response};
+use rocket::{Rocket};
 use rocket_contrib::json::Json;
 use crate::crud::notes;
 use crate::db::guard::Connection;
@@ -6,9 +6,8 @@ use crate::models::notes::Note;
 use crate::schemas::notes::{SavingNote, PatchingNote, NoteResponse, DeletedResponse};
 use crate::auth::claims::Token;
 use crate::responders::ApiResponse;
-use rocket::http::{Status, ContentType};
+use rocket::http::{Status};
 use crate::crud::notes::*;
-use rocket::response::Responder;
 use chrono::{Utc, TimeZone};
 
 pub fn fuel(rocket: Rocket) -> Rocket {
@@ -100,18 +99,9 @@ fn delete_all(token: Token, connection: Connection) -> ApiResponse {
     };
 }
 
-impl<'r> Responder<'r> for NoteResponse {
-    fn respond_to(self, req: &Request) -> response::Result<'r> {
-        Response::build_from(serde_json::to_string(&self).unwrap().respond_to(&req).unwrap())
-            .status(Status::Ok)
-            .header(ContentType::JSON)
-            .ok()
-    }
-}
-
 /// Route for getting all the notes which are updated after provided timestamp
 #[get("/list?<last_updated>")]
-fn get_updated(last_updated: i64, token: Token, connection: Connection) -> Result<NoteResponse, ApiResponse> {
+fn get_updated(last_updated: i64, token: Token, connection: Connection) -> Result<Json<NoteResponse>, ApiResponse> {
     return match notes_get_all(&token.sub, &*connection) {
         Err(error) => {
             println!("Unable to get notes: {}", error);
@@ -125,26 +115,17 @@ fn get_updated(last_updated: i64, token: Token, connection: Connection) -> Resul
                     updated_notes.push(note);
                 }
             }
-            Ok(NoteResponse {
+            Ok(Json(NoteResponse {
                 message: NOTE_LIST_SUCCESS.body,
                 notes: updated_notes,
-            })
+            }))
         }
     };
 }
 
-impl<'r> Responder<'r> for DeletedResponse {
-    fn respond_to(self, req: &Request) -> response::Result<'r> {
-        Response::build_from(serde_json::to_string(&self).unwrap().respond_to(&req).unwrap())
-            .status(Status::Ok)
-            .header(ContentType::JSON)
-            .ok()
-    }
-}
-
 /// Route for getting a list of deleted notes based on a provided list of id's
 #[post("/deleted", data = "<id_list>")]
-fn get_deleted(id_list: Json<Vec<String>>, token: Token, connection: Connection) -> Result<DeletedResponse, ApiResponse> {
+fn get_deleted(id_list: Json<Vec<String>>, token: Token, connection: Connection) -> Result<Json<DeletedResponse>, ApiResponse> {
     return match notes_get_existing(&token.sub, id_list.clone(), &*connection) {
         Err(error) => {
             println!("Unable to get deleted id's: {}", error);
@@ -155,9 +136,9 @@ fn get_deleted(id_list: Json<Vec<String>>, token: Token, connection: Connection)
             // we need to convert it into a list of non-existing id's
             let deleted_list = id_list.0.into_iter()
                 .filter(|id| !existing_list.contains(id)).collect();
-            Ok(DeletedResponse {
+            Ok(Json(DeletedResponse {
                 deleted: deleted_list
-            })
+            }))
         }
     };
 }

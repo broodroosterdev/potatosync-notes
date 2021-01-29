@@ -68,7 +68,7 @@ fn delete_tag(tag_id: String, token: Token, connection: Connection) -> ApiRespon
 }
 
 #[get("/list?<last_updated>")]
-fn get_updated_tags(last_updated: u64, token: Token, connection: Connection) -> Result<String, ApiResponse> {
+fn get_updated_tags(last_updated: u64, token: Token, connection: Connection) -> Result<Json<Vec<Tag>>, ApiResponse> {
     return match tags_get_all(&token.sub, &connection) {
         Err(error) => {
             println!("Unable to get all tags: {}", error);
@@ -82,14 +82,14 @@ fn get_updated_tags(last_updated: u64, token: Token, connection: Connection) -> 
                     updated_tags.push(tag);
                 }
             }
-            Ok(serde_json::to_string(&updated_tags).unwrap())
+            Ok(Json(updated_tags))
         }
     };
 }
 
 /// Route for getting a list of deleted notes based on a provided list of id's
 #[post("/deleted", data = "<id_list>")]
-fn get_deleted_tags(id_list: Json<Vec<String>>, token: Token, connection: Connection) -> Result<String, ApiResponse> {
+fn get_deleted_tags(id_list: Json<Vec<String>>, token: Token, connection: Connection) -> Result<Json<Vec<String>>, ApiResponse> {
     return match tags_get_existing(id_list.clone(), &token.sub, &connection) {
         Err(error) => {
             println!("Unable to get deleted tag id's: {}", error);
@@ -100,7 +100,7 @@ fn get_deleted_tags(id_list: Json<Vec<String>>, token: Token, connection: Connec
             // we need to convert it into a list of non-existing id's
             let deleted_list: Vec<String> = id_list.0.into_iter()
                 .filter(|id| !existing_list.contains(&id)).collect();
-            Ok(serde_json::to_string(&deleted_list).unwrap())
+            Ok(Json(deleted_list))
         }
     };
 }
