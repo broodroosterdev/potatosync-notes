@@ -11,7 +11,7 @@ path = "src/main.rs"
 
 [dependencies]
 diesel = { version = "2.0.0", git = "https://github.com/martell/diesel.git", branch = "feature/pure_postgres", features = ["postgres", "r2d2", "chrono"] }
-rocket = { version = "0.4.5", default-features = false }
+rocket = { version = "0.4.7", default-features = false }
 serde = "1.0"
 serde_json = "*"
 serde_derive = "*"
