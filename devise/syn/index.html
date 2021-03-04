@@ -1,7 +1,7 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `syn` mod in crate `devise`."><meta name="keywords" content="rust, rustlang, rust-lang, syn"><title>devise::syn - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Syn is a parsing library for parsing a stream of Rust tokens into a syntax tree of Rust source code."><meta name="keywords" content="rust, rustlang, rust-lang, syn"><title>devise::syn - Rust</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../devise/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a><p class="location">Module syn</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class="location"><a href="../index.html">devise</a></p><div id="sidebar-vars" data-name="syn" data-ty="mod" data-relpath="../"></div><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="https://docs.rs/syn/0.15.44/src/syn/lib.rs.html#1-740" title="goto source code">[src]</a></span><span class="in-band">Module <a href="../index.html">devise</a>::<wbr><a class="mod" href="">syn</a></span></h1><div class="docblock"><p>Syn is a parsing library for parsing a stream of Rust tokens into a syntax
+<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../devise/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a><p class="location">Module syn</p><div class="sidebar-elems"><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class="location"><a href="../index.html">devise</a></p><div id="sidebar-vars" data-name="syn" data-ty="mod" data-relpath="../"></div><script defer src="../sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Module <a href="../index.html">devise</a>::<wbr><a class="mod" href="">syn</a></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="https://docs.rs/syn/0.15.44/src/syn/lib.rs.html#1-740" title="goto source code">[src]</a></span></h1><div class="docblock"><p>Syn is a parsing library for parsing a stream of Rust tokens into a syntax
 tree of Rust source code.</p>
 <p>Currently this library is geared toward use in Rust procedural macros, but
 contains some APIs that may be useful more generally.</p>
@@ -30,7 +30,7 @@ involving any of our syntax tree types.</p>
 <p><strong>Location information</strong> — Every token parsed by Syn is associated with a
 <code>Span</code> that tracks line and column information back to the source of that
 token. These spans allow a procedural macro to display detailed error
-messages pointing to all the right places in the user's code. There is an
+messages pointing to all the right places in the user’s code. There is an
 example of this below.</p>
 </li>
 <li>
@@ -39,18 +39,18 @@ procedural macros enable only what they need, and do not pay in compile
 time for all the rest.</p>
 </li>
 </ul>
-<p><em>Version requirement: Syn supports any compiler version back to Rust's very
+<p><em>Version requirement: Syn supports any compiler version back to Rust’s very
 first support for procedural macros in Rust 1.15.0. Some features especially
 around error reporting are only available in newer compilers or on the
 nightly channel.</em></p>
 <h2 id="example-of-a-custom-derive" class="section-header"><a href="#example-of-a-custom-derive">Example of a custom derive</a></h2>
 <p>The canonical custom derive using Syn looks like this. We write an ordinary
 Rust function tagged with a <code>proc_macro_derive</code> attribute and the name of
-the trait we are deriving. Any time that derive appears in the user's code,
+the trait we are deriving. Any time that derive appears in the user’s code,
 the Rust compiler passes their data structure as tokens into our macro. We
 get to execute arbitrary Rust code to figure out what to do with those
 tokens, then hand some tokens back to the compiler to compile into the
-user's crate.</p>
+user’s crate.</p>
 <pre><code class="language-toml">[dependencies]
 syn = &quot;0.15&quot;
 quote = &quot;0.6&quot;
@@ -102,7 +102,7 @@ structures in their program.</p>
 }</pre></div>
 <h2 id="spans-and-error-reporting" class="section-header"><a href="#spans-and-error-reporting">Spans and error reporting</a></h2>
 <p>The token-based procedural macro API provides great control over where the
-compiler's error messages are displayed in user code. Consider the error the
+compiler’s error messages are displayed in user code. Consider the error the
 user sees if one of their field types does not implement <code>HeapSize</code>.</p>
 
 <div class='information'><div class='tooltip edition' data-edition="2018">ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered edition">
@@ -124,7 +124,7 @@ problem.</p>
 <h2 id="parsing-a-custom-syntax" class="section-header"><a href="#parsing-a-custom-syntax">Parsing a custom syntax</a></h2>
 <p>The <a href="https://github.com/dtolnay/syn/tree/master/examples/lazy-static"><code>lazy-static</code></a> example directory shows the implementation of a
 <code>functionlike!(...)</code> procedural macro in which the input tokens are parsed
-using Syn's parsing API.</p>
+using Syn’s parsing API.</p>
 <p>The example reimplements the popular <code>lazy_static</code> crate from crates.io as a
 procedural macro.</p>
 
@@ -157,7 +157,7 @@ run <code>cargo expand</code> from that crate. To show the expanded code for one
 your own test cases, run <code>cargo expand --test the_test_case</code> where the last
 argument is the name of the test file without the <code>.rs</code> extension.</p>
 <p>This write-up by Brandon W Maister discusses debugging in more detail:
-<a href="https://quodlibetor.github.io/posts/debugging-rusts-new-custom-derive-system/">Debugging Rust's new Custom Derive system</a>.</p>
+<a href="https://quodlibetor.github.io/posts/debugging-rusts-new-custom-derive-system/">Debugging Rust’s new Custom Derive system</a>.</p>
 <h2 id="optional-features" class="section-header"><a href="#optional-features">Optional features</a></h2>
 <p>Syn puts a lot of functionality behind optional features in order to
 optimize compile time for the most common use cases. The following features
@@ -327,7 +327,7 @@ represents an integer larger than 64 bits.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.Macro.html" title="devise::syn::Macro struct">Macro</a></td><td class="docblock-short"><p>A macro invocation: <code>println!(&quot;{}&quot;, mac)</code>.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.MetaList.html" title="devise::syn::MetaList struct">MetaList</a></td><td class="docblock-short"><p>A structured list within an attribute, like <code>derive(Copy, Clone)</code>.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.MetaNameValue.html" title="devise::syn::MetaNameValue struct">MetaNameValue</a></td><td class="docblock-short"><p>A name-value pair within an attribute, like <code>feature = &quot;nightly&quot;</code>.</p>
-</td></tr><tr class="module-item"><td><a class="struct" href="struct.MethodSig.html" title="devise::syn::MethodSig struct">MethodSig</a></td><td class="docblock-short"><p>A method's signature in a trait or implementation: <code>unsafe fn initialize(&amp;self)</code>.</p>
+</td></tr><tr class="module-item"><td><a class="struct" href="struct.MethodSig.html" title="devise::syn::MethodSig struct">MethodSig</a></td><td class="docblock-short"><p>A method’s signature in a trait or implementation: <code>unsafe fn initialize(&amp;self)</code>.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.MethodTurbofish.html" title="devise::syn::MethodTurbofish struct">MethodTurbofish</a></td><td class="docblock-short"><p>The <code>::&lt;&gt;</code> explicit type parameters passed to a method call:
 <code>parse::&lt;u64&gt;()</code>.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.ParenthesizedGenericArguments.html" title="devise::syn::ParenthesizedGenericArguments struct">ParenthesizedGenericArguments</a></td><td class="docblock-short"><p>Arguments of a function path segment: the <code>(A, B) -&gt; C</code> in <code>Fn(A,B) -&gt; C</code>.</p>

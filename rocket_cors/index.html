@@ -1,7 +1,7 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `rocket_cors` crate."><meta name="keywords" content="rust, rustlang, rust-lang, rocket_cors"><title>rocket_cors - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings"></script><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Build Status Repository Crates.io"><meta name="keywords" content="rust, rustlang, rust-lang, rocket_cors"><title>rocket_cors - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings"></script><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../rocket_cors/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><p class="location">Crate rocket_cors</p><div class="block version"><p>Version 0.5.2</p></div><div class="sidebar-elems"><a id="all-types" href="all.html"><p>See all rocket_cors's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class="location"></p><div id="sidebar-vars" data-name="rocket_cors" data-ty="mod" data-relpath="../"></div></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/rocket_cors/lib.rs.html#1-2975" title="goto source code">[src]</a></span><span class="in-band">Crate <a class="mod" href="">rocket_cors</a></span></h1><div class="docblock"><p><a href="https://travis-ci.org/lawliet89/rocket_cors"><img src="https://travis-ci.org/lawliet89/rocket_cors.svg" alt="Build Status" /></a>
+<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../rocket_cors/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><p class="location">Crate rocket_cors</p><div class="block version"><p>Version 0.5.2</p></div><div class="sidebar-elems"><a id="all-types" href="all.html"><p>See all rocket_cors's items</p></a><div class="block items"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li><li><a href="#types">Type Definitions</a></li></ul></div><p class="location"></p><div id="sidebar-vars" data-name="rocket_cors" data-ty="mod" data-relpath="../"></div></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Crate <a class="mod" href="">rocket_cors</a></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/rocket_cors/lib.rs.html#1-2975" title="goto source code">[src]</a></span></h1><div class="docblock"><p><a href="https://travis-ci.org/lawliet89/rocket_cors"><img src="https://travis-ci.org/lawliet89/rocket_cors.svg" alt="Build Status" /></a>
 <a href="https://github.com/lawliet89/rocket_cors"><img src="https://img.shields.io/github/tag/lawliet89/rocket_cors.svg" alt="Repository" /></a>
 <a href="https://crates.io/crates/rocket_cors"><img src="https://img.shields.io/crates/v/rocket_cors.svg" alt="Crates.io" /></a></p>
 <ul>
@@ -62,7 +62,7 @@ ascending order of flexibility.</p>
 <li>Truly Manual</li>
 </ul>
 <p>Unfortunately, you cannot mix and match Fairing with any other of the methods, due to the
-limitation of Rocket's fairing API. That is, the checks for Fairing will always happen first,
+limitation of Rocket’s fairing API. That is, the checks for Fairing will always happen first,
 and if they fail, the route is never executed and so your guard or manual checks will never
 get executed.</p>
 <p>You can, however, mix and match guards and manual checks.</p>
@@ -73,7 +73,7 @@ get executed.</p>
 <tr><td align="center">May define custom OPTIONS routes</td><td align="center">✗</td><td align="center">✔</td><td align="center">✔</td></tr>
 </tbody></table>
 <h3 id="fairing" class="section-header"><a href="#fairing">Fairing</a></h3>
-<p>Fairing is the easiest to use and also the most inflexible. You don't have to define <code>OPTIONS</code>
+<p>Fairing is the easiest to use and also the most inflexible. You don’t have to define <code>OPTIONS</code>
 routes for your application, and the checks are done transparently.</p>
 <p>However, you can only have one set of settings that must apply to all routes. You cannot opt
 any route out of CORS checks.</p>
@@ -83,7 +83,7 @@ any route out of CORS checks.</p>
 <h4 id="injected-route" class="section-header"><a href="#injected-route">Injected Route</a></h4>
 <p>The fairing implementation will inject a route during attachment to Rocket. This route is used
 to handle errors during CORS validation.</p>
-<p>This is due to the limitation in Rocket's Fairing
+<p>This is due to the limitation in Rocket’s Fairing
 <a href="https://rocket.rs/guide/fairings/">lifecycle</a>. Ideally, we want to validate the CORS request
 during <code>on_request</code>, and if the validation fails, we want to stop the route from even executing
 to</p>
@@ -102,8 +102,8 @@ one set of CORS settings and you have to mount additional routes to catch and pr
 requests. The <code>OPTIONS</code> routes are used for CORS preflight checks.</p>
 <p>You will have to do the following:</p>
 <ul>
-<li>Create a <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> from <a href="../rocket_cors/struct.CorsOptions.html" title="CorsOptions"><code>CorsOptions</code></a> and during Rocket's ignite, add the struct to
-Rocket's <a href="https://rocket.rs/guide/state/#managed-state">managed state</a>.</li>
+<li>Create a <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> from <a href="../rocket_cors/struct.CorsOptions.html" title="CorsOptions"><code>CorsOptions</code></a> and during Rocket’s ignite, add the struct to
+Rocket’s <a href="https://rocket.rs/guide/state/#managed-state">managed state</a>.</li>
 <li>For all the routes that you want to enforce CORS on, you can mount either some
 <a href="../rocket_cors/fn.catch_all_options_routes.html">catch all route</a> or define your own route for the OPTIONS
 verb.</li>
@@ -121,7 +121,7 @@ error handling in case of errors.</li>
 You might have to understand how the library works internally to know how to use this mode.
 In exchange, you can selectively choose which routes to offer CORS protection to, and you
 can mix and match CORS settings for the routes. You can combine usage of this mode with
-&quot;guard&quot; to offer a mix of ease of use and flexibility.</p>
+“guard” to offer a mix of ease of use and flexibility.</p>
 <p>You really do not need to use this unless you have a truly ad-hoc need to respond to CORS
 differently in a route. For example, you have a <code>ping</code> endpoint that allows all origins but
 the rest of your routes do not.</p>
@@ -134,7 +134,7 @@ that has any side effects or with an appreciable computation cost inside this ha
 <li>You will first need to have a <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> struct ready. This struct can be borrowed with a lifetime
 at least as long as <code>'r</code> which is the lifetime of a Rocket request. <code>'static</code> works too.
 In this case, you might as well use the <code>Guard</code> method above and place the <code>Cors</code> struct in
-Rocket's <a href="https://rocket.rs/guide/state/">state</a>.
+Rocket’s <a href="https://rocket.rs/guide/state/">state</a>.
 Alternatively, you can create a <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> struct directly in the route.</li>
 <li>Your routes <em>might</em> need to have a <code>'r</code> lifetime and return <code>impl Responder&lt;'r&gt;</code>. See below.</li>
 <li>Using the <a href="../rocket_cors/struct.Cors.html" title="Cors"><code>Cors</code></a> struct, use either the
@@ -178,7 +178,7 @@ allows all access.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.CorsOptions.html" title="rocket_cors::CorsOptions struct">CorsOptions</a></td><td class="docblock-short"><p>Configuration options for CORS request handling.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.Guard.html" title="rocket_cors::Guard struct">Guard</a></td><td class="docblock-short"><p>A <a href="https://rocket.rs/guide/requests/#request-guards">request guard</a> to check CORS headers
 before a route is run. Will not execute the route if checks fail.</p>
-</td></tr><tr class="module-item"><td><a class="struct" href="struct.ManualResponder.html" title="rocket_cors::ManualResponder struct">ManualResponder</a></td><td class="docblock-short"><p>A Manual Responder used in the &quot;truly manual&quot; mode of operation.</p>
+</td></tr><tr class="module-item"><td><a class="struct" href="struct.ManualResponder.html" title="rocket_cors::ManualResponder struct">ManualResponder</a></td><td class="docblock-short"><p>A Manual Responder used in the “truly manual” mode of operation.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.Method.html" title="rocket_cors::Method struct">Method</a></td><td class="docblock-short"><p>A wrapper type around <code>rocket::http::Method</code> to support serialization and deserialization</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.Origins.html" title="rocket_cors::Origins struct">Origins</a></td><td class="docblock-short"><p>Origins that are allowed to make CORS requests.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.Responder.html" title="rocket_cors::Responder struct">Responder</a></td><td class="docblock-short"><p>A <a href="https://rocket.rs/guide/responses/#responder"><code>Responder</code></a> which will simply wraps another
@@ -187,8 +187,8 @@ before a route is run. Will not execute the route if checks fail.</p>
 <table><tr class="module-item"><td><a class="enum" href="enum.AllOrSome.html" title="rocket_cors::AllOrSome enum">AllOrSome</a></td><td class="docblock-short"><p>An enum signifying that some of type T is allowed, or <code>All</code> (everything is allowed).</p>
 </td></tr><tr class="module-item"><td><a class="enum" href="enum.Error.html" title="rocket_cors::Error enum">Error</a></td><td class="docblock-short"><p>Errors during operations</p>
 </td></tr></table><h2 id="functions" class="section-header"><a href="#functions">Functions</a></h2>
-<table><tr class="module-item"><td><a class="fn" href="fn.catch_all_options_routes.html" title="rocket_cors::catch_all_options_routes fn">catch_all_options_routes</a></td><td class="docblock-short"><p>Returns &quot;catch all&quot; OPTIONS routes that you can mount to catch all OPTIONS request. Only works
-if you have put a <code>Cors</code> struct into Rocket's managed state.</p>
+<table><tr class="module-item"><td><a class="fn" href="fn.catch_all_options_routes.html" title="rocket_cors::catch_all_options_routes fn">catch_all_options_routes</a></td><td class="docblock-short"><p>Returns “catch all” OPTIONS routes that you can mount to catch all OPTIONS request. Only works
+if you have put a <code>Cors</code> struct into Rocket’s managed state.</p>
 </td></tr></table><h2 id="types" class="section-header"><a href="#types">Type Definitions</a></h2>
 <table><tr class="module-item"><td><a class="type" href="type.AllowedHeaders.html" title="rocket_cors::AllowedHeaders type">AllowedHeaders</a></td><td class="docblock-short"><p>A list of allowed headers</p>
 </td></tr><tr class="module-item"><td><a class="type" href="type.AllowedMethods.html" title="rocket_cors::AllowedMethods type">AllowedMethods</a></td><td class="docblock-short"><p>A list of allowed methods</p>
