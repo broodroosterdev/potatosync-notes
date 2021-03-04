@@ -32,6 +32,7 @@ mod models;
 mod schemas;
 mod db;
 mod auth;
+mod charset;
 
 use crate::responders::ApiResponse;
 use crate::auth::claims::Token;
@@ -65,9 +66,12 @@ fn main() {
     embedded_migrations::run_with_output(&db::pool::pg_connection(), &mut std::io::stdout()).unwrap();
 // Setup CORS
     let cors = CorsOptions::default().to_cors().unwrap();
+    let charset = charset::Charset{};
 // Start webserver
     let mut rocket = rocket::ignite()
         .attach(cors)
+        //Makes sure json responses have correct charset
+        .attach(charset)
         .manage(db::pool::connect())
         .register(catchers![token_error])
         .mount("/", routes![ping,secure_ping]);
