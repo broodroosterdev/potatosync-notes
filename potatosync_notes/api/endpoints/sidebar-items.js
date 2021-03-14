@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["fuel",""]],"mod":[["notes",""],["settings",""],["tags",""]]});
+initSidebarItems({"fn":[["fuel",""]],"mod":[["general",""],["notes",""],["settings",""],["tags",""]]});
