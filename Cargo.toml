@@ -21,7 +21,7 @@ chrono-tz = "0.5.2"
 diesel_migrations = { version = "1.4.0", git = "https://github.com/martell/diesel.git", branch = "feature/pure_postgres" }
 rocket_failure = { version = "0.2" }
 dotenv = "0.15.0"
-validator = "0.10"
+validator = "0.13"
 validator_derive = "0.10"
 lazy_static = "1.4.0"
 openssl = "*"
