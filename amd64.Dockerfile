@@ -30,7 +30,7 @@ RUN cargo build --release
 # Now return the file back to normal
 RUN sed -i 's%dummy.rs%src/main.rs%' Cargo.toml
 ADD . .
-RUN cargo build --release --target x86_64-unknown-linux-musl
+RUN cargo build --release
 
 
 ## Running stage ##
