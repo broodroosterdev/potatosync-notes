@@ -37,5 +37,5 @@ RUN cargo build --release
 FROM amd64/alpine:3
 EXPOSE 4000
 RUN apk add libpq
-COPY --from=builder /build/target/x86_64-unknown-linux-musl/release/potatosync-notes /usr/local/bin
+COPY --from=builder /build/target/release/potatosync-notes /usr/local/bin
 CMD /usr/local/bin/potatosync-notes
