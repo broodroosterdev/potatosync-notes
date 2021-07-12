@@ -1,8 +1,14 @@
 ## Building Stage ##
-FROM rust:1.53 as builder
+FROM rust:1.53 as build
 
 # Build time options to avoid dpkg warnings and help with reproducible builds.
 ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8 TZ=UTC TERM=xterm-256color
+
+# Don't download rust docs
+RUN rustup set profile minimal
+
+ENV USER "root"
+ENV RUSTFLAGS='-C link-arg=-s'
 
 # Install DB packages
 RUN apt-get update && apt-get install -y \
@@ -34,8 +40,18 @@ RUN cargo build --release
 
 
 ## Running stage ##
-FROM amd64/alpine:3
+# Create a new stage with a minimal image
+# because we already have a binary built
+FROM debian:buster-slim
+
+# Create data folder and Install needed libraries
+RUN apt-get update && apt-get install -y \
+    --no-install-recommends \
+    openssl \
+    ca-certificates \
+    libpq5 \
+    && rm -rf /var/lib/apt/lists/*
+
 EXPOSE 4000
-RUN apk add libpq
 COPY --from=builder /build/target/release/potatosync-notes /usr/local/bin
 CMD /usr/local/bin/potatosync-notes
