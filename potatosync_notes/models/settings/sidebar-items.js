@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Setting","General Setting struct used for retrieving from db and updating settings"]]});

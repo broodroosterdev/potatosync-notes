@@ -1,1 +1,0 @@
-initSidebarItems({"attr":[["skip_serializing_none","Add `skip_serializing_if` annotations to [`Option`] fields."]]});

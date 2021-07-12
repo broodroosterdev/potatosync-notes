@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["ApiError",""],["ApiResponse","Struct used for sending the StatusResponse and other json back with a specific http code"],["ApiSuccess",""]]});

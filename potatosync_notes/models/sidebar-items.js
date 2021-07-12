@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["notes",""],["settings",""],["tags",""]]});
+initSidebarItems({"fn":[["_impl_insertable_for_note",""],["_impl_insertable_for_tag",""],["_impl_queryable_for_note",""],["_impl_queryable_for_tag",""]],"struct":[["Note",""],["Tag",""]]});

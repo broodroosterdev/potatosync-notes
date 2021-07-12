@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["deserialize","Deserialize a [`HashMap`] from a list of tuples"],["serialize","Serialize the [`HashMap`] as a list of tuples"]]});

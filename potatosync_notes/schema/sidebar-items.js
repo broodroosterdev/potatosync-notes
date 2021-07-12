@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["notes",""],["settings",""],["tags",""]]});
+initSidebarItems({"mod":[["notes",""],["tags",""]]});

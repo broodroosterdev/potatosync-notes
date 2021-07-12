@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["deserialize","Borrowed Deserializer for `UniCase`."]]});

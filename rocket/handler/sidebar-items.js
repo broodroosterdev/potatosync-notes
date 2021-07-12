@@ -1,1 +1,0 @@
-initSidebarItems({"trait":[["Cloneable","Unfortunate but necessary hack to be able to clone a `Box<Handler>`."],["Handler","Trait implemented by types that can handle requests."]],"type":[["ErrorHandler","The type of an error handler."],["Outcome","Type alias for the `Outcome` of a `Handler`."]]});

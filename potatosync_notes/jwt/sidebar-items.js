@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["extract_claims","Helper function for extracting claims from JWT string"],["extract_jwt_from_authorization_header","Helper function to extract a JWT from the authorization header"]],"struct":[["Claims","JWT claims."],["JWT",""]]});

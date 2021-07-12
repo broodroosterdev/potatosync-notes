@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["Buenos_Aires",""],["Catamarca",""],["ComodRivadavia",""],["Cordoba",""],["Jujuy",""],["La_Rioja",""],["Mendoza",""],["Rio_Gallegos",""],["Salta",""],["San_Juan",""],["San_Luis",""],["Tucuman",""],["Ushuaia",""]]});

@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["potatosync_notes"] = [{"text":"impl <a class=\"trait\" href=\"actix_web/extract/trait.FromRequest.html\" title=\"trait actix_web::extract::FromRequest\">FromRequest</a> for <a class=\"struct\" href=\"potatosync_notes/jwt/struct.JWT.html\" title=\"struct potatosync_notes::jwt::JWT\">JWT</a>","synthetic":false,"types":["potatosync_notes::jwt::JWT"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["guard",""],["pool",""]]});
+initSidebarItems({"fn":[["add_note",""],["add_tag",""],["delete_all_note",""],["delete_all_tag",""],["delete_note",""],["delete_tag",""],["get_existing_notes",""],["get_existing_tags",""],["get_last_note_changed",""],["get_last_tag_changed",""],["get_notes",""],["get_notes_updated_after",""],["get_tags",""],["get_tags_updated_after",""],["update_note",""],["update_tag",""]]});

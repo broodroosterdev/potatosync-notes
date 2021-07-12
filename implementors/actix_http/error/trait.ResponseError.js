@@ -1,0 +1,6 @@
+(function() {var implementors = {};
+implementors["actix_cors"] = [{"text":"impl <a class=\"trait\" href=\"actix_http/error/trait.ResponseError.html\" title=\"trait actix_http::error::ResponseError\">ResponseError</a> for <a class=\"enum\" href=\"actix_cors/enum.CorsError.html\" title=\"enum actix_cors::CorsError\">CorsError</a>","synthetic":false,"types":["actix_cors::error::CorsError"]}];
+implementors["actix_http"] = [];
+implementors["awc"] = [{"text":"impl <a class=\"trait\" href=\"actix_http/error/trait.ResponseError.html\" title=\"trait actix_http::error::ResponseError\">ResponseError</a> for <a class=\"enum\" href=\"awc/error/enum.JsonPayloadError.html\" title=\"enum awc::error::JsonPayloadError\">JsonPayloadError</a>","synthetic":false,"types":["awc::error::JsonPayloadError"]}];
+implementors["potatosync_notes"] = [{"text":"impl <a class=\"trait\" href=\"actix_http/error/trait.ResponseError.html\" title=\"trait actix_http::error::ResponseError\">ResponseError</a> for <a class=\"enum\" href=\"potatosync_notes/errors/enum.ApiError.html\" title=\"enum potatosync_notes::errors::ApiError\">ApiError</a>","synthetic":false,"types":["potatosync_notes::errors::ApiError"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

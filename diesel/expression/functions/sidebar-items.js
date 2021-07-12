@@ -1,1 +1,0 @@
-initSidebarItems({"macro":[["sql_function","Declare a sql function for use in your code."]]});

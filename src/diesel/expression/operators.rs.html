@@ -1,7 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/expression/operators.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>operators.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;diesel-1.4.6&#x2F;src&#x2F;expression&#x2F;operators.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>operators.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input"name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -387,84 +384,12 @@
 <span id="384">384</span>
 <span id="385">385</span>
 <span id="386">386</span>
-<span id="387">387</span>
-<span id="388">388</span>
-<span id="389">389</span>
-<span id="390">390</span>
-<span id="391">391</span>
-<span id="392">392</span>
-<span id="393">393</span>
-<span id="394">394</span>
-<span id="395">395</span>
-<span id="396">396</span>
-<span id="397">397</span>
-<span id="398">398</span>
-<span id="399">399</span>
-<span id="400">400</span>
-<span id="401">401</span>
-<span id="402">402</span>
-<span id="403">403</span>
-<span id="404">404</span>
-<span id="405">405</span>
-<span id="406">406</span>
-<span id="407">407</span>
-<span id="408">408</span>
-<span id="409">409</span>
-<span id="410">410</span>
-<span id="411">411</span>
-<span id="412">412</span>
-<span id="413">413</span>
-<span id="414">414</span>
-<span id="415">415</span>
-<span id="416">416</span>
-<span id="417">417</span>
-<span id="418">418</span>
-<span id="419">419</span>
-<span id="420">420</span>
-<span id="421">421</span>
-<span id="422">422</span>
-<span id="423">423</span>
-<span id="424">424</span>
-<span id="425">425</span>
-<span id="426">426</span>
-<span id="427">427</span>
-<span id="428">428</span>
-<span id="429">429</span>
-<span id="430">430</span>
-<span id="431">431</span>
-<span id="432">432</span>
-<span id="433">433</span>
-<span id="434">434</span>
-<span id="435">435</span>
-<span id="436">436</span>
-<span id="437">437</span>
-<span id="438">438</span>
-<span id="439">439</span>
-<span id="440">440</span>
-<span id="441">441</span>
-<span id="442">442</span>
-<span id="443">443</span>
-<span id="444">444</span>
-<span id="445">445</span>
-<span id="446">446</span>
-<span id="447">447</span>
-<span id="448">448</span>
-<span id="449">449</span>
-<span id="450">450</span>
-<span id="451">451</span>
-<span id="452">452</span>
-<span id="453">453</span>
-<span id="454">454</span>
-<span id="455">455</span>
-<span id="456">456</span>
-<span id="457">457</span>
-<span id="458">458</span>
-<span id="459">459</span>
-<span id="460">460</span>
-</pre><div class="example-wrap"><pre class="rust ">
-<span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
+</pre><pre class="rust">
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">rustfmt</span>, <span class="ident">rustfmt_skip</span>)]</span> <span class="comment">// https://github.com/rust-lang-nursery/rustfmt/issues/2755</span>
+
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">__diesel_operator_body</span> {
+<span class="macro">macro_rules!</span> <span class="ident">__diesel_operator_body</span> {
     (
         <span class="ident">notation</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">notation</span>:<span class="ident">ident</span>,
         <span class="ident">struct_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>,
@@ -475,7 +400,7 @@
         <span class="ident">backend_ty_params</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty_params</span>:<span class="ident">tt</span>,
         <span class="ident">backend_ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty</span>:<span class="ident">ty</span>,
     ) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">__diesel_operator_body</span><span class="macro">!</span> {
+        <span class="macro">__diesel_operator_body!</span> {
             <span class="ident">notation</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">notation</span>,
             <span class="ident">struct_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,
             <span class="ident">operator</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>,
@@ -485,7 +410,7 @@
             <span class="ident">backend_ty_params</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty_params</span>,
             <span class="ident">backend_ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty</span>,
             <span class="ident">expression_ty_params</span> <span class="op">=</span> (<span class="ident">ST</span>,),
-            <span class="ident">expression_bounds</span> <span class="op">=</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">expression</span>::<span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span><span class="op">&gt;</span>,)<span class="op">+</span>),
+            <span class="ident">expression_bounds</span> <span class="op">=</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::expression::Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span><span class="op">&gt;</span>,)<span class="op">+</span>),
         }
     };
 
@@ -499,7 +424,7 @@
         <span class="ident">backend_ty_params</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty_params</span>:<span class="ident">tt</span>,
         <span class="ident">backend_ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty</span>:<span class="ident">ty</span>,
     ) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">__diesel_operator_body</span><span class="macro">!</span> {
+        <span class="macro">__diesel_operator_body!</span> {
             <span class="ident">notation</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">notation</span>,
             <span class="ident">struct_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,
             <span class="ident">operator</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>,
@@ -509,7 +434,7 @@
             <span class="ident">backend_ty_params</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty_params</span>,
             <span class="ident">backend_ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty</span>,
             <span class="ident">expression_ty_params</span> <span class="op">=</span> (),
-            <span class="ident">expression_bounds</span> <span class="op">=</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">expression</span>::<span class="ident">Expression</span>,)<span class="op">+</span>),
+            <span class="ident">expression_bounds</span> <span class="op">=</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::expression::Expression</span>,)<span class="op">+</span>),
         }
     };
 
@@ -525,14 +450,7 @@
         <span class="ident">expression_ty_params</span> <span class="op">=</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">expression_ty_params</span>:<span class="ident">ident</span>,)<span class="kw-2">*</span>),
         <span class="ident">expression_bounds</span> <span class="op">=</span> ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">expression_bounds</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>),
     ) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="attribute">#[<span class="ident">derive</span>(
-            <span class="ident">Debug</span>,
-            <span class="ident">Clone</span>,
-            <span class="ident">Copy</span>,
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">query_builder</span>::<span class="ident">QueryId</span>,
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">sql_types</span>::<span class="ident">DieselNumericOps</span>,
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">expression</span>::<span class="ident">ValidGrouping</span>
-        )]</span>
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">QueryId</span>, <span class="ident">DieselNumericOps</span>)]</span>
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span><span class="op">&gt;</span> {
             $(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_name</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span>
@@ -544,21 +462,26 @@
             }
         }
 
-        <span class="macro">impl_selectable_expression</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>),<span class="op">+</span><span class="op">&gt;</span>);
+        <span class="macro">impl_selectable_expression!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>),<span class="op">+</span><span class="op">&gt;</span>);
 
-        <span class="kw">impl</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">expression_ty_params</span>,)<span class="kw-2">*</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">expression</span>::<span class="ident">Expression</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span><span class="op">&gt;</span> <span class="kw">where</span>
+        <span class="kw">impl</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">expression_ty_params</span>,)<span class="kw-2">*</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::expression::Expression</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span><span class="op">&gt;</span> <span class="kw">where</span>
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">expression_bounds</span>)<span class="op">*</span>
         {
             <span class="kw">type</span> <span class="ident">SqlType</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">return_ty</span>;
         }
 
-        <span class="kw">impl</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty_param</span>,)<span class="kw-2">*</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">query_builder</span>::<span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty</span><span class="op">&gt;</span>
-            <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span><span class="op">&gt;</span> <span class="kw">where</span>
-                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">query_builder</span>::<span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty</span><span class="op">&gt;</span>,)<span class="op">+</span>
-                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty_param</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">backend</span>::<span class="ident">Backend</span>,)<span class="op">*</span>
+        <span class="kw">impl</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::expression::NonAggregate</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span><span class="op">&gt;</span> <span class="kw">where</span>
+            $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::expression::NonAggregate</span>,)<span class="op">+</span>
         {
-            <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">query_builder</span>::<span class="ident">AstPass</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">result</span>::<span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-                <span class="macro">__diesel_operator_to_sql</span><span class="macro">!</span>(
+        }
+
+        <span class="kw">impl</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty_param</span>,)<span class="kw-2">*</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::query_builder::QueryFragment</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty</span><span class="op">&gt;</span>
+            <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span>$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>,)<span class="op">+</span><span class="op">&gt;</span> <span class="kw">where</span>
+                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty_param</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::query_builder::QueryFragment</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty</span><span class="op">&gt;</span>,)<span class="op">+</span>
+                $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty_param</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::backend::Backend</span>,)<span class="op">*</span>
+        {
+            <span class="kw">fn</span> <span class="ident">walk_ast</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::query_builder::AstPass</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend_ty</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::result::QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+                <span class="macro">__diesel_operator_to_sql!</span>(
                     <span class="ident">notation</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">notation</span>,
                     <span class="ident">operator_expr</span> <span class="op">=</span> <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>),
                     <span class="ident">field_exprs</span> <span class="op">=</span> ($(<span class="self">self</span>.<span class="macro-nonterminal">$</span><span class="macro-nonterminal">field_name</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>),<span class="op">+</span>),
@@ -571,7 +494,7 @@
 
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">__diesel_operator_to_sql</span> {
+<span class="macro">macro_rules!</span> <span class="ident">__diesel_operator_to_sql</span> {
     (
         <span class="ident">notation</span> <span class="op">=</span> <span class="ident">infix</span>,
         <span class="ident">operator_expr</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">op</span>:<span class="ident">expr</span>,
@@ -629,33 +552,34 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```ignore</span>
 <span class="doccomment">/// // The SQL type will be boolean. The backend will not be constrained</span>
-<span class="doccomment">/// infix_operator!(Matches, &quot; @@ &quot;);</span>
+<span class="doccomment">/// diesel_infix_operator!(Matches, &quot; @@ &quot;);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// // Queries which try to execute `Contains` on a backend other than Pg</span>
 <span class="doccomment">/// // will fail to compile</span>
-<span class="doccomment">/// infix_operator!(Contains, &quot; @&gt; &quot;, backend: Pg);</span>
+<span class="doccomment">/// diesel_infix_operator!(Contains, &quot; @&gt; &quot;, backend: Pg);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// // The type of `Concat` will be `TsVector` rather than Bool</span>
-<span class="doccomment">/// infix_operator!(Concat, &quot; || &quot;, TsVector);</span>
+<span class="doccomment">/// diesel_infix_operator!(Concat, &quot; || &quot;, TsVector);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// // It is perfectly fine to have multiple operators with the same SQL.</span>
 <span class="doccomment">/// // Diesel will ensure that the queries are always unambiguous in which</span>
 <span class="doccomment">/// // operator applies</span>
-<span class="doccomment">/// infix_operator!(Or, &quot; || &quot;, TsQuery);</span>
+<span class="doccomment">/// diesel_infix_operator!(Or, &quot; || &quot;, TsQuery);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// // Specifying both the return types and the backend</span>
-<span class="doccomment">/// infix_operator!(And, &quot; &amp;&amp; &quot;, TsQuery, backend: Pg);</span>
+<span class="doccomment">/// diesel_infix_operator!(And, &quot; &amp;&amp; &quot;, TsQuery, backend: Pg);</span>
 <span class="doccomment">/// ```</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ## Example usage</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// # #[macro_use] extern crate diesel;</span>
 <span class="doccomment">/// # include!(&quot;../doctest_setup.rs&quot;);</span>
 <span class="doccomment">/// #</span>
 <span class="doccomment">/// # fn main() {</span>
 <span class="doccomment">/// #     use schema::users::dsl::*;</span>
 <span class="doccomment">/// #     let connection = establish_connection();</span>
-<span class="doccomment">/// diesel::infix_operator!(MyEq, &quot; = &quot;);</span>
+<span class="doccomment">/// diesel_infix_operator!(MyEq, &quot; = &quot;);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// use diesel::expression::AsExpression;</span>
 <span class="doccomment">///</span>
@@ -672,18 +596,18 @@
 <span class="doccomment">/// assert_eq!(Ok(1), users_with_name.first(&amp;connection));</span>
 <span class="doccomment">/// # }</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">infix_operator</span> {
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">diesel_infix_operator</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">infix_operator</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">sql_types</span>::<span class="ident">Bool</span>);
+        <span class="macro">diesel_infix_operator!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::sql_types::Bool</span>);
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">infix_operator</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">sql_types</span>::<span class="ident">Bool</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>);
+        <span class="macro">diesel_infix_operator!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::sql_types::Bool</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>);
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">return_ty</span>:<span class="ident">tt</span>)::<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">__diesel_operator_body</span><span class="macro">!</span>(
+        <span class="macro">__diesel_operator_body!</span>(
             <span class="ident">notation</span> <span class="op">=</span> <span class="ident">infix</span>,
             <span class="ident">struct_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,
             <span class="ident">operator</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>,
@@ -696,7 +620,7 @@
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">return_ty</span>:<span class="ident">ty</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">__diesel_operator_body</span><span class="macro">!</span>(
+        <span class="macro">__diesel_operator_body!</span>(
             <span class="ident">notation</span> <span class="op">=</span> <span class="ident">infix</span>,
             <span class="ident">struct_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,
             <span class="ident">operator</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>,
@@ -709,36 +633,26 @@
     };
 }
 
-<span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
-<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;2.0.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use `diesel::infix_operator!` instead&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;with-deprecated&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">diesel_infix_operator</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">infix_operator</span><span class="macro">!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>)<span class="kw-2">*</span>);
-    }
-}
-
 <span class="doccomment">/// Useful for libraries adding support for new SQL types. Apps should never</span>
 <span class="doccomment">/// need to call this.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Similar to [`infix_operator!`], but the generated type will only take</span>
+<span class="doccomment">/// Similar to [`diesel_infix_operator!`], but the generated type will only take</span>
 <span class="doccomment">/// a single argument rather than two. The operator SQL will be placed after</span>
-<span class="doccomment">/// the single argument. See [`infix_operator!`] for example usage.</span>
+<span class="doccomment">/// the single argument. See [`diesel_infix_operator!`] for example usage.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`infix_operator!`]: macro.infix_operator.html</span>
-<span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">postfix_operator</span> {
+<span class="doccomment">/// [`diesel_infix_operator!`]: macro.diesel_infix_operator.html</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">diesel_postfix_operator</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">postfix_operator</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">sql_types</span>::<span class="ident">Bool</span>);
+        <span class="macro">diesel_postfix_operator!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::sql_types::Bool</span>);
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">postfix_operator</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">sql_types</span>::<span class="ident">Bool</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>);
+        <span class="macro">diesel_postfix_operator!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::sql_types::Bool</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>);
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">return_ty</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">__diesel_operator_body</span><span class="macro">!</span>(
+        <span class="macro">__diesel_operator_body!</span>(
             <span class="ident">notation</span> <span class="op">=</span> <span class="ident">postfix</span>,
             <span class="ident">struct_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,
             <span class="ident">operator</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>,
@@ -751,7 +665,7 @@
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">return_ty</span>:<span class="ident">ty</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">__diesel_operator_body</span><span class="macro">!</span>(
+        <span class="macro">__diesel_operator_body!</span>(
             <span class="ident">notation</span> <span class="op">=</span> <span class="ident">postfix</span>,
             <span class="ident">struct_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,
             <span class="ident">operator</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>,
@@ -762,38 +676,28 @@
             <span class="ident">backend_ty</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>,
         );
     };
-}
-
-<span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
-<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;2.0.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use `diesel::postfix_operator!` instead&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;with-deprecated&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">diesel_postfix_operator</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">postfix_operator</span><span class="macro">!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>)<span class="kw-2">*</span>);
-    }
 }
 
 <span class="doccomment">/// Useful for libraries adding support for new SQL types. Apps should never</span>
 <span class="doccomment">/// need to call this.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Similar to [`infix_operator!`], but the generated type will only take</span>
+<span class="doccomment">/// Similar to [`diesel_infix_operator!`], but the generated type will only take</span>
 <span class="doccomment">/// a single argument rather than two. The operator SQL will be placed before</span>
-<span class="doccomment">/// the single argument. See [`infix_operator!`] for example usage.</span>
+<span class="doccomment">/// the single argument. See [`diesel_infix_operator!`] for example usage.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`infix_operator!`]: macro.infix_operator.html</span>
-<span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">prefix_operator</span> {
+<span class="doccomment">/// [`diesel_infix_operator!`]: macro.diesel_infix_operator.html</span>
+<span class="attribute">#[<span class="ident">macro_export</span>]</span>
+<span class="macro">macro_rules!</span> <span class="ident">diesel_prefix_operator</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">prefix_operator</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">sql_types</span>::<span class="ident">Bool</span>);
+        <span class="macro">diesel_prefix_operator!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::sql_types::Bool</span>);
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">prefix_operator</span><span class="macro">!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">sql_types</span>::<span class="ident">Bool</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>);
+        <span class="macro">diesel_prefix_operator!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>, <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::sql_types::Bool</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>);
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">return_ty</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">__diesel_operator_body</span><span class="macro">!</span>(
+        <span class="macro">__diesel_operator_body!</span>(
             <span class="ident">notation</span> <span class="op">=</span> <span class="ident">prefix</span>,
             <span class="ident">struct_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,
             <span class="ident">operator</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>,
@@ -806,7 +710,7 @@
     };
 
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">return_ty</span>:<span class="ident">ty</span>, <span class="ident">backend</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">backend</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">__diesel_operator_body</span><span class="macro">!</span>(
+        <span class="macro">__diesel_operator_body!</span>(
             <span class="ident">notation</span> <span class="op">=</span> <span class="ident">prefix</span>,
             <span class="ident">struct_name</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>,
             <span class="ident">operator</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">operator</span>,
@@ -819,51 +723,40 @@
     };
 }
 
-<span class="attribute">#[<span class="ident">macro_export</span>(<span class="ident">local_inner_macros</span>)]</span>
-<span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span> <span class="op">=</span> <span class="string">&quot;2.0.0&quot;</span>, <span class="ident">note</span> <span class="op">=</span> <span class="string">&quot;use `diesel::prefix_operator!` instead&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;with-deprecated&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">diesel_prefix_operator</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">prefix_operator</span><span class="macro">!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">args</span>)<span class="kw-2">*</span>);
-    }
-}
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">Concat</span>, <span class="string">&quot; || &quot;</span>, <span class="ident">ReturnBasedOnArgs</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">And</span>, <span class="string">&quot; AND &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">Between</span>, <span class="string">&quot; BETWEEN &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">Escape</span>, <span class="string">&quot; ESCAPE &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">Eq</span>, <span class="string">&quot; = &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">Gt</span>, <span class="string">&quot; &gt; &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">GtEq</span>, <span class="string">&quot; &gt;= &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">Like</span>, <span class="string">&quot; LIKE &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">Lt</span>, <span class="string">&quot; &lt; &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">LtEq</span>, <span class="string">&quot; &lt;= &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">NotBetween</span>, <span class="string">&quot; NOT BETWEEN &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">NotEq</span>, <span class="string">&quot; != &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">NotLike</span>, <span class="string">&quot; NOT LIKE &quot;</span>);
+<span class="macro">diesel_infix_operator!</span>(<span class="ident">Or</span>, <span class="string">&quot; OR &quot;</span>);
 
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">And</span>, <span class="string">&quot; AND &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">Between</span>, <span class="string">&quot; BETWEEN &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">Escape</span>, <span class="string">&quot; ESCAPE &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">Eq</span>, <span class="string">&quot; = &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">Gt</span>, <span class="string">&quot; &gt; &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">GtEq</span>, <span class="string">&quot; &gt;= &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">Like</span>, <span class="string">&quot; LIKE &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">Lt</span>, <span class="string">&quot; &lt; &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">LtEq</span>, <span class="string">&quot; &lt;= &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">NotBetween</span>, <span class="string">&quot; NOT BETWEEN &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">NotEq</span>, <span class="string">&quot; != &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">NotLike</span>, <span class="string">&quot; NOT LIKE &quot;</span>);
-<span class="macro">infix_operator</span><span class="macro">!</span>(<span class="ident">Or</span>, <span class="string">&quot; OR &quot;</span>);
+<span class="macro">diesel_postfix_operator!</span>(<span class="ident">IsNull</span>, <span class="string">&quot; IS NULL&quot;</span>);
+<span class="macro">diesel_postfix_operator!</span>(<span class="ident">IsNotNull</span>, <span class="string">&quot; IS NOT NULL&quot;</span>);
+<span class="macro">diesel_postfix_operator!</span>(<span class="ident">Asc</span>, <span class="string">&quot; ASC&quot;</span>, ());
+<span class="macro">diesel_postfix_operator!</span>(<span class="ident">Desc</span>, <span class="string">&quot; DESC&quot;</span>, ());
 
-<span class="macro">postfix_operator</span><span class="macro">!</span>(<span class="ident">IsNull</span>, <span class="string">&quot; IS NULL&quot;</span>);
-<span class="macro">postfix_operator</span><span class="macro">!</span>(<span class="ident">IsNotNull</span>, <span class="string">&quot; IS NOT NULL&quot;</span>);
-<span class="macro">postfix_operator</span><span class="macro">!</span>(<span class="ident">Asc</span>, <span class="string">&quot; ASC&quot;</span>, ());
-<span class="macro">postfix_operator</span><span class="macro">!</span>(<span class="ident">Desc</span>, <span class="string">&quot; DESC&quot;</span>, ());
+<span class="macro">diesel_prefix_operator!</span>(<span class="ident">Not</span>, <span class="string">&quot;NOT &quot;</span>);
 
-<span class="macro">prefix_operator</span><span class="macro">!</span>(<span class="ident">Not</span>, <span class="string">&quot;NOT &quot;</span>);
+<span class="kw">use</span> <span class="ident">insertable</span>::{<span class="ident">ColumnInsertValue</span>, <span class="ident">Insertable</span>};
+<span class="kw">use</span> <span class="ident">query_builder::ValuesClause</span>;
+<span class="kw">use</span> <span class="ident">query_source::Column</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">expression</span>::<span class="ident">ValidGrouping</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">insertable</span>::{<span class="ident">ColumnInsertValue</span>, <span class="ident">Insertable</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">query_builder</span>::{<span class="ident">QueryId</span>, <span class="ident">ValuesClause</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">query_source</span>::<span class="ident">Column</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sql_types</span>::<span class="ident">DieselNumericOps</span>;
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span> <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">T</span>::<span class="ident">Table</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Eq</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span> <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">T::Table</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Eq</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">Column</span>,
 {
-    <span class="kw">type</span> <span class="ident">Values</span> <span class="op">=</span> <span class="ident">ValuesClause</span><span class="op">&lt;</span><span class="ident">ColumnInsertValue</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>, <span class="ident">T</span>::<span class="ident">Table</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Values</span> <span class="op">=</span> <span class="ident">ValuesClause</span><span class="op">&lt;</span><span class="ident">ColumnInsertValue</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span><span class="op">&gt;</span>, <span class="ident">T::Table</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Values</span> {
-        <span class="ident">ValuesClause</span>::<span class="ident">new</span>(<span class="ident">ColumnInsertValue</span>::<span class="ident">Expression</span>(<span class="self">self</span>.<span class="ident">left</span>, <span class="self">self</span>.<span class="ident">right</span>))
+    <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Values</span> {
+        <span class="ident">ValuesClause::new</span>(<span class="ident">ColumnInsertValue::Expression</span>(<span class="self">self</span>.<span class="ident">left</span>, <span class="self">self</span>.<span class="ident">right</span>))
     }
 }
 
@@ -872,56 +765,13 @@
     <span class="ident">T</span>: <span class="ident">Copy</span>,
     <span class="ident">Eq</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">U</span><span class="op">&gt;</span>: <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">Tab</span><span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Values</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Eq</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">U</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">Tab</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">Values</span>;
+    <span class="kw">type</span> <span class="ident">Values</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Eq</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">U</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">Insertable</span><span class="op">&lt;</span><span class="ident">Tab</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Values</span>;
 
-    <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Values</span> {
-        <span class="ident">Eq</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">left</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">right</span>).<span class="ident">values</span>()
-    }
-}
-
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">QueryId</span>, <span class="ident">DieselNumericOps</span>, <span class="ident">ValidGrouping</span>)]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Concat</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">left</span>: <span class="ident">L</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">right</span>: <span class="ident">R</span>,
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">R</span><span class="op">&gt;</span> <span class="ident">Concat</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">left</span>: <span class="ident">L</span>, <span class="ident">right</span>: <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">left</span>, <span class="ident">right</span> }
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">R</span>, <span class="ident">ST</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="ident">expression</span>::<span class="ident">Expression</span> <span class="kw">for</span> <span class="ident">Concat</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">R</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">L</span>: <span class="kw">crate</span>::<span class="ident">expression</span>::<span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span><span class="op">&gt;</span>,
-    <span class="ident">R</span>: <span class="kw">crate</span>::<span class="ident">expression</span>::<span class="ident">Expression</span><span class="op">&lt;</span><span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span><span class="op">&gt;</span>,
-{
-    <span class="kw">type</span> <span class="ident">SqlType</span> <span class="op">=</span> <span class="ident">ST</span>;
-}
-
-<span class="macro">impl_selectable_expression</span><span class="macro">!</span>(<span class="ident">Concat</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">R</span><span class="op">&gt;</span>);
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">R</span>, <span class="ident">DB</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="ident">query_builder</span>::<span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Concat</span><span class="op">&lt;</span><span class="ident">L</span>, <span class="ident">R</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">L</span>: <span class="kw">crate</span>::<span class="ident">query_builder</span>::<span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
-    <span class="ident">R</span>: <span class="kw">crate</span>::<span class="ident">query_builder</span>::<span class="ident">QueryFragment</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
-    <span class="ident">DB</span>: <span class="kw">crate</span>::<span class="ident">backend</span>::<span class="ident">Backend</span>,
-{
-    <span class="kw">fn</span> <span class="ident">walk_ast</span>(
-        <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="kw-2">mut</span> <span class="ident">out</span>: <span class="kw">crate</span>::<span class="ident">query_builder</span>::<span class="ident">AstPass</span><span class="op">&lt;</span><span class="ident">DB</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">crate</span>::<span class="ident">result</span>::<span class="ident">QueryResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="comment">// Those brackets are required because mysql is broken</span>
-        <span class="comment">// https://github.com/diesel-rs/diesel/issues/2133#issuecomment-517432317</span>
-        <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;(&quot;</span>);
-        <span class="self">self</span>.<span class="ident">left</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
-        <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot; || &quot;</span>);
-        <span class="self">self</span>.<span class="ident">right</span>.<span class="ident">walk_ast</span>(<span class="ident">out</span>.<span class="ident">reborrow</span>())<span class="question-mark">?</span>;
-        <span class="ident">out</span>.<span class="ident">push_sql</span>(<span class="string">&quot;)&quot;</span>);
-        <span class="prelude-val">Ok</span>(())
+    <span class="kw">fn</span> <span class="ident">values</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Values</span> {
+        <span class="ident">Eq::new</span>(<span class="self">self</span>.<span class="ident">left</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">right</span>).<span class="ident">values</span>()
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="diesel" data-search-js="../../../search-index.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="diesel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

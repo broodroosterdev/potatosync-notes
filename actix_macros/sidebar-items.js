@@ -1,0 +1,1 @@
+initSidebarItems({"attr":[["main","Marks async function to be executed by actix system."],["test","Marks async test function to be executed by actix runtime."]]});

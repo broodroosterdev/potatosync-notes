@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["fuel",""],["last_changed",""],["rocket_route_fn_last_changed","Rocket code generated wrapping route function."]],"static":[["static_rocket_route_info_for_last_changed","Rocket code generated static route info."]]});

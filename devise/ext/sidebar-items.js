@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["GenericKind",""]],"trait":[["GenericExt",""],["PathExt",""],["Split2",""],["Split3",""],["TypeExt",""]]});

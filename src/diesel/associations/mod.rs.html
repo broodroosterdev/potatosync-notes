@@ -1,7 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/git/checkouts/diesel-9a39c170f3426fd7/2b6bd11/diesel/src/associations/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
-                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;diesel-1.4.6&#x2F;src&#x2F;associations&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../diesel/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input"name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -414,7 +411,23 @@
 <span id="411">411</span>
 <span id="412">412</span>
 <span id="413">413</span>
-</pre><div class="example-wrap"><pre class="rust ">
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+</pre><pre class="rust">
 <span class="doccomment">//! Traits related to relationships between multiple tables.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Associations in Diesel are always child-to-parent.</span>
@@ -422,6 +435,7 @@
 <span class="doccomment">//! Unlike other ORMs, Diesel has no concept of `#[has_many`]</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! # #[macro_use] extern crate diesel;</span>
 <span class="doccomment">//! # include!(&quot;../doctest_setup.rs&quot;);</span>
 <span class="doccomment">//! use schema::{posts, users};</span>
 <span class="doccomment">//!</span>
@@ -447,7 +461,7 @@
 <span class="doccomment">//! #</span>
 <span class="doccomment">//! # fn run_test() -&gt; QueryResult&lt;()&gt; {</span>
 <span class="doccomment">//! #     let connection = establish_connection();</span>
-<span class="doccomment">//! #     use self::users::dsl::*;</span>
+<span class="doccomment">//! #     use users::dsl::*;</span>
 <span class="doccomment">//! let user = users.find(2).get_result::&lt;User&gt;(&amp;connection)?;</span>
 <span class="doccomment">//! let users_post = Post::belonging_to(&amp;user)</span>
 <span class="doccomment">//!     .first(&amp;connection)?;</span>
@@ -470,6 +484,7 @@
 <span class="doccomment">//! `unrestricted_attribute_tokens` is stable.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! # #[macro_use] extern crate diesel;</span>
 <span class="doccomment">//! # include!(&quot;../doctest_setup.rs&quot;);</span>
 <span class="doccomment">//! # use schema::{posts, users};</span>
 <span class="doccomment">//! # use std::borrow::Cow;</span>
@@ -513,6 +528,7 @@
 <span class="doccomment">//! [`belonging_to`]: ../query_dsl/trait.BelongingToDsl.html#tymethod.belonging_to</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! # #[macro_use] extern crate diesel;</span>
 <span class="doccomment">//! # include!(&quot;../doctest_setup.rs&quot;);</span>
 <span class="doccomment">//! # use schema::users;</span>
 <span class="doccomment">//! # use schema::posts;</span>
@@ -532,7 +548,7 @@
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! #</span>
 <span class="doccomment">//! # fn main() {</span>
-<span class="doccomment">//! #   use self::users::dsl::*;</span>
+<span class="doccomment">//! #   use users::dsl::*;</span>
 <span class="doccomment">//! #   let connection = establish_connection();</span>
 <span class="doccomment">//! #</span>
 <span class="doccomment">//! let user = users.find(1).first::&lt;User&gt;(&amp;connection).expect(&quot;Error loading user&quot;);</span>
@@ -560,13 +576,13 @@
 <span class="doccomment">//! a user and all of its posts, that type is `(User, Vec&lt;Post&gt;)`.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! Next lets look at how to load the children for more than one parent record.</span>
-<span class="doccomment">//! [`belonging_to`] can be used to load the data, but we&#39;ll also need to group it</span>
-<span class="doccomment">//! with its parents. For this we use an additional method [`grouped_by`].</span>
+<span class="doccomment">//! [`belonging_to`][belonging-to] can be used to load the data, but we&#39;ll also need to group it</span>
+<span class="doccomment">//! with its parents. For this we use an additional method [`grouped_by`][grouped-by]</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! [`grouped_by`]: trait.GroupedBy.html#tymethod.grouped_by</span>
-<span class="doccomment">//! [`belonging_to`]: ../query_dsl/trait.BelongingToDsl.html#tymethod.belonging_to</span>
+<span class="doccomment">//! [grouped-by]: trait.GroupedBy.html#tymethod.grouped_by</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! # #[macro_use] extern crate diesel;</span>
 <span class="doccomment">//! # include!(&quot;../doctest_setup.rs&quot;);</span>
 <span class="doccomment">//! # use schema::{posts, users};</span>
 <span class="doccomment">//! #</span>
@@ -591,8 +607,8 @@
 <span class="doccomment">//! #</span>
 <span class="doccomment">//! # fn run_test() -&gt; QueryResult&lt;()&gt; {</span>
 <span class="doccomment">//! #     let connection = establish_connection();</span>
-<span class="doccomment">//! #     use self::users::dsl::*;</span>
-<span class="doccomment">//! #     use self::posts::dsl::{posts, title};</span>
+<span class="doccomment">//! #     use users::dsl::*;</span>
+<span class="doccomment">//! #     use posts::dsl::{posts, title};</span>
 <span class="doccomment">//! let sean = users.filter(name.eq(&quot;Sean&quot;)).first::&lt;User&gt;(&amp;connection)?;</span>
 <span class="doccomment">//! let tess = users.filter(name.eq(&quot;Tess&quot;)).first::&lt;User&gt;(&amp;connection)?;</span>
 <span class="doccomment">//!</span>
@@ -615,12 +631,13 @@
 <span class="doccomment">//! Diesel provides support for doing this grouping, once the data has been</span>
 <span class="doccomment">//! loaded.</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! [`grouped_by`] is called on a `Vec&lt;Child&gt;` with a `&amp;[Parent]`.</span>
+<span class="doccomment">//! [`grouped_by`][grouped-by] is called on a `Vec&lt;Child&gt;` with a `&amp;[Parent]`.</span>
 <span class="doccomment">//! The return value will be `Vec&lt;Vec&lt;Child&gt;&gt;` indexed to match their parent.</span>
 <span class="doccomment">//! Or to put it another way, the returned data can be passed to `zip`,</span>
 <span class="doccomment">//! and it will be combined with its parent.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! # #[macro_use] extern crate diesel;</span>
 <span class="doccomment">//! # include!(&quot;../doctest_setup.rs&quot;);</span>
 <span class="doccomment">//! # use schema::{posts, users};</span>
 <span class="doccomment">//! #</span>
@@ -672,7 +689,7 @@
 <span class="doccomment">//! # }</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
-<span class="doccomment">//! [`grouped_by`] can be called multiple times</span>
+<span class="doccomment">//! `grouped_by` can be called multiple times</span>
 <span class="doccomment">//! if you have multiple children or grandchildren.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! For example, this code will load some users,</span>
@@ -682,6 +699,7 @@
 <span class="doccomment">//! to make each line a bit more clear.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! ```rust</span>
+<span class="doccomment">//! # #[macro_use] extern crate diesel;</span>
 <span class="doccomment">//! # include!(&quot;../doctest_setup.rs&quot;);</span>
 <span class="doccomment">//! # use schema::{users, posts, comments};</span>
 <span class="doccomment">//! #</span>
@@ -766,14 +784,11 @@
 <span class="doccomment">//! be used to construct the complex behavior applications need.</span>
 <span class="kw">mod</span> <span class="ident">belongs_to</span>;
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">hash</span>::<span class="ident">Hash</span>;
+<span class="kw">use</span> <span class="ident">std::hash::Hash</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">query_source</span>::<span class="ident">Table</span>;
+<span class="kw">use</span> <span class="ident">query_source::Table</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">belongs_to</span>::{<span class="ident">BelongsTo</span>, <span class="ident">GroupedBy</span>};
-
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">diesel_derives</span>::<span class="ident">Associations</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::belongs_to</span>::{<span class="ident">BelongsTo</span>, <span class="ident">GroupedBy</span>};
 
 <span class="doccomment">/// This trait indicates that a struct is associated with a single database table.</span>
 <span class="doccomment">///</span>
@@ -784,14 +799,14 @@
     <span class="kw">type</span> <span class="ident">Table</span>: <span class="ident">Table</span>;
 
     <span class="doccomment">/// Returns the table this type is associated with.</span>
-    <span class="kw">fn</span> <span class="ident">table</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Table</span>;
+    <span class="kw">fn</span> <span class="ident">table</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Table</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">HasTable</span><span class="op">&gt;</span> <span class="ident">HasTable</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span> {
-    <span class="kw">type</span> <span class="ident">Table</span> <span class="op">=</span> <span class="ident">T</span>::<span class="ident">Table</span>;
+    <span class="kw">type</span> <span class="ident">Table</span> <span class="op">=</span> <span class="ident">T::Table</span>;
 
-    <span class="kw">fn</span> <span class="ident">table</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Table</span> {
-        <span class="ident">T</span>::<span class="ident">table</span>()
+    <span class="kw">fn</span> <span class="ident">table</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Table</span> {
+        <span class="ident">T::table</span>()
     }
 }
 
@@ -803,8 +818,25 @@
 <span class="doccomment">/// `update(YourStruct::table().find(&amp;your_struct.primary_key())`).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This trait is usually implemented on a reference to a struct,</span>
-<span class="doccomment">/// not on the struct itself. It can be [derived](derive.Identifiable.html).</span>
+<span class="doccomment">/// not the struct itself.</span>
 <span class="doccomment">///</span>
+<span class="doccomment">/// ### Deriving</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// This trait can be automatically derived by adding `#[derive(Identifiable)]`</span>
+<span class="doccomment">/// to your struct.</span>
+<span class="doccomment">/// By default, the &quot;id&quot; field is assumed to be a single field called `id`.</span>
+<span class="doccomment">/// If it&#39;s not, you can put `#[primary_key(your_id)]` on your struct.</span>
+<span class="doccomment">/// If you have a composite primary key, the syntax is `#[primary_key(id1, id2)]`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// By default, `#[derive(Identifiable)]` will assume that your table</span>
+<span class="doccomment">/// name is the plural form of your struct name.</span>
+<span class="doccomment">/// Diesel uses very simple pluralization rules.</span>
+<span class="doccomment">/// It only adds an `s` to the end, and converts `CamelCase` to `snake_case`.</span>
+<span class="doccomment">/// If your table name does not follow this convention</span>
+<span class="doccomment">/// or the plural form isn&#39;t just an `s`,</span>
+<span class="doccomment">/// you can specify the table name with `#[table_name = &quot;some_table_name&quot;]`.</span>
+<span class="doccomment">/// Our rules for inferring table names is considered public API.</span>
+<span class="doccomment">/// It will never change without a major version bump.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Identifiable</span>: <span class="ident">HasTable</span> {
     <span class="doccomment">/// The type of this struct&#39;s identifier.</span>
     <span class="doccomment">///</span>
@@ -823,11 +855,9 @@
     <span class="doccomment">/// Because of Rust&#39;s rules about specifying lifetimes,</span>
     <span class="doccomment">/// this means that `Identifiable` is usually implemented on references</span>
     <span class="doccomment">/// so that we have a lifetime to use for `Id`.</span>
-    <span class="kw">fn</span> <span class="ident">id</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Id</span>;
+    <span class="kw">fn</span> <span class="ident">id</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Id</span>;
 }
-
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">inline</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">diesel_derives</span>::<span class="ident">Identifiable</span>;
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="diesel" data-search-js="../../../search-index.js"></div>
-    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="diesel" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
+    <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script>
+</body></html>

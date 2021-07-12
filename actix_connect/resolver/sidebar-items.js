@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["read_system_conf",""]],"struct":[["AsyncResolver","An asynchronous resolver for DNS generic over async Runtimes."],["ResolveError","The error type for errors that get returned in the crate"],["ResolverConfig","Configuration for the upstream nameservers to use for resolution"],["ResolverOpts","Configuration for the Resolver"]]});

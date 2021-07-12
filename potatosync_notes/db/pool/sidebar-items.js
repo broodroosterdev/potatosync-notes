@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["connect","Initialize the database pool."],["database_url",""],["pg_connection",""]],"type":[["PgPool","An alias to the type for a pool of Diesel Postgres Connection"]]});

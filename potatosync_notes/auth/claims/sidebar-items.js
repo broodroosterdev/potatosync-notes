@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Token","Claims for access_token"]]});
