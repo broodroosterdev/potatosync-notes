@@ -1,5 +1,5 @@
 ## Building Stage ##
-FROM rust:1.53 as build
+FROM rust:1.53 as builder
 
 # Build time options to avoid dpkg warnings and help with reproducible builds.
 ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8 TZ=UTC TERM=xterm-256color
