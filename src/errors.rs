@@ -8,6 +8,7 @@ pub enum ApiError {
     NotFound,
     Duplicate,
     DBError(DBError),
+    InternalServerError,
     PoolError(PoolError),
     AuthError
 }

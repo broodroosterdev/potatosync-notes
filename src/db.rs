@@ -4,6 +4,7 @@ use config::Source;
 use diesel::{PgConnection, RunQueryDsl, QueryDsl, ExpressionMethods, BoolExpressionMethods};
 use crate::services::notes::update::NoteTemplate;
 use crate::services::tags::update::TagTemplate;
+use diesel::dsl::max;
 
 
 pub fn add_note(conn: &PgConnection, note: &Note) -> Result<usize, ApiError> {
@@ -29,6 +30,14 @@ pub fn delete_note(conn: &PgConnection, note_id: &String, given_account_id: &str
     use crate::schema::notes::dsl::*;
     diesel::delete(notes)
         .filter(id.eq(note_id).and(account_id.eq(given_account_id)))
+        .execute(conn)
+        .map_err(|error| ApiError::DBError(error))
+}
+
+pub fn delete_all_note(conn: &PgConnection, given_account_id: &str) -> Result<usize, ApiError> {
+    use crate::schema::notes::dsl::*;
+    diesel::delete(notes)
+        .filter(account_id.eq(given_account_id))
         .execute(conn)
         .map_err(|error| ApiError::DBError(error))
 }
@@ -74,6 +83,14 @@ pub fn delete_tag(conn: &PgConnection, note_id: &String, given_account_id: &str)
         .map_err(|error| ApiError::DBError(error))
 }
 
+pub fn delete_all_tag(conn: &PgConnection, given_account_id: &str) -> Result<usize, ApiError> {
+    use crate::schema::tags::dsl::*;
+    diesel::delete(tags)
+        .filter(account_id.eq(given_account_id))
+        .execute(conn)
+        .map_err(|error| ApiError::DBError(error))
+}
+
 pub fn get_tags(conn: &PgConnection, given_account_id: &str) -> Result<Vec<Tag>, ApiError> {
     use crate::schema::tags::dsl::*;
     tags.filter(account_id.eq(given_account_id))
@@ -85,5 +102,23 @@ pub fn get_tags_updated_after(conn: &PgConnection, updated_after: u64, given_acc
     use crate::schema::tags::dsl::*;
     tags.filter(account_id.eq(given_account_id).and(last_changed.gt(updated_after as i64)))
         .load::<Tag>(conn)
+        .map_err(|error| ApiError::DBError(error))
+}
+
+pub fn get_last_note_changed(conn: &PgConnection, given_account_id: &str) -> Result<Option<i64>, ApiError> {
+    use crate::schema::*;
+    notes::table
+        .filter(notes::account_id.eq(given_account_id))
+        .select(max(notes::last_changed))
+        .first(conn)
+        .map_err(|error| ApiError::DBError(error))
+}
+
+pub fn get_last_tag_changed(conn: &PgConnection, given_account_id: &str) -> Result<Option<i64>, ApiError> {
+    use crate::schema::*;
+    tags::table
+        .filter(tags::account_id.eq(given_account_id))
+        .select(max(tags::last_changed))
+        .first(conn)
         .map_err(|error| ApiError::DBError(error))
 }
