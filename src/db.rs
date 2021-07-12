@@ -1,7 +1,7 @@
 use crate::models::{Note, Tag};
 use crate::errors::ApiError;
 use config::Source;
-use diesel::{PgConnection, RunQueryDsl, QueryDsl, ExpressionMethods, BoolExpressionMethods};
+use diesel::{PgConnection, RunQueryDsl, QueryDsl, ExpressionMethods, BoolExpressionMethods, PgArrayExpressionMethods};
 use crate::services::notes::update::NoteTemplate;
 use crate::services::tags::update::TagTemplate;
 use diesel::dsl::max;
@@ -120,5 +120,23 @@ pub fn get_last_tag_changed(conn: &PgConnection, given_account_id: &str) -> Resu
         .filter(tags::account_id.eq(given_account_id))
         .select(max(tags::last_changed))
         .first(conn)
+        .map_err(|error| ApiError::DBError(error))
+}
+
+pub fn get_existing_notes(conn: &PgConnection, id_list: &Vec<String>, given_account_id: &str) -> Result<Vec<String>, ApiError> {
+    use crate::schema::notes;
+    notes::table
+        .filter(notes::account_id.eq(given_account_id).and(notes::id.eq_any(id_list.clone())))
+        .select(notes::id)
+        .load::<String>(conn)
+        .map_err(|error| ApiError::DBError(error))
+}
+
+pub fn get_existing_tags(conn: &PgConnection, id_list: &Vec<String>, given_account_id: &str) -> Result<Vec<String>, ApiError> {
+    use crate::schema::tags;
+    tags::table
+        .filter(tags::account_id.eq(given_account_id).and(tags::id.eq_any(id_list.clone())))
+        .select(tags::id)
+        .load::<String>(conn)
         .map_err(|error| ApiError::DBError(error))
 }
