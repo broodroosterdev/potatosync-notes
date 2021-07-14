@@ -50,6 +50,7 @@ async fn main() -> std::io::Result<()> {
             .configure(services::notes::service_config)
             // Setup the routes for the tags
             .configure(services::tags::service_config)
+            .configure(services::general::service_config)
     })
         .bind(config.server_addr.clone())?
         .run();
