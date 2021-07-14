@@ -17,6 +17,9 @@
 <span id="17">17</span>
 <span id="18">18</span>
 <span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">actix_web::web</span>;
 
@@ -30,12 +33,15 @@
 <span class="comment">// Configure files app services</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">service_config</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web::ServiceConfig</span>) {
     <span class="ident">cfg</span>
-        .<span class="ident">service</span>(<span class="ident">add::add</span>)<span class="comment">// POST /note</span>
-        .<span class="ident">service</span>(<span class="ident">update::update</span>) <span class="comment">// PATCH /note/{id}</span>
-        .<span class="ident">service</span>(<span class="ident">delete::delete</span>) <span class="comment">// DELETE /note/{id}</span>
-        .<span class="ident">service</span>(<span class="ident">delete_all::delete_all</span>)
-        .<span class="ident">service</span>(<span class="ident">get::get</span>)                      <span class="comment">// GET /note</span>
-        .<span class="ident">service</span>(<span class="ident">deleted::deleted</span>);             <span class="comment">// POST /deleted</span>
+        .<span class="ident">service</span>(
+            <span class="ident">web::scope</span>(<span class="string">&quot;/notes&quot;</span>)
+                .<span class="ident">service</span>(<span class="ident">add::add</span>)<span class="comment">// POST /note</span>
+                .<span class="ident">service</span>(<span class="ident">update::update</span>) <span class="comment">// PATCH /note/{id}</span>
+                .<span class="ident">service</span>(<span class="ident">delete::delete</span>) <span class="comment">// DELETE /note/{id}</span>
+                .<span class="ident">service</span>(<span class="ident">delete_all::delete_all</span>)
+                .<span class="ident">service</span>(<span class="ident">get::get</span>)                      <span class="comment">// GET /note</span>
+                .<span class="ident">service</span>(<span class="ident">deleted::deleted</span>));<span class="comment">// POST /deleted</span>
+
 }</pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="potatosync_notes" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
     <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
