@@ -5,7 +5,7 @@ use crate::errors::ApiError;
 use crate::jwt::Claims;
 use serde::Deserialize;
 
-#[post("/note/deleted")]
+#[post("/tag/deleted")]
 pub async fn deleted(
     data: web::Json<Vec<String>>,
     config: web::Data<Config>,
