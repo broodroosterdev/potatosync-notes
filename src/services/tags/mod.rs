@@ -11,12 +11,10 @@ pub mod deleted;
 // Configure files app services
 pub fn service_config(cfg: &mut web::ServiceConfig) {
     cfg
-        .service(
-            web::scope("/notes")
-                .service(add::add)// POST /tag
-                .service(update::update) // PATCH /tag/{id}
-                .service(delete::delete) // DELETE /tag/{id}
-                .service(delete_all::delete_all) // DELETE /tag/all
-                .service(get::get)                      // GET /tag(?last_updated=0)
-                .service(deleted::deleted)); // POST /deleted
+        .service(add::add)// POST /tag
+        .service(update::update) // PATCH /tag/{id}
+        .service(delete::delete) // DELETE /tag/{id}
+        .service(delete_all::delete_all) // DELETE /tag/all
+        .service(get::get)                      // GET /tag(?last_updated=0)
+        .service(deleted::deleted); // POST /deleted
 }
