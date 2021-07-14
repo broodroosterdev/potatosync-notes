@@ -43,7 +43,7 @@
     <span class="kw">pub</span> <span class="ident">last_changed</span>: <span class="ident">u64</span>
 }
 
-<span class="attribute">#[<span class="ident">patch</span>(<span class="string">&quot;/note/{id}&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">patch</span>(<span class="string">&quot;/{id}&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update</span>(
     <span class="ident">path</span>: <span class="ident">web::Path</span><span class="op">&lt;</span>(<span class="ident">String</span>,)<span class="op">&gt;</span>,
     <span class="ident">data</span>: <span class="ident">web::Json</span><span class="op">&lt;</span><span class="ident">NoteTemplate</span><span class="op">&gt;</span>,

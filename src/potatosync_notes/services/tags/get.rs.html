@@ -49,7 +49,7 @@
     <span class="ident">last_updated</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>
 }
 
-<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/tag&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">get</span>(<span class="string">&quot;/&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get</span>(
     <span class="ident">config</span>: <span class="ident">web::Data</span><span class="op">&lt;</span><span class="ident">Config</span><span class="op">&gt;</span>,
     <span class="ident">params</span>: <span class="ident">web::Query</span><span class="op">&lt;</span><span class="ident">Params</span><span class="op">&gt;</span>,
