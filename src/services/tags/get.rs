@@ -10,7 +10,7 @@ pub struct Params {
     last_updated: Option<u64>
 }
 
-#[get("/tag")]
+#[get("/")]
 pub async fn get(
     config: web::Data<Config>,
     params: web::Query<Params>,

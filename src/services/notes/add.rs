@@ -13,7 +13,7 @@ pub struct AddTemplate {
     pub last_changed: u64
 }
 
-#[post("/note")]
+#[post("/")]
 pub async fn add(
     data: web::Json<AddTemplate>,
     config: web::Data<Config>,

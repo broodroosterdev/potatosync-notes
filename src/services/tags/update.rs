@@ -11,7 +11,7 @@ pub struct TagTemplate {
     pub last_changed: u64
 }
 
-#[patch("/tag/{id}")]
+#[patch("/{id}")]
 pub async fn update(
     path: web::Path<(String,)>,
     data: web::Json<TagTemplate>,

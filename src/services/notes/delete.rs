@@ -4,7 +4,7 @@ use crate::{jwt, DbPool, db};
 use crate::errors::ApiError;
 use crate::jwt::Claims;
 
-#[delete("/note/{id}")]
+#[delete("/{id}")]
 pub async fn delete(
     path: web::Path<(String,)>,
     config: web::Data<Config>,

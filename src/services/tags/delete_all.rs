@@ -4,7 +4,7 @@ use crate::{jwt, DbPool, db};
 use crate::errors::ApiError;
 use crate::jwt::Claims;
 
-#[delete("/tag/all")]
+#[delete("/all")]
 pub async fn delete_all(
     config: web::Data<Config>,
     jwt: jwt::JWT,
