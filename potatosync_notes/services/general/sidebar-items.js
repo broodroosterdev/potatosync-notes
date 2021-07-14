@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["service_config",""]],"mod":[["last_changed",""]]});
+initSidebarItems({"fn":[["service_config",""]],"mod":[["last_changed",""],["ping",""]]});

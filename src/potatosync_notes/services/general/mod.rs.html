@@ -8,8 +8,12 @@
 <span id="8"> 8</span>
 <span id="9"> 9</span>
 <span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
 </pre><pre class="rust">
 <span class="kw">mod</span> <span class="ident">last_changed</span>;
+<span class="kw">mod</span> <span class="ident">ping</span>;
 
 <span class="kw">use</span> <span class="ident">actix_web::web</span>;
 
@@ -17,7 +21,9 @@
 <span class="comment">// Configure files app services</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">service_config</span>(<span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">web::ServiceConfig</span>) {
     <span class="ident">cfg</span>
-        .<span class="ident">service</span>(<span class="ident">last_changed::last_changed</span>);   <span class="comment">// POST /last_changed</span>
+        <span class="comment">//.service(last_changed::last_changed)// POST /last_changed</span>
+        .<span class="ident">service</span>(<span class="ident">ping::ping</span>)<span class="comment">// GET /ping</span>
+        .<span class="ident">service</span>(<span class="ident">ping::secure_ping</span>);<span class="comment">// GET /secure-ping</span>
 }</pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="potatosync_notes" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
     <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
