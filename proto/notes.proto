@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package notes;
+
+message Empty {}
+
+message Note {
+    string id = 1;
+    bytes content = 2;
+    uint64 last_changed = 3;
+}
+
+message DeleteRequest {
+    string id = 1;
+}
+
+message GetDeletedRequest {
+    repeated string list = 1;
+}
+
+message GetDeletedResponse {
+    repeated string list = 1;
+}
+
+message GetUpdatedRequest {
+    optional uint64 last_changed = 1;
+}
+
+message GetUpdatedResponse {
+    repeated Note notes = 1;
+}
+
+service Notes {
+    rpc Add(Note) returns (Empty);
+    rpc Update(Note) returns (Empty);
+    rpc Delete(DeleteRequest) returns (Empty);
+    rpc DeleteAll(Empty) returns (Empty);
+    rpc GetDeleted(GetDeletedRequest) returns (GetDeletedResponse);
+    rpc GetUpdated(GetUpdatedRequest) returns (GetUpdatedResponse);
+}
