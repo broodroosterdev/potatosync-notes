@@ -1,19 +1,19 @@
 mod services;
 mod db;
+mod auth;
 
-use tonic::{transport::Server, Request, Response, Status};
-use notes::notes_server::{Notes, NotesServer};
+use tonic::{transport::Server, Request, Status};
+use notes::notes_server::{NotesServer};
+use notes::tags_server::{TagsServer};
 
 use sqlx::postgres::PgPoolOptions;
-use sqlx::{Postgres, Pool};
-use tonic::metadata::MetadataMap;
-use jsonwebtoken::{decode, DecodingKey, Validation, Algorithm};
-use crate::services::MyNotes;
 
+use crate::services::{MyNotes, MyTags};
 
 pub mod notes {
     tonic::include_proto!("notes"); // The string specified here must match the proto package name
 }
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv::dotenv().expect("Could not run dotenv");
@@ -26,14 +26,23 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .max_connections(5)
         .connect("postgres://postgres:password@localhost:5433/notes").await?;
 
+    sqlx::migrate!("./migrations")
+        .run(&pool)
+        .await?;
 
     let addr = "0.0.0.0:50051".parse()?;
+
     let notes = MyNotes{
-        database: pool
+        database: pool.clone()
+    };
+
+    let tags = MyTags{
+        database: pool.clone()
     };
 
     Server::builder()
         .add_service(NotesServer::with_interceptor(notes, check_auth))
+        .add_service(TagsServer::with_interceptor(tags, check_auth))
         .serve(addr)
         .await?;
 
@@ -47,30 +56,3 @@ fn check_auth(req: Request<()>) -> Result<Request<()>, Status> {
     }
 }
 
-/// JWT claims.
-#[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct Claims {
-    pub sub: String,
-    pub role: String,
-    pub r#type: String,
-    pub exp: usize,
-}
-
-fn extract_claims(metadata: &MetadataMap) -> Result<Claims, String> {
-    let secret = std::env::var("JWT_SECRET").expect("Cant find JWT_SECRET variable");
-
-    if let Some(jwt) = metadata.get("authorization") {
-        return match decode::<Claims>(
-            jwt.to_str().unwrap(),
-            &DecodingKey::from_secret(secret.as_ref()),
-            &Validation::new(Algorithm::HS256),
-        ) {
-            Ok(tokendata) => Ok(tokendata.claims),
-            Err(error) => {
-                Err(error.to_string())
-            }
-        }
-    } else {
-        Err(String::from("No valid auth token"))
-    }
-}

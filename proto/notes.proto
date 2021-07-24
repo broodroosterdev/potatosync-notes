@@ -4,7 +4,7 @@ package notes;
 
 message Empty {}
 
-message Note {
+message Data {
     string id = 1;
     bytes content = 2;
     uint64 last_changed = 3;
@@ -23,16 +23,25 @@ message GetDeletedResponse {
 }
 
 message GetUpdatedRequest {
-    optional uint64 last_changed = 1;
+    optional uint64 last_updated = 1;
 }
 
 message GetUpdatedResponse {
-    repeated Note notes = 1;
+    repeated Data items = 1;
 }
 
 service Notes {
-    rpc Add(Note) returns (Empty);
-    rpc Update(Note) returns (Empty);
+    rpc Add(Data) returns (Empty);
+    rpc Update(Data) returns (Empty);
+    rpc Delete(DeleteRequest) returns (Empty);
+    rpc DeleteAll(Empty) returns (Empty);
+    rpc GetDeleted(GetDeletedRequest) returns (GetDeletedResponse);
+    rpc GetUpdated(GetUpdatedRequest) returns (GetUpdatedResponse);
+}
+
+service Tags {
+    rpc Add(Data) returns (Empty);
+    rpc Update(Data) returns (Empty);
     rpc Delete(DeleteRequest) returns (Empty);
     rpc DeleteAll(Empty) returns (Empty);
     rpc GetDeleted(GetDeletedRequest) returns (GetDeletedResponse);
