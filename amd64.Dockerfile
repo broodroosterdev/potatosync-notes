@@ -6,6 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8 TZ=UTC TERM=xterm-256color
 
 # Don't download rust docs
 RUN rustup set profile minimal
+RUN rustup component add rustfmt
 
 ENV USER "root"
 ENV RUSTFLAGS='-C link-arg=-s'
