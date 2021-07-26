@@ -1,0 +1,17 @@
+name: Docker
+on:
+  push:
+
+jobs:
+  build-amd64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: whoan/docker-build-with-cache-action@v5
+        name: Build AMD64 Image
+        with:
+          username: basmakes
+          password: "${{ secrets.DOCKER_PASSWORD }}"
+          image_name: basmakes/potatosync-notes
+          image_tag: amd64-grpc
+          dockerfile: amd64.Dockerfile

@@ -18,19 +18,20 @@ pub mod notes {
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv::dotenv().expect("Could not run dotenv");
     std::env::var("JWT_SECRET").expect("Cant find JWT_SECRET variable");
+    let database_url = std::env::var("DATABASE_URL").expect("Cant find DATABASE_URL variable");
     // Create a connection pool
     //  for MySQL, use MySqlPoolOptions::new()
     //  for SQLite, use SqlitePoolOptions::new()
     //  etc.
     let pool = PgPoolOptions::new()
         .max_connections(5)
-        .connect("postgres://postgres:password@localhost:5433/notes").await?;
+        .connect(&database_url).await?;
 
     sqlx::migrate!("./migrations")
         .run(&pool)
         .await?;
 
-    let addr = "0.0.0.0:50051".parse()?;
+    let addr = "0.0.0.0:4000".parse()?;
 
     let notes = MyNotes{
         database: pool.clone()
