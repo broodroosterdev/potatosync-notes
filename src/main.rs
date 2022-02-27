@@ -3,21 +3,19 @@ mod db;
 mod auth;
 
 use tonic::{transport::Server, Request, Status};
-use notes::notes_server::{NotesServer};
-use notes::tags_server::{TagsServer};
+use blob::blob_server::{BlobServer};
 
 use sqlx::postgres::PgPoolOptions;
+use crate::services::BlobService;
 
-use crate::services::{MyNotes, MyTags};
-
-pub mod notes {
-    tonic::include_proto!("notes"); // The string specified here must match the proto package name
+pub mod blob {
+    tonic::include_proto!("blob"); // The string specified here must match the proto package name
 }
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv::dotenv().expect("Could not run dotenv");
-    std::env::var("JWT_SECRET").expect("Cant find JWT_SECRET variable");
+    //std::env::var("JWT_SECRET").expect("Cant find JWT_SECRET variable");
     let database_url = std::env::var("DATABASE_URL").expect("Cant find DATABASE_URL variable");
     // Create a connection pool
     //  for MySQL, use MySqlPoolOptions::new()
@@ -33,17 +31,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let addr = "0.0.0.0:4000".parse()?;
 
-    let notes = MyNotes{
-        database: pool.clone()
-    };
-
-    let tags = MyTags{
+    let blobs = BlobService{
         database: pool.clone()
     };
 
     Server::builder()
-        .add_service(NotesServer::with_interceptor(notes, check_auth))
-        .add_service(TagsServer::with_interceptor(tags, check_auth))
+        .add_service(BlobServer::with_interceptor(blobs, check_auth))
         .serve(addr)
         .await?;
 
@@ -51,6 +44,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn check_auth(req: Request<()>) -> Result<Request<()>, Status> {
+    return Ok(req);
     match req.metadata().get("authorization") {
         Some(t) => Ok(req),
         _ => Err(Status::unauthenticated("No valid auth token")),
