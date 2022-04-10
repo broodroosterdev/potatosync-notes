@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeafletAPI", "LeafletAPI\LeafletAPI.csproj", "{1EB33F74-C547-447F-812C-15241615BCDA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1EB33F74-C547-447F-812C-15241615BCDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1EB33F74-C547-447F-812C-15241615BCDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1EB33F74-C547-447F-812C-15241615BCDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1EB33F74-C547-447F-812C-15241615BCDA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
