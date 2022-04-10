@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LeafletAPI.Migrations
 {
     [DbContext(typeof(BlobDbContext))]
-    [Migration("20220410140855_AddBlobEntity")]
-    partial class AddBlobEntity
+    [Migration("20220410210130_NewBlobEntity")]
+    partial class NewBlobEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,11 +26,11 @@ namespace LeafletAPI.Migrations
 
             modelBuilder.Entity("LeafletAPI.Models.BlobEntity", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
 
-                    b.Property<string>("AccountId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("BlobType")
                         .IsRequired()
@@ -40,8 +40,8 @@ namespace LeafletAPI.Migrations
                         .IsRequired()
                         .HasColumnType("bytea");
 
-                    b.Property<long>("LastChanged")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime>("LastChanged")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id", "AccountId");
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LeafletAPI.Migrations
 {
-    public partial class AddBlobEntity : Migration
+    public partial class NewBlobEntity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,11 +13,11 @@ namespace LeafletAPI.Migrations
                 name: "Blobs",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    AccountId = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    AccountId = table.Column<Guid>(type: "uuid", nullable: false),
                     BlobType = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<byte[]>(type: "bytea", nullable: false),
-                    LastChanged = table.Column<long>(type: "bigint", nullable: false)
+                    LastChanged = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {

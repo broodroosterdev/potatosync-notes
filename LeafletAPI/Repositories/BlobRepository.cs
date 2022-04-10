@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using LeafletAPI.Helpers;
 using LeafletAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,16 +15,20 @@ public class BlobRepository
 
     public async Task UpsertBlob(Data data, Guid accountId)
     {
-        var blob = await _context.Blobs.FindAsync(data.Id, accountId);
+        var blob = await _context.Blobs.FindAsync(IdHelper.ParseId(data.Id), accountId);
         if (blob == null)
         {
             blob = new BlobEntity()
             {
                 Id = Guid.Parse(data.Id),
                 AccountId = accountId,
-                BlobType = data.BlobType
+                BlobType = data.BlobType,
+                Content = data.Content.ToByteArray(),
+                LastChanged = data.LastChanged.ToDateTime()
             };
             await _context.AddAsync(blob);
+            await _context.SaveChangesAsync();
+            return;
         }
 
         if (blob.BlobType != data.BlobType)

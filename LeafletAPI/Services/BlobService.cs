@@ -2,6 +2,7 @@
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
+using LeafletAPI.Helpers;
 using LeafletAPI.Models;
 using LeafletAPI.Repositories;
 using Microsoft.AspNetCore.Authorization;
@@ -31,14 +32,6 @@ public class BlobService : Blob.BlobBase
         return id;
     }
 
-    private static Guid ParseId(string id)
-    {
-        if (!Guid.TryParse(id, out var parsedId))
-            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid id given"));
-        return parsedId;
-    }
-
-
     public override async Task<Empty> Sync(Data request, ServerCallContext context)
     {
         var accountId = GetAccountId(context);
@@ -51,7 +44,7 @@ public class BlobService : Blob.BlobBase
     public override async Task<Empty> Delete(DeleteRequest request, ServerCallContext context)
     {
         var accountId = GetAccountId(context);
-        var blobId = ParseId(request.Id);
+        var blobId = IdHelper.ParseId(request.Id);
 
         await _repo.DeleteBlob(blobId, accountId);
 
@@ -73,7 +66,7 @@ public class BlobService : Blob.BlobBase
 
         var ids = await _repo.GetBlobIds(request.BlobType, accountId);
 
-        var givenIds = request.List.Select(ParseId);
+        var givenIds = request.List.Select(IdHelper.ParseId);
         var removedIds = givenIds.Except(ids)
             .Select(id => id.ToString());
 

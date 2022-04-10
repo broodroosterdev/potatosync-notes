@@ -25,8 +25,8 @@ builder.Services.AddAuthentication(x =>
     })
     .AddJwtBearer(options =>
     {
-        options.Authority = "https://login.broodrooster.dev/realms/Sync-test/";
-        options.Audience = "account";
+        options.Authority = builder.Configuration["OAuth:Authority"];
+        options.Audience = builder.Configuration["OAuth:Audience"];
     });
 builder.Services.AddAuthorization();
 
