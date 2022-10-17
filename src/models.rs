@@ -1,21 +1,11 @@
+use crate::schema::blobs;
 use serde::{Deserialize, Serialize};
-use crate::schema::notes;
-use crate::schema::tags;
 
-#[derive(Deserialize, Insertable, Queryable, Serialize)]
-pub struct Note {
+#[derive(Deserialize, Insertable, Queryable, AsChangeset, Serialize)]
+pub struct Blob {
     pub id: String,
     #[serde(skip_serializing)]
     pub account_id: String,
     pub content: String,
-    pub last_changed: i64
-}
-
-#[derive(Deserialize, Insertable, Queryable, Serialize)]
-pub struct Tag {
-    pub id: String,
-    #[serde(skip_serializing)]
-    pub account_id: String,
-    pub content: String,
-    pub last_changed: i64
+    pub last_changed: i64,
 }

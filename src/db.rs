@@ -1,142 +1,33 @@
-use crate::models::{Note, Tag};
 use crate::errors::ApiError;
-use config::Source;
-use diesel::{PgConnection, RunQueryDsl, QueryDsl, ExpressionMethods, BoolExpressionMethods, PgArrayExpressionMethods};
-use crate::services::notes::update::NoteTemplate;
-use crate::services::tags::update::TagTemplate;
-use diesel::dsl::max;
+use crate::models::Blob;
+use diesel::{ExpressionMethods, PgConnection, QueryDsl, RunQueryDsl};
 
-
-pub fn add_note(conn: &PgConnection, note: &Note) -> Result<usize, ApiError> {
-    use crate::schema::notes::dsl::*;
-    diesel::insert_into(notes)
-        .values(note)
+pub fn upsert_blob(conn: &mut PgConnection, blob: &Blob) -> Result<usize, ApiError> {
+    use crate::schema::blobs::dsl::*;
+    diesel::insert_into(blobs)
+        .values(blob)
+        .on_conflict((id, account_id))
+        .do_update()
+        .set(blob)
         .execute(conn)
         .map_err(|error| ApiError::DBError(error))
 }
 
-pub fn update_note(conn: &PgConnection, note_id: &String, data: &NoteTemplate, given_account_id: &str) -> Result<usize, ApiError> {
-    use crate::schema::notes::dsl::*;
-    diesel::update(notes.filter(id.eq(note_id).and(account_id.eq(given_account_id))))
-        .set((
-                content.eq(&data.content),
-                last_changed.eq(data.last_changed as i64)
-            ))
-        .execute(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn delete_note(conn: &PgConnection, note_id: &String, given_account_id: &str) -> Result<usize, ApiError> {
-    use crate::schema::notes::dsl::*;
-    diesel::delete(notes)
-        .filter(id.eq(note_id).and(account_id.eq(given_account_id)))
-        .execute(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn delete_all_note(conn: &PgConnection, given_account_id: &str) -> Result<usize, ApiError> {
-    use crate::schema::notes::dsl::*;
-    diesel::delete(notes)
+pub fn delete_all_blobs(
+    conn: &mut PgConnection,
+    given_account_id: &str,
+) -> Result<usize, ApiError> {
+    use crate::schema::blobs::dsl::*;
+    diesel::delete(blobs)
         .filter(account_id.eq(given_account_id))
         .execute(conn)
         .map_err(|error| ApiError::DBError(error))
 }
 
-pub fn get_notes(conn: &PgConnection, given_account_id: &str) -> Result<Vec<Note>, ApiError> {
-    use crate::schema::notes::dsl::*;
-    notes.filter(account_id.eq(given_account_id))
-        .load::<Note>(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn get_notes_updated_after(conn: &PgConnection, updated_after: u64, given_account_id: &str) -> Result<Vec<Note>, ApiError> {
-    use crate::schema::notes::dsl::*;
-    notes.filter(account_id.eq(given_account_id).and(last_changed.gt(updated_after as i64)))
-        .load::<Note>(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn add_tag(conn: &PgConnection, tag: &Tag) -> Result<usize, ApiError> {
-    use crate::schema::tags::dsl::*;
-    diesel::insert_into(tags)
-        .values(tag)
-        .execute(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn update_tag(conn: &PgConnection, tag_id: &String, data: &TagTemplate, given_account_id: &str) -> Result<usize, ApiError> {
-    use crate::schema::tags::dsl::*;
-    diesel::update(tags.filter(id.eq(tag_id).and(account_id.eq(given_account_id))))
-        .set((
-            content.eq(&data.content),
-            last_changed.eq(data.last_changed as i64)
-            ))
-        .execute(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn delete_tag(conn: &PgConnection, note_id: &String, given_account_id: &str) -> Result<usize, ApiError> {
-    use crate::schema::tags::dsl::*;
-    diesel::delete(tags)
-        .filter(id.eq(note_id).and(account_id.eq(given_account_id)))
-        .execute(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn delete_all_tag(conn: &PgConnection, given_account_id: &str) -> Result<usize, ApiError> {
-    use crate::schema::tags::dsl::*;
-    diesel::delete(tags)
+pub fn get_blobs(conn: &mut PgConnection, given_account_id: &str) -> Result<Vec<Blob>, ApiError> {
+    use crate::schema::blobs::dsl::*;
+    blobs
         .filter(account_id.eq(given_account_id))
-        .execute(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn get_tags(conn: &PgConnection, given_account_id: &str) -> Result<Vec<Tag>, ApiError> {
-    use crate::schema::tags::dsl::*;
-    tags.filter(account_id.eq(given_account_id))
-        .load::<Tag>(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn get_tags_updated_after(conn: &PgConnection, updated_after: u64, given_account_id: &str) -> Result<Vec<Tag>, ApiError> {
-    use crate::schema::tags::dsl::*;
-    tags.filter(account_id.eq(given_account_id).and(last_changed.gt(updated_after as i64)))
-        .load::<Tag>(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn get_last_note_changed(conn: &PgConnection, given_account_id: &str) -> Result<Option<i64>, ApiError> {
-    use crate::schema::*;
-    notes::table
-        .filter(notes::account_id.eq(given_account_id))
-        .select(max(notes::last_changed))
-        .first(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn get_last_tag_changed(conn: &PgConnection, given_account_id: &str) -> Result<Option<i64>, ApiError> {
-    use crate::schema::*;
-    tags::table
-        .filter(tags::account_id.eq(given_account_id))
-        .select(max(tags::last_changed))
-        .first(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn get_existing_notes(conn: &PgConnection, id_list: &Vec<String>, given_account_id: &str) -> Result<Vec<String>, ApiError> {
-    use crate::schema::notes;
-    notes::table
-        .filter(notes::account_id.eq(given_account_id).and(notes::id.eq_any(id_list.clone())))
-        .select(notes::id)
-        .load::<String>(conn)
-        .map_err(|error| ApiError::DBError(error))
-}
-
-pub fn get_existing_tags(conn: &PgConnection, id_list: &Vec<String>, given_account_id: &str) -> Result<Vec<String>, ApiError> {
-    use crate::schema::tags;
-    tags::table
-        .filter(tags::account_id.eq(given_account_id).and(tags::id.eq_any(id_list.clone())))
-        .select(tags::id)
-        .load::<String>(conn)
+        .load::<Blob>(conn)
         .map_err(|error| ApiError::DBError(error))
 }
