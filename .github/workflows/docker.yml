@@ -2,6 +2,7 @@ name: Docker
 on:
   push:
     branches:
+      - blob
       - master
 
 jobs:
